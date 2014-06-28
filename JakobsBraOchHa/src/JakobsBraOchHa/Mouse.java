@@ -232,7 +232,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 		setOpaque(true);
 		setBackground(Färg);
 		setForeground(Color.YELLOW);
-//		setSize(500,500);
 		addMouseMotionListener(this);
 		addMouseListener(this);
 
