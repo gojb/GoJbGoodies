@@ -12,7 +12,7 @@ import sun.audio.*;
 
 
 @SuppressWarnings("serial")
-public class Mouse extends JPanel implements 	ActionListener,
+public class Mouse extends JPanel implements 		ActionListener,
 													MouseInputListener,
 													KeyListener,
 													WindowListener{
