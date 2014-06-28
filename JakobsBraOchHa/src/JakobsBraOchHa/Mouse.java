@@ -1163,4 +1163,3 @@ class Snake extends JPanel implements KeyListener, ActionListener{
 	}
 	
 }
-
