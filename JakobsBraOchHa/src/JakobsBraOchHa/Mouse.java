@@ -107,7 +107,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	Timer 			StartTimer = new Timer(2, this),
 					SlutTimer = new Timer(2, this);
 	
-	Pong			pong = new Pong();
+	Pong			pong = new Pong();;;;
 	
 	Robot			robot;
 	
@@ -115,7 +115,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 	static Font 	Typsnitt = new Font("Arial", 0, 40);
 	
-	public static ImageIcon FönsterIcon = null;
+	public static 	ImageIcon FönsterIcon = null;
 	
 	public Mouse(){
 		
