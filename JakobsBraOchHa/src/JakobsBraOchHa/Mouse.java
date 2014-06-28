@@ -12,10 +12,10 @@ import sun.audio.*;
 
 
 @SuppressWarnings("serial")
-public class Mouse extends JPanel implements 		ActionListener,
-													MouseInputListener,
-													KeyListener,
-													WindowListener{
+public class Mouse extends JPanel implements 	ActionListener,
+												MouseInputListener,
+												KeyListener,
+												WindowListener{
 	
 	JFrame			HuvudFönster = new JFrame("Hej Hej :D"), 
 					HändelseFönster = new JFrame("Händelser"),
