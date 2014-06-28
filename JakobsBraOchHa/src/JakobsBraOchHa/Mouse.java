@@ -372,8 +372,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 		    	JOptionPane.showMessageDialog(null, "Den angivna LookAndFeel hittades inte!","Error",JOptionPane.ERROR_MESSAGE);
 		    }
 	
-//		new Mouse();
-		new Snake();
+		new Mouse();
+//		new Snake();
 		
 	}
 	
