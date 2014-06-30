@@ -1316,6 +1316,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 //			frame.add(rö3);
 //			frame.add(bana);
 			
+			frame.setIconImage(JakobsBraOchHa.Mouse.FönsterIcon.getImage());
+			
 			
 			Vinst.setLocationRelativeTo(null);
 			Vinst.setSize(190, 100);
@@ -3431,11 +3433,12 @@ class Snake extends JPanel implements KeyListener, ActionListener{
 
 
 @SuppressWarnings("serial")
-class Impossible extends JPanel implements WindowListener, MouseMotionListener{
+class Impossible extends JPanel implements WindowListener, MouseMotionListener, ActionListener, KeyListener{
 
 	JFrame frame = new JFrame();
-	
+	Timer timer = new Timer(3, this);
 	Robot robot;
+	String string = new String();
 	
 	public Impossible(){
 		
@@ -3453,22 +3456,37 @@ class Impossible extends JPanel implements WindowListener, MouseMotionListener{
 		
 		frame.addWindowListener(this);
 		frame.addMouseMotionListener(this);
+		frame.addKeyListener(this);
 		
+		timer.start();
+		try {
+			robot = new Robot();
+		} catch (AWTException e) {
+			
+			e.printStackTrace();
+		}
+		if(frame.isVisible() == true){
+			robot.mouseMove(frame.getX() + frame.getHeight() /2, frame.getY() + frame.getWidth()/2);
+			
+		}
 		
 	}
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
+	
+		robot.mouseMove(frame.getX() + frame.getHeight() /2, frame.getY() + frame.getWidth()/2);
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-	
-
+		
+		robot.mouseMove(frame.getX() + frame.getHeight() /2, frame.getY() + frame.getWidth()/2);
 		System.out.println(frame.getX() + ",,,," + frame.getY());
 		
-	if (frame.getY() > frame.getHeight()/2 - 10){
-		frame.dispose();
-	}}
+//	if (frame.getY() > frame.getHeight()/2 - 10){
+//		frame.dispose();
+//	}
+}
 	
 	@Override
 	public void windowActivated(WindowEvent arg0) {
@@ -3497,6 +3515,44 @@ class Impossible extends JPanel implements WindowListener, MouseMotionListener{
 	@Override
 	public void windowOpened(WindowEvent arg0) {
 	}
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+	if (arg0.getSource() == timer){
+		
+		if (string == "ÅÄÖ"){
+			System.exit(3);
+		}
+		
+		if(frame.isVisible() == true){
+			robot.mouseMove(frame.getX() + frame.getHeight() /2, frame.getY() + frame.getWidth()/2);
+	}
+	
+	}
+	
+	}
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+	}
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+	}
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		if(arg0.getKeyChar() == 'Å'){
+			string = string + "Å";
+				}
+		if(arg0.getKeyChar() == 'Ä'){
+			string = string + "Ä";
+		
+		if(arg0.getKeyChar() == 'Ö'){
+			string = string + "Ö";
+				
+			}
+		
+		}
+		
+	}
 	
 }
+
 
