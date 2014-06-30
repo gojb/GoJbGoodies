@@ -11,6 +11,8 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
+
 import sun.audio.*;
 
 @SuppressWarnings("serial")
@@ -123,11 +125,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 	public Mouse(){
 		
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		  Image image = toolkit.getImage(getClass().getResource("/images/Bild.jpg"));
-		  Cursor c = toolkit.createCustomCursor(image , new Point(getX(),
-		     getY()), "img");
-		  setCursor (c);;;;;;;;;
+		
 		  
 		  
 		try {
@@ -3410,7 +3408,8 @@ class Snake extends JPanel implements KeyListener, ActionListener{
 	
 
 
-class Impossible implements WindowListener, MouseMotionListener{
+@SuppressWarnings("serial")
+class Impossible extends JPanel implements WindowListener, MouseMotionListener{
 
 	JFrame frame = new JFrame();
 	
@@ -3419,13 +3418,19 @@ class Impossible implements WindowListener, MouseMotionListener{
 	public Impossible(){
 		
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		  Image image = toolkit.getImage("/images/java.icon.png");
+		  Image image = toolkit.getImage(getClass().getResource("/images/Nope.png"));
 		  Cursor c = toolkit.createCustomCursor(image , new Point(frame.getX(),
 		     frame.getY()), "img");
 		  frame.setCursor (c);
 		
 		frame.setSize(500, 500);
 		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+		frame.add(this);
+		setBackground(Color.WHITE);
+		
+		frame.addWindowListener(this);
+		frame.addMouseMotionListener(this);
 		
 		
 	}
@@ -3434,9 +3439,15 @@ class Impossible implements WindowListener, MouseMotionListener{
 	}
 
 	@Override
-	public void mouseMoved(MouseEvent arg0) {
-	}
+	public void mouseMoved(MouseEvent e) {
+	
 
+		System.out.println(frame.getX() + ",,,," + frame.getY());
+		
+	if (frame.getY() > frame.getHeight()/2 - 10){
+		frame.dispose();
+	}}
+	
 	@Override
 	public void windowActivated(WindowEvent arg0) {
 	}
