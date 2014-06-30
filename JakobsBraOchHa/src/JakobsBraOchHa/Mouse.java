@@ -55,7 +55,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 				  	Hastighet = new JMenuItem("Ändra hastighet på piltangenterna"),
 				  	Händelse = new JMenuItem("Visa Händelsefönster"),
 				  	Räkna = new JMenuItem("Öppna Miniräknare"),
-				  	Spelknapp = new JMenuItem("Öppna spel");
+				  	Spelknapp = new JMenuItem("Öppna spel"),
+				  	Rörande = new JMenuItem("Öppna RörandeMojäng");
 	
 	JButton 		knapp1 = new JButton("Blå"),
 					knapp2 = new JButton("Grön"),
@@ -190,6 +191,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		C.addActionListener(this);
 		Punkt.addActionListener(this);
 		Spelknapp.addActionListener(this);
+		Rörande.addActionListener(this);
 		
 		knapp1.setEnabled(false);
 		knapp1.addActionListener(this);
@@ -208,6 +210,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		Arkiv.add(Nytt);
 		Arkiv.add(Räkna);
 		Arkiv.add(Spelknapp);
+		Arkiv.add(Rörande);
 		Arkiv.addSeparator();
 		Arkiv.add(Avsluta);
 		
@@ -626,6 +629,10 @@ public class Mouse extends JPanel implements 	ActionListener,
 		}
 		else if (knapp.getSource()==Spelknapp) {
 			pong.Starta();
+		}
+		else if (knapp.getSource()==Rörande) {
+			HuvudFönster.dispose();
+			new RörandeMojäng();
 		}
 		
 		HuvudFönster.revalidate();
@@ -1213,13 +1220,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 	JMenuBar bar = new JMenuBar();
 	
 	Robot robot;
-	public static void main(String[] args) {
-				
-		
-		new RörandeMojäng();
-		
 
-	}
 	static int qq = 1;
 	static int x = 800;
 	static int yy = 900;
@@ -1970,11 +1971,7 @@ class Miniräknare implements ActionListener, KeyListener{
 	JLabel räknesätt = new JLabel(),
 			summa = new JLabel();
 
-	public static void main(String[] args) {
-		//  
 
-		new Miniräknare();
-	}
 
 public Miniräknare(){
 		
@@ -2250,10 +2247,7 @@ class Merit extends JComponent implements MouseMotionListener, WindowListener, K
 				
 	
 	
-	public static void main(String[] e) {
-		//  
-		new Merit();
-	}
+
 		public Merit(){
 	
 			
@@ -2850,13 +2844,7 @@ class Maze extends JPanel implements ActionListener, KeyListener, MouseListener,
 	
 	JButton börja = new JButton("Start");
 	
-public static void main(String[] args) {
-				
-		
-		new Maze();
-		
 
-	}
 	int x = 3;
 	int y = 600;	
 	public Maze(){
@@ -3026,11 +3014,7 @@ class level2 extends JPanel implements MouseMotionListener{
 	static JFrame level2 = new JFrame("Level 2");
 
 	
-	
-	public static void main(String[] args) {
-		new level2();
-		
-	}
+
 	public level2(){
 		
 	
@@ -3113,10 +3097,7 @@ class level3 extends JPanel implements MouseMotionListener{
 	JFrame level3 = new JFrame("Level 3");
 
 	
-	public static void main(String[] args) {
-		new level3();
-		
-	}
+	
 	public level3(){
 		
 	
@@ -3202,10 +3183,7 @@ class Mål{
 	
 	JFrame frame = new JFrame("Haha");
 	
-	public static void main(String[] args) {
-		new Mål();
-		
-	}
+
 	public Mål(){
 		frame.add(new JLabel(new ImageIcon("Bild.jpg")));
 		frame.pack();
@@ -3227,9 +3205,7 @@ class Snake extends JPanel implements KeyListener, ActionListener{
 	Timer timer = new Timer(30,this);
 	Random r = new Random();
 	
-	public static void main(String[] args){
-		new Snake();
-	}
+
 	
 	public Snake(){
 		
