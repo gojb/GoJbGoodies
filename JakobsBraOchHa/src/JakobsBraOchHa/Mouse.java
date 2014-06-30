@@ -122,7 +122,13 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 	public Mouse(){
 		
-		
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		  Image image = toolkit.getImage(getClass().getResource("/images/14.gif"));
+		  Cursor c = toolkit.createCustomCursor(image , new Point(getX(),
+		     getY()), "img");
+		  setCursor (c);
+		  
+		  
 		try {
 			FönsterIcon = new ImageIcon(getClass().getResource("/images/Java-icon.png"));
 		} catch (Exception e) {
@@ -1218,7 +1224,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			Pong = new JMenuItem("Pong"),
 			Maze = new JMenuItem("Maze"),
 			Snake = new JMenuItem("Snake"),
-			Mouse = new JMenuItem("Mouse");
+			Mouse = new JMenuItem("Mouse"),
+			impossible = new JMenuItem("Impossible");
 	JMenuBar bar = new JMenuBar();
 	
 	Robot robot;
@@ -1289,6 +1296,11 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		ÖppnaProgram.add(Pong);
 		ÖppnaProgram.add(Maze);
 		ÖppnaProgram.add(Snake);
+		ÖppnaProgram.add(impossible);
+		
+		
+		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+		  
 		
 
 		Mouse.addActionListener(this);
@@ -1300,6 +1312,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		OrginalFönster.addActionListener(this);
 		Maze.addActionListener(this);
 		Snake.addActionListener(this);
+		impossible.addActionListener(this);
 
 		timer.addActionListener(this);
 		timer.start();
@@ -1611,6 +1624,11 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			
 		}
 		
+		if (arg0.getSource() == impossible){
+			frame.dispose();
+			new Impossible();
+		}
+		
 		if (arg0.getSource() == Maze){
 			new Maze();
 			frame.dispose();
@@ -1821,7 +1839,10 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		//  
 		
-	}}
+	}
+	
+}
+
 class RörandeMojäng4 {
 public void paint (Graphics g) {    
  
@@ -3345,5 +3366,60 @@ class Snake extends JPanel implements KeyListener, ActionListener{
 	
 
 
+class Impossible implements WindowListener, MouseMotionListener{
 
+	JFrame frame = new JFrame();
+	
+	Robot robot;
+	
+	public Impossible(){
+		
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		  Image image = toolkit.getImage("/images/java.icon.png");
+		  Cursor c = toolkit.createCustomCursor(image , new Point(frame.getX(),
+		     frame.getY()), "img");
+		  frame.setCursor (c);
+		
+		frame.setSize(500, 500);
+		frame.setLocationRelativeTo(null);
+		
+		
+	}
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+	}
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+	}
+
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+	}
+
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+	}
+
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+	}
+
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+	}
+	
+}
 
