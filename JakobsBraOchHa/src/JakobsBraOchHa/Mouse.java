@@ -3206,19 +3206,19 @@ class Mål{
 		
 
 
-	try {
-		Clip clips = AudioSystem.getClip();
-	     clips.open(AudioSystem.getAudioInputStream(getClass().getResource("/images/Ljud.wav")));
-	     clips.start();
-	} catch (Exception ex) {
-		((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-		JOptionPane.showMessageDialog(null, "Filen hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
-	}
+		try {
+			Clip clips = AudioSystem.getClip();
+			clips.open(AudioSystem.getAudioInputStream(getClass().getResource("/images/Ljud.wav")));
+			clips.start();
+		} catch (Exception ex) {
+			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+			JOptionPane.showMessageDialog(null, "Filen hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
+		}
 	
 	
 
-}
 	}
+}
 @SuppressWarnings("serial")
 class Snake extends JPanel implements KeyListener, ActionListener{
 	
