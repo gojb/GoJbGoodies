@@ -1190,48 +1190,70 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 @SuppressWarnings("serial")
 class Studsa extends JPanel implements ActionListener{
 	JFrame frame = new JFrame("Studsa");
-	Timer timer = new Timer(10, this);
-	int x=1,y=1,a=30,b=30,c=5,d=5;
+	Timer timer = new Timer(1, this);
+	int x=1,y=1,a=5,b=5,c=1,d=1,r=100,g=255,bl=25,qr=2,qb=5,qg=10;
 	public Studsa(){
 		
-		frame.setSize(500,550);
+		frame.setSize(1000,800);
 		frame.setLocationRelativeTo(null);
 		frame.setIconImage(Mouse.FönsterIcon.getImage());
 		frame.add(this);
 		frame.setUndecorated(true);
 		frame.setVisible(true);
+		frame.getContentPane().setBackground(Color.white);
 		timer.start();
 	}
-	public void paintComponent(Graphics g){
-		super.paintComponents(g);
+	public void paintComponent(Graphics ag){
+//		super.paintComponents(g);
+		Graphics2D g2 = (Graphics2D)ag;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		
-		g.setColor(Color.red);
+		g2.setColor(new Color(r, g, bl));
 		
-		g.drawOval(x, y, a, b);
-		g.fillOval(x, y, a, b);
+		g2.drawOval(x, y, a, b);
+		g2.fillOval(x, y, a, b);
+//		g2.drawImage(Mouse.FönsterIcon.getImage(), x, y, null);
 		
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		setSize(frame.getSize());
+//		setSize(frame.getSize());
 		if (e.getSource()==timer) {
+			
+			r=r+qr;
+			bl=bl+qb;
+			g=bl+qg;
+			if (r>=250||r<=5) {
+				qr=-qr;
+			}
+			if (g>=250||g<=5) {
+				qg=-qg;
+			}
+			if (bl>=250||bl<=5) {
+				qb=-qb;
+			}
+			
 			if (x+a>=frame.getWidth()) {
+//				c++;
 				c=-c;
 			}
-			else if (x<=0) {
+			if (x<=0) {
+//				c--;
 				c=-c;
 			}
-			else if (y+b>=frame.getHeight()) {
+			if (y+b>=frame.getHeight()) {
+//				d++;
 				d=-d;
 			}
-			else if (y<=0) {
+			if (y<=0) {
+//				d--;
 				d=-d;
 			}
 			x=x+c;
-			y=x+d;
-			frame.repaint();
-//			repaint();
+			y=y+d;
+			repaint();
+//			frame.repaint();
 //			frame.revalidate();
 //			revalidate();
 		}
