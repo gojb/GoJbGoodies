@@ -1812,7 +1812,6 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 	    g2.setColor(Color.ORANGE);g.drawRect(700, 650, 3, 3);
 	    g2.setColor(Color.RED);g.drawRect(700, 650, 2, 2);
 	    g2.setColor(Color.WHITE);g.drawRect(700, 650, 1, 1);
-	    g2.setColor(Color.MAGENTA);g.drawRect(700, 650, 0, 0);
 	    
 	    g2.setColor(Color.cyan);
 	    g2.fill(new Rectangle2D.Double(x, y, 50,50));
@@ -3110,7 +3109,7 @@ if (y < 22 && x > 363 && x < 379){
 @SuppressWarnings("serial")
 class level3 extends JPanel implements MouseMotionListener{
 	int y, x;
-	JFrame level3 = new JFrame("Level 3");
+	static JFrame level3 = new JFrame("Level 3");
 
 	
 	public level3(){
@@ -3200,18 +3199,26 @@ class Mål{
 	
 
 	public Mål(){
-		frame.add(new JLabel(new ImageIcon("Bild.jpg")));
+		frame.add(new JLabel(new ImageIcon(getClass().getResource("/images/Bild.jpg"))));
 		frame.pack();
 		frame.setVisible(true);
-	try {
+		frame.setLocationRelativeTo(level3.level3);
 		
-		AudioPlayer.player.start(new AudioStream(new FileInputStream("Ljud.wav")));
-	} catch (Exception ebn) {
-		((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-		JOptionPane.showMessageDialog(null, "Filen hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);}
-	}
-}
 
+
+	try {
+		Clip clips = AudioSystem.getClip();
+	     clips.open(AudioSystem.getAudioInputStream(getClass().getResource("/images/ljud.wav")));
+	     clips.start();
+	} catch (Exception ex) {
+		((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+		JOptionPane.showMessageDialog(null, "Filen hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	
+
+}
+	}
 @SuppressWarnings("serial")
 class Snake extends JPanel implements KeyListener, ActionListener{
 	
@@ -3334,10 +3341,9 @@ class Snake extends JPanel implements KeyListener, ActionListener{
 		frame.repaint();
 	}
 		
-	}
+	}}
 	
-	
-}
+
 
 
 
