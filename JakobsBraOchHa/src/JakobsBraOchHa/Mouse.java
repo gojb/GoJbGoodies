@@ -123,7 +123,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	public Mouse(){
 		
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		  Image image = toolkit.getImage(getClass().getResource("/images/14.gif"));
+		  Image image = toolkit.getImage(getClass().getResource("/images/Bild.jpg"));
 		  Cursor c = toolkit.createCustomCursor(image , new Point(getX(),
 		     getY()), "img");
 		  setCursor (c);
