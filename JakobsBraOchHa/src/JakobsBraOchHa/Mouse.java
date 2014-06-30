@@ -1222,6 +1222,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 	JMenuBar bar = new JMenuBar();
 	
 	Robot robot;
+	
+	Clip clip;
 
 	static int qq = 1;
 	static int x = 800;
@@ -1301,6 +1303,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 
 		timer.addActionListener(this);
 		timer.start();
+		
+		
 		
 		try {
 			robot = new Robot();
@@ -1577,10 +1581,12 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		  
 	
 		if (arg0.getSource() == timer){
-			
+			if (frame.isVisible() == false){
+				timer.stop();
+			}
 	
 			try {
-			     Clip clip = AudioSystem.getClip();
+				clip = AudioSystem.getClip();
 			     clip.open(AudioSystem.getAudioInputStream(getClass().getResource("/images/explosion.aiff")));
 			     clip.start();
 			} catch (Exception ex) {
@@ -2843,6 +2849,7 @@ class Pong extends JPanel implements ActionListener{
 		
 	}
 }
+
 
 @SuppressWarnings("serial")
 class Maze extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener{
