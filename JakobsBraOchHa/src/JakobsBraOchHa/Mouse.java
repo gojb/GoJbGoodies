@@ -56,7 +56,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 				  	Händelse = new JMenuItem("Visa Händelsefönster"),
 				  	Räkna = new JMenuItem("Öppna Miniräknare"),
 				  	Spelknapp = new JMenuItem("Öppna spel"),
-				  	Rörande = new JMenuItem("Öppna RörandeMojäng");
+				  	Rörande = new JMenuItem("Öppna RörandeMojäng"),
+				  	StudsItem = new JMenuItem("Öppna Studsande Objekt");
 	
 	JButton 		knapp1 = new JButton("Blå"),
 					knapp2 = new JButton("Grön"),
@@ -192,6 +193,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		Punkt.addActionListener(this);
 		Spelknapp.addActionListener(this);
 		Rörande.addActionListener(this);
+		StudsItem.addActionListener(this);
 		
 		knapp1.setEnabled(false);
 		knapp1.addActionListener(this);
@@ -211,6 +213,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		Arkiv.add(Räkna);
 		Arkiv.add(Spelknapp);
 		Arkiv.add(Rörande);
+		Arkiv.add(StudsItem);
 		Arkiv.addSeparator();
 		Arkiv.add(Avsluta);
 		
@@ -635,6 +638,10 @@ public class Mouse extends JPanel implements 	ActionListener,
 			HuvudFönster.dispose();
 			
 		}
+		else if (knapp.getSource()==StudsItem) {
+			new Studsa();
+			
+		}
 		
 		HuvudFönster.revalidate();
 		HuvudFönster.repaint();
@@ -747,21 +754,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 			JOptionPane.showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
 		}
-//		try {
-//
-//		     Clip clip = AudioSystem.getClip();
-//
-//		     clip.open(AudioSystem.getAudioInputStream(getClass().getResource(filnamn)));
-//
-//		     clip.start();
-//
-//		} catch (Exception ex) {
-//
-//			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-//
-//			JOptionPane.showMessageDialog(null, "Filen hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
-//
-//		}
 		
 	}
 	public void SkrivHändelsetext(String Händlsetext){
@@ -1188,6 +1180,58 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 //				frame.repaint();
 			}
 		}
+	}
+	
+}
+@SuppressWarnings("serial")
+class Studsa extends JPanel implements ActionListener{
+	JFrame frame = new JFrame("Studsa");
+	Timer timer = new Timer(10, this);
+	int x=1,y=1,a=30,b=30,c=5,d=5;
+	public Studsa(){
+		
+		frame.setSize(500,550);
+		frame.setLocationRelativeTo(null);
+		frame.setIconImage(Mouse.FönsterIcon.getImage());
+		frame.add(this);
+		frame.setUndecorated(true);
+		frame.setVisible(true);
+		timer.start();
+	}
+	public void paintComponent(Graphics g){
+		super.paintComponents(g);
+		
+		
+		g.setColor(Color.red);
+		
+		g.drawOval(x, y, a, b);
+		g.fillOval(x, y, a, b);
+		
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		setSize(frame.getSize());
+		if (e.getSource()==timer) {
+			if (x+a>=frame.getWidth()) {
+				c=-c;
+			}
+			else if (x<=0) {
+				c=-c;
+			}
+			else if (y+b>=frame.getHeight()) {
+				d=-d;
+			}
+			else if (y<=0) {
+				d=-d;
+			}
+			x=x+c;
+			y=x+d;
+			frame.repaint();
+//			repaint();
+//			frame.revalidate();
+//			revalidate();
+		}
+		
 	}
 	
 }
