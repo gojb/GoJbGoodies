@@ -1216,7 +1216,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			Återställ = new JMenuItem("Återställ kvadrat"),
 			Pong = new JMenuItem("Pong"),
 			Maze = new JMenuItem("Maze"),
-			Snake = new JMenuItem("Snake");
+			Snake = new JMenuItem("Snake"),
+			Mouse = new JMenuItem("Mouse");
 	JMenuBar bar = new JMenuBar();
 	
 	Robot robot;
@@ -1277,13 +1278,16 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		menu2.add(item1);
 		menu2.add(item2);
 		
+		ÖppnaProgram.add(Mouse);
 		ÖppnaProgram.add(Minirknare);
 		ÖppnaProgram.add(Betyg);
 		ÖppnaProgram.add(OrginalFönster);
 		ÖppnaProgram.add(Pong);
 		ÖppnaProgram.add(Maze);
 		ÖppnaProgram.add(Snake);
+		
 
+		Mouse.addActionListener(this);
 		Pong.addActionListener(this);
 		Återställ.addActionListener(this);
 		item1.addActionListener(this);
@@ -1583,6 +1587,11 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			
 		}
 		
+		if (arg0.getSource() == Mouse){
+			frame.dispose();
+			new Mouse();
+		}
+		
 		if (arg0.getSource() == Återställ){
 			x = 300;
 			y = 800;
@@ -1647,7 +1656,7 @@ class RörandeMojäng2 extends JPanel implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		//  
+		  
 		
 	}
 	public void paint(Graphics gg){
@@ -1972,7 +1981,6 @@ class Miniräknare implements ActionListener, KeyListener{
 			summa = new JLabel();
 
 
-
 public Miniräknare(){
 		
 	
@@ -2245,8 +2253,6 @@ class Merit extends JComponent implements MouseMotionListener, WindowListener, K
 	
 	double x = 0;
 				
-	
-	
 
 		public Merit(){
 	
@@ -3097,7 +3103,6 @@ class level3 extends JPanel implements MouseMotionListener{
 	JFrame level3 = new JFrame("Level 3");
 
 	
-	
 	public level3(){
 		
 	
@@ -3206,7 +3211,6 @@ class Snake extends JPanel implements KeyListener, ActionListener{
 	Random r = new Random();
 	
 
-	
 	public Snake(){
 		
 		frame.setSize(500, 500);
