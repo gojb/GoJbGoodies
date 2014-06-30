@@ -1255,7 +1255,7 @@ class Studsa extends JPanel implements ActionListener{
 			x=x+c;
 			y=y+d;
 			repaint();
-			frame.repaint();
+//			frame.repaint();
 //			frame.revalidate();
 //			revalidate();
 		}
