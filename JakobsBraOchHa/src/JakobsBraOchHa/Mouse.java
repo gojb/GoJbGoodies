@@ -2,14 +2,12 @@ package JakobsBraOchHa;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
+
+import javax.sound.sampled.*;
 
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
-
-import sun.audio.*;
-
 
 @SuppressWarnings("serial")
 public class Mouse extends JPanel implements 	ActionListener,
@@ -613,7 +611,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 					HuvudFönster.setVisible(true);
 					StartTimer.stop();
 					robot.mouseMove(HuvudFönster.getX() + HuvudFönster.getWidth()/2,HuvudFönster.getY() + HuvudFönster.getHeight()/2);
-					SpelaLjud("C:\\WINDOWS\\Media\\tada.wav");
+					SpelaLjud("/images/tada.wav");
 				}
 				else {
 					LaddstapelStart.setValue(LaddstapelStart.getValue()+1);
@@ -706,9 +704,9 @@ public class Mouse extends JPanel implements 	ActionListener,
 		Räknare.dispose();
 		if (AntalFönster == 0) {
 		
-		AvslutningsFönster.setVisible(true);
+			AvslutningsFönster.setVisible(true);
 		
-		SlutTimer.start();
+			SlutTimer.start();
 		}
 	}
 
@@ -729,11 +727,29 @@ public class Mouse extends JPanel implements 	ActionListener,
 	}
 	public void SpelaLjud(String Filnamn){
 		try {
-			AudioPlayer.player.start(new AudioStream(new FileInputStream(Filnamn)));
-		} catch (IOException e) {
+			Clip clip = AudioSystem.getClip();
+			clip.open(AudioSystem.getAudioInputStream(getClass().getResource(Filnamn)));
+			clip.start();
+			
+		} catch (Exception e) {
 			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 			JOptionPane.showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
 		}
+//		try {
+//
+//		     Clip clip = AudioSystem.getClip();
+//
+//		     clip.open(AudioSystem.getAudioInputStream(getClass().getResource(filnamn)));
+//
+//		     clip.start();
+//
+//		} catch (Exception ex) {
+//
+//			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+//
+//			JOptionPane.showMessageDialog(null, "Filen hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
+//
+//		}
 		
 	}
 	public void SkrivHändelsetext(String Händlsetext){
