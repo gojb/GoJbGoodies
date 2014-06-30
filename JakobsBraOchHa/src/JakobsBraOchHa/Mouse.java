@@ -3208,7 +3208,7 @@ class Mål{
 
 	try {
 		Clip clips = AudioSystem.getClip();
-	     clips.open(AudioSystem.getAudioInputStream(getClass().getResource("/images/ljud.wav")));
+	     clips.open(AudioSystem.getAudioInputStream(getClass().getResource("/images/Ljud.wav")));
 	     clips.start();
 	} catch (Exception ex) {
 		((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
