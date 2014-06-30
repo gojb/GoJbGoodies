@@ -631,8 +631,9 @@ public class Mouse extends JPanel implements 	ActionListener,
 			pong.Starta();
 		}
 		else if (knapp.getSource()==Rörande) {
-			HuvudFönster.dispose();
 			new RörandeMojäng();
+			HuvudFönster.dispose();
+			
 		}
 		
 		HuvudFönster.revalidate();
@@ -1228,6 +1229,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 	static int y = 300;
 	static int ii = 0;
 		public RörandeMojäng(){
+			JakobsBraOchHa.Mouse.AntalFönster++;
 			frame.setVisible(true);
 //			frame.getContentPane().setForeground(new Color(49,130,240));
 //			frame.getContentPane().setBackground(new Color(190,230,60));
@@ -1471,7 +1473,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 	}
 	@Override
 	public void windowClosed(WindowEvent arg0) {
-		//  
+		JakobsBraOchHa.Mouse.AntalFönster--;
+		
 		
 	}
 	@Override
