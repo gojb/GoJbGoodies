@@ -1191,10 +1191,10 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 class Studsa extends JPanel implements ActionListener{
 	JFrame frame = new JFrame("Studsa");
 	Timer timer = new Timer(1, this);
-	int x=1,y=1,a=5,b=5,c=1,d=1,r=100,g=255,bl=25,qr=2,qb=5,qg=10;
+	int x=1,y=1,a=5,b=5,c=2,d=2,r=100,g=255,bl=25,qr=2,qb=5,qg=10;
 	public Studsa(){
 		
-		frame.setSize(1000,800);
+		frame.setSize(1250,1000);
 		frame.setLocationRelativeTo(null);
 		frame.setIconImage(Mouse.FönsterIcon.getImage());
 		frame.add(this);
