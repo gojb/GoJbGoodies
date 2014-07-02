@@ -1113,7 +1113,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 class Snakespel extends JPanel implements KeyListener, ActionListener{
 	JFrame frame = new JFrame("Snake");
 	int[] x=new int[50],y=new int[50]; 
-	int snakelängd = 6,posx=300,posy=100,pluppX,pluppY;
+	int snakelängd = 1,posx=300,posy=100,pluppX,pluppY;
 	final int pixelstorlek=10;
 	Timer timer = new Timer(100, this);
 	String riktning = "ner";
@@ -1127,15 +1127,19 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		
 		frame.add(this);		
 		frame.setIconImage(Mouse.FönsterIcon.getImage());
-		frame.setSize(500, 500);
+		
 		frame.setResizable(false);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
+		
+		
 		frame.addKeyListener(this);
-		timer.start();
+		frame.setSize(pixelstorlek*50, pixelstorlek*50);
+		frame.setLocationRelativeTo(null);
+		
 		setBackground(Color.WHITE);
+		frame.setVisible(true);
 		PlaceraPlupp();
-				
+		timer.start();
+		
 	}
 	private void GameOver(){
 		timer.stop();
@@ -1154,10 +1158,12 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		g.fillOval(pluppX, pluppY, 8, 8);
 		g.setColor(Color.black);
 		g.drawRect(x[1], y[1], pixelstorlek, pixelstorlek);
+		g.fillRect(x[1], y[1], pixelstorlek, pixelstorlek);
 		g.setColor(Color.GREEN);
 		g.setFont(Mouse.Typsnitt);
 		g.drawString(Integer.toString(snakelängd), x[1]-20, y[1]-20);
-		for (int i = snakelängd; i >= 2; i--) {
+		for (int i = snakelängd+1; i >= 2; i--) {
+			
 			g.setColor(Color.black);
 			x[i]=x[i-1];
 			y[i]=y[i-1];
@@ -1206,6 +1212,8 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 
 	public void actionPerformed(ActionEvent e) {
 		
+		
+		
 		if (e.getSource()==timer){
 			if (x[1]==pluppX&&y[1]==pluppY) {
 				PlaceraPlupp();
@@ -1229,7 +1237,6 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 				x[1]=x[1]-pixelstorlek;
 
 			}
-			frame.repaint();
 			for (int i = 2; i <= snakelängd; i++) {
 				if (x[1]==x[i]&&y[1]==y[i]) {
 					System.out.println("GameOver");
@@ -1237,6 +1244,20 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 				}
 			
 			}
+			if (x[1]-pixelstorlek<0) {
+				GameOver();
+			}
+			if (x[1]+pixelstorlek+pixelstorlek>frame.getWidth()) {
+				GameOver();
+			}
+			if (y[1]-pixelstorlek<0) {
+				GameOver();		
+			}
+			if (y[1]+pixelstorlek*6>frame.getHeight()) {
+				GameOver();
+			}
+			frame.repaint();
+			
 		}
 	}
 	
@@ -1246,7 +1267,7 @@ class Studsa extends JPanel implements ActionListener{
 	JFrame frame = new JFrame("Studsa");
 	Timer timer = new Timer(1, this);
 	Random random = new Random();
-	int x=1,y=1,a=5,b=5,c=2,d=2,r=100,g=255,bl=25,qr=2,qb=5,qg=10;
+	int x=1,y=1,a=5,b=5,c=2,d=2,r=100,g=255,bl=25;
 	public Studsa(){
 		
 		frame.setSize(1250,1000);
@@ -1281,19 +1302,15 @@ class Studsa extends JPanel implements ActionListener{
 			bl=random.nextInt(255);
 			
 			if (x+a>=frame.getWidth()) {
-//				c++;
 				c=-c;
 			}
 			if (x<=0) {
-//				c--;
 				c=-c;
 			}
 			if (y+b>=frame.getHeight()) {
-//				d++;
 				d=-d;
 			}
 			if (y<=0) {
-//				d--;
 				d=-d;
 			}
 			x=x+c;
