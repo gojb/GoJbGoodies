@@ -3,7 +3,6 @@ package JakobsBraOchHa;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
-import java.io.FileInputStream;
 import java.util.Random;
 
 import javax.sound.sampled.*;
@@ -11,9 +10,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
-
-import sun.audio.*;
 
 @SuppressWarnings("serial")
 public class Mouse extends JPanel implements 	ActionListener,
@@ -1648,8 +1644,9 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		}}
 		if (x > 650 && x < 790 && y > 550){
 			try {
-				
-				AudioPlayer.player.start(new AudioStream(new FileInputStream("C:\\WINDOWS\\Media\\tada.wav")));
+				Clip clip = AudioSystem.getClip();
+				clip.open(AudioSystem.getAudioInputStream(getClass().getResource("/images/tada.wav")));
+				clip.start();
 			} catch (Exception e) {
 				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 				JOptionPane.showMessageDialog(null, "Filen hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
@@ -2805,7 +2802,9 @@ class Merit extends JComponent implements MouseMotionListener, WindowListener, K
 					
 					try {
 						
-						AudioPlayer.player.start(new AudioStream(new FileInputStream("dusuger.wav")));
+						Clip clip = AudioSystem.getClip();
+						clip.open(AudioSystem.getAudioInputStream(getClass().getResource("/images/dusuger.wav")));
+						clip.start();
 					} catch (Exception ebn) {
 						((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 						JOptionPane.showMessageDialog(null, "Filen hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
@@ -2813,7 +2812,9 @@ class Merit extends JComponent implements MouseMotionListener, WindowListener, K
 				else {
 					try {
 				
-					AudioPlayer.player.start(new AudioStream(new FileInputStream("C:\\WINDOWS\\Media\\tada.wav")));
+						Clip clip = AudioSystem.getClip();
+						clip.open(AudioSystem.getAudioInputStream(getClass().getResource("/images/tada.wav")));
+						clip.start();
 				} catch (Exception ebn) {
 					((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 					JOptionPane.showMessageDialog(null, "Filen hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
