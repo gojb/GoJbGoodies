@@ -1115,7 +1115,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 	int[] x=new int[50],y=new int[50]; 
 	int snakelängd = 6,posx=300,posy=100,pluppX,pluppY;
 	final int pixelstorlek=10;
-	Timer timer = new Timer(500, this);
+	Timer timer = new Timer(100, this);
 	String riktning = "ner";
 	
 	public Snakespel() {
@@ -1204,6 +1204,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 			if (x[1]==pluppX&&y[1]==pluppY) {
 				PlaceraPlupp();
 				snakelängd++;
+				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
 				System.err.println(snakelängd);
 				
 			}
