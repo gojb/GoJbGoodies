@@ -3692,29 +3692,26 @@ class TicTacToe extends JPanel implements MouseInputListener{
 
 	JFrame frame = new JFrame("Tic Tac Toe");
 	
-	JLabel[] label = new JLabel[9];
+	JLabel[] label = new JLabel[10];
 			
 	
 	public TicTacToe(){
 		
-		frame.add(this);
-		frame.setSize(300, 300);
+		frame.setSize(500, 500);
 		frame.setLocationRelativeTo(null);
-		frame.setLayout(new GridLayout(3,3,1,1));
+		frame.setLayout(new GridLayout(3,3,3,3));
 		
-		for(int i = 1; i <= label.length; i++){
+		for(int i = 1;i < label.length; i++){
+			label[i] = new JLabel();
+			label[i].setBackground(Color.WHITE);
+			label[i].setOpaque(true);
 			frame.add(label[i]);
 		}
+		frame.getContentPane().setBackground(Color.BLACK);
 		
 		frame.setVisible(true);
-		frame.repaint();
 		
-	}
-	public void paintComponent (Graphics gr) {
-		  Graphics2D g2 = (Graphics2D) gr;
-		  
-		  	g2.setColor(Color.BLACK);
-		  	g2.drawLine(70, 70, 70, 210);
+		
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
