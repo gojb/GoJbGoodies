@@ -273,7 +273,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		HastighetsFönster.add(Box.createRigidArea(new Dimension(100,100)),BorderLayout.EAST);
 		HastighetsFönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.SOUTH);
 		HastighetsFönster.setLocationRelativeTo(null);
-//		HastighetsFönster.setResizable(false);
+		HastighetsFönster.setResizable(false);
 		HastighetsFönster.revalidate();
 
 		KnappPanel.add(knapp1);
