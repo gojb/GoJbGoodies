@@ -9,8 +9,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
-
 
 @SuppressWarnings("serial")
 public class Mouse extends JPanel implements 	ActionListener,
