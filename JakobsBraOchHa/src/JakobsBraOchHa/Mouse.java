@@ -2,7 +2,6 @@ package JakobsBraOchHa;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.peer.FramePeer;
 import java.util.Random;
 
 import javax.sound.sampled.*;
