@@ -3436,7 +3436,7 @@ class Snake extends JPanel implements KeyListener, ActionListener{
 class Impossible extends JPanel implements WindowListener, MouseMotionListener, ActionListener, KeyListener{
 
 	JFrame frame = new JFrame();
-	Timer timer = new Timer(3, this);
+	Timer timer = new Timer(1, this);
 	Robot robot;
 	String string = new String();
 	
@@ -3448,8 +3448,9 @@ class Impossible extends JPanel implements WindowListener, MouseMotionListener, 
 		     frame.getY()), "img");
 		  frame.setCursor (c);
 		
-		frame.setSize(500, 500);
+		frame.setSize(1920,1030 );
 		frame.setLocationRelativeTo(null);
+		frame.setUndecorated(true);
 		frame.setVisible(true);
 		frame.add(this);
 		setBackground(Color.WHITE);
@@ -3457,6 +3458,9 @@ class Impossible extends JPanel implements WindowListener, MouseMotionListener, 
 		frame.addWindowListener(this);
 		frame.addMouseMotionListener(this);
 		frame.addKeyListener(this);
+		
+		frame.setAlwaysOnTop(true);
+	
 		
 		timer.start();
 		try {
@@ -3474,13 +3478,14 @@ class Impossible extends JPanel implements WindowListener, MouseMotionListener, 
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
 	
-		robot.mouseMove(frame.getX() + frame.getHeight() /2, frame.getY() + frame.getWidth()/2);
+		robot.mouseMove(960, 515);
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		
-		robot.mouseMove(frame.getX() + frame.getHeight() /2, frame.getY() + frame.getWidth()/2);
+		
+		robot.mouseMove(960, 515);
 		System.out.println(frame.getX() + ",,,," + frame.getY());
 		
 //	if (frame.getY() > frame.getHeight()/2 - 10){
@@ -3524,7 +3529,7 @@ class Impossible extends JPanel implements WindowListener, MouseMotionListener, 
 		}
 		
 		if(frame.isVisible() == true){
-			robot.mouseMove(frame.getX() + frame.getHeight() /2, frame.getY() + frame.getWidth()/2);
+			robot.mouseMove(frame.getHeight() /2,frame.getWidth()/2);
 	}
 	
 	}
@@ -3539,20 +3544,16 @@ class Impossible extends JPanel implements WindowListener, MouseMotionListener, 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		if(arg0.getKeyChar() == 'Å'){
-			string = string + "Å";
+			System.exit(3);
 				}
-		if(arg0.getKeyChar() == 'Ä'){
-			string = string + "Ä";
-		
-		if(arg0.getKeyChar() == 'Ö'){
-			string = string + "Ö";
+	
 				
-			}
+			
 		
 		}
 		
 	}
 	
-}
+
 
 
