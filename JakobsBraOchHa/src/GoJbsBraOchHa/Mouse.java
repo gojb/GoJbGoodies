@@ -3733,22 +3733,86 @@ class TicTacToe extends JPanel implements MouseInputListener{
 		frame.setVisible(true);
 		
 		
+		
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
-		if(e.getSource() == label[1]){
-			System.out.println("öiusdhfp9s");
-			a = 1;
-			label[1].add(this);
-			}
-		label[1].repaint();
-	}
+		
+				if(a== 0 && e.getSource() == label[9]){
+				X(9);
+				}
+				else if(a== 0 && e.getSource() == label[9]){
+				 X(9);
+				}
+				else if(a== 0 && e.getSource() == label[8]){
+				 X(8);
+				}
+				else if(a== 0 && e.getSource() == label[7]){
+				 X(7);
+				}
+				else if(a== 0 && e.getSource() == label[6]){
+				 X(6);
+				}
+				else if(a== 0 && e.getSource() == label[5]){
+				 X(5);
+				}
+				else if(a== 0 && e.getSource() == label[4]){
+				 X(4);
+				}
+				else if(a== 0 && e.getSource() == label[3]){
+				 X(3);
+				}
+				else if(a== 0 && e.getSource() == label[2]){
+				 X(2);
+				}
 
+				else if(a== 1 && e.getSource() == label[9]){
+				 O(9);
+				}
+				else if(a== 1 && e.getSource() == label[8]){
+				 O(8);
+				}
+				else if(a== 1 && e.getSource() == label[7]){
+				 O(7);
+				}
+				else if(a== 1 && e.getSource() == label[6]){
+				 O(6);
+				}
+				else if(a== 1 && e.getSource() == label[5]){
+				 O(5);
+				}
+				else if(a== 1 && e.getSource() == label[4]){
+				 O(4);
+				}
+				else if(a== 1 && e.getSource() == label[3]){
+				 O(3);
+				}
+				else if(a== 1 && e.getSource() == label[2]){
+				 O(2);
+				}
+				else if(a== 1 && e.getSource() == label[1]){
+				 O(1);
+				}
+
+
+
+}
 	@Override
 	public void mousePressed(MouseEvent e) {
 	}
 
+	public void X(int intlabel) {
+		label[intlabel].setIcon((new ImageIcon(getClass().getResource("/images/X.png"))));
+		repaint();
+		a = 1;
+	}
+	public void O(int intlabelO) {
+		label[intlabelO].setIcon((new ImageIcon(getClass().getResource("/images/O.png"))));
+		repaint();
+		a = 0;
+	}
+	
 	@Override
 	public void mouseReleased(MouseEvent e) {
 	}
@@ -3768,15 +3832,9 @@ class TicTacToe extends JPanel implements MouseInputListener{
 	@Override
 	public void mouseMoved(MouseEvent e) {
 	}
-	public void paintComponent (Graphics g) {
-		  Graphics2D g2 = (Graphics2D) g;
-		  super.paintComponent(g2);
-		  if (a == 1){
-		  	g2.setColor(Color.BLACK);
-		    g2.drawOval(30, 30, 40, 40);
-		    
+
 	
-	}}
+	
 }
 
 
