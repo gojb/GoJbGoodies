@@ -55,9 +55,10 @@ public class Mouse extends JPanel implements 	ActionListener,
 				  	Hastighet = new JMenuItem("Ändra hastighet på piltangenterna"),
 				  	Händelse = new JMenuItem("Visa Händelsefönster"),
 				  	Räkna = new JMenuItem("Öppna Miniräknare"),
-				  	Spelknapp = new JMenuItem("Öppna spel"),
+				  	Spelknapp = new JMenuItem("Spela Pong"),
 				  	Rörande = new JMenuItem("Öppna RörandeMojäng"),
-				  	StudsItem = new JMenuItem("Öppna Studsande Objekt");
+				  	StudsItem = new JMenuItem("Öppna Studsande Objekt"),
+				  	Snake = new JMenuItem("Spela Snake");
 	
 	JButton 		knapp1 = new JButton("Blå"),
 					knapp2 = new JButton("Grön"),
@@ -200,6 +201,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		Spelknapp.addActionListener(this);
 		Rörande.addActionListener(this);
 		StudsItem.addActionListener(this);
+		Snake.addActionListener(this);
 		
 		knapp1.setEnabled(false);
 		knapp1.addActionListener(this);
@@ -216,10 +218,11 @@ public class Mouse extends JPanel implements 	ActionListener,
 		knapp4.addKeyListener(this);
 		
 		Arkiv.add(Nytt);
-		Arkiv.add(Räkna);
-		Arkiv.add(Spelknapp);
 		Arkiv.add(Rörande);
 		Arkiv.add(StudsItem);
+		Arkiv.add(Räkna);
+		Arkiv.add(Spelknapp);
+		Arkiv.add(Snake);
 		Arkiv.addSeparator();
 		Arkiv.add(Avsluta);
 		
@@ -274,9 +277,10 @@ public class Mouse extends JPanel implements 	ActionListener,
 		HastighetsFönster.add(OK,BorderLayout.CENTER);
 		HastighetsFönster.add(Box.createRigidArea(new Dimension(100,100)),BorderLayout.WEST);
 		HastighetsFönster.add(Box.createRigidArea(new Dimension(100,100)),BorderLayout.EAST);
-		HastighetsFönster.add(Box.createRigidArea(new Dimension(100,100)),BorderLayout.SOUTH);
+		HastighetsFönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.SOUTH);
 		HastighetsFönster.setLocationRelativeTo(null);
-		HastighetsFönster.setResizable(false);
+//		HastighetsFönster.setResizable(false);
+		HastighetsFönster.revalidate();
 
 		KnappPanel.add(knapp1);
 		KnappPanel.add(knapp2);
@@ -357,7 +361,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 		AvslutningsFönster.add(AvslutningsText,BorderLayout.NORTH);
 		AvslutningsFönster.setUndecorated(true);
 		AvslutningsFönster.setSize(Laddfönster.getSize());
-		AvslutningsFönster.setDefaultCloseOperation(3);
 		AvslutningsFönster.setResizable(false);
 		AvslutningsFönster.setAlwaysOnTop(true);
 		AvslutningsFönster.setIconImage(FönsterIcon.getImage());
@@ -387,7 +390,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 		    }
 	
 		new Mouse();
-//		new Snakespel();
 		
 	}
 	
@@ -626,6 +628,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 					Laddfönster.dispose();
 					HuvudFönster.setVisible(true);
 					StartTimer.stop();
+					
 					robot.mouseMove(HuvudFönster.getX() + HuvudFönster.getWidth()/2,HuvudFönster.getY() + HuvudFönster.getHeight()/2);
 					SpelaLjud("/images/tada.wav");
 				}
@@ -646,6 +649,10 @@ public class Mouse extends JPanel implements 	ActionListener,
 		}
 		else if (knapp.getSource()==StudsItem) {
 			new Studsa();
+			
+		}
+		else if (knapp.getSource()==Snake) {
+			new Snakespel();
 			
 		}
 		
@@ -1113,7 +1120,8 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 	int[] x=new int[20],y=new int[20]; 
 	int snakelängd = 6,posx=300,posy=100;
 	final int pixelstorlek=10;
-	Timer timer = new Timer(250, this);
+	Timer timer = new Timer(500, this);
+	String riktning = "ner";
 	
 	public Snakespel() {
 		for (int i = 1; i <= snakelängd; i++) {
@@ -1122,9 +1130,8 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 			posy=posy-pixelstorlek;
 		}
 		
-		frame.add(this);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		frame.setIconImage(Mouse.FönsterIcon.getImage());
+		frame.add(this);		
+		frame.setIconImage(Mouse.FönsterIcon.getImage());
 		frame.setSize(500, 500);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
@@ -1134,11 +1141,17 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		setBackground(Color.WHITE);
 				
 	}
+	private void GameOver(){
+		timer.stop();
+	}
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		setForeground(Color.black);
-		for (int i = 1; i <= snakelängd; i++) {
-			g.setColor(Color.BLACK);
+		g.drawRect(x[1], y[1], pixelstorlek, pixelstorlek);
+		for (int i = snakelängd; i >= 2; i--) {
+			x[i]=x[i-1];
+			y[i]=y[i-1];
+			g.setColor(Color.black);
 			System.out.println(i);
 			g.drawRect(x[i], y[i], pixelstorlek, pixelstorlek);
 			g.fillRect(x[i], y[i], pixelstorlek, pixelstorlek);
@@ -1156,21 +1169,28 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 	public void keyPressed(KeyEvent e) {
 		
 		if(KeyEvent.getKeyText(e.getKeyCode()) == "Vänsterpil"){
-			posx=posx-10;
+			if (riktning!="höger"){
+				riktning="vänster";
+			}
+			
 
 		}
 		else if(KeyEvent.getKeyText(e.getKeyCode()) == "Högerpil"){
-			
-
+			if (riktning!="vänster"){
+				riktning="höger";
+			}
 		}
 		else if(KeyEvent.getKeyText(e.getKeyCode()) == "Upp"){
-			
-
+			if (riktning!="ner"){
+				riktning="upp";
+			}
 		}
 		else if(KeyEvent.getKeyText(e.getKeyCode()) == "Nedpil"){
-			
-
+			if (riktning!="upp"){
+				riktning="ner";
+			}
 		}
+		
 	}
 
 	public void keyReleased(KeyEvent e) {
@@ -1179,11 +1199,31 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==timer){
-			for (int i = 1; i <= snakelängd; i++) {
-//				x[i]=posx;
-//				y[i]=y[i]+pixelstorlek;
-////				posy=posy+pixelstorlek;
-//				frame.repaint();
+			
+			 
+			
+				
+			if (riktning=="ner") {
+			y[1]=y[1]+pixelstorlek;
+			}
+			else if (riktning=="upp") {
+			
+				y[1]=y[1]-pixelstorlek;
+			}
+			else if (riktning=="höger") {
+				x[1]=x[1]+pixelstorlek;
+			
+			}
+			else if (riktning=="vänster") {
+				x[1]=x[1]-pixelstorlek;
+
+			}
+			frame.repaint();
+			for (int i = 2; i <= snakelängd; i++) {
+				if (x[1]==x[i]&&y[1]==y[i]) {
+					System.out.println("GameOver");
+					GameOver();
+				}
 			}
 		}
 	}
