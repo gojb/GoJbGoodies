@@ -3506,6 +3506,7 @@ KeyListener, MouseInputListener{
 		  frame.setCursor (c);
 		
 		frame.setSize(1920,1030 );
+		frame.add(this);
 		frame.setLocationRelativeTo(null);
 		frame.setUndecorated(true);
 		frame.setVisible(true);
