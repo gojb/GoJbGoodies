@@ -1,4 +1,4 @@
-package JakobsBraOchHa;
+package GoJbsBraOchHa;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -1349,7 +1349,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 	static int y = 300;
 	static int ii = 0;
 		public RörandeMojäng(){
-			JakobsBraOchHa.Mouse.AntalFönster++;
+			GoJbsBraOchHa.Mouse.AntalFönster++;
 			frame.setVisible(true);
 //			frame.getContentPane().setForeground(new Color(49,130,240));
 //			frame.getContentPane().setBackground(new Color(190,230,60));
@@ -1363,7 +1363,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 //			frame.add(rö3);
 //			frame.add(bana);
 			
-			frame.setIconImage(JakobsBraOchHa.Mouse.FönsterIcon.getImage());
+			frame.setIconImage(GoJbsBraOchHa.Mouse.FönsterIcon.getImage());
 			
 			
 			Vinst.setLocationRelativeTo(null);
@@ -1605,7 +1605,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 	}
 	@Override
 	public void windowClosed(WindowEvent arg0) {
-		JakobsBraOchHa.Mouse.AntalFönster--;
+		GoJbsBraOchHa.Mouse.AntalFönster--;
 		
 		
 	}
