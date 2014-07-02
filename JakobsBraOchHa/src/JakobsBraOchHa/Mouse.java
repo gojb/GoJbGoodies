@@ -3595,6 +3595,7 @@ KeyListener, MouseInputListener{
 		
 		b = random.nextInt(255);
 		System.out.println(b);
+		
 	}
 	
 	
@@ -3620,7 +3621,7 @@ KeyListener, MouseInputListener{
 		if(arg0.getKeyChar() == 'Å'){
 			System.exit(3);
 				}
-		if(arg0.getKeyChar() == 'A'){
+		else{
 			frame.add(this);
 			repaint();
 			
