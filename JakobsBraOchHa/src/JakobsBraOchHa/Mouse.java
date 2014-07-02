@@ -2,7 +2,6 @@ package JakobsBraOchHa;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
 import javax.sound.sampled.*;
@@ -1111,8 +1110,8 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 @SuppressWarnings("serial")
 class Snakespel extends JPanel implements KeyListener, ActionListener{
 	JFrame frame = new JFrame("Snake");
-	int[] x=new int[20],y=new int[20]; 
-	int snakelängd = 6,posx=300,posy=100;
+	int[] x=new int[50],y=new int[50]; 
+	int snakelängd = 6,posx=300,posy=100,pluppX,pluppY;
 	final int pixelstorlek=10;
 	Timer timer = new Timer(500, this);
 	String riktning = "ner";
@@ -1133,26 +1132,32 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		frame.addKeyListener(this);
 		timer.start();
 		setBackground(Color.WHITE);
+		PlaceraPlupp();
 				
 	}
 	private void GameOver(){
 		timer.stop();
 	}
+	private void PlaceraPlupp(){
+		Random random = new Random();
+		pluppX = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
+		pluppY = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
+	}
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		setForeground(Color.black);
+		g.setColor(Color.red);
+		g.drawOval(pluppX, pluppY, 8, 8);
+		g.fillOval(pluppX, pluppY, 8, 8);
+		g.setColor(Color.black);
 		g.drawRect(x[1], y[1], pixelstorlek, pixelstorlek);
 		for (int i = snakelängd; i >= 2; i--) {
 			x[i]=x[i-1];
 			y[i]=y[i-1];
-			g.setColor(Color.black);
-			System.out.println(i);
 			g.drawRect(x[i], y[i], pixelstorlek, pixelstorlek);
 			g.fillRect(x[i], y[i], pixelstorlek, pixelstorlek);
+			System.out.println(i);
 		}
-		g.setColor(Color.red);
-		g.drawOval(100, 100, 8, 8);
-		g.fillOval(100, 100, 8, 8);
+		
 		
 	}
 
@@ -1192,11 +1197,14 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		
 		if (e.getSource()==timer){
-			
-			 
-			
+			if (x[1]==pluppX&&y[1]==pluppY) {
+				PlaceraPlupp();
+				snakelängd++;
+				System.err.println(snakelängd);
 				
+			}
 			if (riktning=="ner") {
 			y[1]=y[1]+pixelstorlek;
 			}
@@ -1218,6 +1226,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 					System.out.println("GameOver");
 					GameOver();
 				}
+			
 			}
 		}
 	}
@@ -1822,7 +1831,7 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 	    
 	    
 	    g2.setColor(Color.BLUE);
-	    g2.fill(new Rectangle2D.Double(0, 425, 150, 1000));
+	    g2.fillRect(0, 425, 150, 1000);
 	    
 	    g2.setColor(Color.GREEN);
 	    g.fill3DRect(1000, 200, 100, 350, false);
@@ -1935,7 +1944,7 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 	    g2.setColor(Color.WHITE);g.drawRect(700, 650, 1, 1);
 	    
 	    g2.setColor(Color.cyan);
-	    g2.fill(new Rectangle2D.Double(x, y, 50,50));
+	    g2.fillRect(x, y, 50,50);
 }
 
 	@Override
@@ -2940,7 +2949,7 @@ class Pong extends JPanel implements ActionListener{
 	public void paintComponent (Graphics g) {
 	    Graphics2D g2 = (Graphics2D) g;
 	    g2.setColor(Color.BLUE);
-	    g2.fill(new Rectangle2D.Double(x, y, 25, 25));
+	    g2.fillRect(x, y, 25, 25);
 	    }
 	@Override
 	public void actionPerformed(ActionEvent e) {
