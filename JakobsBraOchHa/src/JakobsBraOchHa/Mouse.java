@@ -53,7 +53,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 				  	Händelse = new JMenuItem("Visa Händelsefönster"),
 				  	Räkna = new JMenuItem("Öppna Miniräknare"),
 				  	Spelknapp = new JMenuItem("Spela Pong"),
-				  	Rörande = new JMenuItem("Öppna RörandeMojäng"),
+				  	Rörande = new JMenuItem("Öppna RörandeMojäng",new ImageIcon(getClass().getResource("/images/Nopeliten.png"))),
 				  	StudsItem = new JMenuItem("Öppna Studsande Objekt"),
 				  	Snake = new JMenuItem("Spela Snake");
 	
