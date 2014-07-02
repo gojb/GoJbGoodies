@@ -9,6 +9,8 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
+
 
 @SuppressWarnings("serial")
 public class Mouse extends JPanel implements 	ActionListener,
@@ -1113,7 +1115,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 class Snakespel extends JPanel implements KeyListener, ActionListener{
 	JFrame frame = new JFrame("Snake");
 	int[] x=new int[50],y=new int[50]; 
-	int snakelängd = 1,posx=300,posy=100,pluppX,pluppY;
+	int snakelängd = 1,posx=300,posy=100,pluppX,pluppY, stringy;
 	final int pixelstorlek=10;
 	Timer timer = new Timer(100, this);
 	String riktning = "ner";
@@ -1139,6 +1141,8 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		frame.setVisible(true);
 		PlaceraPlupp();
 		timer.start();
+		stringy = y[1];
+		repaint();
 		
 	}
 	private void GameOver(){
@@ -1151,6 +1155,14 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 	}
 	public void paintComponent(Graphics g1){
 		super.paintComponent(g1);
+		
+		if(y[1] < 45) {
+			stringy = y[1] + 40;
+		}
+		if (y[1] > 45){
+			stringy = y[1] - 20;
+		}
+		
 		Graphics2D g = (Graphics2D)g1;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setColor(Color.red);
@@ -1161,7 +1173,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		g.fillRect(x[1], y[1], pixelstorlek, pixelstorlek);
 		g.setColor(Color.GREEN);
 		g.setFont(Mouse.Typsnitt);
-		g.drawString(Integer.toString(snakelängd), x[1]-20, y[1]-20);
+		g.drawString(Integer.toString(snakelängd), x[1], stringy);
 		for (int i = snakelängd+1; i >= 2; i--) {
 			
 			g.setColor(Color.black);
@@ -1215,6 +1227,9 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		
 		
 		if (e.getSource()==timer){
+			
+			
+			
 			if (x[1]==pluppX&&y[1]==pluppY) {
 				PlaceraPlupp();
 				snakelängd++;
@@ -1256,6 +1271,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 			if (y[1]+pixelstorlek*6>frame.getHeight()) {
 				GameOver();
 			}
+	
 			frame.repaint();
 			
 		}
