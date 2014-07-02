@@ -1767,6 +1767,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		
 		if (arg0.getSource() == ticTacToe){
 			new TicTacToe();
+			frame.dispose();
 		}
 		
 		if (arg0.getSource() == Betyg){
@@ -3633,6 +3634,7 @@ KeyListener, MouseInputListener{
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 	}
+
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		if(arg0.getKeyChar() == 'Å'){
@@ -3688,12 +3690,14 @@ KeyListener, MouseInputListener{
 	}
 
 	}
+@SuppressWarnings("serial")
 class TicTacToe extends JPanel implements MouseInputListener{
 
 	JFrame frame = new JFrame("Tic Tac Toe");
 	
 	JLabel[] label = new JLabel[10];
 			
+	int a;
 	
 	public TicTacToe(){
 		
@@ -3705,6 +3709,7 @@ class TicTacToe extends JPanel implements MouseInputListener{
 			label[i] = new JLabel();
 			label[i].setBackground(Color.WHITE);
 			label[i].setOpaque(true);
+			label[i].addMouseListener(this);
 			frame.add(label[i]);
 		}
 		frame.getContentPane().setBackground(Color.BLACK);
@@ -3715,6 +3720,13 @@ class TicTacToe extends JPanel implements MouseInputListener{
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		
+		if(e.getSource() == label[1]){
+			System.out.println("öiusdhfp9s");
+			a = 1;
+			label[1].add(this);
+			}
+		label[1].repaint();
 	}
 
 	@Override
@@ -3740,7 +3752,15 @@ class TicTacToe extends JPanel implements MouseInputListener{
 	@Override
 	public void mouseMoved(MouseEvent e) {
 	}
+	public void paintComponent (Graphics g) {
+		  Graphics2D g2 = (Graphics2D) g;
+		  super.paintComponent(g2);
+		  if (a == 1){
+		  	g2.setColor(Color.BLACK);
+		    g2.drawOval(30, 30, 40, 40);
+		    
 	
+	}}
 }
 
 
