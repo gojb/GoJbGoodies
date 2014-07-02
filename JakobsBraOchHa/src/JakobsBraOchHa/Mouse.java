@@ -2,6 +2,7 @@ package JakobsBraOchHa;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.peer.FramePeer;
 import java.util.Random;
 
 import javax.sound.sampled.*;
@@ -1335,7 +1336,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			Maze = new JMenuItem("Maze"),
 			Snake = new JMenuItem("Snake"),
 			Mouse = new JMenuItem("Mouse"),
-			impossible = new JMenuItem("Impossible");
+			impossible = new JMenuItem("Impossible"),
+			ticTacToe = new JMenuItem("Tic Tac Toe");
 	JMenuBar bar = new JMenuBar();
 	
 	Robot robot;
@@ -1409,6 +1411,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		ÖppnaProgram.add(Maze);
 		ÖppnaProgram.add(Snake);
 		ÖppnaProgram.add(impossible);
+		ÖppnaProgram.add(ticTacToe);
 		
 		
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
@@ -1425,6 +1428,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		Maze.addActionListener(this);
 		Snake.addActionListener(this);
 		impossible.addActionListener(this);
+		ticTacToe.addActionListener(this);
 
 		timer.addActionListener(this);
 		timer.start();
@@ -1759,6 +1763,10 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		
 		if (arg0.getSource() == Minirknare){
 			new Miniräknare();
+		}
+		
+		if (arg0.getSource() == ticTacToe){
+			new TicTacToe();
 		}
 		
 		if (arg0.getSource() == Betyg){
@@ -3635,8 +3643,6 @@ KeyListener, MouseInputListener{
 			repaint();
 			
 				}
-	
-				
 			
 		
 		}
@@ -3682,7 +3688,63 @@ KeyListener, MouseInputListener{
 	}
 
 	}
+class TicTacToe extends JPanel implements MouseInputListener{
+
+	JFrame frame = new JFrame("Tic Tac Toe");
 	
+	JLabel[] label = new JLabel[9];
+			
+	
+	public TicTacToe(){
+		
+		frame.add(this);
+		frame.setSize(300, 300);
+		frame.setLocationRelativeTo(null);
+		frame.setLayout(new GridLayout(3,3,1,1));
+		
+		for(int i = 1; i <= label.length; i++){
+			frame.add(label[i]);
+		}
+		
+		frame.setVisible(true);
+		frame.repaint();
+		
+	}
+	public void paintComponent (Graphics gr) {
+		  Graphics2D g2 = (Graphics2D) gr;
+		  
+		  	g2.setColor(Color.BLACK);
+		  	g2.drawLine(70, 70, 70, 210);
+	}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+	}
+	
+}
 
 
 
