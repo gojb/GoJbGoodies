@@ -861,22 +861,17 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 	
 	public void Starta() {
 		
+try {
+				
+			
 			SpelareVänster = JOptionPane.showInputDialog("Spelare till vänster:");
-			if (SpelareVänster == null||SpelareVänster=="") {
-				SpelareVänster = "Spelare 1";
+			if (SpelareVänster == null) {
+				throw new Exception();
 			}
 			SpelareHöger = JOptionPane.showInputDialog("Spelare till höger:");
 			if (SpelareHöger == null) {
-				SpelareHöger = "Spelare 2";
+				throw new Exception();
 			}
-		try {
-			frame.setVisible(true);
-			PoängHöger = 0;
-			PoängVänster = 0;
-			StartaOm();
-		}
-		catch (Exception e) {
-			
 			frame = new JFrame("Spel");
 			frame.add(this);
 			setForeground(Color.red);
@@ -898,7 +893,10 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 			hastighet =2;
 			c = hastighet;
 			d = hastighet;
-			
+			frame.setVisible(true);
+			PoängHöger = 0;
+			PoängVänster = 0;
+			StartaOm();
 			frame.setLocationRelativeTo(null);
 			RektHöjd = 100;
 			RektBredd = 10;
@@ -906,8 +904,10 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 			VänsterY = getHeight()/2;
 			HögerX=getWidth()-bredd-1;
 			timer.start();
-			
-		}
+			}
+			catch (Exception e) {
+				
+			}
 		
 	}
 	private void StartaOm(){
