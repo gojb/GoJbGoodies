@@ -3470,7 +3470,8 @@ class Impossible extends JPanel implements WindowListener, MouseMotionListener, 
 			e.printStackTrace();
 		}
 		if(frame.isVisible() == true){
-			robot.mouseMove(frame.getX() + frame.getHeight() /2, frame.getY() + frame.getWidth()/2);
+			robot.mouseMove(960, 515);
+
 			
 		}
 		
@@ -3529,7 +3530,8 @@ class Impossible extends JPanel implements WindowListener, MouseMotionListener, 
 		}
 		
 		if(frame.isVisible() == true){
-			robot.mouseMove(frame.getHeight() /2,frame.getWidth()/2);
+			robot.mouseMove(960, 515);
+
 	}
 	
 	}
