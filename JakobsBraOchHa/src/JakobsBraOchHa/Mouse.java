@@ -415,6 +415,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 	public void actionPerformed(ActionEvent knapp) {
 //		System.out.println(knapp.getSource());
 		
+		
+		
 		if (knapp.getSource() == Avsluta){	
 			AvslutningsFönster.setVisible(true);
 			
@@ -3474,12 +3476,16 @@ class Snake extends JPanel implements KeyListener, ActionListener{
 
 
 @SuppressWarnings("serial")
-class Impossible extends JPanel implements WindowListener, MouseMotionListener, ActionListener, KeyListener{
+class Impossible extends JPanel implements WindowListener, ActionListener,
+KeyListener, MouseInputListener{
 
 	JFrame frame = new JFrame();
-	Timer timer = new Timer(1, this);
+	Timer timer = new Timer(1, this),
+			timer300 = new Timer(300, this),
+			timer3 = new Timer(3, this);
 	Robot robot;
 	String string = new String();
+	int x,y,r,g,b;
 	
 	public Impossible(){
 		
@@ -3499,11 +3505,15 @@ class Impossible extends JPanel implements WindowListener, MouseMotionListener, 
 		frame.addWindowListener(this);
 		frame.addMouseMotionListener(this);
 		frame.addKeyListener(this);
+		frame.addMouseListener(this);
 		
 		frame.setAlwaysOnTop(true);
 	
 		
 		timer.start();
+		timer300.start();
+		timer3.start();
+		
 		try {
 			robot = new Robot();
 		} catch (AWTException e) {
@@ -3566,18 +3576,39 @@ class Impossible extends JPanel implements WindowListener, MouseMotionListener, 
 	public void actionPerformed(ActionEvent arg0) {
 	if (arg0.getSource() == timer){
 		
-		if (string == "ÅÄÖ"){
-			System.exit(3);
-		}
-		
 		if(frame.isVisible() == true){
 			robot.mouseMove(960, 515);
 
+			
+			
+	}
+		
 	}
 	
+	if (timer3 == arg0.getSource()){
+		Random random = new Random();
+		r = random.nextInt(255);
+		System.out.println(r);
+		
+		g = random.nextInt(255);
+		System.out.println(g);
+		
+		b = random.nextInt(255);
+		System.out.println(b);
 	}
 	
+	
+	if (arg0.getSource() == timer300){
+		Random random = new Random();
+		x = random.nextInt(1880);
+		System.out.println(x);
+		
+		y = random.nextInt(990);
+		System.out.println(y);
+	
 	}
+	}
+	
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 	}
@@ -3589,12 +3620,57 @@ class Impossible extends JPanel implements WindowListener, MouseMotionListener, 
 		if(arg0.getKeyChar() == 'Å'){
 			System.exit(3);
 				}
+		if(arg0.getKeyChar() == 'A'){
+			frame.add(this);
+			repaint();
+			
+				}
 	
 				
 			
 		
 		}
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+	
+	frame.add(this);
+	repaint();
+	
+	}
+	
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+	}
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+	}
+	@Override
+	public void mousePressed(MouseEvent arg0) {
 		
+		frame.add(this);
+		repaint();
+		
+	}
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		
+		frame.add(this);
+		repaint();
+		
+	}
+	public void paintComponent (Graphics gr) {
+		  Graphics2D g2 = (Graphics2D) gr;
+//		  super.paintComponent(g);
+		  
+		  frame.setBackground(Color.WHITE);
+		  
+		  	g2.setColor(new Color(r,g,b));
+		  	g2.setFont(new Font("dhghdg", Font.ITALIC, 30));
+		  	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		    g2.drawString("Hahaha", x, y);
+		    
+	}
+
 	}
 	
 
