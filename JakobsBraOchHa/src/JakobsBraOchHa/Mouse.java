@@ -1145,14 +1145,20 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		pluppX = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
 		pluppY = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
 	}
-	public void paintComponent(Graphics g){
-		super.paintComponent(g);
+	public void paintComponent(Graphics g1){
+		super.paintComponent(g1);
+		Graphics2D g = (Graphics2D)g1;
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setColor(Color.red);
 		g.drawOval(pluppX, pluppY, 8, 8);
 		g.fillOval(pluppX, pluppY, 8, 8);
 		g.setColor(Color.black);
 		g.drawRect(x[1], y[1], pixelstorlek, pixelstorlek);
+		g.setColor(Color.GREEN);
+		g.setFont(Mouse.Typsnitt);
+		g.drawString(Integer.toString(snakelängd), x[1]-20, y[1]-20);
 		for (int i = snakelängd; i >= 2; i--) {
+			g.setColor(Color.black);
 			x[i]=x[i-1];
 			y[i]=y[i-1];
 			g.drawRect(x[i], y[i], pixelstorlek, pixelstorlek);
@@ -1239,6 +1245,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 class Studsa extends JPanel implements ActionListener{
 	JFrame frame = new JFrame("Studsa");
 	Timer timer = new Timer(1, this);
+	Random random = new Random();
 	int x=1,y=1,a=5,b=5,c=2,d=2,r=100,g=255,bl=25,qr=2,qb=5,qg=10;
 	public Studsa(){
 		
@@ -1247,8 +1254,8 @@ class Studsa extends JPanel implements ActionListener{
 		frame.setIconImage(Mouse.FönsterIcon.getImage());
 		frame.add(this);
 		frame.setUndecorated(true);
-		frame.setVisible(true);
 		frame.getContentPane().setBackground(Color.white);
+		frame.setVisible(true);
 		timer.start();
 	}
 	public void paintComponent(Graphics ag){
@@ -1266,21 +1273,12 @@ class Studsa extends JPanel implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		setSize(frame.getSize());
+
 		if (e.getSource()==timer) {
-			
-			r=r+qr;
-			bl=bl+qb;
-			g=bl+qg;
-			if (r>=250||r<=5) {
-				qr=-qr;
-			}
-			if (g>=250||g<=5) {
-				qg=-qg;
-			}
-			if (bl>=250||bl<=5) {
-				qb=-qb;
-			}
+
+			r=random.nextInt(255);
+			g=random.nextInt(255);
+			bl=random.nextInt(255);
 			
 			if (x+a>=frame.getWidth()) {
 //				c++;
