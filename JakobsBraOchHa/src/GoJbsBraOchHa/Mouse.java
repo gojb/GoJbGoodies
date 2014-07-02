@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 
 
 @SuppressWarnings("serial")
@@ -1114,7 +1115,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 class Snakespel extends JPanel implements KeyListener, ActionListener{
 	JFrame frame = new JFrame("Snake");
 	int[] x=new int[50],y=new int[50]; 
-	int snakelängd = 1,posx=300,posy=100,pluppX,pluppY, stringy;
+	int snakelängd = 2,posx=300,posy=100,pluppX,pluppY, stringy;
 	final int pixelstorlek=10;
 	Timer timer = new Timer(100, this);
 	String riktning = "ner";
