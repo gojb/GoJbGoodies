@@ -9,6 +9,8 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
+
 
 @SuppressWarnings("serial")
 public class Mouse extends JPanel implements 	ActionListener,
@@ -3726,12 +3728,21 @@ KeyListener, MouseInputListener{
 
 	}
 @SuppressWarnings("serial")
-class TicTacToe extends JPanel implements MouseInputListener{
+class TicTacToe extends JPanel implements MouseInputListener, KeyListener, ActionListener{
 
-	JFrame frame = new JFrame("Tic Tac Toe");
+	Timer timer = new Timer(1, this);
+	
+	JFrame frame = new JFrame("Tic Tac Toe"),
+			Vinst = new JFrame();
+	
+	String sträng = new String();
 	
 	JLabel[] label = new JLabel[10];
+	JLabel vinstlabel = new JLabel();
 			
+	ImageIcon o = new ImageIcon(getClass().getResource("/images/O.png")),
+			x = new ImageIcon(getClass().getResource("/images/X.png"));
+
 	int a;
 	
 	public TicTacToe(){
@@ -3739,6 +3750,7 @@ class TicTacToe extends JPanel implements MouseInputListener{
 		frame.setSize(500, 500);
 		frame.setLocationRelativeTo(null);
 		frame.setLayout(new GridLayout(3,3,3,3));
+		timer.start();
 		
 		for(int i = 1;i < label.length; i++){
 			label[i] = new JLabel();
@@ -3749,7 +3761,25 @@ class TicTacToe extends JPanel implements MouseInputListener{
 		}
 		frame.getContentPane().setBackground(Color.BLACK);
 		
+		frame.setResizable(false);
 		frame.setVisible(true);
+		frame.setDefaultCloseOperation(3);
+		
+		frame.addKeyListener(this);
+		Vinst.addKeyListener(this);
+		
+		Vinst.setUndecorated(true);
+		
+		vinstlabel.setSize(500, 100);
+		
+		Vinst.setLocation(frame.getWidth()+205,frame.getHeight()+270);
+		Vinst.setSize(500, 100);
+		
+		vinstlabel.setFont(new Font("dslf",Font.ROMAN_BASELINE,30));
+		Vinst.add(vinstlabel);
+         		vinstlabel.setForeground(Color.BLACK);
+		
+		vinstlabel.setOpaque(true);
 		
 		
 		
@@ -3758,76 +3788,129 @@ class TicTacToe extends JPanel implements MouseInputListener{
 	public void mouseClicked(MouseEvent e) {
 		
 		
-				if(a== 0 && e.getSource() == label[9]){
+		
+		
+		if(a== 0 && e.getSource() == label[9]){
+			 if(label[9].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||label[9].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))){
+				}
+				else if (label[9].getIcon() == null){
 				X(9);
+			}}
+			if(a== 0 && e.getSource() == label[8]){
+			 if(label[8].getIcon() == o||label[8].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))){
 				}
-				else if(a== 0 && e.getSource() == label[9]){
-				 X(9);
+				else if (label[8].getIcon() == null){
+				X(8);
+			}}
+			if(a== 0 && e.getSource() == label[7]){
+			 if(label[7].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||label[7].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))){
 				}
-				else if(a== 0 && e.getSource() == label[8]){
-				 X(8);
+				else if (label[7].getIcon() == null){
+				X(7);
+			}}
+			if(a== 0 && e.getSource() == label[6]){
+			 if(label[6].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||label[6].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))){
 				}
-				else if(a== 0 && e.getSource() == label[7]){
-				 X(7);
+				else if (label[6].getIcon() == null){
+				X(6);
+			}}
+			if(a== 0 && e.getSource() == label[5]){
+			 if(label[5].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||label[5].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))){
 				}
-				else if(a== 0 && e.getSource() == label[6]){
-				 X(6);
+				else if (label[5].getIcon() == null){
+				X(5);
+			}}
+			if(a== 0 && e.getSource() == label[4]){
+			 if(label[4].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||label[4].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))){
 				}
-				else if(a== 0 && e.getSource() == label[5]){
-				 X(5);
+				else if (label[4].getIcon() == null){
+				X(4);
+			}}
+			if(a== 0 && e.getSource() == label[3]){
+			 if(label[3].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||label[3].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))){
 				}
-				else if(a== 0 && e.getSource() == label[4]){
-				 X(4);
+				else if (label[3].getIcon() == null){
+				X(3);
+			}}
+			if(a== 0 && e.getSource() == label[2]){
+			 if(label[2].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||label[2].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))){
 				}
-				else if(a== 0 && e.getSource() == label[3]){
-				 X(3);
+				else if (label[2].getIcon() == null){
+				X(2);
+			}}
+			if(a== 0 && e.getSource() == label[1]){
+			 if(label[1].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||label[1].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))){
 				}
-				else if(a== 0 && e.getSource() == label[2]){
-				 X(2);
+				else if (label[1].getIcon() == null){
+				X(1);
+			}}
+			if(a== 1 && e.getSource() == label[9]){
+				 if(label[9].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||label[9].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))){
+					}
+					else if (label[9].getIcon() == null){
+					O(9);
+				}}
+				if(a== 1 && e.getSource() == label[8]){
+				 if(label[8].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||label[8].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))){
+					}
+					else if (label[8].getIcon() == null){
+					O(8);
+				}}
+				if(a== 1 && e.getSource() == label[7]){
+				 if(label[7].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||label[7].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))){
+					}
+					else if (label[7].getIcon() == null){
+					O(7);
+				}}
+				if(a== 1 && e.getSource() == label[6]){
+				 if(label[6].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||label[6].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))){
+					}
+					else if (label[6].getIcon() == null){
+					O(6);
+				}}
+				if(a== 1 && e.getSource() == label[5]){
+				 if(label[5].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||label[5].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))){
+					}
+					else if (label[5].getIcon() == null){
+					O(5);
+				}}
+				if(a== 1 && e.getSource() == label[4]){
+				 if(label[4].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||label[4].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))){
+					}
+					else if (label[4].getIcon() == null){
+					O(4);
+				}}
+				if(a== 1 && e.getSource() == label[3]){
+				 if(label[3].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||label[3].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))){
+					}
+					else if (label[3].getIcon() == null){
+					O(3);
+				}}
+				if(a== 1 && e.getSource() == label[2]){
+				 if(label[2].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||label[2].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))){
+					}
+					else if (label[2].getIcon() == null){
+					O(2);
+				}}
+				if(a== 1 && e.getSource() == label[1]){
+				 if(label[1].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||label[1].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))){
+					}
+					else if (label[1].getIcon() == null){
+					O(1);
 				}
-
-				else if(a== 1 && e.getSource() == label[9]){
-				 O(9);
 				}
-				else if(a== 1 && e.getSource() == label[8]){
-				 O(8);
-				}
-				else if(a== 1 && e.getSource() == label[7]){
-				 O(7);
-				}
-				else if(a== 1 && e.getSource() == label[6]){
-				 O(6);
-				}
-				else if(a== 1 && e.getSource() == label[5]){
-				 O(5);
-				}
-				else if(a== 1 && e.getSource() == label[4]){
-				 O(4);
-				}
-				else if(a== 1 && e.getSource() == label[3]){
-				 O(3);
-				}
-				else if(a== 1 && e.getSource() == label[2]){
-				 O(2);
-				}
-				else if(a== 1 && e.getSource() == label[1]){
-				 O(1);
-				}
-
-
-
 }
 	@Override
 	public void mousePressed(MouseEvent e) {
 	}
 
 	public void X(int intlabel) {
-		label[intlabel].setIcon((new ImageIcon(getClass().getResource("/images/X.png"))));
+		label[intlabel].setIcon(x);
 		repaint();
 		a = 1;
 	}
 	public void O(int intlabelO) {
-		label[intlabelO].setIcon((new ImageIcon(getClass().getResource("/images/O.png"))));
+		label[intlabelO].setIcon(o);
 		repaint();
 		a = 0;
 	}
@@ -3851,9 +3934,88 @@ class TicTacToe extends JPanel implements MouseInputListener{
 	@Override
 	public void mouseMoved(MouseEvent e) {
 	}
-
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if (e.getSource() == timer){
+			
+			frame.setAlwaysOnTop(true);
+			
+		frame.setLocationRelativeTo(null);
+				
+		
+		
+		
 	
-	
+		if (label[7].getIcon() == o){
+			if (label[8].getIcon() == o){
+				
+			}
+		}
+		
+		
+		if (label[1].getIcon() == o){
+			if (label[5].getIcon() == o){
+				if (label[9].getIcon() == o){
+					Vinst.setVisible(true);
+					repaint();
+					vinstlabel.setText("                             O vann");
+				}
+			}
+				if (label[4].getIcon() == o){
+					if (label[7].getIcon()== o){
+						Vinst.setVisible(true);
+						repaint();
+						vinstlabel.setText("                             O vann");
+				}
+			}
+				if(label[2].getIcon() == o){
+					if(label[3].getIcon() == o){
+						
+						
+						Vinst.setVisible(true);
+						repaint();
+						vinstlabel.setText("                             O vann");
+						
+							a = 2;
+						
+					}
+				}
+			}	
+		}
+	}
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+		System.err.println(e.getKeyCode() + "   " + e.getKeyChar());
+		
+		if(e.getKeyCode() == 82){
+			
+			
+			label[9].setIcon(null);
+			label[8].setIcon(null);
+			label[7].setIcon(null);
+			label[6].setIcon(null);
+			label[5].setIcon(null);
+			label[4].setIcon(null);
+			label[3].setIcon(null);
+			label[2].setIcon(null);
+			label[1].setIcon(null);
+			a = 0;
+			
+			Vinst.setVisible(false);
+			
+			frame.repaint();
+			
+		}
+		
+	}
+	@Override
+	public void keyReleased(KeyEvent e) {
+	}
 }
 
 
