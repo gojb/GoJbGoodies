@@ -1065,40 +1065,40 @@ try {
 		
 	}
 
-	@Override
+	
 	public void windowOpened(WindowEvent e) {
 		
 	}
 
-	@Override
+	
 	public void windowClosing(WindowEvent e) {
 		timer.stop();
 	}
 
-	@Override
+	
 	public void windowClosed(WindowEvent e) {
 	}
 
-	@Override
+	
 	public void windowIconified(WindowEvent e) {
 		
 	}
 
-	@Override
+	
 	public void windowDeiconified(WindowEvent e) {
 		
 	}
 
-	@Override
+	
 	public void windowActivated(WindowEvent e) {
 		
 	}
 
-	@Override
+	
 	public void windowDeactivated(WindowEvent e) {
 		
 	}
-	@Override
+	
 	public void mouseDragged(MouseEvent e) {
 		px=e.getX();
 		py=e.getY();
@@ -1306,7 +1306,7 @@ class Studsa extends JPanel implements ActionListener{
 //		g2.drawImage(Mouse.FönsterIcon.getImage(), x, y, null);
 		
 	}
-	@Override
+	
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource()==timer) {
@@ -1629,45 +1629,45 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		//  
 		
 	}
-	@Override
+	
 	public void windowActivated(WindowEvent arg0) {
 		//  
 		
 	}
-	@Override
+	
 	public void windowClosed(WindowEvent arg0) {
 		GoJbsBraOchHa.Mouse.AntalFönster--;
 		
 		
 	}
-	@Override
+	
 	public void windowClosing(WindowEvent arg0) {
 		//  
 		
 	}
-	@Override
+	
 	public void windowDeactivated(WindowEvent arg0) {
 		//  
 	
 		
 		
 	}
-	@Override
+	
 	public void windowDeiconified(WindowEvent arg0) {
 		//  
 		System.exit(3);
 	}
-	@Override
+	
 	public void windowIconified(WindowEvent arg0) {
 		//  
 		System.exit(3);
 	}
-	@Override
+	
 	public void windowOpened(WindowEvent arg0) {
 		//  
 		
 	}
-	@Override
+	
 	public void mouseDragged(MouseEvent arg0) {
 		//  
 		
@@ -1736,7 +1736,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 
 
 
-	@Override
+	
 	public void actionPerformed(ActionEvent arg0) {
 		  
 	
@@ -1833,7 +1833,7 @@ class RörandeMojäng2 extends JPanel implements ActionListener {
 	
 	
 	
-	@Override
+	
 	public void actionPerformed(ActionEvent arg0) {
 		  
 		
@@ -1856,7 +1856,7 @@ class RörandeMojäng2 extends JPanel implements ActionListener {
 //		g.fillRect(RörandeMojäng.x, RörandeMojäng.yy, 100, 100);
 //	}
 //
-//	@Override
+//	
 //	public void actionPerformed(ActionEvent arg0) {
 //		//  
 //		
@@ -1987,7 +1987,7 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 	    g2.fillRect(x, y, 50,50);
 }
 
-	@Override
+	
 	public void actionPerformed(ActionEvent arg0) {
 		//  
 		
@@ -2028,7 +2028,7 @@ public GameOver(){
 
 
 
-@Override
+
 public void actionPerformed(ActionEvent arg0) {
 	//  
 	
@@ -2052,7 +2052,7 @@ public void actionPerformed(ActionEvent arg0) {
 
 
 
-@Override
+
 public void windowOpened(WindowEvent e) {
 	//  
 	
@@ -2064,7 +2064,7 @@ public void windowOpened(WindowEvent e) {
 
 
 
-@Override
+
 public void windowClosing(WindowEvent e) {
 	//  
 	
@@ -2083,7 +2083,7 @@ public void windowClosing(WindowEvent e) {
 
 
 
-@Override
+
 public void windowIconified(WindowEvent e) {
 	//  
 	
@@ -2095,7 +2095,7 @@ public void windowIconified(WindowEvent e) {
 
 
 
-@Override
+
 public void windowDeiconified(WindowEvent e) {
 //	  
 	
@@ -2107,7 +2107,7 @@ public void windowDeiconified(WindowEvent e) {
 
 
 
-@Override
+
 public void windowActivated(WindowEvent e) {
 	
 }
@@ -2118,7 +2118,7 @@ public void windowActivated(WindowEvent e) {
 
 
 
-@Override
+
 public void windowDeactivated(WindowEvent e) {
 	
 		
@@ -2132,7 +2132,7 @@ public void windowDeactivated(WindowEvent e) {
 
 
 
-@Override
+
 public void windowClosed(WindowEvent e) {
 }}}
 
@@ -2576,17 +2576,17 @@ class Merit extends JComponent implements MouseMotionListener, WindowListener, K
 		
 
 
-		@Override
+		
 		public void mouseDragged(MouseEvent arg0) {
 			//  
 			
 		}
-		@Override
+		
 		public void mouseMoved(MouseEvent arg0) {
 			//  
 			
 		}
-		@Override
+		
 		public void actionPerformed(ActionEvent e) {
 			//  
 			
@@ -2877,7 +2877,7 @@ class Merit extends JComponent implements MouseMotionListener, WindowListener, K
 				Svenska.setVisible(true);
 			}}
 		
-		@Override
+		
 		public void keyPressed(KeyEvent e) {
 			//  
 			if (Svenska.isVisible() == true){
@@ -2904,12 +2904,12 @@ class Merit extends JComponent implements MouseMotionListener, WindowListener, K
 				}
 			
 		}
-		@Override
+		
 		public void keyReleased(KeyEvent arg0) {
 			//  
 			
 		}
-		@Override
+		
 		public void keyTyped(KeyEvent e) {
 			//  
 			
@@ -2930,37 +2930,37 @@ class Merit extends JComponent implements MouseMotionListener, WindowListener, K
 			
 			}
 		}
-		@Override
+		
 		public void windowActivated(WindowEvent arg0) {
 			//  
 			
 		}
-		@Override
+		
 		public void windowClosed(WindowEvent arg0) {
 			//  
 			
 		}
-		@Override
+		
 		public void windowClosing(WindowEvent arg0) {
 			//  
 			
 		}
-		@Override
+		
 		public void windowDeactivated(WindowEvent arg0) {
 			//  
 			
 		}
-		@Override
+		
 		public void windowDeiconified(WindowEvent arg0) {
 			//  
 			
 		}
-		@Override
+		
 		public void windowIconified(WindowEvent arg0) {
 			//  
 			
 		}
-		@Override
+		
 		public void windowOpened(WindowEvent arg0) {
 			//  
 			
@@ -2991,7 +2991,7 @@ class Pong extends JPanel implements ActionListener{
 	    g2.setColor(Color.BLUE);
 	    g2.fillRect(x, y, 25, 25);
 	    }
-	@Override
+	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == timer){
 			
@@ -3089,56 +3089,56 @@ public void paintComponent (Graphics g) {
   
 
 		}
-	@Override
+	
 	public void mouseClicked(MouseEvent arg0) {
 		
 		
 	}
 
 	
-	@Override
+	
 	public void mouseEntered(MouseEvent arg0) {
 		
 		
 	}
 
-	@Override
+	
 	public void mouseExited(MouseEvent arg0) {
 		
 		
 	}
 	
-	@Override
+	
 	public void mousePressed(MouseEvent arg0) {
 		
 		
 	}
 
-	@Override
+	
 	public void mouseReleased(MouseEvent arg0) {
 		
 		
 	}
 
-	@Override
+	
 	public void keyPressed(KeyEvent arg0) {
 	
 		
 	}
 
-	@Override
+	
 	public void keyReleased(KeyEvent arg0) {
 	
 		
 	}
 
-	@Override
+	
 	public void keyTyped(KeyEvent arg0) {
 		
 		
 	}
 
-	@Override
+	
 	public void actionPerformed(ActionEvent arg0) {
 		
 		
@@ -3151,7 +3151,7 @@ public void paintComponent (Graphics g) {
 
 
 
-	@Override
+	
 	public void mouseDragged(MouseEvent arg0) {
 		
 		
@@ -3159,7 +3159,7 @@ public void paintComponent (Graphics g) {
 
 
 
-	@Override
+	
 	public void mouseMoved(MouseEvent e) {
 	
 		x = e.getX() - 17;
@@ -3255,12 +3255,12 @@ class level2 extends JPanel implements MouseMotionListener{
 
 				}
 	
-	@Override
+	
 	public void mouseDragged(MouseEvent arg0) {
 		
 		
 	}
-	@Override
+	
 	public void mouseMoved(MouseEvent e) {
 	
 		
@@ -3340,12 +3340,12 @@ class level3 extends JPanel implements MouseMotionListener{
 		  
 
 				}
-	@Override
+	
 	public void mouseDragged(MouseEvent arg0) {
 		
 		
 	}
-	@Override
+	
 	public void mouseMoved(MouseEvent e) {
 		
 		
@@ -3575,13 +3575,13 @@ KeyListener, MouseInputListener{
 		}
 		
 	}
-	@Override
+	
 	public void mouseDragged(MouseEvent arg0) {
 	
 		robot.mouseMove(960, 515);
 	}
 
-	@Override
+	
 	public void mouseMoved(MouseEvent e) {
 		
 		
@@ -3593,34 +3593,34 @@ KeyListener, MouseInputListener{
 //	}
 }
 	
-	@Override
+	
 	public void windowActivated(WindowEvent arg0) {
 	}
 
-	@Override
+	
 	public void windowClosed(WindowEvent arg0) {
 	}
 
-	@Override
+	
 	public void windowClosing(WindowEvent arg0) {
 	}
 
-	@Override
+	
 	public void windowDeactivated(WindowEvent arg0) {
 	}
 
-	@Override
+	
 	public void windowDeiconified(WindowEvent arg0) {
 	}
 
-	@Override
+	
 	public void windowIconified(WindowEvent arg0) {
 	}
 
-	@Override
+	
 	public void windowOpened(WindowEvent arg0) {
 	}
-	@Override
+	
 	public void actionPerformed(ActionEvent arg0) {
 	if (arg0.getSource() == timer){
 		
@@ -3658,14 +3658,14 @@ KeyListener, MouseInputListener{
 	}
 	}
 	
-	@Override
+	
 	public void keyPressed(KeyEvent arg0) {
 	}
-	@Override
+	
 	public void keyReleased(KeyEvent arg0) {
 	}
 
-	@Override
+	
 	public void keyTyped(KeyEvent arg0) {
 		if(arg0.getKeyChar() == 'Å'){
 			System.exit(3);
@@ -3678,7 +3678,7 @@ KeyListener, MouseInputListener{
 			
 		
 		}
-	@Override
+	
 	public void mouseClicked(MouseEvent arg0) {
 	
 	frame.add(this);
@@ -3686,20 +3686,20 @@ KeyListener, MouseInputListener{
 	
 	}
 	
-	@Override
+	
 	public void mouseEntered(MouseEvent arg0) {
 	}
-	@Override
+	
 	public void mouseExited(MouseEvent arg0) {
 	}
-	@Override
+	
 	public void mousePressed(MouseEvent arg0) {
 		
 		frame.add(this);
 		repaint();
 		
 	}
-	@Override
+	
 	public void mouseReleased(MouseEvent arg0) {
 		
 		frame.add(this);
@@ -3749,7 +3749,7 @@ class TicTacToe extends JPanel implements MouseInputListener{
 		
 		
 	}
-	@Override
+	
 	public void mouseClicked(MouseEvent e) {
 		
 		
@@ -3809,10 +3809,8 @@ class TicTacToe extends JPanel implements MouseInputListener{
 				 O(1);
 				}
 
-
-
 }
-	@Override
+	
 	public void mousePressed(MouseEvent e) {
 	}
 
@@ -3827,29 +3825,26 @@ class TicTacToe extends JPanel implements MouseInputListener{
 		a = 0;
 	}
 	
-	@Override
+	
 	public void mouseReleased(MouseEvent e) {
 	}
 
-	@Override
+	
 	public void mouseEntered(MouseEvent e) {
 	}
 
-	@Override
+	
 	public void mouseExited(MouseEvent e) {
 	}
 
-	@Override
+	
 	public void mouseDragged(MouseEvent e) {
 	}
 
-	@Override
+	
 	public void mouseMoved(MouseEvent e) {
 	}
 
 	
 	
 }
-
-
-
