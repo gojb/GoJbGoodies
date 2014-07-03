@@ -9,7 +9,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
-
 @SuppressWarnings("serial")
 public class Mouse extends JPanel implements 	ActionListener,
 												MouseInputListener,
@@ -406,7 +405,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		SkrivHändelsetext("Du rörde musen: " + e.getX() + ", " + e.getY());
 		if(e.getX() == 50 && e.getY() == 50){
 			System.exit(1);
-			
+		
 		}
 	
 	}
@@ -1112,42 +1111,54 @@ try {
 @SuppressWarnings("serial")
 class Snakespel extends JPanel implements KeyListener, ActionListener{
 	JFrame frame = new JFrame("Snake");
+	final int Längd = 3;
 	int[] x=new int[50],y=new int[50]; 
-	int snakelängd = 2,posx=300,posy=100,pluppX,pluppY, stringy;
+	int snakelängd,posx=100,posy=100,pluppX,pluppY, stringy;
 	final int pixelstorlek=10;
 	Timer timer = new Timer(100, this);
 	String riktning = "ner";
+	Random random = new Random();
+	boolean förlust;
 	
 	public Snakespel() {
-		for (int i = 1; i <= snakelängd; i++) {
-			x[i]=posx;
-			y[i]=posy;
-			posy=posy-pixelstorlek;
-		}
-		
+
 		frame.add(this);		
 		frame.setIconImage(Mouse.FönsterIcon.getImage());
-		
-		frame.setResizable(false);
-		
-		
+		frame.setResizable(false);		
 		frame.addKeyListener(this);
 		frame.setSize(pixelstorlek*50, pixelstorlek*50);
 		frame.setLocationRelativeTo(null);
-		
-		setBackground(Color.WHITE);
+		setBackground(Color.white);
 		frame.setVisible(true);
-		PlaceraPlupp();
-		timer.start();
-		stringy = y[1];
-		repaint();
+		Restart();
 		
 	}
 	private void GameOver(){
 		timer.stop();
+		förlust = true;
 	}
+	private void Restart() {
+		posx = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
+		posy = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
+		if (	posx>frame.getWidth()*0.7||
+				posx<frame.getWidth()*0.3||
+				posy>frame.getHeight()*0.7||
+				posy<frame.getHeight()*0.3) {
+			System.out.println("Räknar om: " + posx);
+			Restart();
+		}
+		else{
+		snakelängd = Längd;
+		x[1]=posx;
+		y[1]=posy;
+		PlaceraPlupp();
+		timer.start();
+		förlust = false;
+		repaint();
+	}
+		}
 	private void PlaceraPlupp(){
-		Random random = new Random();
+		
 		pluppX = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
 		pluppY = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
 	}
@@ -1161,8 +1172,15 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 			stringy = y[1] - 20;
 		}
 		
+		
 		Graphics2D g = (Graphics2D)g1;
+		
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		if (förlust) {
+			g.setColor(Color.red);
+			g.setFont(new Font(null, 0, 25));
+			g.drawString("Du förlorade! Tryck F2 för att spela igen",10 , frame.getHeight()/2);
+		}
 		g.setColor(Color.red);
 		g.drawOval(pluppX, pluppY, 8, 8);
 		g.fillOval(pluppX, pluppY, 8, 8);
@@ -1194,6 +1212,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		if(KeyEvent.getKeyText(e.getKeyCode()) == "Vänsterpil"){
 			if (riktning!="höger"){
 				riktning="vänster";
+				
 			}
 			
 
@@ -1212,6 +1231,12 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 			if (riktning!="upp"){
 				riktning="ner";
 			}
+		}
+		else if(KeyEvent.getKeyText(e.getKeyCode()) == "F2"){
+			if (timer.isRunning()==false) {
+				Restart();
+			}
+			
 		}
 		
 	}
