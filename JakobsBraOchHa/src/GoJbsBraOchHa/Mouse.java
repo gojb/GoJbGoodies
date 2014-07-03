@@ -1279,7 +1279,8 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 @SuppressWarnings("serial")
 class Studsa extends JPanel implements ActionListener{
 	JFrame frame = new JFrame("Studsa");
-	Timer timer = new Timer(1, this);
+	Timer timer = new Timer(1, this),
+			timer2 = new Timer(5, this);
 	Random random = new Random();
 	int x=1,y=1,a=5,b=5,c=2,d=2,r=100,g=255,bl=25;
 	public Studsa(){
@@ -1292,6 +1293,7 @@ class Studsa extends JPanel implements ActionListener{
 		frame.getContentPane().setBackground(Color.white);
 		frame.setVisible(true);
 		timer.start();
+		timer2.start();
 	}
 	public void paintComponent(Graphics ag){
 //		super.paintComponents(g);
@@ -1309,11 +1311,14 @@ class Studsa extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
+		if(e.getSource() == timer2){
+		r=random.nextInt(255);
+		g=random.nextInt(255);
+		bl=random.nextInt(255);
+		repaint();
+		}
 		if (e.getSource()==timer) {
-
-			r=random.nextInt(255);
-			g=random.nextInt(255);
-			bl=random.nextInt(255);
+			
 			
 			if (x+a>=frame.getWidth()) {
 				c=-c;
