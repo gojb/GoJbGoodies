@@ -3941,15 +3941,104 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 			
 			frame.setAlwaysOnTop(true);
 			
+			
+			if(label[9].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||
+					label[9].getIcon() == new ImageIcon(getClass().getResource("/images/X.png"))){
+
+					if(label[8].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||
+					label[8].getIcon() == new ImageIcon(getClass().getResource("/images/X.png"))){
+
+					if(label[7].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||
+					label[7].getIcon() == new ImageIcon(getClass().getResource("/images/X.png"))){
+
+					if(label[6].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||
+					label[6].getIcon() == new ImageIcon(getClass().getResource("/images/X.png"))){
+
+					if(label[5].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||
+					label[5].getIcon() == new ImageIcon(getClass().getResource("/images/X.png"))){
+
+					if(label[4].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||
+					label[4].getIcon() == new ImageIcon(getClass().getResource("/images/X.png"))){
+
+					if(label[3].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||
+					label[3].getIcon() == new ImageIcon(getClass().getResource("/images/X.png"))){
+
+					if(label[2].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||
+					label[2].getIcon() == new ImageIcon(getClass().getResource("/images/X.png"))){
+
+					if(label[1].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||
+					label[1].getIcon() == new ImageIcon(getClass().getResource("/images/X.png"))){
+						Vinst.setVisible(true);
+						repaint();
+						vinstlabel.setText("             Det blev lika");
+						
+						a = 2;
+						
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}		
 		frame.setLocationRelativeTo(null);
+		
+		
+		
+		if (label[4].getIcon() == o){
+			if (label[5].getIcon() == o){
+				if(label[6].getIcon() == o){
+					Vinst.setVisible(true);
+					repaint();
+					a = 2;
+					vinstlabel.setText("                             O vann");
+				}
+				
+			}
+		}
+		
+		if (label[2].getIcon() == o){
+			if (label[5].getIcon() == o){
+				if (label[8].getIcon() == o){
+					Vinst.setVisible(true);
+					repaint();
+					a = 2;
+					vinstlabel.setText("                             O vann");
+				}
+			}
+		}
 				
 		
-		
+		if (label[3].getIcon() == o){
+			if(label[6].getIcon() == o){
+				if (label[9].getIcon() == o){
+					Vinst.setVisible(true);
+					repaint();
+					a = 2;
+					vinstlabel.setText("                             O vann");
+				}
+			}
+		}
 		
 	
 		if (label[7].getIcon() == o){
+			if(label[5].getIcon() == o){
+				if (label[3].getIcon() == o){
+					Vinst.setVisible(true);
+					repaint();
+					a = 2;
+					vinstlabel.setText("                             O vann");
+				}
+			}
 			if (label[8].getIcon() == o){
-				
+				if (label[9].getIcon() == o){
+					Vinst.setVisible(true);
+					repaint();
+					a = 2;
+					vinstlabel.setText("                             O vann");
+				}
 			}
 		}
 		
@@ -3959,6 +4048,7 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 				if (label[9].getIcon() == o){
 					Vinst.setVisible(true);
 					repaint();
+					a = 2;
 					vinstlabel.setText("                             O vann");
 				}
 			}
@@ -3966,6 +4056,7 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 					if (label[7].getIcon()== o){
 						Vinst.setVisible(true);
 						repaint();
+						a = 2;
 						vinstlabel.setText("                             O vann");
 				}
 			}
@@ -3976,6 +4067,92 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 						Vinst.setVisible(true);
 						repaint();
 						vinstlabel.setText("                             O vann");
+						
+							a = 2;
+						
+					}
+				}
+			}	
+		if (label[4].getIcon() == x){
+			if (label[5].getIcon() == x){
+				if(label[6].getIcon() == x){
+					Vinst.setVisible(true);
+					repaint();
+					a = 2;
+					vinstlabel.setText("                             X vann");
+				}
+				
+			}
+		}
+		
+		if (label[2].getIcon() == x){
+			if (label[5].getIcon() == x){
+				if (label[8].getIcon() == x){
+					Vinst.setVisible(true);
+					repaint();
+					a = 2;
+					vinstlabel.setText("                             X vann");
+				}
+			}
+		}
+				
+		
+		if (label[3].getIcon() == x){
+			if(label[6].getIcon() == x){
+				if (label[9].getIcon() == x){
+					Vinst.setVisible(true);
+					repaint();
+					a = 2;
+					vinstlabel.setText("                             X vann");
+				}
+			}
+		}
+		
+	
+		if (label[7].getIcon() == x){
+			if(label[5].getIcon() == x){
+				if (label[3].getIcon() == x){
+					Vinst.setVisible(true);
+					repaint();
+					a = 2;
+					vinstlabel.setText("                             X vann");
+				}
+			}
+			if (label[8].getIcon() == x){
+				if (label[9].getIcon() == x){
+					Vinst.setVisible(true);
+					repaint();
+					a = 2;
+					vinstlabel.setText("                             X vann");
+				}
+			}
+		}
+		
+		
+		if (label[1].getIcon() == x){
+			if (label[5].getIcon() == x){
+				if (label[9].getIcon() == x){
+					Vinst.setVisible(true);
+					repaint();
+					a = 2;
+					vinstlabel.setText("                             X vann");
+				}
+			}
+				if (label[4].getIcon() == x){
+					if (label[7].getIcon()== x){
+						Vinst.setVisible(true);
+						repaint();
+						a = 2;
+						vinstlabel.setText("                            X vann");
+				}
+			}
+				if(label[2].getIcon() == x){
+					if(label[3].getIcon() == x){
+						
+						
+						Vinst.setVisible(true);
+						repaint();
+						vinstlabel.setText("                             X vann");
 						
 							a = 2;
 						
