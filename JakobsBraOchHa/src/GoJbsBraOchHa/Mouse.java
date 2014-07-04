@@ -8,6 +8,7 @@ import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
+import javax.xml.soap.Detail;
 
 @SuppressWarnings("serial")
 public class Mouse extends JPanel implements 	ActionListener,
@@ -3585,7 +3586,7 @@ KeyListener, MouseInputListener{
 		frame.addMouseListener(this);
 		
 		frame.setAlwaysOnTop(true);
-	
+		
 		
 		timer.start();
 		timer300.start();
@@ -3755,17 +3756,19 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 	Timer timer = new Timer(50, this);
 	
 	JFrame frame = new JFrame("Tic Tac Toe"),
-			Vinst = new JFrame();
+			Vinst = new JFrame(),
+			tur = new JFrame();
 	
 	String sträng = new String();
 	
 	JLabel[] label = new JLabel[10];
-	JLabel vinstlabel = new JLabel();
+	JLabel vinstlabel = new JLabel(),
+			turLabel = new JLabel();
 			
 	ImageIcon o = new ImageIcon(getClass().getResource("/images/O.png")),
 			x = new ImageIcon(getClass().getResource("/images/X.png"));
 
-	int a;
+	int a,å;
 	
 	public TicTacToe(){
 		
@@ -3794,12 +3797,31 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 		
 		vinstlabel.setSize(500, 100);
 		
+		
+		
+		tur.setLocation(frame.getWidth() + 205, frame.getHeight()/2 - 65);
+		tur.setSize(500, 75);
+		tur.setAlwaysOnTop(true);
+		
+		turLabel.setHorizontalAlignment(JLabel.CENTER);
+		turLabel.setFont(new Font("dslf",Font.ROMAN_BASELINE,50));
+		tur.add(turLabel);
+		turLabel.setForeground(Color.WHITE);
+		turLabel.setOpaque(true);
+		
+		turLabel.setBackground(Color.BLACK);
+		
+		tur.setUndecorated(true);
+		
+		tur.setVisible(true);
+		
 		Vinst.setLocation(frame.getWidth()+205,frame.getHeight()+270);
 		Vinst.setSize(500, 100);
 		
+		vinstlabel.setHorizontalAlignment(JLabel.CENTER);
 		vinstlabel.setFont(new Font("dslf",Font.ROMAN_BASELINE,30));
 		Vinst.add(vinstlabel);
-         		vinstlabel.setForeground(Color.BLACK);
+        vinstlabel.setForeground(Color.BLACK);
 		
 		vinstlabel.setOpaque(true);
 		
@@ -3961,38 +3983,53 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 		
 		if (e.getSource() == timer){
 			
+			if (a == 2){
+				turLabel.setText("Tryck r för restart");	
+			}
+			
+			if (a == 0){
+				turLabel.setText("Nu spelar X");
+			}
+			
+			if (a == 1){
+				turLabel.setText("Nu spelar O");
+			}
+			
+			
 			frame.setAlwaysOnTop(true);
 			
 			
-			if(label[9].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||
-					label[9].getIcon() == new ImageIcon(getClass().getResource("/images/X.png"))){
+			if(label[1].getIcon() == o||
+					label[1].getIcon() == x){
 
-					if(label[8].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||
-					label[8].getIcon() == new ImageIcon(getClass().getResource("/images/X.png"))){
+					if(label[2].getIcon() == o||
+					label[2].getIcon() == x){
 
-					if(label[7].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||
-					label[7].getIcon() == new ImageIcon(getClass().getResource("/images/X.png"))){
+					if(label[3].getIcon() == o||
+					label[3].getIcon() == x){
 
-					if(label[6].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||
-					label[6].getIcon() == new ImageIcon(getClass().getResource("/images/X.png"))){
+					if(label[4].getIcon() == o||
+					label[4].getIcon() == x){
 
-					if(label[5].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||
-					label[5].getIcon() == new ImageIcon(getClass().getResource("/images/X.png"))){
+					if(label[5].getIcon() == o||
+					label[5].getIcon() == x){
 
-					if(label[4].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||
-					label[4].getIcon() == new ImageIcon(getClass().getResource("/images/X.png"))){
+					if(label[6].getIcon() == o||
+					label[6].getIcon() == x){
 
-					if(label[3].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||
-					label[3].getIcon() == new ImageIcon(getClass().getResource("/images/X.png"))){
+					if(label[7].getIcon() == o||
+					label[7].getIcon() == x){
 
-					if(label[2].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||
-					label[2].getIcon() == new ImageIcon(getClass().getResource("/images/X.png"))){
+					if(label[8].getIcon() == o||
+					label[8].getIcon() == x){
 
-					if(label[1].getIcon() == new ImageIcon(getClass().getResource("/images/O.png"))||
-					label[1].getIcon() == new ImageIcon(getClass().getResource("/images/X.png"))){
+					if(label[9].getIcon() == o||
+					label[9].getIcon() == x){
+
 						Vinst.setVisible(true);
 						repaint();
-						vinstlabel.setText("             Det blev lika");
+						vinstlabel.setHorizontalAlignment(JLabel.CENTER);
+						vinstlabel.setText("Det blev lika");
 						
 						a = 2;
 						
@@ -4015,7 +4052,8 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 					Vinst.setVisible(true);
 					repaint();
 					a = 2;
-					vinstlabel.setText("                             O vann");
+					vinstlabel.setText("O vann");
+					å = 2;
 				}
 				
 			}
@@ -4027,7 +4065,8 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 					Vinst.setVisible(true);
 					repaint();
 					a = 2;
-					vinstlabel.setText("                             O vann");
+					vinstlabel.setText("O vann");
+					å = 2;
 				}
 			}
 		}
@@ -4039,7 +4078,8 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 					Vinst.setVisible(true);
 					repaint();
 					a = 2;
-					vinstlabel.setText("                             O vann");
+					vinstlabel.setText("O vann");
+					å = 2;
 				}
 			}
 		}
@@ -4051,7 +4091,8 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 					Vinst.setVisible(true);
 					repaint();
 					a = 2;
-					vinstlabel.setText("                             O vann");
+					vinstlabel.setText("O vann");
+					å = 2;
 				}
 			}
 			if (label[8].getIcon() == o){
@@ -4059,7 +4100,8 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 					Vinst.setVisible(true);
 					repaint();
 					a = 2;
-					vinstlabel.setText("                             O vann");
+					vinstlabel.setText("O vann");
+					å = 2;
 				}
 			}
 		}
@@ -4071,7 +4113,8 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 					Vinst.setVisible(true);
 					repaint();
 					a = 2;
-					vinstlabel.setText("                             O vann");
+					vinstlabel.setText("O vann");
+					å = 2;
 				}
 			}
 				if (label[4].getIcon() == o){
@@ -4079,7 +4122,8 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 						Vinst.setVisible(true);
 						repaint();
 						a = 2;
-						vinstlabel.setText("                             O vann");
+						vinstlabel.setText("O vann");
+						å = 2;
 				}
 			}
 				if(label[2].getIcon() == o){
@@ -4088,8 +4132,9 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 						
 						Vinst.setVisible(true);
 						repaint();
-						vinstlabel.setText("                             O vann");
+						vinstlabel.setText("O vann");
 						
+						å = 2;
 							a = 2;
 						
 					}
@@ -4101,7 +4146,8 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 					Vinst.setVisible(true);
 					repaint();
 					a = 2;
-					vinstlabel.setText("                             X vann");
+					vinstlabel.setText("X vann");
+					å = 1;
 				}
 				
 			}
@@ -4113,7 +4159,8 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 					Vinst.setVisible(true);
 					repaint();
 					a = 2;
-					vinstlabel.setText("                             X vann");
+					vinstlabel.setText("X vann");
+					å = 1;
 				}
 			}
 		}
@@ -4125,7 +4172,8 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 					Vinst.setVisible(true);
 					repaint();
 					a = 2;
-					vinstlabel.setText("                             X vann");
+					vinstlabel.setText("X vann");
+					å = 1;
 				}
 			}
 		}
@@ -4137,7 +4185,8 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 					Vinst.setVisible(true);
 					repaint();
 					a = 2;
-					vinstlabel.setText("                             X vann");
+					vinstlabel.setText("X vann");
+					å = 1;
 				}
 			}
 			if (label[8].getIcon() == x){
@@ -4145,7 +4194,8 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 					Vinst.setVisible(true);
 					repaint();
 					a = 2;
-					vinstlabel.setText("                             X vann");
+					vinstlabel.setText("X vann");
+					å = 1;
 				}
 			}
 		}
@@ -4157,7 +4207,8 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 					Vinst.setVisible(true);
 					repaint();
 					a = 2;
-					vinstlabel.setText("                             X vann");
+					vinstlabel.setText("X vann");
+					å = 1;
 				}
 			}
 				if (label[4].getIcon() == x){
@@ -4165,7 +4216,8 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 						Vinst.setVisible(true);
 						repaint();
 						a = 2;
-						vinstlabel.setText("                            X vann");
+						vinstlabel.setText("X vann");
+						å = 1;
 				}
 			}
 				if(label[2].getIcon() == x){
@@ -4174,8 +4226,8 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 						
 						Vinst.setVisible(true);
 						repaint();
-						vinstlabel.setText("                             X vann");
-						
+						vinstlabel.setText("X vann");
+						å = 1;
 							a = 2;
 						
 					}
@@ -4203,7 +4255,12 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 			label[3].setIcon(null);
 			label[2].setIcon(null);
 			label[1].setIcon(null);
-			a = 0;
+			if (å == 2){
+				a = 0;
+			}
+			else if (å == 1){
+				a = 1;
+			}
 			
 			Vinst.setVisible(false);
 			
