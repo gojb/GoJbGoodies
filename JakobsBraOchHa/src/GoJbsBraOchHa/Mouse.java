@@ -3922,31 +3922,31 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 					O(1);
 				}
 				}
-
-				else if(a== 1 && e.getSource() == label[8]){
-				 O(8);
-				}
-				else if(a== 1 && e.getSource() == label[7]){
-				 O(7);
-				}
-				else if(a== 1 && e.getSource() == label[6]){
-				 O(6);
-				}
-				else if(a== 1 && e.getSource() == label[5]){
-				 O(5);
-				}
-				else if(a== 1 && e.getSource() == label[4]){
-				 O(4);
-				}
-				else if(a== 1 && e.getSource() == label[3]){
-				 O(3);
-				}
-				else if(a== 1 && e.getSource() == label[2]){
-				 O(2);
-				}
-				else if(a== 1 && e.getSource() == label[1]){
-				 O(1);
-				}
+//
+//				else if(a== 1 && e.getSource() == label[8]){
+//				 O(8);
+//				}
+//				else if(a== 1 && e.getSource() == label[7]){
+//				 O(7);
+//				}
+//				else if(a== 1 && e.getSource() == label[6]){
+//				 O(6);
+//				}
+//				else if(a== 1 && e.getSource() == label[5]){
+//				 O(5);
+//				}
+//				else if(a== 1 && e.getSource() == label[4]){
+//				 O(4);
+//				}
+//				else if(a== 1 && e.getSource() == label[3]){
+//				 O(3);
+//				}
+//				else if(a== 1 && e.getSource() == label[2]){
+//				 O(2);
+//				}
+//				else if(a== 1 && e.getSource() == label[1]){
+//				 O(1);
+//				}
 }
 	
 	public void mousePressed(MouseEvent e) {
