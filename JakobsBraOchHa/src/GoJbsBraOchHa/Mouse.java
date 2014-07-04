@@ -1111,10 +1111,9 @@ try {
 @SuppressWarnings("serial")
 class Snakespel extends JPanel implements KeyListener, ActionListener{
 	JFrame frame = new JFrame("Snake");
-	final int Längd = 3;
+	final int Längd = 3,pixelstorlek=10;
 	int[] x=new int[50],y=new int[50]; 
 	int snakelängd,posx=100,posy=100,pluppX,pluppY, stringy;
-	final int pixelstorlek=10;
 	Timer timer = new Timer(100, this);
 	String riktning = "ner";
 	Random random = new Random();
@@ -3753,7 +3752,7 @@ KeyListener, MouseInputListener{
 @SuppressWarnings("serial")
 class TicTacToe extends JPanel implements MouseInputListener, KeyListener, ActionListener{
 
-	Timer timer = new Timer(1, this);
+	Timer timer = new Timer(50, this);
 	
 	JFrame frame = new JFrame("Tic Tac Toe"),
 			Vinst = new JFrame();
@@ -3922,31 +3921,6 @@ class TicTacToe extends JPanel implements MouseInputListener, KeyListener, Actio
 					O(1);
 				}
 				}
-//
-//				else if(a== 1 && e.getSource() == label[8]){
-//				 O(8);
-//				}
-//				else if(a== 1 && e.getSource() == label[7]){
-//				 O(7);
-//				}
-//				else if(a== 1 && e.getSource() == label[6]){
-//				 O(6);
-//				}
-//				else if(a== 1 && e.getSource() == label[5]){
-//				 O(5);
-//				}
-//				else if(a== 1 && e.getSource() == label[4]){
-//				 O(4);
-//				}
-//				else if(a== 1 && e.getSource() == label[3]){
-//				 O(3);
-//				}
-//				else if(a== 1 && e.getSource() == label[2]){
-//				 O(2);
-//				}
-//				else if(a== 1 && e.getSource() == label[1]){
-//				 O(1);
-//				}
 }
 	
 	public void mousePressed(MouseEvent e) {
