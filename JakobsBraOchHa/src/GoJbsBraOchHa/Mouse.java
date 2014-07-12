@@ -2,6 +2,7 @@ package GoJbsBraOchHa;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import java.util.Random;
 
 import javax.sound.sampled.*;
@@ -381,7 +382,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		    	JOptionPane.showMessageDialog(null, "Den angivna LookAndFeel hittades inte!","Error",JOptionPane.ERROR_MESSAGE);
 		    }
 	
-		new Mouse();
+		new Pass();
 		
 	}
 	
@@ -1379,6 +1380,10 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
  	JLabel textlabel = new JLabel();
  
  	JTextArea textruta = new JTextArea();
+ 	
+ 	Random random = new Random();
+ 	
+ 	int r,g,b;
 	
 	JMenu menu = new JMenu("Arkiv"),
 			menu1 = new JMenu("Redigera"),
@@ -1396,7 +1401,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			Snake = new JMenuItem("Snake"),
 			Mouse = new JMenuItem("Mouse"),
 			impossible = new JMenuItem("Impossible"),
-			ticTacToe = new JMenuItem("Tic Tac Toe");
+			ticTacToe = new JMenuItem("Tic Tac Toe"),
+			lösenord = new JMenuItem("Lösenord");
 	JMenuBar bar = new JMenuBar();
 	
 	Robot robot;
@@ -1471,6 +1477,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		ÖppnaProgram.add(Snake);
 		ÖppnaProgram.add(impossible);
 		ÖppnaProgram.add(ticTacToe);
+		ÖppnaProgram.add(lösenord);
 		
 		
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
@@ -1488,6 +1495,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		Snake.addActionListener(this);
 		impossible.addActionListener(this);
 		ticTacToe.addActionListener(this);
+		lösenord.addActionListener(this);
 
 		timer.addActionListener(this);
 		timer.start();
@@ -1802,7 +1810,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		
 		if (arg0.getSource() == impossible){
 			frame.dispose();
-			new Impossible();
+			new Impossible("HAHA!");
 		}
 		
 		if (arg0.getSource() == Maze){
@@ -1826,6 +1834,11 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		
 		if (arg0.getSource() == ticTacToe){
 			new TicTacToe();
+			frame.dispose();
+		}
+		
+		if (arg0.getSource() == lösenord){
+			new Pass();
 			frame.dispose();
 		}
 		
@@ -1894,8 +1907,8 @@ class RörandeMojäng2 extends JPanel implements ActionListener {
 
 class RörandeMojäng3 extends JPanel implements ActionListener {
 	
-	public void paint (Graphics g) {
-	    Graphics2D g2 = (Graphics2D) g;
+	public void paint (Graphics gr) {
+	    Graphics2D g2 = (Graphics2D) gr;
 	    
 	    
 	    
@@ -1903,16 +1916,16 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 	    g2.fillRect(0, 425, 150, 1000);
 	    
 	    g2.setColor(Color.GREEN);
-	    g.fill3DRect(1000, 200, 100, 350, false);
+	    gr.fill3DRect(1000, 200, 100, 350, false);
 	    
 	    g2.setColor(Color.ORANGE);
-	    g.fill3DRect(1155, 0, 110, 495, true);
+	    gr.fill3DRect(1155, 0, 110, 495, true);
 	    
 	    g2.setColor(Color.MAGENTA);
-	    g.fillRect(205, 550, 1000, 100);
+	    gr.fillRect(205, 550, 1000, 100);
 	    
 	    g2.setColor(Color.WHITE);
-	    g.drawRect(700, 650, 90, 90);
+	    gr.drawRect(700, 650, 90, 90);
 	    
 	    g2.setColor(new Color(233,5,6));
 	    g2.fill3DRect(150, 425, 300, 70, true);
@@ -1920,96 +1933,15 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 	    g2.setColor(Color.BLACK);
 	    g2.setFont(new Font("", Font.ROMAN_BASELINE,20));
 	    g2.drawString("Dra genom labyrinten till den \nfärgglada kvadraten för att vinna.\n Lycka till! :D", 300, 150);
-	    
-	    g2.setColor(new Color(19,199,15));g.drawRect(700, 650, 90, 90);
-
-	    g2.setColor(new Color(10,90,68));g.drawRect(700, 650, 88, 88);
-
-	    g2.setColor(new Color(173,160,11));g.drawRect(700, 650, 86, 86);
-
-	    g2.setColor(new Color(56,194,169));g.drawRect(700, 650, 84, 84);
-
-	    g2.setColor(new Color(158,224,233));g.drawRect(700, 650, 82, 82);
-
-	    g2.setColor(new Color(220,130,101));g.drawRect(700, 650, 80, 80);
-
-	    g2.setColor(new Color(61,138,200));g.drawRect(700, 650, 78, 78);
-
-	    g2.setColor(new Color(182,120,57));g.drawRect(700, 650, 76, 76);
-
-	    g2.setColor(new Color(137,187,69));g.drawRect(700, 650, 74, 74);
-
-	    g2.setColor(new Color(15,71,43));g.drawRect(700, 650, 72, 72);
-
-	    g2.setColor(new Color(137,99,141));g.drawRect(700, 650, 70, 70);
-
-	    g2.setColor(new Color(236,3,201));g.drawRect(700, 650, 68, 68);
-
-	    g2.setColor(new Color(10,233,171));g.drawRect(700, 650, 66, 66);
-
-	    g2.setColor(new Color(34,50,62));g.drawRect(700, 650, 64, 64);
-
-	    g2.setColor(new Color(72,48,199));g.drawRect(700, 650, 62, 62);
-
-	    g2.setColor(new Color(140,236,191));g.drawRect(700, 650, 60, 60);
-
-	    g2.setColor(new Color(21,253,229));g.drawRect(700, 650, 58, 58);
-
-	    g2.setColor(new Color(17,29,152));g.drawRect(700, 650, 56, 56);
-
-	    g2.setColor(new Color(30,215,162));g.drawRect(700, 650, 54, 54);
-
-	    g2.setColor(new Color(108,0,70));g.drawRect(700, 650, 52, 52);
-
-	    g2.setColor(new Color(101,241,18));g.drawRect(700, 650, 50, 50);
-
-	    g2.setColor(new Color(14,77,151));g.drawRect(700, 650, 48, 48);
-
-	    g2.setColor(new Color(81,251,191));g.drawRect(700, 650, 46, 46);
-
-	    g2.setColor(new Color(5,220,45));g.drawRect(700, 650, 44, 44);
-
-	    g2.setColor(new Color(104,97,115));g.drawRect(700, 650, 42, 42);
-
-	    g2.setColor(new Color(31,187,194));g.drawRect(700, 650, 40, 40);
-
-	    g2.setColor(new Color(9,210,188));g.drawRect(700, 650, 38, 38);
-
-	    g2.setColor(new Color(245,228,96));g.drawRect(700, 650, 36, 36);
-
-	    g2.setColor(new Color(66,13,42));g.drawRect(700, 650, 34, 34);
-
-	    g2.setColor(new Color(150,233,32));g.drawRect(700, 650, 32, 32);
-
-	    g2.setColor(new Color(56,73,79));g.drawRect(700, 650, 30, 30);
-
-	    g2.setColor(new Color(253,111,103));g.drawRect(700, 650, 28, 28);
-
-	    g2.setColor(new Color(217,95,124));g.drawRect(700, 650, 26, 26);
-
-	    g2.setColor(new Color(203,60,223));g.drawRect(700, 650, 24, 24);
-
-	    g2.setColor(new Color(166,45,61));g.drawRect(700, 650, 22, 22);
-
-	    g2.setColor(new Color(56,10,102));g.drawRect(700, 650, 20, 20);
-
-	    g2.setColor(new Color(1,64,133));g.drawRect(700, 650, 18, 18);
-
-	    g2.setColor(new Color(77,50,131));g.drawRect(700, 650, 16, 16);
-
-	    g2.setColor(new Color(211,162,205));g.drawRect(700, 650, 14, 14);
-
-	    g2.setColor(new Color(16,43,43));g.drawRect(700, 650, 12, 12);
-
-	    g2.setColor(new Color(91,149,166));g.drawRect(700, 650, 10, 10);
-
-	    g2.setColor(new Color(125,55,30));g.drawRect(700, 650, 8, 8);
-
-	    g2.setColor(new Color(26,229,11));g.drawRect(700, 650, 6, 6);
-
-	    g2.setColor(new Color(190,156,14));g.drawRect(700, 650, 4, 4);
-
-	    g2.setColor(new Color(156,158,147));g.drawRect(700, 650, 2, 2);
+	    for(int i = 90; i > 0; i--){
+			
+			r = random.nextInt(255);
+			g = random.nextInt(255);
+			b = random.nextInt(255);
+			
+		g2.setColor(new Color(r,g,b));gr.drawRect(700, 650, i, i);
+				
+}
 	    
 	    g2.setColor(Color.cyan);
 	    g2.fillRect(x, y, 50,50);
@@ -3561,15 +3493,16 @@ KeyListener, MouseInputListener{
 	Robot robot;
 	String string = new String();
 	int x,y,r,g,b;
+	String a;
 	
-	public Impossible(){
+	public Impossible(String textString){
 		
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		  Image image = toolkit.getImage(getClass().getResource("/images/Nope.png"));
 		  Cursor c = toolkit.createCustomCursor(image , new Point(frame.getX(),
 		     frame.getY()), "img");
 		  frame.setCursor (c);
-		
+		a=textString;
 		frame.setSize(1920,1030 );
 		frame.add(this);
 		frame.setLocationRelativeTo(null);
@@ -3743,7 +3676,7 @@ KeyListener, MouseInputListener{
 		  	g2.setColor(new Color(r,g,b));
 		  	g2.setFont(new Font("dhghdg", Font.ITALIC, 30));
 		  	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		    g2.drawString("Hahaha", x, y);
+		    g2.drawString(a, x, y);
 		    
 	}
 
@@ -4272,3 +4205,94 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 	public void keyReleased(KeyEvent e) {
 	}
 }
+
+
+@SuppressWarnings("serial")
+class Pass extends JPanel implements ActionListener{
+	
+	int x;
+	
+	 private static String OK = "What Ever!";
+
+	    private JFrame controllingFrame; //needed for dialogs
+	    private JPasswordField passwordField;
+	    private JFrame användare = new JFrame();
+	
+	protected JComponent createButtonPanel() {
+       JPanel p = new JPanel(new GridLayout(0,1));
+       JButton okButton = new JButton("OK");
+
+       okButton.setActionCommand(OK);
+       okButton.addActionListener(this);
+
+       p.add(okButton);
+
+       return p;
+   }
+	  public void actionPerformed(ActionEvent e) {
+
+	        if (OK.equals(e.getActionCommand())) { //Process the password.
+	            char[] input = passwordField.getPassword();
+	            if (isPasswordCorrect(input)) {
+	                JOptionPane.showMessageDialog(controllingFrame,
+	                    "Success! You typed the right password.");
+	            } else {
+	               passwordField.setText(null);
+	               x++;
+	            }
+	            
+	            if(x == 5){
+	            new Impossible("Fel Lösenord");
+	            }
+	        }
+	    }
+
+	    private static boolean isPasswordCorrect(char[] input) {
+	        boolean isCorrect = true;
+	        char[] correctPassword = { 'G', 'o', 'J', 'b'};
+
+	        if (input.length != correctPassword.length) {
+	            isCorrect = false;
+	        } else {
+	            isCorrect = Arrays.equals (input, correctPassword);
+	            
+	        }
+
+
+	        return isCorrect;
+	    }
+
+	 
+	    public Pass() {
+	        //Create and set up the window.
+	        JFrame frame = new JFrame("trytsddjgf");
+	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        
+	        passwordField = new JPasswordField(10);
+	        passwordField.setActionCommand(OK);
+	        passwordField.addActionListener(this);
+
+	        JLabel label = new JLabel("Enter the password: ");
+	        label.setLabelFor(passwordField);
+
+	        JComponent buttonPane = createButtonPanel();
+
+	        //Lay out everything.
+	        JPanel textPane = new JPanel(new FlowLayout(FlowLayout.TRAILING));
+	        textPane.add(label);
+	        textPane.add(passwordField);
+	        frame.add(this);
+	        add(textPane);
+	        add(buttonPane);
+	        frame.pack();
+	        frame.setVisible(true);
+	        frame.setLocationRelativeTo(null);
+	    }
+
+	    public static void main(String[] args) {
+	   
+			new Pass();
+	        
+	    }
+	}
+
