@@ -123,13 +123,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		
 		
 		  
-		  
-		try {
-			FönsterIcon = new ImageIcon(getClass().getResource("/images/Java-icon.png"));
-		} catch (Exception e) {
-			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-	    	JOptionPane.showMessageDialog(null, "ImageIcon hittades inte","Filfel",JOptionPane.ERROR_MESSAGE);
-		}
+		
 		
 		Laddtext.setFont(Typsnitt);
 		Laddtext.setHorizontalAlignment(JLabel.CENTER);
@@ -381,6 +375,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 		    	((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 		    	JOptionPane.showMessageDialog(null, "Den angivna LookAndFeel hittades inte!","Error",JOptionPane.ERROR_MESSAGE);
 		    }
+		
+		  
 	
 		new Pass();
 		
@@ -4217,6 +4213,11 @@ class Pass extends JPanel implements ActionListener{
 	    private JFrame controllingFrame; //needed for dialogs
 	    private JPasswordField passwordField;
 	    private JFrame användare = new JFrame();
+	    
+	    JFrame frame = new JFrame("Verifiera dig!");
+	    
+	    JButton användareJakob = new JButton("Jakob"),
+	    		användareGlenn = new JButton("Glenn");
 	
 	protected JComponent createButtonPanel() {
        JPanel p = new JPanel(new GridLayout(0,1));
@@ -4227,6 +4228,17 @@ class Pass extends JPanel implements ActionListener{
 
        p.add(okButton);
 
+       användare.add(användareJakob);
+       användare.add(användareGlenn);
+       
+       användare.setLayout(new FlowLayout());
+       
+       användare.pack();
+       användare.setLocationRelativeTo(null);
+       
+       användareGlenn.addActionListener(this);
+       användareJakob.addActionListener(this);
+       
        return p;
    }
 	  public void actionPerformed(ActionEvent e) {
@@ -4234,8 +4246,8 @@ class Pass extends JPanel implements ActionListener{
 	        if (OK.equals(e.getActionCommand())) { //Process the password.
 	            char[] input = passwordField.getPassword();
 	            if (isPasswordCorrect(input)) {
-	                JOptionPane.showMessageDialog(controllingFrame,
-	                    "Success! You typed the right password.");
+	            	frame.dispose();
+	               användare.setVisible(true);
 	            } else {
 	               passwordField.setText(null);
 	               x++;
@@ -4245,11 +4257,21 @@ class Pass extends JPanel implements ActionListener{
 	            new Impossible("Fel Lösenord");
 	            }
 	        }
+	        
+	        if(e.getSource() == användareJakob){
+	        	new Mouse();
+	        	användare.dispose();
+	        }
+	        else if(e.getSource() == användareGlenn){
+	        	new RörandeMojäng();
+	        	användare.dispose();
+	        }
+	        
 	    }
 
 	    private static boolean isPasswordCorrect(char[] input) {
 	        boolean isCorrect = true;
-	        char[] correctPassword = { 'G', 'o', 'J', 'b'};
+	        char[] correctPassword = { 'U','g','g','e','n','0','6','8','4'};
 
 	        if (input.length != correctPassword.length) {
 	            isCorrect = false;
@@ -4264,15 +4286,24 @@ class Pass extends JPanel implements ActionListener{
 
 	 
 	    public Pass() {
+
+			try {
+				Mouse.FönsterIcon = new ImageIcon(getClass().getResource("/images/Java-icon.png"));
+			} catch (Exception e) {
+				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+		    	JOptionPane.showMessageDialog(null, "ImageIcon hittades inte","Filfel",JOptionPane.ERROR_MESSAGE);
+			}
+			
+			frame.setIconImage(Mouse.FönsterIcon.getImage());
 	        //Create and set up the window.
-	        JFrame frame = new JFrame("trytsddjgf");
+	       
 	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        
 	        passwordField = new JPasswordField(10);
 	        passwordField.setActionCommand(OK);
 	        passwordField.addActionListener(this);
 
-	        JLabel label = new JLabel("Enter the password: ");
+	        JLabel label = new JLabel("Skriv Lösenord -->");
 	        label.setLabelFor(passwordField);
 
 	        JComponent buttonPane = createButtonPanel();
@@ -4287,12 +4318,12 @@ class Pass extends JPanel implements ActionListener{
 	        frame.pack();
 	        frame.setVisible(true);
 	        frame.setLocationRelativeTo(null);
-	    }
-
-	    public static void main(String[] args) {
-	   
-			new Pass();
+	        
+	       
+	       
 	        
 	    }
+
+
 	}
 
