@@ -1921,96 +1921,95 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 	    g2.setFont(new Font("", Font.ROMAN_BASELINE,20));
 	    g2.drawString("Dra genom labyrinten till den \nfärgglada kvadraten för att vinna.\n Lycka till! :D", 300, 150);
 	    
-	    g2.setColor(Color.MAGENTA);g.drawRect(700, 650, 90, 90);
-	    g2.setColor(Color.BLUE);g.drawRect(700, 650, 89, 89);
-	    g2.setColor(Color.CYAN);g.drawRect(700, 650, 88, 88);
-	    g2.setColor(Color.GREEN);g.drawRect(700, 650, 87, 87);
-	    g2.setColor(Color.YELLOW);g.drawRect(700, 650, 86, 86);
-	    g2.setColor(Color.PINK);g.drawRect(700, 650, 85, 85);
-	    g2.setColor(Color.ORANGE);g.drawRect(700, 650, 84, 84);
-	    g2.setColor(Color.RED);g.drawRect(700, 650, 83, 83);
-	    g2.setColor(Color.WHITE);g.drawRect(700, 650, 82, 82);
-	    g2.setColor(Color.MAGENTA);g.drawRect(700, 650, 81, 81);
-	    g2.setColor(Color.BLUE);g.drawRect(700, 650, 80, 80);
-	    g2.setColor(Color.CYAN);g.drawRect(700, 650, 79, 79);
-	    g2.setColor(Color.GREEN);g.drawRect(700, 650, 78, 78);
-	    g2.setColor(Color.YELLOW);g.drawRect(700, 650, 77, 77);
-	    g2.setColor(Color.PINK);g.drawRect(700, 650, 76, 76);
-	    g2.setColor(Color.ORANGE);g.drawRect(700, 650, 75, 75);
-	    g2.setColor(Color.RED);g.drawRect(700, 650, 74, 74);
-	    g2.setColor(Color.WHITE);g.drawRect(700, 650, 73, 73);
-	    g2.setColor(Color.MAGENTA);g.drawRect(700, 650, 72, 72);
-	    g2.setColor(Color.BLUE);g.drawRect(700, 650, 71, 71);
-	    g2.setColor(Color.CYAN);g.drawRect(700, 650, 70, 70);
-	    g2.setColor(Color.GREEN);g.drawRect(700, 650, 69, 69);
-	    g2.setColor(Color.YELLOW);g.drawRect(700, 650, 68, 68);
-	    g2.setColor(Color.PINK);g.drawRect(700, 650, 67, 67);
-	    g2.setColor(Color.ORANGE);g.drawRect(700, 650, 66, 66);
-	    g2.setColor(Color.RED);g.drawRect(700, 650, 65, 65);
-	    g2.setColor(Color.WHITE);g.drawRect(700, 650, 64, 64);
-	    g2.setColor(Color.MAGENTA);g.drawRect(700, 650, 63, 63);
-	    g2.setColor(Color.BLUE);g.drawRect(700, 650, 62, 62);
-	    g2.setColor(Color.CYAN);g.drawRect(700, 650, 61, 61);
-	    g2.setColor(Color.GREEN);g.drawRect(700, 650, 60, 60);
-	    g2.setColor(Color.YELLOW);g.drawRect(700, 650, 59, 59);
-	    g2.setColor(Color.PINK);g.drawRect(700, 650, 58, 58);
-	    g2.setColor(Color.ORANGE);g.drawRect(700, 650, 57, 57);
-	    g2.setColor(Color.RED);g.drawRect(700, 650, 56, 56);
-	    g2.setColor(Color.WHITE);g.drawRect(700, 650, 55, 55);
-	    g2.setColor(Color.MAGENTA);g.drawRect(700, 650, 54, 54);
-	    g2.setColor(Color.BLUE);g.drawRect(700, 650, 53, 53);
-	    g2.setColor(Color.CYAN);g.drawRect(700, 650, 52, 52);
-	    g2.setColor(Color.GREEN);g.drawRect(700, 650, 51, 51);
-	    g2.setColor(Color.YELLOW);g.drawRect(700, 650, 50, 50);
-	    g2.setColor(Color.PINK);g.drawRect(700, 650, 49, 49);
-	    g2.setColor(Color.ORANGE);g.drawRect(700, 650, 48, 48);
-	    g2.setColor(Color.RED);g.drawRect(700, 650, 47, 47);
-	    g2.setColor(Color.WHITE);g.drawRect(700, 650, 46, 46);
-	    g2.setColor(Color.MAGENTA);g.drawRect(700, 650, 45, 45);
-	    g2.setColor(Color.BLUE);g.drawRect(700, 650, 44, 44);
-	    g2.setColor(Color.CYAN);g.drawRect(700, 650, 43, 43);
-	    g2.setColor(Color.GREEN);g.drawRect(700, 650, 42, 42);
-	    g2.setColor(Color.YELLOW);g.drawRect(700, 650, 41, 41);
-	    g2.setColor(Color.PINK);g.drawRect(700, 650, 40, 40);
-	    g2.setColor(Color.ORANGE);g.drawRect(700, 650, 39, 39);
-	    g2.setColor(Color.RED);g.drawRect(700, 650, 38, 38);
-	    g2.setColor(Color.WHITE);g.drawRect(700, 650, 37, 37);
-	    g2.setColor(Color.MAGENTA);g.drawRect(700, 650, 36, 36);
-	    g2.setColor(Color.BLUE);g.drawRect(700, 650, 35, 35);
-	    g2.setColor(Color.CYAN);g.drawRect(700, 650, 34, 34);
-	    g2.setColor(Color.GREEN);g.drawRect(700, 650, 33, 33);
-	    g2.setColor(Color.YELLOW);g.drawRect(700, 650, 32, 32);
-	    g2.setColor(Color.PINK);g.drawRect(700, 650, 31, 31);
-	    g2.setColor(Color.ORANGE);g.drawRect(700, 650, 30, 30);
-	    g2.setColor(Color.RED);g.drawRect(700, 650, 29, 29);
-	    g2.setColor(Color.WHITE);g.drawRect(700, 650, 28, 28);
-	    g2.setColor(Color.MAGENTA);g.drawRect(700, 650, 27, 27);
-	    g2.setColor(Color.BLUE);g.drawRect(700, 650, 26, 26);
-	    g2.setColor(Color.CYAN);g.drawRect(700, 650, 25, 25);
-	    g2.setColor(Color.GREEN);g.drawRect(700, 650, 24, 24);
-	    g2.setColor(Color.YELLOW);g.drawRect(700, 650, 23, 23);
-	    g2.setColor(Color.PINK);g.drawRect(700, 650, 22, 22);
-	    g2.setColor(Color.ORANGE);g.drawRect(700, 650, 21, 21);
-	    g2.setColor(Color.RED);g.drawRect(700, 650, 20, 20);
-	    g2.setColor(Color.WHITE);g.drawRect(700, 650, 19, 19);
-	    g2.setColor(Color.MAGENTA);g.drawRect(700, 650, 18, 18);
-	    g2.setColor(Color.BLUE);g.drawRect(700, 650, 17, 17);
-	    g2.setColor(Color.CYAN);g.drawRect(700, 650, 16, 16);
-	    g2.setColor(Color.GREEN);g.drawRect(700, 650, 15, 15);
-	    g2.setColor(Color.YELLOW);g.drawRect(700, 650, 14, 14);
-	    g2.setColor(Color.PINK);g.drawRect(700, 650, 13, 13);
-	    g2.setColor(Color.ORANGE);g.drawRect(700, 650, 12, 12);
-	    g2.setColor(Color.RED);g.drawRect(700, 650, 11, 11);
-	    g2.setColor(Color.WHITE);g.drawRect(700, 650, 10, 10);
-	    g2.setColor(Color.MAGENTA);g.drawRect(700, 650, 9, 9);
-	    g2.setColor(Color.BLUE);g.drawRect(700, 650, 8, 8);
-	    g2.setColor(Color.CYAN);g.drawRect(700, 650, 7, 7);
-	    g2.setColor(Color.GREEN);g.drawRect(700, 650, 6, 6);
-	    g2.setColor(Color.YELLOW);g.drawRect(700, 650, 5, 5);
-	    g2.setColor(Color.PINK);g.drawRect(700, 650, 4, 4);
-	    g2.setColor(Color.ORANGE);g.drawRect(700, 650, 3, 3);
-	    g2.setColor(Color.RED);g.drawRect(700, 650, 2, 2);
-	    g2.setColor(Color.WHITE);g.drawRect(700, 650, 1, 1);
+	    g2.setColor(new Color(19,199,15));g.drawRect(700, 650, 90, 90);
+
+	    g2.setColor(new Color(10,90,68));g.drawRect(700, 650, 88, 88);
+
+	    g2.setColor(new Color(173,160,11));g.drawRect(700, 650, 86, 86);
+
+	    g2.setColor(new Color(56,194,169));g.drawRect(700, 650, 84, 84);
+
+	    g2.setColor(new Color(158,224,233));g.drawRect(700, 650, 82, 82);
+
+	    g2.setColor(new Color(220,130,101));g.drawRect(700, 650, 80, 80);
+
+	    g2.setColor(new Color(61,138,200));g.drawRect(700, 650, 78, 78);
+
+	    g2.setColor(new Color(182,120,57));g.drawRect(700, 650, 76, 76);
+
+	    g2.setColor(new Color(137,187,69));g.drawRect(700, 650, 74, 74);
+
+	    g2.setColor(new Color(15,71,43));g.drawRect(700, 650, 72, 72);
+
+	    g2.setColor(new Color(137,99,141));g.drawRect(700, 650, 70, 70);
+
+	    g2.setColor(new Color(236,3,201));g.drawRect(700, 650, 68, 68);
+
+	    g2.setColor(new Color(10,233,171));g.drawRect(700, 650, 66, 66);
+
+	    g2.setColor(new Color(34,50,62));g.drawRect(700, 650, 64, 64);
+
+	    g2.setColor(new Color(72,48,199));g.drawRect(700, 650, 62, 62);
+
+	    g2.setColor(new Color(140,236,191));g.drawRect(700, 650, 60, 60);
+
+	    g2.setColor(new Color(21,253,229));g.drawRect(700, 650, 58, 58);
+
+	    g2.setColor(new Color(17,29,152));g.drawRect(700, 650, 56, 56);
+
+	    g2.setColor(new Color(30,215,162));g.drawRect(700, 650, 54, 54);
+
+	    g2.setColor(new Color(108,0,70));g.drawRect(700, 650, 52, 52);
+
+	    g2.setColor(new Color(101,241,18));g.drawRect(700, 650, 50, 50);
+
+	    g2.setColor(new Color(14,77,151));g.drawRect(700, 650, 48, 48);
+
+	    g2.setColor(new Color(81,251,191));g.drawRect(700, 650, 46, 46);
+
+	    g2.setColor(new Color(5,220,45));g.drawRect(700, 650, 44, 44);
+
+	    g2.setColor(new Color(104,97,115));g.drawRect(700, 650, 42, 42);
+
+	    g2.setColor(new Color(31,187,194));g.drawRect(700, 650, 40, 40);
+
+	    g2.setColor(new Color(9,210,188));g.drawRect(700, 650, 38, 38);
+
+	    g2.setColor(new Color(245,228,96));g.drawRect(700, 650, 36, 36);
+
+	    g2.setColor(new Color(66,13,42));g.drawRect(700, 650, 34, 34);
+
+	    g2.setColor(new Color(150,233,32));g.drawRect(700, 650, 32, 32);
+
+	    g2.setColor(new Color(56,73,79));g.drawRect(700, 650, 30, 30);
+
+	    g2.setColor(new Color(253,111,103));g.drawRect(700, 650, 28, 28);
+
+	    g2.setColor(new Color(217,95,124));g.drawRect(700, 650, 26, 26);
+
+	    g2.setColor(new Color(203,60,223));g.drawRect(700, 650, 24, 24);
+
+	    g2.setColor(new Color(166,45,61));g.drawRect(700, 650, 22, 22);
+
+	    g2.setColor(new Color(56,10,102));g.drawRect(700, 650, 20, 20);
+
+	    g2.setColor(new Color(1,64,133));g.drawRect(700, 650, 18, 18);
+
+	    g2.setColor(new Color(77,50,131));g.drawRect(700, 650, 16, 16);
+
+	    g2.setColor(new Color(211,162,205));g.drawRect(700, 650, 14, 14);
+
+	    g2.setColor(new Color(16,43,43));g.drawRect(700, 650, 12, 12);
+
+	    g2.setColor(new Color(91,149,166));g.drawRect(700, 650, 10, 10);
+
+	    g2.setColor(new Color(125,55,30));g.drawRect(700, 650, 8, 8);
+
+	    g2.setColor(new Color(26,229,11));g.drawRect(700, 650, 6, 6);
+
+	    g2.setColor(new Color(190,156,14));g.drawRect(700, 650, 4, 4);
+
+	    g2.setColor(new Color(156,158,147));g.drawRect(700, 650, 2, 2);
 	    
 	    g2.setColor(Color.cyan);
 	    g2.fillRect(x, y, 50,50);
