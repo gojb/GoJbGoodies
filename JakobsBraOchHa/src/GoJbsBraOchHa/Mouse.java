@@ -264,6 +264,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		HastighetsFönster.setLocationRelativeTo(null);
 		HastighetsFönster.setResizable(false);
 		HastighetsFönster.revalidate();
+		
 
 		KnappPanel.add(knapp1);
 		KnappPanel.add(knapp2);
@@ -372,12 +373,13 @@ public class Mouse extends JPanel implements 	ActionListener,
 		    	JOptionPane.showMessageDialog(null, "Den angivna LookAndFeel hittades inte!","Error",JOptionPane.ERROR_MESSAGE);
 		    }
 		
-		  
 	
+		
 		new Pass();
 		
 	}
 	
+
 	public void Miniräknare(){
 		Räknare.setVisible(true);
 
@@ -4200,9 +4202,7 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 	}
 }
 
-
-@SuppressWarnings("serial")
-class Pass extends JPanel implements ActionListener{
+class Pass implements ActionListener{
 	
 	int x;
 	
@@ -4217,9 +4217,8 @@ class Pass extends JPanel implements ActionListener{
 	    		användareGlenn = new JButton("Glenn");
 	    
 	    private JPanel textPane = new JPanel(new FlowLayout(FlowLayout.TRAILING));
-	    
-	    private JPanel p = new JPanel(new GridLayout(0,1));
 	    private JLabel label = new JLabel("Skriv Lösenord -->");
+	    JButton okButton = new JButton("OK");
 
 	  public void actionPerformed(ActionEvent e) {
 
@@ -4273,43 +4272,35 @@ class Pass extends JPanel implements ActionListener{
 				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 		    	JOptionPane.showMessageDialog(null, "ImageIcon hittades inte","Filfel",JOptionPane.ERROR_MESSAGE);
 			}
-			användare.setIconImage(Mouse.FönsterIcon.getImage());
-			frame.setIconImage(Mouse.FönsterIcon.getImage());
-	   
-	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        
+			
 	        passwordField = new JPasswordField(10);
 	        passwordField.setActionCommand(OK);
 	        passwordField.addActionListener(this);
 
-	        
-	        label.setLabelFor(passwordField);
-	       
-	        JButton okButton = new JButton("OK");
-
 	        okButton.setActionCommand(OK);
 	        okButton.addActionListener(this);
 
-	        p.add(okButton);
 
 	        användare.add(användareJakob);
 	        användare.add(användareGlenn);
-	        
+	        användare.setIconImage(Mouse.FönsterIcon.getImage());
 	        användare.setLayout(new FlowLayout());
-	        
 	        användare.pack();
 	        användare.setLocationRelativeTo(null);
 	        
 	        användareGlenn.addActionListener(this);
 	        användareJakob.addActionListener(this);
-
 	        
 	        textPane.add(label);
 	        textPane.add(passwordField);
-	        frame.add(this);
-	        add(textPane);
-	        add(p);
+	        textPane.add(okButton);
+	        
+	        frame.setIconImage(Mouse.FönsterIcon.getImage());
+	        frame.setLayout(new FlowLayout());
+	        frame.add(textPane);
+	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        frame.pack();
+	        frame.setMinimumSize(frame.getSize());
 	        frame.setVisible(true);
 	        frame.setLocationRelativeTo(null);
 	        
