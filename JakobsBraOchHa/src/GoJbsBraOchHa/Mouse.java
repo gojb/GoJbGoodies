@@ -5,6 +5,8 @@ import java.awt.event.*;
 import java.util.Arrays;
 import java.util.Random;
 
+import javafx.scene.layout.Border;
+
 import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -4327,13 +4329,14 @@ class SkapaFärg extends JPanel implements ActionListener{
 	int xb,xg,xr;
 	
 	JPanel Panel = new JPanel(),
-			panel = new JPanel();
+			panel = new JPanel(),
+			paneliPanel = new JPanel();
 	
 	JSlider r,
 			g,
 			b;
 	
-	Timer timer = new Timer(3, this);
+	Timer timer = new Timer(1, this);
 	
 	Random random = new Random();
 	
@@ -4372,6 +4375,7 @@ class SkapaFärg extends JPanel implements ActionListener{
 	frame.setVisible(true);
 	
 	panel.setLayout(new BorderLayout());
+	Panel.setLayout(new BorderLayout());
 	
 	setOpaque(true);
 	
@@ -4385,12 +4389,22 @@ class SkapaFärg extends JPanel implements ActionListener{
 	frame.add(Panel);
 	frame.pack();
 
-	Panel.add(this);
+	Panel.add(paneliPanel,BorderLayout.CENTER);
+	Panel.add(Box.createRigidArea(new Dimension(25,25)),BorderLayout.NORTH);
+	Panel.add(Box.createRigidArea(new Dimension(25,25)),BorderLayout.SOUTH);
+	Panel.add(Box.createRigidArea(new Dimension(25,25)),BorderLayout.EAST);
+	Panel.add(Box.createRigidArea(new Dimension(25,25)),BorderLayout.WEST);
+	
+	paneliPanel.setBackground(new Color(r.getValue(),g.getValue(), b.getValue()));
+	
+	paneliPanel.setOpaque(true);
+	
+	
 	
 	frame.repaint();
 	frame.setLocationRelativeTo(null);
 	
-	setSize(9999, 9999);
+	timer.start();
 	
 	}
 	
@@ -4398,16 +4412,11 @@ class SkapaFärg extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	
+		if (timer == e.getSource()){
+			paneliPanel.setBackground(new Color(r.getValue(),g.getValue(), b.getValue()));
+		
+		}
 		
 	}
-	public void paint (Graphics g) {
-	    Graphics2D g2 = (Graphics2D) g;
-	    
-	    
-	    g2.setColor(Color.black);
-	    g2.drawRect(25,25,200,250);
-	    
-	   
-	
-	}
 }
+
