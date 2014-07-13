@@ -10,8 +10,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
-import sun.net.www.content.audio.x_aiff;
-
 @SuppressWarnings("serial")
 public class Mouse extends JPanel implements 	ActionListener,
 												MouseInputListener,
