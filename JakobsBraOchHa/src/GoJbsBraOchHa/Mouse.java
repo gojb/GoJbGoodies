@@ -4330,6 +4330,7 @@ class Pass implements ActionListener{
 
 
 	}
+@SuppressWarnings("serial")
 class SkapaFärg extends JPanel implements ActionListener{
 	
 	JFrame frame = new JFrame("Skapa en egen färg");
