@@ -123,10 +123,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 	public Mouse(){
 		
-		
-		  
-		
-		
 		Laddtext.setFont(Typsnitt);
 		Laddtext.setHorizontalAlignment(JLabel.CENTER);
 		
