@@ -2,8 +2,8 @@ package GoJbsBraOchHa;
 
 import java.awt.*;
 import java.awt.datatransfer.*;
-import java.awt.datatransfer.DataFlavor;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -4644,7 +4644,6 @@ class Avsluta implements FocusListener, ActionListener{
 					try {
 						Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -h");
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}	}
 				else if (e.getSource() == b5){
