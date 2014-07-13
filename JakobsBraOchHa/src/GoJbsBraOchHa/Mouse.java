@@ -123,9 +123,14 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 	public Mouse(){
 		
+		
+		
+		String hexColour = Integer.toHexString(Färg.getRGB() & 0xffffff);
+		 hexColour = "000000".substring(0, 6 - hexColour.length()) + hexColour;
+		  System.out.println("#" + hexColour);
+		
 		Laddtext.setFont(Typsnitt);
 		Laddtext.setHorizontalAlignment(JLabel.CENTER);
-		
 		Laddfönster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Laddfönster.setLayout(new BorderLayout(10,10));	
 		Laddfönster.add(LaddstapelStart,BorderLayout.CENTER);
@@ -266,6 +271,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		HastighetsFönster.setLocationRelativeTo(null);
 		HastighetsFönster.setResizable(false);
 		HastighetsFönster.revalidate();
+		
 
 		KnappPanel.add(knapp1);
 		KnappPanel.add(knapp2);
@@ -374,12 +380,13 @@ public class Mouse extends JPanel implements 	ActionListener,
 		    	JOptionPane.showMessageDialog(null, "Den angivna LookAndFeel hittades inte!","Error",JOptionPane.ERROR_MESSAGE);
 		    }
 		
-		  
 	
+		
 		new Pass();
 		
 	}
 	
+
 	public void Miniräknare(){
 		Räknare.setVisible(true);
 
@@ -4204,11 +4211,9 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 	}
 }
 
-
-@SuppressWarnings("serial")
-class Pass extends JPanel implements ActionListener{
+class Pass implements ActionListener{
 	
-	int x;
+		int x;
 	
 	 private static String OK = "What Ever!";
 	 
@@ -4223,27 +4228,25 @@ class Pass extends JPanel implements ActionListener{
 	    JButton användareJakob = new JButton("Jakob"),
 	    		användareGlenn = new JButton("Glenn");
 	    
-	    private JPanel textPane = new JPanel(new FlowLayout(FlowLayout.TRAILING));
-	    
-	    private JPanel p = new JPanel(new GridLayout(0,1));
+//	    private JPanel textPane = new JPanel(new FlowLayout(FlowLayout.TRAILING));
 	    private JLabel label = new JLabel("Skriv Lösenord -->");
+	    JButton okButton = new JButton("OK");
 
 	    
 	  public void actionPerformed(ActionEvent e) {
 
 		  
-	        if (timer == e.getSource() || OK.equals(e.getActionCommand())) { //Process the password.
+	        if (timer == e.getSource()) { //Process the password.
 	            char[] input = passwordField.getPassword();
+	            x++;
 	            if (isPasswordCorrect(input)) {
 	            	frame.dispose();
 	               användare.setVisible(true);
 	               timer.stop();
-	            } else {
-	              
 	            }
 	            
-	            if(x == 5){
-	         
+	            if(x == 5000){
+	            	new Impossible("fel lösenord!");
 	            }
 	        }
 	        
@@ -4284,43 +4287,34 @@ class Pass extends JPanel implements ActionListener{
 				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 		    	JOptionPane.showMessageDialog(null, "ImageIcon hittades inte","Filfel",JOptionPane.ERROR_MESSAGE);
 			}
-			användare.setIconImage(Mouse.FönsterIcon.getImage());
-			frame.setIconImage(Mouse.FönsterIcon.getImage());
-	   
-	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        
+			
 	        passwordField = new JPasswordField(10);
 	        passwordField.setActionCommand(OK);
 	        passwordField.addActionListener(this);
 
-	        
-	        label.setLabelFor(passwordField);
-	       
-	        JButton okButton = new JButton("OK");
-
 	        okButton.setActionCommand(OK);
 	        okButton.addActionListener(this);
 
-	        p.add(okButton);
 
 	        användare.add(användareJakob);
 	        användare.add(användareGlenn);
-	        
+	        användare.setIconImage(Mouse.FönsterIcon.getImage());
 	        användare.setLayout(new FlowLayout());
-	        
 	        användare.pack();
 	        användare.setLocationRelativeTo(null);
 	        
 	        användareGlenn.addActionListener(this);
 	        användareJakob.addActionListener(this);
 
-	        
-	        textPane.add(label);
-	        textPane.add(passwordField);
-	        frame.add(this);
-	        add(textPane);
-	        add(p);
+	        frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
+	        frame.add(Box.createRigidArea(new Dimension(10,10)));
+	        frame.add(label);
+	        frame.add(passwordField);
+	        frame.add(Box.createRigidArea(new Dimension(10,10)));
+	        frame.setIconImage(Mouse.FönsterIcon.getImage());
+	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        frame.pack();
+	        frame.setMinimumSize(frame.getSize());
 	        frame.setVisible(true);
 	        frame.setLocationRelativeTo(null);
 	        timer.start();
@@ -4332,6 +4326,7 @@ class Pass extends JPanel implements ActionListener{
 
 
 	}
+@SuppressWarnings("serial")
 class SkapaFärg extends JPanel implements ActionListener{
 	
 	JFrame frame = new JFrame("Skapa en egen färg");
