@@ -4279,7 +4279,7 @@ class Pass implements ActionListener{
 	 
 	    public Pass() {
 
-	    	
+	    	frame.setUndecorated(true);
 	    	
 			try {
 				Mouse.FönsterIcon = new ImageIcon(getClass().getResource("/images/Java-icon.png"));
@@ -4374,13 +4374,14 @@ class SkapaFärg extends JPanel implements ActionListener{
 		b.setMajorTickSpacing(40);
 		b.setMinorTickSpacing(5);
 	
-	
+	setForeground(Color.blue);
 	
 	frame.setVisible(true);
 	
 	panel.setLayout(new BorderLayout());
 	
-
+	setOpaque(true);
+	
 	frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 	
 	Panel.setPreferredSize(new Dimension(250, 300));
@@ -4395,6 +4396,8 @@ class SkapaFärg extends JPanel implements ActionListener{
 	
 	frame.repaint();
 	frame.setLocationRelativeTo(null);
+	
+	setSize(9999, 9999);
 	
 	}
 	
