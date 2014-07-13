@@ -4210,7 +4210,6 @@ class Pass extends JPanel implements ActionListener{
 	
 	 private static String OK = "What Ever!";
 
-	    private JFrame controllingFrame; //needed for dialogs
 	    private JPasswordField passwordField;
 	    private JFrame användare = new JFrame();
 	    
