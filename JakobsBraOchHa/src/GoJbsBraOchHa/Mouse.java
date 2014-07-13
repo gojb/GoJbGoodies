@@ -4547,31 +4547,22 @@ class SkapaFärg extends JPanel implements ActionListener{
 }
 
 class Avsluta implements FocusListener, ActionListener{
-	
-	
-	
-
-			ImageIcon i1 = new ImageIcon("C:\\Users\\Glenn\\Pictures\\icon.png");
-			ImageIcon i2 = new ImageIcon("C:\\Users\\Glenn\\Pictures\\icon2.png");
-			ImageIcon i3 = new ImageIcon("C:\\Users\\Glenn\\Pictures\\icon3.png");
-			ImageIcon i4 = new ImageIcon("C:\\Users\\Glenn\\Pictures\\icon4.png");
 			
-			JButton b1 = new JButton("Stäng av", i1);
-			JButton b2 = new JButton("Logga ut", i2);
-			JButton b3 = new JButton("Starta om", i3);
-			JButton b4 = new JButton("Viloläge", i4);
-			JButton b5 = new JButton("Kolla");
+			JButton b1 = new JButton("Stäng av", new ImageIcon(getClass().getResource("/images/icon.png")));
+			JButton b2 = new JButton("Logga ut", new ImageIcon(getClass().getResource("/images/icon2.png")));
+			JButton b3 = new JButton("Starta om", new ImageIcon(getClass().getResource("/images/icon3.png")));
+			JButton b4 = new JButton("Viloläge", new ImageIcon(getClass().getResource("/images/icon4.png")));
 			JSlider s1 = new JSlider(JSlider.HORIZONTAL, 0, 100, 10);
-		
-				public Avsluta(){	
 			
 			JFrame f1 = new JFrame("GoJbs Shutdown");
-			JFrame f2 = new JFrame("Ställ in timeout");
+
 			JPanel p1 = new JPanel();
 			JPanel p2 = new JPanel();
+				public Avsluta(){	
+			
+			
 			f1.add(p1);
 			f1.add(p2);
-			p1.setVisible(true);
 			
 			s1.setPaintTicks(true);
 			s1.setPaintLabels(true);
@@ -4579,11 +4570,9 @@ class Avsluta implements FocusListener, ActionListener{
 			s1.setMinorTickSpacing(1);
 
 			
-			f1.setVisible(true);
-//			f2.setVisible(true);
-			f1.setSize(512,512);
-//			f2.setSize(441, 150);
-			f1.setLocationRelativeTo(null);
+			
+			
+			
 			p1.add(b1);
 			p1.add(b2);
 			p1.add(b3);
@@ -4594,16 +4583,15 @@ class Avsluta implements FocusListener, ActionListener{
 			f1.setResizable(true);
 			f1.setAlwaysOnTop(true);
 			f1.setDefaultCloseOperation(3);
-			f2.setDefaultCloseOperation(3);
-			f1.setLayout(new BoxLayout(f1,3));
+//			f1.setLayout(new FlowLayout());
+			p1.setLayout(new GridLayout(2,2));
+			f1.getContentPane().setLayout(new BoxLayout(f1.getContentPane(),BoxLayout.Y_AXIS));
 			
 
-			f2.setLayout(new GridLayout(2,2));
 			b1.addActionListener(this);
 			b2.addActionListener(this);
 			b3.addActionListener(this);
 			b4.addActionListener(this);
-			b5.addActionListener(this);
 			b1.setHorizontalTextPosition(JButton.CENTER);
 			b2.setHorizontalTextPosition(JButton.CENTER);
 			b3.setHorizontalTextPosition(JButton.CENTER);
@@ -4613,7 +4601,12 @@ class Avsluta implements FocusListener, ActionListener{
 			b3.setFont(new Font("Hej", Font.BOLD, 40));
 			b4.setFont(new Font("Hej", Font.BOLD, 40));
 			b1.setToolTipText("Stänger av datorn");
-		}
+			
+			f1.setVisible(true);
+			
+			f1.pack();
+			f1.setLocationRelativeTo(null);
+			}
 			
 
 
@@ -4621,7 +4614,7 @@ class Avsluta implements FocusListener, ActionListener{
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == b1){ 
 					try {
-						Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -s -t " + s1.getValue() + " -c \"hejdå\"");
+						Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -s -t " + s1.getValue() + " -c \"Hejdå\"");
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}System.exit(0);	}
@@ -4636,7 +4629,7 @@ class Avsluta implements FocusListener, ActionListener{
 					}System.exit(0);	}
 				else if (e.getSource() == b3){
 					try {
-						Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -r -t " + s1.getValue() + " -c \"hejdå\"");
+						Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -r -t " + s1.getValue() + " -c \"Hejdå\"");
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}System.exit(0);	}
@@ -4646,9 +4639,7 @@ class Avsluta implements FocusListener, ActionListener{
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}	}
-				else if (e.getSource() == b5){
-					System.out.println("C:\\windows\\system32\\shutdown.exe -s -t " + s1.getValue() + " -c \"hejdå\"");
-				}
+			
 				}
 			@Override
 			public void focusGained(FocusEvent arg0) {
