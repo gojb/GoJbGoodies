@@ -1,6 +1,9 @@
 package GoJbsBraOchHa;
 
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.Arrays;
@@ -10,6 +13,8 @@ import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
+
+import com.sun.xml.internal.messaging.saaj.soap.ver1_1.Envelope1_1Impl;
 
 @SuppressWarnings("serial")
 public class Mouse extends JPanel implements 	ActionListener,
@@ -1375,6 +1380,85 @@ class Studsa extends JPanel implements ActionListener{
 //			frame.repaint();
 //			frame.revalidate();
 //			revalidate();
+		}
+		
+	}
+	
+}
+@SuppressWarnings("serial")
+class Hypnos extends JPanel implements ActionListener{
+	JFrame frame = new JFrame("Studsa");
+	Timer timer = new Timer(1, this),
+			timer2 = new Timer(5, this);
+	Random random = new Random();
+	int x=1,y=1,a=5,b=5,c=2,d=2,r=100,g=255,bl=25;
+	public Hypnos() {
+
+		
+		frame.setSize(500,500);
+		frame.setLocationRelativeTo(null);
+		frame.setIconImage(Mouse.FönsterIcon.getImage());
+		frame.add(this);
+		frame.setUndecorated(true);
+		frame.getContentPane().setBackground(Color.white);
+		frame.setVisible(true);
+		timer.start();
+		timer2.start();
+	}
+	public void paintComponent(Graphics ag){
+//		super.paintComponents(g);
+		Graphics2D g2 = (Graphics2D)ag;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		
+		g2.setColor(Color.BLUE);
+	    g2.fillRect(0, 425, 150, 1000);
+	    
+	    g2.setColor(Color.GREEN);
+	    g2.fill3DRect(1000, 200, 100, 350, false);
+	    
+	    g2.setColor(Color.ORANGE);
+	    g2.fill3DRect(1155, 0, 110, 495, true);
+	    
+	    g2.setColor(Color.MAGENTA);
+	    g2.fillRect(205, 550, 1000, 100);
+	    
+	    g2.setColor(Color.WHITE);
+	    g2.drawRect(700, 650, 90, 90);
+	    
+
+	    
+	    g2.setColor(new Color(233,5,6));
+	    g2.fill3DRect(150, 425, 300, 70, true);
+	   
+	    g2.setColor(Color.BLACK);
+	    g2.setFont(new Font("", Font.ROMAN_BASELINE,20));
+	    for(int i = 90; i > 0; i--){
+			
+			r = random.nextInt(255);
+			g = random.nextInt(255);
+			b = random.nextInt(255);
+			
+		g2.setColor(new Color(r,g,b));
+		g2.drawRect(700, 650, i, i);
+				
+}
+	    
+	    g2.setColor(Color.cyan);
+	    g2.fillRect(x, y, 50,50);
+		
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+
+		if(e.getSource() == timer2){
+		r=random.nextInt(255);
+		g=random.nextInt(255);
+		bl=random.nextInt(255);
+		repaint();
+		}
+		if (e.getSource()==timer) {
+			
+	
 		}
 		
 	}
@@ -4253,20 +4337,36 @@ class Pass implements ActionListener{
 
 		  
 	        if (timer == e.getSource()) { //Process the password.
+	            
+	        	String string = null;
+	            try {
+	            	Toolkit toolkit = Toolkit.getDefaultToolkit();
+	        		Clipboard clipboard = toolkit.getSystemClipboard();
+	        		string = (String) clipboard.getData(DataFlavor.stringFlavor);
+	        		
+				} catch (Exception e1) {
+					e1.printStackTrace();
+					timer.stop();
+				} 
+	            if(string.equals("Uggen0684")){
+ 	             passwordField.setText("Uggen0684");
+ 		               
+ 	            }
 	            char[] input = passwordField.getPassword();
+	            
 	            x++;
+	         
 	            if (isPasswordCorrect(input)) {
 	            	frame.dispose();
 	               användare.setVisible(true);
 	               timer.stop();
 	            }
 	            
+	            
 	            if(x == 4000){
 	            	new Impossible("Tiden gick ut!! Datorn spärrad...");
 	            }
-	            if (input==new char[] {'H','e','j'}) {
-					System.err.println("u");
-				}
+	            
 	        }
 	        
 	        if(e.getSource() == användareJakob){
