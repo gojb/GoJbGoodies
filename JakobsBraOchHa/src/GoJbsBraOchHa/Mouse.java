@@ -10,6 +10,8 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
+import sun.net.www.content.audio.x_aiff;
+
 @SuppressWarnings("serial")
 public class Mouse extends JPanel implements 	ActionListener,
 												MouseInputListener,
@@ -1398,7 +1400,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			Mouse = new JMenuItem("Mouse"),
 			impossible = new JMenuItem("Impossible"),
 			ticTacToe = new JMenuItem("Tic Tac Toe"),
-			lösenord = new JMenuItem("Lösenord");
+			lösenord = new JMenuItem("Lösenord"),
+			färg = new JMenuItem("Skapa färg");
 	JMenuBar bar = new JMenuBar();
 	
 	Robot robot;
@@ -1474,6 +1477,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		ÖppnaProgram.add(impossible);
 		ÖppnaProgram.add(ticTacToe);
 		ÖppnaProgram.add(lösenord);
+		ÖppnaProgram.add(färg);
 		
 		
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
@@ -1492,7 +1496,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		impossible.addActionListener(this);
 		ticTacToe.addActionListener(this);
 		lösenord.addActionListener(this);
-
+		färg.addActionListener(this);
+		
 		timer.addActionListener(this);
 		timer.start();
 		
@@ -1802,6 +1807,12 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			Container contentPane = frame.getContentPane();
 		    contentPane.add(new RörandeMojäng3());
 			
+		}
+		
+		
+		if (arg0.getSource() == färg){
+			new SkapaFärg();
+			frame.dispose();
 		}
 		
 		if (arg0.getSource() == impossible){
@@ -4211,7 +4222,10 @@ class Pass extends JPanel implements ActionListener{
 	int x;
 	
 	 private static String OK = "What Ever!";
-
+	 
+	 
+	 Timer timer = new Timer(1, this);	
+	 
 	    private JPasswordField passwordField;
 	    private JFrame användare = new JFrame();
 	    
@@ -4225,20 +4239,22 @@ class Pass extends JPanel implements ActionListener{
 	    private JPanel p = new JPanel(new GridLayout(0,1));
 	    private JLabel label = new JLabel("Skriv Lösenord -->");
 
+	    
 	  public void actionPerformed(ActionEvent e) {
 
-	        if (OK.equals(e.getActionCommand())) { //Process the password.
+		  
+	        if (timer == e.getSource() || OK.equals(e.getActionCommand())) { //Process the password.
 	            char[] input = passwordField.getPassword();
 	            if (isPasswordCorrect(input)) {
 	            	frame.dispose();
 	               användare.setVisible(true);
+	               timer.stop();
 	            } else {
-	               passwordField.setText(null);
-	               x++;
+	              
 	            }
 	            
 	            if(x == 5){
-	            new Impossible("Fel Lösenord");
+	         
 	            }
 	        }
 	        
@@ -4271,6 +4287,8 @@ class Pass extends JPanel implements ActionListener{
 	 
 	    public Pass() {
 
+	    	
+	    	
 			try {
 				Mouse.FönsterIcon = new ImageIcon(getClass().getResource("/images/Java-icon.png"));
 			} catch (Exception e) {
@@ -4316,6 +4334,7 @@ class Pass extends JPanel implements ActionListener{
 	        frame.pack();
 	        frame.setVisible(true);
 	        frame.setLocationRelativeTo(null);
+	        timer.start();
 	        
 	       
 	       
@@ -4324,4 +4343,53 @@ class Pass extends JPanel implements ActionListener{
 
 
 	}
-
+class SkapaFärg extends JPanel implements ActionListener{
+	
+	JFrame frame = new JFrame("Skapa en egen färg");
+	
+	int xb,xg,xr;
+	
+	JPanel Panel = new JPanel();
+	
+	JSlider r = new JSlider(JSlider.HORIZONTAL,xr,255,1),
+			g = new JSlider(JSlider.HORIZONTAL,xg,255,1),
+			b = new JSlider(JSlider.HORIZONTAL,xb,255,1);
+	
+	Timer timer = new Timer(3, this);
+	
+	Random random = new Random();
+	
+	
+	
+	public  SkapaFärg() {
+	
+		
+		xr = random.nextInt(255);
+		xg = random.nextInt(255);
+		xb = random.nextInt(255);
+		
+	frame.setSize(700, 500);
+	frame.setLocationRelativeTo(null);
+	
+	frame.setVisible(true);
+	
+	frame.setLayout(new BorderLayout());
+	
+	frame.add(r,BorderLayout.NORTH);
+	frame.add(g,BorderLayout.CENTER);
+	frame.add(b,BorderLayout.SOUTH);
+	frame.add(Panel);
+	
+	
+	}
+	
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	
+		
+	}
+	
+	
+	
+}
