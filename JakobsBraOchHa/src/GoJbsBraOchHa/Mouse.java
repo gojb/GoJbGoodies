@@ -4483,151 +4483,160 @@ class SkapaFärg extends JPanel implements ActionListener{
 		b.setMajorTickSpacing(40);
 		b.setMinorTickSpacing(5);
 	
-	setForeground(Color.blue);
-	
-	frame.setVisible(true);
-	
-	panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-	Panel.setLayout(new BorderLayout());
-	
-	setOpaque(true);
-	
-	frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
-	
-	red.setFont(new Font("luyya",Font.BOLD,40));
-	green.setFont(new Font("luyya",Font.BOLD,40));
-	blue.setFont(new Font("luyya",Font.BOLD,40));
-	
-	red.setForeground(Color.red);
-	green.setForeground(Color.green);
-	blue.setForeground(Color.blue);
-	
-	
-	Panel.setPreferredSize(new Dimension(250, 300));
-
-	panel.add(red);
-	panel.add(r);
-	panel.add(green);
-	panel.add(g);
-	panel.add(blue);
-	panel.add(b);
-	frame.add(panel);
-	frame.add(Panel);
-	frame.pack();
-
-	Panel.add(paneliPanel,BorderLayout.CENTER);
-	Panel.add(Box.createRigidArea(new Dimension(25,25)),BorderLayout.NORTH);
-	Panel.add(Box.createRigidArea(new Dimension(25,25)),BorderLayout.SOUTH);
-	Panel.add(Box.createRigidArea(new Dimension(25,25)),BorderLayout.EAST);
-	Panel.add(Box.createRigidArea(new Dimension(25,25)),BorderLayout.WEST);
-	
-	paneliPanel.setBackground(new Color(r.getValue(),g.getValue(), b.getValue()));
-	
-	paneliPanel.setOpaque(true);
-	
-	
-	
-	frame.repaint();
-	frame.setLocationRelativeTo(null);
-	
-	timer.start();
-	
-	}
-	
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	
-		if (timer == e.getSource()){
-			paneliPanel.setBackground(new Color(r.getValue(),g.getValue(), b.getValue()));
+		setForeground(Color.blue);
 		
-		}	
+		frame.setVisible(true);
+		
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		Panel.setLayout(new BorderLayout());
+		
+		setOpaque(true);
+		
+		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
+		
+		red.setFont(new Font("luyya",Font.BOLD,40));
+		green.setFont(new Font("luyya",Font.BOLD,40));
+		blue.setFont(new Font("luyya",Font.BOLD,40));
+		
+		red.setForeground(Color.red);
+		green.setForeground(Color.green);
+		blue.setForeground(Color.blue);
+		
+		
+		Panel.setPreferredSize(new Dimension(250, 300));
+		
+		panel.add(red);
+		panel.add(r);
+		panel.add(green);
+		panel.add(g);
+		panel.add(blue);
+		panel.add(b);
+		frame.add(panel);
+		frame.add(Panel);
+		frame.pack();
+		
+		Panel.add(paneliPanel,BorderLayout.CENTER);
+		Panel.add(Box.createRigidArea(new Dimension(25,25)),BorderLayout.NORTH);
+		Panel.add(Box.createRigidArea(new Dimension(25,25)),BorderLayout.SOUTH);
+		Panel.add(Box.createRigidArea(new Dimension(25,25)),BorderLayout.EAST);
+		Panel.add(Box.createRigidArea(new Dimension(25,25)),BorderLayout.WEST);
+		
+		paneliPanel.setBackground(new Color(r.getValue(),g.getValue(), b.getValue()));
+		
+		paneliPanel.setOpaque(true);
+		
+		
+		
+		frame.repaint();
+		frame.setLocationRelativeTo(null);
+		
+		timer.start();
+	
+		}
+	
+	
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		
+			if (timer == e.getSource()){
+				paneliPanel.setBackground(new Color(r.getValue(),g.getValue(), b.getValue()));
+			
+			}	
 	}
 }
 
 class Avsluta implements ActionListener{
 			
-			JButton b1 = new JButton("Stäng av", new ImageIcon(getClass().getResource("/images/icon.png")));
-			JButton b2 = new JButton("Logga ut", new ImageIcon(getClass().getResource("/images/icon2.png")));
-			JButton b3 = new JButton("Starta om", new ImageIcon(getClass().getResource("/images/icon3.png")));
-			JButton b4 = new JButton("Viloläge", new ImageIcon(getClass().getResource("/images/icon4.png")));
-			JSlider s1 = new JSlider(JSlider.HORIZONTAL, 0, 100, 10);
-			
-			JFrame f1 = new JFrame("GoJbs Shutdown");
+	JButton b1 = new JButton("Stäng av", new ImageIcon(getClass().getResource("/images/icon.png")));
+	JButton b2 = new JButton("Logga ut", new ImageIcon(getClass().getResource("/images/icon2.png")));
+	JButton b3 = new JButton("Starta om", new ImageIcon(getClass().getResource("/images/icon3.png")));
+	JButton b4 = new JButton("Viloläge", new ImageIcon(getClass().getResource("/images/icon4.png")));
+	JSlider s1 = new JSlider(JSlider.HORIZONTAL, 0, 100, 10);
+	
+	JFrame f1 = new JFrame("GoJbs Shutdown");
 
-			JPanel p1 = new JPanel();
-			JPanel p2 = new JPanel();
-				public Avsluta(){	
-			
-			
-			f1.add(p1);
-			f1.add(p2);
-			
-			s1.setPaintTicks(true);
-			s1.setPaintLabels(true);
-			s1.setMajorTickSpacing(10);
-			s1.setMinorTickSpacing(1);
+	JPanel p1 = new JPanel();
+		
+	public Avsluta(){	
+		
+	
+		
+		
+		s1.setPaintTicks(true);
+		s1.setPaintLabels(true);
+		s1.setMajorTickSpacing(10);
+		s1.setMinorTickSpacing(1);
+		
+		p1.setLayout(new GridLayout(2,2));
+		p1.add(b1);
+		p1.add(b2);
+		p1.add(b3);
+		p1.add(b4);
+		
+		
 
-			p1.add(b1);
-			p1.add(b2);
-			p1.add(b3);
-			p1.add(b4);
-			f1.add(s1);
-			
-			f1.setResizable(true);
-			f1.setAlwaysOnTop(true);
-			f1.setDefaultCloseOperation(3);
-			p1.setLayout(new GridLayout(2,2));
-			f1.getContentPane().setLayout(new BoxLayout(f1.getContentPane(),BoxLayout.Y_AXIS));
+		b1.addActionListener(this);
+		b2.addActionListener(this);
+		b3.addActionListener(this);
+		b4.addActionListener(this);
+		
+		b1.setHorizontalTextPosition(JButton.CENTER);
+		b2.setHorizontalTextPosition(JButton.CENTER);
+		b3.setHorizontalTextPosition(JButton.CENTER);
+		b4.setHorizontalTextPosition(JButton.CENTER);
+		
+		b1.setFont(new Font("Hej", Font.BOLD, 40));
+		b2.setFont(new Font("Hej", Font.BOLD, 40));
+		b3.setFont(new Font("Hej", Font.BOLD, 40));
+		b4.setFont(new Font("Hej", Font.BOLD, 40));
+		
+		b1.setToolTipText("Stänger av datorn");
+		
+		f1.add(p1);
+		f1.add(s1);
+		f1.setResizable(true);
+		f1.setAlwaysOnTop(true);
+		f1.setDefaultCloseOperation(3);
+		f1.getContentPane().setLayout(new BoxLayout(f1.getContentPane(),BoxLayout.Y_AXIS));
+		f1.setVisible(true);
+		f1.pack();
+		f1.setLocationRelativeTo(null);
+		}
 
-			b1.addActionListener(this);
-			b2.addActionListener(this);
-			b3.addActionListener(this);
-			b4.addActionListener(this);
-			b1.setHorizontalTextPosition(JButton.CENTER);
-			b2.setHorizontalTextPosition(JButton.CENTER);
-			b3.setHorizontalTextPosition(JButton.CENTER);
-			b4.setHorizontalTextPosition(JButton.CENTER);
-			b1.setFont(new Font("Hej", Font.BOLD, 40));
-			b2.setFont(new Font("Hej", Font.BOLD, 40));
-			b3.setFont(new Font("Hej", Font.BOLD, 40));
-			b4.setFont(new Font("Hej", Font.BOLD, 40));
-			b1.setToolTipText("Stänger av datorn");
-			
-			f1.setVisible(true);
-			
-			f1.pack();
-			f1.setLocationRelativeTo(null);
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == b1){ 
+			try {
+				Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -s -t " + s1.getValue() + " -c \"Hejdå\"");
+			} catch (IOException e1) {
+				e1.printStackTrace();
 			}
+			System.exit(0);	
+		}
+				
+		else if (e.getSource() == b2){
+					
+			try {
+				Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -l");
+			} catch (IOException e1) {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == b1){ 
-					try {
-						Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -s -t " + s1.getValue() + " -c \"Hejdå\"");
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}System.exit(0);	}
-						
-				else if (e.getSource() == b2){
-							
-					try {
-						Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -l");
-					} catch (IOException e1) {
-
-						e1.printStackTrace();
-					}System.exit(0);	}
-				else if (e.getSource() == b3){
-					try {
-						Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -r -t " + s1.getValue() + " -c \"Hejdå\"");
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}System.exit(0);	}
-				else if (e.getSource() == b4){
-					try {
-						Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -h");
-					} catch (IOException e1) {
-						e1.printStackTrace();
+				e1.printStackTrace();
+			}
+			System.exit(0);	
+		}
+		else if (e.getSource() == b3){
+			try {
+				Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -r -t " + s1.getValue() + " -c \"Hejdå\"");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			System.exit(0);	
+		}
+		else if (e.getSource() == b4){
+			try {
+				Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -h");
+			} catch (IOException e1) {
+				e1.printStackTrace();
 			}
 		}	
 	}
