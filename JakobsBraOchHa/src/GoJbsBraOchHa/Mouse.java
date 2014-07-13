@@ -1386,7 +1386,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 	JFrame frame = new JFrame("Det här är försök  " + qq),
 		 Vinst = new JFrame("Grattis!");
  	
- 	Timer timer = new Timer(1000, this);
+ 	Timer timer = new Timer(1, this);
  
  	JLabel textlabel = new JLabel();
  
@@ -1451,9 +1451,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			textruta.setText("Grattis! Du vann \nefter " + qq + " försök! :D");
 			textruta.setEditable(false);
 			
-			frame.add(textlabel);
-			
-			textlabel.setLocation(400, 200);
 			textlabel.setOpaque(false);
 			
 			
@@ -1470,6 +1467,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		bar.add(menu);
 		bar.add(menu2);
 		bar.add(menu1);
+		
 		 Container contentPane = frame.getContentPane();
 		    contentPane.add(new RörandeMojäng3());
 		
@@ -1792,6 +1790,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		  
 	
 		if (arg0.getSource() == timer){
+			 Container contentPane = frame.getContentPane();
+			    contentPane.add(new RörandeMojäng3());
 			if (frame.isVisible() == false){
 				timer.stop();
 			}
@@ -1964,7 +1964,7 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 
 	
 	public void actionPerformed(ActionEvent arg0) {
-		//  
+	
 		
 	}
 	
@@ -2987,8 +2987,8 @@ class Pong extends JPanel implements ActionListener{
 				b=0;
 			}
 			
-			y = y + a+c;
-			x = x + b+c;
+			y = y + a;
+			x = x + b;
 			
 			frame.repaint();
 			if (y+72 == frame.getHeight()){
@@ -4333,6 +4333,10 @@ class SkapaFärg extends JPanel implements ActionListener{
 			panel = new JPanel(),
 			paneliPanel = new JPanel();
 	
+	JLabel red = new JLabel("Red"),
+			green = new JLabel("Green"),
+			blue = new JLabel("Blue");
+	
 	JSlider r,
 			g,
 			b;
@@ -4350,6 +4354,8 @@ class SkapaFärg extends JPanel implements ActionListener{
 		xg = random.nextInt(255);
 		xb = random.nextInt(255);
 		
+		
+		
 		r = new JSlider(JSlider.HORIZONTAL,0,255,xr);
 		g = new JSlider(JSlider.HORIZONTAL,0,255,xg);
 		b = new JSlider(JSlider.HORIZONTAL,0,255,xb);
@@ -4360,6 +4366,7 @@ class SkapaFärg extends JPanel implements ActionListener{
 		r.setPaintLabels(true);
 		r.setMajorTickSpacing(40);
 		r.setMinorTickSpacing(5);
+	
 		
 		g.setPaintTicks(true);
 		g.setPaintLabels(true);
@@ -4375,17 +4382,30 @@ class SkapaFärg extends JPanel implements ActionListener{
 	
 	frame.setVisible(true);
 	
-	panel.setLayout(new BorderLayout());
+	panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 	Panel.setLayout(new BorderLayout());
 	
 	setOpaque(true);
 	
 	frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 	
+	red.setFont(new Font("luyya",Font.BOLD,40));
+	green.setFont(new Font("luyya",Font.BOLD,40));
+	blue.setFont(new Font("luyya",Font.BOLD,40));
+	
+	red.setForeground(Color.red);
+	green.setForeground(Color.green);
+	blue.setForeground(Color.blue);
+	
+	
 	Panel.setPreferredSize(new Dimension(250, 300));
-	panel.add(r,BorderLayout.NORTH);
-	panel.add(g,BorderLayout.CENTER);
-	panel.add(b,BorderLayout.SOUTH);
+
+	panel.add(red);
+	panel.add(r);
+	panel.add(green);
+	panel.add(g);
+	panel.add(blue);
+	panel.add(b);
 	frame.add(panel);
 	frame.add(Panel);
 	frame.pack();
