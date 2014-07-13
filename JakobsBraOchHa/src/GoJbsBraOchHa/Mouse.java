@@ -378,8 +378,20 @@ public class Mouse extends JPanel implements 	ActionListener,
 		    	JOptionPane.showMessageDialog(null, "Den angivna LookAndFeel hittades inte!","Error",JOptionPane.ERROR_MESSAGE);
 		    }
 		
-	
+		class setImageIcon{
+				public setImageIcon() {
+				
+					try {
+					FönsterIcon = new ImageIcon(getClass().getResource("/images/Java-icon.png"));
+					} catch (Exception e) {
+					((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+			    	JOptionPane.showMessageDialog(null, "ImageIcon hittades inte","Filfel",JOptionPane.ERROR_MESSAGE);
+					}
+				
+					}
+					}
 		
+		new setImageIcon();
 		new Pass();
 		
 	}
@@ -4243,6 +4255,9 @@ class Pass implements ActionListener{
 	            if(x == 4000){
 	            	new Impossible("Tiden gick ut!! Datorn spärrad...");
 	            }
+	            if (input==new char[] {'H','e','j'}) {
+					System.err.println("u");
+				}
 	        }
 	        
 	        if(e.getSource() == användareJakob){
@@ -4267,22 +4282,12 @@ class Pass implements ActionListener{
 	            
 	        }
 
-
 	        return isCorrect;
 	    }
 
 	 
 	    public Pass() {
-
-	    	frame.setUndecorated(true);
 	    	
-			try {
-				Mouse.FönsterIcon = new ImageIcon(getClass().getResource("/images/Java-icon.png"));
-			} catch (Exception e) {
-				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-		    	JOptionPane.showMessageDialog(null, "ImageIcon hittades inte","Filfel",JOptionPane.ERROR_MESSAGE);
-			}
-			
 	        passwordField = new JPasswordField(10);
 	        passwordField.setActionCommand(OK);
 	        passwordField.addActionListener(this);
@@ -4296,12 +4301,12 @@ class Pass implements ActionListener{
 	        
 	        användareGlenn.addActionListener(this);
 	        användareJakob.addActionListener(this);
-
+	        
+	    	frame.setUndecorated(true);
+	    	frame.setAlwaysOnTop(true);
 	        frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
-	        frame.add(Box.createRigidArea(new Dimension(10,10)));
 	        frame.add(label);
 	        frame.add(passwordField);
-	        frame.add(Box.createRigidArea(new Dimension(10,10)));
 	        frame.setIconImage(Mouse.FönsterIcon.getImage());
 	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        frame.pack();
