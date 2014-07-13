@@ -4627,7 +4627,6 @@ class Avsluta implements ActionListener{
 					try {
 						Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -h");
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 			}
 		}	
