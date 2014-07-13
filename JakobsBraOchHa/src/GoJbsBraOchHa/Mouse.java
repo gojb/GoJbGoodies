@@ -4213,33 +4213,16 @@ class Pass extends JPanel implements ActionListener{
 	    private JPasswordField passwordField;
 	    private JFrame användare = new JFrame();
 	    
-	    JFrame frame = new JFrame("Verifiera dig!");
+	    private JFrame frame = new JFrame("Verifiera dig!");
 	    
 	    JButton användareJakob = new JButton("Jakob"),
 	    		användareGlenn = new JButton("Glenn");
-	
-	protected JComponent createButtonPanel() {
-       JPanel p = new JPanel(new GridLayout(0,1));
-       JButton okButton = new JButton("OK");
+	    
+	    private JPanel textPane = new JPanel(new FlowLayout(FlowLayout.TRAILING));
+	    
+	    private JPanel p = new JPanel(new GridLayout(0,1));
+	    private JLabel label = new JLabel("Skriv Lösenord -->");
 
-       okButton.setActionCommand(OK);
-       okButton.addActionListener(this);
-
-       p.add(okButton);
-
-       användare.add(användareJakob);
-       användare.add(användareGlenn);
-       
-       användare.setLayout(new FlowLayout());
-       
-       användare.pack();
-       användare.setLocationRelativeTo(null);
-       
-       användareGlenn.addActionListener(this);
-       användareJakob.addActionListener(this);
-       
-       return p;
-   }
 	  public void actionPerformed(ActionEvent e) {
 
 	        if (OK.equals(e.getActionCommand())) { //Process the password.
@@ -4292,28 +4275,42 @@ class Pass extends JPanel implements ActionListener{
 				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 		    	JOptionPane.showMessageDialog(null, "ImageIcon hittades inte","Filfel",JOptionPane.ERROR_MESSAGE);
 			}
-			
+			användare.setIconImage(Mouse.FönsterIcon.getImage());
 			frame.setIconImage(Mouse.FönsterIcon.getImage());
-	        //Create and set up the window.
-	       
+	   
 	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        
 	        passwordField = new JPasswordField(10);
 	        passwordField.setActionCommand(OK);
 	        passwordField.addActionListener(this);
 
-	        JLabel label = new JLabel("Skriv Lösenord -->");
+	        
 	        label.setLabelFor(passwordField);
+	       
+	        JButton okButton = new JButton("OK");
 
-	        JComponent buttonPane = createButtonPanel();
+	        okButton.setActionCommand(OK);
+	        okButton.addActionListener(this);
 
-	        //Lay out everything.
-	        JPanel textPane = new JPanel(new FlowLayout(FlowLayout.TRAILING));
+	        p.add(okButton);
+
+	        användare.add(användareJakob);
+	        användare.add(användareGlenn);
+	        
+	        användare.setLayout(new FlowLayout());
+	        
+	        användare.pack();
+	        användare.setLocationRelativeTo(null);
+	        
+	        användareGlenn.addActionListener(this);
+	        användareJakob.addActionListener(this);
+
+	        
 	        textPane.add(label);
 	        textPane.add(passwordField);
 	        frame.add(this);
 	        add(textPane);
-	        add(buttonPane);
+	        add(p);
 	        frame.pack();
 	        frame.setVisible(true);
 	        frame.setLocationRelativeTo(null);
