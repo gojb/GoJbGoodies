@@ -1,7 +1,6 @@
 package GoJbsBraOchHa;
 
 import java.awt.*;
-import java.awt.geom.*;
 import java.awt.event.*;
 import java.util.Arrays;
 import java.util.Random;
@@ -10,8 +9,6 @@ import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
-
-import com.sun.javafx.geom.Arc2D;
 
 @SuppressWarnings("serial")
 public class Mouse extends JPanel implements 	ActionListener,
@@ -1926,7 +1923,7 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 	    g2.setColor(Color.WHITE);
 	    gr.drawRect(700, 650, 90, 90);
 	    
-	    Arc2D.Double(5.6, 5.7, 30.1, 3.0, 90.0, -180.0);
+
 	    
 	    g2.setColor(new Color(233,5,6));
 	    g2.fill3DRect(150, 425, 300, 70, true);
