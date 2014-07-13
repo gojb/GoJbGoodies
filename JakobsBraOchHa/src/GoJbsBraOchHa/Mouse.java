@@ -4573,8 +4573,6 @@ class Avsluta implements ActionListener{
 		p1.add(b3);
 		p1.add(b4);
 		
-		
-
 		b1.addActionListener(this);
 		b2.addActionListener(this);
 		b3.addActionListener(this);
