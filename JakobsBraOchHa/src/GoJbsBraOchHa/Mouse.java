@@ -3592,7 +3592,6 @@ KeyListener, MouseInputListener{
 		
 		if(frame.isVisible() == true){
 			robot.mouseMove(960, 515);
-
 			
 			
 	}
@@ -4228,9 +4227,7 @@ class Pass implements ActionListener{
 	    JButton användareJakob = new JButton("Jakob"),
 	    		användareGlenn = new JButton("Glenn");
 	    
-//	    private JPanel textPane = new JPanel(new FlowLayout(FlowLayout.TRAILING));
 	    private JLabel label = new JLabel("Skriv Lösenord -->");
-	    JButton okButton = new JButton("OK");
 
 	    
 	  public void actionPerformed(ActionEvent e) {
@@ -4245,8 +4242,8 @@ class Pass implements ActionListener{
 	               timer.stop();
 	            }
 	            
-	            if(x == 5000){
-	            	new Impossible("fel lösenord!");
+	            if(x == 4000){
+	            	new Impossible("Tiden gick ut!! Datorn spärrad...");
 	            }
 	        }
 	        
@@ -4291,11 +4288,7 @@ class Pass implements ActionListener{
 	        passwordField = new JPasswordField(10);
 	        passwordField.setActionCommand(OK);
 	        passwordField.addActionListener(this);
-
-	        okButton.setActionCommand(OK);
-	        okButton.addActionListener(this);
-
-
+	        
 	        användare.add(användareJakob);
 	        användare.add(användareGlenn);
 	        användare.setIconImage(Mouse.FönsterIcon.getImage());
