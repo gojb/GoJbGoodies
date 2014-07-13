@@ -1,11 +1,9 @@
 package GoJbsBraOchHa;
 
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.*;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.*;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -13,8 +11,6 @@ import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
-
-import com.sun.xml.internal.messaging.saaj.soap.ver1_1.Envelope1_1Impl;
 
 @SuppressWarnings("serial")
 public class Mouse extends JPanel implements 	ActionListener,
