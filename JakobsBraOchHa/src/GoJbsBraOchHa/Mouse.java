@@ -1779,14 +1779,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 				timer.stop();
 			}
 	
-			try {
-				clip = AudioSystem.getClip();
-			     clip.open(AudioSystem.getAudioInputStream(getClass().getResource("/images/explosion.aiff")));
-			     clip.start();
-			} catch (Exception ex) {
-				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-				JOptionPane.showMessageDialog(null, "Filen hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
-			}
+			
 			
 		}
 		
@@ -4345,17 +4338,18 @@ class SkapaFärg extends JPanel implements ActionListener{
 	
 	int xb,xg,xr;
 	
-	JPanel Panel = new JPanel();
+	JPanel Panel = new JPanel(),
+			panel = new JPanel();
 	
-	JSlider r = new JSlider(JSlider.HORIZONTAL,xr,255,1),
-			g = new JSlider(JSlider.HORIZONTAL,xg,255,1),
-			b = new JSlider(JSlider.HORIZONTAL,xb,255,1);
+	JSlider r,
+			g,
+			b;
 	
 	Timer timer = new Timer(3, this);
 	
 	Random random = new Random();
 	
-	
+	Color y;
 	
 	public  SkapaFärg() {
 	
@@ -4364,18 +4358,48 @@ class SkapaFärg extends JPanel implements ActionListener{
 		xg = random.nextInt(255);
 		xb = random.nextInt(255);
 		
-	frame.setSize(700, 500);
-	frame.setLocationRelativeTo(null);
+		r = new JSlider(JSlider.HORIZONTAL,0,255,xr);
+		g = new JSlider(JSlider.HORIZONTAL,0,255,xg);
+		b = new JSlider(JSlider.HORIZONTAL,0,255,xb);
+		
+		y = new Color(22,123,213);
+		
+		r.setPaintTicks(true);
+		r.setPaintLabels(true);
+		r.setMajorTickSpacing(40);
+		r.setMinorTickSpacing(5);
+		
+		g.setPaintTicks(true);
+		g.setPaintLabels(true);
+		g.setMajorTickSpacing(40);
+		g.setMinorTickSpacing(5);
+		
+		b.setPaintTicks(true);
+		b.setPaintLabels(true);
+		b.setMajorTickSpacing(40);
+		b.setMinorTickSpacing(5);
+	
+	
 	
 	frame.setVisible(true);
 	
-	frame.setLayout(new BorderLayout());
+	panel.setLayout(new BorderLayout());
 	
-	frame.add(r,BorderLayout.NORTH);
-	frame.add(g,BorderLayout.CENTER);
-	frame.add(b,BorderLayout.SOUTH);
+
+	frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
+	
+	Panel.setPreferredSize(new Dimension(250, 300));
+	panel.add(r,BorderLayout.NORTH);
+	panel.add(g,BorderLayout.CENTER);
+	panel.add(b,BorderLayout.SOUTH);
+	frame.add(panel);
 	frame.add(Panel);
+	frame.pack();
+
+	Panel.add(this);
 	
+	frame.repaint();
+	frame.setLocationRelativeTo(null);
 	
 	}
 	
@@ -4385,7 +4409,14 @@ class SkapaFärg extends JPanel implements ActionListener{
 	
 		
 	}
+	public void paint (Graphics g) {
+	    Graphics2D g2 = (Graphics2D) g;
+	    
+	    
+	    g2.setColor(Color.black);
+	    g2.drawRect(25,25,200,250);
+	    
+	   
 	
-	
-	
+	}
 }
