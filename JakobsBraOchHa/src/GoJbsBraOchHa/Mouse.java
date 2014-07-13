@@ -4541,12 +4541,11 @@ class SkapaFärg extends JPanel implements ActionListener{
 		if (timer == e.getSource()){
 			paneliPanel.setBackground(new Color(r.getValue(),g.getValue(), b.getValue()));
 		
-		}
-		
+		}	
 	}
 }
 
-class Avsluta implements FocusListener, ActionListener{
+class Avsluta implements ActionListener{
 			
 			JButton b1 = new JButton("Stäng av", new ImageIcon(getClass().getResource("/images/icon.png")));
 			JButton b2 = new JButton("Logga ut", new ImageIcon(getClass().getResource("/images/icon2.png")));
@@ -4569,24 +4568,17 @@ class Avsluta implements FocusListener, ActionListener{
 			s1.setMajorTickSpacing(10);
 			s1.setMinorTickSpacing(1);
 
-			
-			
-			
-			
 			p1.add(b1);
 			p1.add(b2);
 			p1.add(b3);
 			p1.add(b4);
 			f1.add(s1);
 			
-			f1.addFocusListener(this);
 			f1.setResizable(true);
 			f1.setAlwaysOnTop(true);
 			f1.setDefaultCloseOperation(3);
-//			f1.setLayout(new FlowLayout());
 			p1.setLayout(new GridLayout(2,2));
 			f1.getContentPane().setLayout(new BoxLayout(f1.getContentPane(),BoxLayout.Y_AXIS));
-			
 
 			b1.addActionListener(this);
 			b2.addActionListener(this);
@@ -4607,8 +4599,6 @@ class Avsluta implements FocusListener, ActionListener{
 			f1.pack();
 			f1.setLocationRelativeTo(null);
 			}
-			
-
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -4639,20 +4629,7 @@ class Avsluta implements FocusListener, ActionListener{
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
-					}	}
-			
-				}
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				
 			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-//				System.exit(0);
-			} 		
-				
-
-
-
-	
+		}	
+	}
 }
