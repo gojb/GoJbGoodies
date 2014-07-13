@@ -4348,17 +4348,17 @@ class Pass implements ActionListener{
  	             passwordField.setText("Uggen0684");
  		               
  	            }
+	            
 	            char[] input = passwordField.getPassword();
+	            char[] correctPassword = { 'U','g','g','e','n','0','6','8','4'};
+	            
+	            if (Arrays.equals (input, correctPassword)) {
+	            	frame.dispose();
+		              användare.setVisible(true);
+		              timer.stop();
+				}
 	            
 	            x++;
-	         
-	            if (isPasswordCorrect(input)) {
-	            	frame.dispose();
-	               användare.setVisible(true);
-	               timer.stop();
-	            }
-	            
-	            
 	            if(x == 4000){
 	            	new Impossible("Tiden gick ut!! Datorn spärrad...");
 	            }
@@ -4375,21 +4375,6 @@ class Pass implements ActionListener{
 	        }
 	        
 	    }
-
-	    private static boolean isPasswordCorrect(char[] input) {
-	        boolean isCorrect = true;
-	        char[] correctPassword = { 'U','g','g','e','n','0','6','8','4'};
-
-	        if (input.length != correctPassword.length) {
-	            isCorrect = false;
-	        } else {
-	            isCorrect = Arrays.equals (input, correctPassword);
-	            
-	        }
-
-	        return isCorrect;
-	    }
-
 	 
 	    public Pass() {
 	    	
