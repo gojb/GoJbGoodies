@@ -5,8 +5,6 @@ import java.awt.event.*;
 import java.util.Arrays;
 import java.util.Random;
 
-import javafx.scene.layout.Border;
-
 import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.event.*;
