@@ -287,7 +287,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		om.setLocationRelativeTo(HuvudFönster);
 		
 		HuvudFönster.setJMenuBar(MenyRad);
-		HuvudFönster.setSize(Double.toToolkit.getDefaultToolkit().getScreenSize().getWidth()/2,Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2);
+		HuvudFönster.setSize((int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2),(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2*1.5));
 		HuvudFönster.setLayout(new BorderLayout());
 		HuvudFönster.setMinimumSize(new Dimension(400,400));
 		HuvudFönster.addKeyListener(this);
