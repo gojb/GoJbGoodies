@@ -4341,7 +4341,7 @@ class Pass implements ActionListener{
 	        		string = (String) clipboard.getData(DataFlavor.stringFlavor);
 	        		
 				} catch (Exception e1) {
-					e1.printStackTrace();
+					System.err.println("we");
 					
 				} 
 	            if(string.equals("Uggen0684")){
