@@ -3,7 +3,6 @@ package GoJbsBraOchHa;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -281,7 +280,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		omtext.setVerticalTextPosition(1);
 		omtext.setFont(Typsnitt);
 		omtext.addMouseListener(this);
-		om.setSize(300,300);
+		om.setSize(400,300);
 		om.add(omtext);
 		om.setIconImage(FönsterIcon.getImage());
 		om.setLocationRelativeTo(HuvudFönster);
@@ -1871,11 +1870,12 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 
 	
 	public void actionPerformed(ActionEvent arg0) {
-		  
+		 
 	
 		if (arg0.getSource() == timer){
 			 Container contentPane = frame.getContentPane();
 			    contentPane.add(new RörandeMojäng3());
+			   
 			if (frame.isVisible() == false){
 				timer.stop();
 			}
@@ -2008,7 +2008,7 @@ class RörandeMojäng2 extends JPanel implements ActionListener {
 //}
 
 class RörandeMojäng3 extends JPanel implements ActionListener {
-	
+	int[] röd=new int[91],grön=new int[91],blå=new int[91];
 	public void paint (Graphics gr) {
 	    Graphics2D g2 = (Graphics2D) gr;
 	    
@@ -2037,15 +2037,44 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 	    g2.setColor(Color.BLACK);
 	    g2.setFont(new Font("", Font.ROMAN_BASELINE,20));
 	    g2.drawString("Dra genom labyrinten till den \nfärgglada kvadraten för att vinna.\n Lycka till! :D", 300, 150);
-	    for(int i = 90; i > 0; i--){
+
+		//	    for(int i = 90; i > 0; i--){
+//			
+//			r = random.nextInt(255);
+//			g = random.nextInt(255);
+//			b = random.nextInt(255);
+//			
+//		g2.setColor(new Color(r,g,b));
+//		gr.drawRect(700, 650, i, i);
+//				
+//}
+	    röd[röd.length-1] = random.nextInt(255);
+		grön[röd.length-1] = random.nextInt(255);
+		blå[röd.length-1] = random.nextInt(255);
+		
+		for (int i = 1; i <= röd.length-2; i++) {
+			röd[i] = röd[i+1];
+			grön[i] = grön[i+1];
+			blå[i] = blå[i+1];
+		
+		}
+		boolean h = true;
+		int e=700,s=650;
+		for (int i = röd.length-2; i >= 1; i--) {
+
+			if (h) {
+				h=false;
+						
+						g2.setColor(new Color(röd[i],grön[i],blå[i]));
+						g2.drawRect(e, s, i, i);
+						e++;
+						s++;
+			}
+			else h=true;
 			
-			r = random.nextInt(255);
-			g = random.nextInt(255);
-			b = random.nextInt(255);
-			
-		g2.setColor(new Color(r,g,b));gr.drawRect(700, 650, i, i);
-				
-}
+
+
+		}
 	    
 	    g2.setColor(Color.cyan);
 	    g2.fillRect(x, y, 50,50);
@@ -4345,7 +4374,6 @@ class Pass implements ActionListener{
 	    	            }
 	        		
 				} catch (Exception e1) {
-					System.err.println("we");
 					
 				} 
 	            
@@ -4406,9 +4434,6 @@ class Pass implements ActionListener{
 	        frame.setLocationRelativeTo(null);
 	        timer.start();
 	        
-	       
-	       
-	        
 	    }
 
 
@@ -4439,13 +4464,10 @@ class SkapaFärg extends JPanel implements ActionListener{
 	Color y;
 	
 	public  SkapaFärg() {
-	
-		
+
 		xr = random.nextInt(255);
 		xg = random.nextInt(255);
 		xb = random.nextInt(255);
-		
-		
 		
 		r = new JSlider(JSlider.HORIZONTAL,0,255,xr);
 		g = new JSlider(JSlider.HORIZONTAL,0,255,xg);
@@ -4589,7 +4611,7 @@ class Avsluta implements ActionListener{
 		if (e.getSource() == b1){ 
 			try {
 				Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -s -t " + s1.getValue() + " -c \"Hejdå\"");
-			} catch (IOException e1) {
+			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 			System.exit(0);	
@@ -4599,7 +4621,7 @@ class Avsluta implements ActionListener{
 					
 			try {
 				Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -l");
-			} catch (IOException e1) {
+			} catch (Exception e1) {
 
 				e1.printStackTrace();
 			}
@@ -4608,7 +4630,7 @@ class Avsluta implements ActionListener{
 		else if (e.getSource() == b3){
 			try {
 				Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -r -t " + s1.getValue() + " -c \"Hejdå\"");
-			} catch (IOException e1) {
+			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 			System.exit(0);	
@@ -4616,7 +4638,7 @@ class Avsluta implements ActionListener{
 		else if (e.getSource() == b4){
 			try {
 				Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -h");
-			} catch (IOException e1) {
+			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 		}	
