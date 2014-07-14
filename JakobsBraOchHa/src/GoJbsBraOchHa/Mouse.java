@@ -3097,6 +3097,7 @@ class Pong extends JPanel implements ActionListener{
 			if (y==0&&x==0){
 				a=1;
 				b=0;
+				System.err.println("öiuds");
 			}
 			
 			y = y + a;
