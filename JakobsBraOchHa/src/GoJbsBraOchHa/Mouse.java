@@ -287,7 +287,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		om.setLocationRelativeTo(HuvudFönster);
 		
 		HuvudFönster.setJMenuBar(MenyRad);
-		HuvudFönster.setSize(800, 800);
+//		HuvudFönster.setSize(Double.toToolkit.getDefaultToolkit().getScreenSize().getWidth()/2,Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2);
 		HuvudFönster.setLayout(new BorderLayout());
 		HuvudFönster.setMinimumSize(new Dimension(400,400));
 		HuvudFönster.addKeyListener(this);
@@ -4311,9 +4311,9 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 
 class Pass implements ActionListener{
 	
-		int x;
+	int x;
 	
-	 private static String OK = "What Ever!";
+	private static String OK = "What Ever!";
 	 
 	 
 	 Timer timer = new Timer(1, this);	
@@ -4520,13 +4520,13 @@ class SkapaFärg extends JPanel implements ActionListener{
 		}
 	
 	
-		@Override
-		public void actionPerformed(ActionEvent e) {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	
+		if (timer == e.getSource()){
+			paneliPanel.setBackground(new Color(r.getValue(),g.getValue(), b.getValue()));
 		
-			if (timer == e.getSource()){
-				paneliPanel.setBackground(new Color(r.getValue(),g.getValue(), b.getValue()));
-			
-			}	
+		}	
 	}
 }
 
@@ -4543,10 +4543,7 @@ class Avsluta implements ActionListener{
 	JPanel p1 = new JPanel();
 		
 	public Avsluta(){	
-		
 	
-		
-		
 		s1.setPaintTicks(true);
 		s1.setPaintLabels(true);
 		s1.setMajorTickSpacing(10);
