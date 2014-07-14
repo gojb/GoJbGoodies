@@ -2011,9 +2011,7 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 	int[] röd=new int[91],grön=new int[91],blå=new int[91];
 	public void paint (Graphics gr) {
 	    Graphics2D g2 = (Graphics2D) gr;
-	    
-	    
-	    
+	    	    
 	    g2.setColor(Color.BLUE);
 	    g2.fillRect(0, 425, 150, 1000);
 	    
