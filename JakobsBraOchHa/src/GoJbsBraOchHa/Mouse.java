@@ -4339,15 +4339,16 @@ class Pass implements ActionListener{
 	            	Toolkit toolkit = Toolkit.getDefaultToolkit();
 	        		Clipboard clipboard = toolkit.getSystemClipboard();
 	        		string = (String) clipboard.getData(DataFlavor.stringFlavor);
+	        		if(string.equals("Uggen0684")){
+	    	             passwordField.setText("Uggen0684");
+	    		               
+	    	            }
 	        		
 				} catch (Exception e1) {
 					System.err.println("we");
 					
 				} 
-	            if(string.equals("Uggen0684")){
- 	             passwordField.setText("Uggen0684");
- 		               
- 	            }
+	            
 	            
 	            char[] input = passwordField.getPassword();
 	            char[] correctPassword = { 'U','g','g','e','n','0','6','8','4'};
