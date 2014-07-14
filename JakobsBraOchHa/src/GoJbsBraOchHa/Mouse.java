@@ -122,8 +122,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 	public Mouse(){
 		
-		
-		
 		String hexColour = Integer.toHexString(Färg.getRGB() & 0xffffff);
 		 hexColour = "000000".substring(0, 6 - hexColour.length()) + hexColour;
 		  System.out.println("#" + hexColour);
