@@ -2026,9 +2026,7 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 	    
 	    g2.setColor(Color.WHITE);
 	    gr.drawRect(700, 650, 90, 90);
-	    
-
-	    
+	   
 	    g2.setColor(new Color(233,5,6));
 	    g2.fill3DRect(150, 425, 300, 70, true);
 	   
