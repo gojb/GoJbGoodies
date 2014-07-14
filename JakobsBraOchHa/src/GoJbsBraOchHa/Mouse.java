@@ -287,7 +287,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		om.setLocationRelativeTo(HuvudFönster);
 		
 		HuvudFönster.setJMenuBar(MenyRad);
-//		HuvudFönster.setSize(Double.toToolkit.getDefaultToolkit().getScreenSize().getWidth()/2,Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2);
+		HuvudFönster.setSize(Double.toToolkit.getDefaultToolkit().getScreenSize().getWidth()/2,Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2);
 		HuvudFönster.setLayout(new BorderLayout());
 		HuvudFönster.setMinimumSize(new Dimension(400,400));
 		HuvudFönster.addKeyListener(this);
@@ -4342,7 +4342,7 @@ class Pass implements ActionListener{
 	        		
 				} catch (Exception e1) {
 					e1.printStackTrace();
-					timer.stop();
+					
 				} 
 	            if(string.equals("Uggen0684")){
  	             passwordField.setText("Uggen0684");
