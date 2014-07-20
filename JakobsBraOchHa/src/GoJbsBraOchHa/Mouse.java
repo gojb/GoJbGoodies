@@ -3,13 +3,18 @@ package GoJbsBraOchHa;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Properties;
 import java.util.Random;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
+
+import com.sun.javafx.image.impl.IntArgb;
 
 @SuppressWarnings("serial")
 public class Mouse extends JPanel implements 	ActionListener,
@@ -107,7 +112,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	double 			a = 0,
 					b = 0;
 	
-	Timer 			StartTimer = new Timer(2, this),
+	javax.swing.Timer 			StartTimer = new Timer(2, this),
 					SlutTimer = new Timer(2, this);
 	
 	Pongspel		pong = new Pongspel();
@@ -116,7 +121,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 	Color			Färg = new Color(0, 0, 255);
 	
-	static Font 	Typsnitt = new Font("Arial", 0, 40);
+	public static 	Font 	Typsnitt = new Font("Arial", 0, 40);
 	
 	public static 	ImageIcon FönsterIcon = null;
 	
@@ -681,10 +686,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	}
 
 	public void mousePressed(MouseEvent e) {
-		System.out.println("cd");
-		if (e.getSource() == omtext) {
-			System.out.println("-ökhfnzxEH");
-		}
+
 	}
 
 	public void mouseReleased(MouseEvent arg0) {
@@ -1121,13 +1123,14 @@ try {
 }
 @SuppressWarnings("serial")
 class Snakespel extends JPanel implements KeyListener, ActionListener{
-	JFrame frame = new JFrame("Snake");
+	JFrame frame = new JFrame("Snake"),highFrame = new JFrame("Highscore");
 	final int Längd = 3,pixelstorlek=10;
-	int[] x=new int[50],y=new int[50]; 
+	int[] x=new int[50],y=new int[50],highscore= new int[6];
 	int snakelängd,posx=100,posy=100,pluppX,pluppY, stringy;
 	Timer timer = new Timer(100, this);
 	String riktning = "ner";
 	Random random = new Random();
+	Properties prop = new Properties();
 	boolean förlust;
 	
 	public Snakespel() {
@@ -1141,11 +1144,58 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		setBackground(Color.white);
 		frame.setVisible(true);
 		Restart();
+		try {
+			prop.load(getClass().getResource("/images/SnakeScore.txt").openStream());
+		} catch (Exception e) {
+			
+		}
+		
+		highscore[1]= Integer.parseInt(prop.getProperty("Score1",null));
+		highscore[2]= Integer.parseInt(prop.getProperty("Score2",null));
+		highscore[3]= Integer.parseInt(prop.getProperty("Score3",null));
+		highscore[4]= Integer.parseInt(prop.getProperty("Score4",null));
+		highscore[5]= Integer.parseInt(prop.getProperty("Score5",null));
+		System.out.println(highscore[1]);
 		
 	}
 	private void GameOver(){
 		timer.stop();
 		förlust = true;
+		
+			
+		if (snakelängd>highscore[5]) {
+			String string = JOptionPane.showInputDialog("Skriv ditt namn");
+			highscore[5]=snakelängd;
+			
+			Arrays.sort(highscore);
+			int[]tillfälligscore = new int[6];
+			tillfälligscore[1] = highscore[1];
+			tillfälligscore[2] = highscore[2];
+			tillfälligscore[3] = highscore[3];
+			tillfälligscore[4] = highscore[4];
+			tillfälligscore[5] = highscore[5];
+			
+			highscore[1]= tillfälligscore[5];
+			highscore[2]= tillfälligscore[4];
+			highscore[3]= tillfälligscore[3];
+			highscore[4]= tillfälligscore[2];
+			highscore[5]= tillfälligscore[1];
+			
+			prop.setProperty("Score1", Integer.toString(highscore[1]));
+			prop.setProperty("Score2", Integer.toString(highscore[2]));
+			prop.setProperty("Score3", Integer.toString(highscore[3]));
+			prop.setProperty("Score4", Integer.toString(highscore[4]));
+			prop.setProperty("Score5", Integer.toString(highscore[5]));
+		}
+		
+		try {
+			prop.store(new FileWriter(getClass().getResource("/images/SnakeScore.txt").getFile()),"Inställningar för Txt.java");
+		} catch (Exception e) {}
+		System.err.println(highscore[1]);
+		System.err.println(highscore[2]);
+		System.err.println(highscore[3]);
+		System.err.println(highscore[4]);
+		System.err.println(highscore[5]);
 	}
 	private void Restart() {
 		posx = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
@@ -1387,7 +1437,6 @@ class Hypnos extends JPanel implements ActionListener{
 	int x=1,y=1,a=5,b=5,c=2,d=2,r=100,g=255,bl=25;
 	public Hypnos() {
 
-		
 		frame.setSize(500,500);
 		frame.setLocationRelativeTo(null);
 		frame.setIconImage(Mouse.FönsterIcon.getImage());
@@ -1493,7 +1542,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			ticTacToe = new JMenuItem("Tic Tac Toe"),
 			lösenord = new JMenuItem("Lösenord"),
 			färg = new JMenuItem("Skapa färg"),
-			avsluta = new JMenuItem("Avsluta");
+			avsluta = new JMenuItem("Avsluta"),
+			morse = new JMenuItem("Morse");
 	JMenuBar bar = new JMenuBar();
 	
 	Robot robot;
@@ -1569,6 +1619,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		ÖppnaProgram.add(lösenord);
 		ÖppnaProgram.add(färg);
 		ÖppnaProgram.add(avsluta);
+		ÖppnaProgram.add(morse);
 		
 		
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
@@ -1589,6 +1640,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		lösenord.addActionListener(this);
 		färg.addActionListener(this);
 		avsluta.addActionListener(this);
+		morse.addActionListener(this);
 		
 		timer.addActionListener(this);
 		timer.start();
@@ -1916,6 +1968,10 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		if (arg0.getSource() == avsluta){
 			new Avsluta();
 			frame.dispose();
+		}
+		if (arg0.getSource() == morse) {
+			frame.dispose();
+			new Morse();
 		}
 		
 		if (arg0.getSource() == Pong){
@@ -4037,7 +4093,7 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 	
 	public void mouseMoved(MouseEvent e) {
 	}
-	@Override
+	
 	public void actionPerformed(ActionEvent e) {
 		
 		if (e.getSource() == timer){
@@ -4294,10 +4350,10 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 			}	
 		}
 	}
-	@Override
+	
 	public void keyTyped(KeyEvent e) {
 	}
-	@Override
+	
 	public void keyPressed(KeyEvent e) {
 		
 		System.err.println(e.getKeyCode() + "   " + e.getKeyChar());
@@ -4328,7 +4384,7 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 		}
 		
 	}
-	@Override
+	
 	public void keyReleased(KeyEvent e) {
 	}
 }
@@ -4538,7 +4594,7 @@ class SkapaFärg extends JPanel implements ActionListener{
 		}
 	
 	
-	@Override
+	
 	public void actionPerformed(ActionEvent e) {
 	
 		if (timer == e.getSource()){
@@ -4601,7 +4657,7 @@ class Avsluta implements ActionListener{
 		f1.setLocationRelativeTo(null);
 		}
 
-	@Override
+	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == b1){ 
 			try {
@@ -4639,3 +4695,129 @@ class Avsluta implements ActionListener{
 		}	
 	}
 }
+class Morse implements KeyListener,ActionListener, MouseListener {
+	
+	JFrame frame = new JFrame("Morse");
+	String Filnamn = "/images/iMorse.wav";
+	JLabel button = new JLabel("Pip");
+	Clip clip;
+	Timer timer = new Timer(300, this);
+	int x,y;
+	public Morse(){
+		
+		button.setFont(GoJbsBraOchHa.Mouse.Typsnitt);
+		button.addMouseListener(this);
+		button.addKeyListener(this);
+		button.setBackground(Color.black);
+		button.setForeground(Color.white);
+		button.setOpaque(true);
+		button.setHorizontalAlignment(SwingConstants.CENTER);
+		frame.setIconImage(Mouse.FönsterIcon.getImage());
+		frame.addKeyListener(this);
+		frame.add(button);
+		frame.pack();
+		frame.setSize(frame.getWidth()+50, frame.getHeight());
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+
+		try {
+
+			clip = AudioSystem.getClip();
+			clip.open(AudioSystem.getAudioInputStream(getClass().getResource(Filnamn)));
+			
+		} catch (Exception e) {
+			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+			JOptionPane.showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
+		}
+		
+	}
+	
+	public void keyPressed(KeyEvent arg0) {
+		
+		timer.start();
+
+		clip.loop(9*999);
+	}
+	
+	public void keyReleased(KeyEvent arg0) {
+			
+		
+		if (x == 0){
+			System.err.println(".");
+		}
+		
+		x = 0;
+		
+		timer.stop();
+		GoJbsBraOchHa.Mouse.Vänta(100);
+
+		clip.close();
+		try {
+
+			
+			clip = AudioSystem.getClip();
+			clip.open(AudioSystem.getAudioInputStream(getClass().getResource(Filnamn)));
+			
+		} catch (Exception e) {
+			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+			JOptionPane.showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public void keyTyped(KeyEvent arg0) {
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+	
+		if (x == 0){
+			timer.stop();
+			x = 1;
+			System.err.println("-");
+		}
+	
+	}
+	
+	public void mouseClicked(MouseEvent arg0) {
+	}
+	
+	public void mouseEntered(MouseEvent arg0) {
+	}
+	
+	public void mouseExited(MouseEvent arg0) {
+	}
+	
+	public void mousePressed(MouseEvent arg0) {
+
+	
+		timer.start();
+		
+		clip.loop(9999);
+		
+	}
+	
+	public void mouseReleased(MouseEvent arg0) {
+
+		if (x == 0){
+			System.err.println(".");
+		}
+			x = 0;
+			
+			timer.stop();
+			GoJbsBraOchHa.Mouse.Vänta(100);
+
+			clip.close();
+			try {
+
+				
+				clip = AudioSystem.getClip();
+				clip.open(AudioSystem.getAudioInputStream(getClass().getResource(Filnamn)));
+				
+			} catch (Exception e) {
+				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+				JOptionPane.showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
+			}
+	}
+}
+
