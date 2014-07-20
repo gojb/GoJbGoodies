@@ -3,8 +3,7 @@ package GoJbsBraOchHa;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.Random;
@@ -14,7 +13,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
-import com.sun.javafx.image.impl.IntArgb;
 
 @SuppressWarnings("serial")
 public class Mouse extends JPanel implements 	ActionListener,
@@ -127,9 +125,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 	public Mouse(){
 		
-		String hexColour = Integer.toHexString(Färg.getRGB() & 0xffffff);
-		 hexColour = "000000".substring(0, 6 - hexColour.length()) + hexColour;
-		  System.out.println("#" + hexColour);
+		
 		
 		Laddtext.setFont(Typsnitt);
 		Laddtext.setHorizontalAlignment(JLabel.CENTER);
@@ -1176,7 +1172,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 			
 		if (snakelängd>highscore[5]) {
-			String string = JOptionPane.showInputDialog("Skriv ditt namn");
+//			String string = JOptionPane.showInputDialog("Skriv ditt namn");
 			highscore[5]=snakelängd;
 			
 			Arrays.sort(highscore);
@@ -3717,8 +3713,8 @@ KeyListener, MouseInputListener{
 		frame.setUndecorated(true);
 		frame.setVisible(true);
 		frame.add(this);
+		frame.setDefaultCloseOperation(0);
 		setBackground(Color.WHITE);
-		
 		frame.addWindowListener(this);
 		frame.addMouseMotionListener(this);
 		frame.addKeyListener(this);
@@ -4554,8 +4550,7 @@ class SkapaFärg extends JPanel implements ActionListener{
 		r.setPaintLabels(true);
 		r.setMajorTickSpacing(40);
 		r.setMinorTickSpacing(5);
-	
-		
+			
 		g.setPaintTicks(true);
 		g.setPaintLabels(true);
 		g.setMajorTickSpacing(40);
@@ -4568,14 +4563,7 @@ class SkapaFärg extends JPanel implements ActionListener{
 	
 		setForeground(Color.blue);
 		
-		frame.setVisible(true);
-		
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		Panel.setLayout(new BorderLayout());
-		
 		setOpaque(true);
-		
-		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 		
 		red.setFont(new Font("luyya",Font.BOLD,40));
 		green.setFont(new Font("luyya",Font.BOLD,40));
@@ -4585,19 +4573,16 @@ class SkapaFärg extends JPanel implements ActionListener{
 		green.setForeground(Color.green);
 		blue.setForeground(Color.blue);
 		
-		
-		Panel.setPreferredSize(new Dimension(250, 300));
-		
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(red);
 		panel.add(r);
 		panel.add(green);
 		panel.add(g);
 		panel.add(blue);
 		panel.add(b);
-		frame.add(panel);
-		frame.add(Panel);
-		frame.pack();
 		
+		Panel.setLayout(new BorderLayout());
+		Panel.setPreferredSize(new Dimension(250, 300));
 		Panel.add(paneliPanel,BorderLayout.CENTER);
 		Panel.add(Box.createRigidArea(new Dimension(25,25)),BorderLayout.NORTH);
 		Panel.add(Box.createRigidArea(new Dimension(25,25)),BorderLayout.SOUTH);
@@ -4605,13 +4590,17 @@ class SkapaFärg extends JPanel implements ActionListener{
 		Panel.add(Box.createRigidArea(new Dimension(25,25)),BorderLayout.WEST);
 		
 		paneliPanel.setBackground(new Color(r.getValue(),g.getValue(), b.getValue()));
-		
 		paneliPanel.setOpaque(true);
 		
-		
-		
+		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
+		frame.add(panel);
+		frame.add(Panel);
+		frame.pack();
+		frame.setIconImage(Mouse.FönsterIcon.getImage());
+		frame.setDefaultCloseOperation(3);
 		frame.repaint();
 		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 		
 		timer.start();
 	
@@ -4623,6 +4612,9 @@ class SkapaFärg extends JPanel implements ActionListener{
 	
 		if (timer == e.getSource()){
 			paneliPanel.setBackground(new Color(r.getValue(),g.getValue(), b.getValue()));
+			String hexColour = Integer.toHexString(paneliPanel.getBackground().getRGB() & 0xffffff);
+			 hexColour = "000000".substring(0, 6 - hexColour.length()) + hexColour;
+			  System.out.println("#" + hexColour);
 		
 		}	
 	}
