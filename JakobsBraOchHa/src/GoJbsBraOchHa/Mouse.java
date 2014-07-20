@@ -977,7 +977,9 @@ try {
 		else if (KeyEvent.getKeyText(e.getKeyCode()) == "Esc") {
 			frame.dispose();
 		}
+		
 		frame.repaint();
+		
 	}
 
 	public void keyReleased(KeyEvent e) {
@@ -1159,9 +1161,19 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		
 	}
 	private void GameOver(){
+		String [] arr = {"upp", "ner", "höger", "vänster"};
+		
+				         // randomly selects an index from the arr
+				         int select = random.nextInt(arr.length); 
+		
+				         // prints out the value at the randomly selected index
+				         System.out.println("Random String selected: " + arr[select]); 
+				    
+				riktning=arr[select];
 		timer.stop();
 		förlust = true;
 		
+		((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 			
 		if (snakelängd>highscore[5]) {
 			String string = JOptionPane.showInputDialog("Skriv ditt namn");
@@ -1200,10 +1212,14 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 	private void Restart() {
 		posx = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
 		posy = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
-		if (	posx>frame.getWidth()*0.7||
-				posx<frame.getWidth()*0.3||
-				posy>frame.getHeight()*0.7||
-				posy<frame.getHeight()*0.3) {
+		
+		
+
+//		         
+		if (	posx>frame.getWidth()*0.8||
+				posx<frame.getWidth()*0.2||
+				posy>frame.getHeight()*0.8||
+				posy<frame.getHeight()*0.2) {
 			System.out.println("Räknar om: " + posx);
 			Restart();
 		}
@@ -1232,7 +1248,6 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 			stringy = y[1] - 20;
 		}
 		
-		
 		Graphics2D g = (Graphics2D)g1;
 		
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -1258,6 +1273,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 			g.drawRect(x[i], y[i], pixelstorlek, pixelstorlek);
 			g.fillRect(x[i], y[i], pixelstorlek, pixelstorlek);
 			System.out.println(i);
+			s=1;
 		}
 		
 		
@@ -1266,13 +1282,15 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 	public void keyTyped(KeyEvent e) {
 		
 	}
-
+int s = 1;
 	public void keyPressed(KeyEvent e) {
+		if (s==1) {
+			
 		
 		if(KeyEvent.getKeyText(e.getKeyCode()) == "Vänsterpil"){
 			if (riktning!="höger"){
 				riktning="vänster";
-				
+				s=0;
 			}
 			
 
@@ -1280,23 +1298,26 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		else if(KeyEvent.getKeyText(e.getKeyCode()) == "Högerpil"){
 			if (riktning!="vänster"){
 				riktning="höger";
+				s=0;
 			}
 		}
 		else if(KeyEvent.getKeyText(e.getKeyCode()) == "Upp"){
 			if (riktning!="ner"){
 				riktning="upp";
+				s=0;
 			}
 		}
 		else if(KeyEvent.getKeyText(e.getKeyCode()) == "Nedpil"){
 			if (riktning!="upp"){
 				riktning="ner";
+				s=0;
 			}
-		}
-		else if(KeyEvent.getKeyText(e.getKeyCode()) == "F2"){
+		}}
+		if(KeyEvent.getKeyText(e.getKeyCode()) == "F2"){
 			if (timer.isRunning()==false) {
 				Restart();
 			}
-			
+
 		}
 		
 	}
@@ -1310,7 +1331,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		
 		
 		if (e.getSource()==timer){
-			
+
 			
 			
 			if (x[1]==pluppX&&y[1]==pluppY) {
@@ -1342,21 +1363,23 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 				}
 			
 			}
-			if (x[1]-pixelstorlek<0) {
+			if (x[1]<0) {
 				GameOver();
 			}
-			if (x[1]+pixelstorlek+pixelstorlek>frame.getWidth()) {
+			if (x[1]+pixelstorlek*2>frame.getWidth()) {
 				GameOver();
 			}
-			if (y[1]-pixelstorlek<0) {
+			if (y[1]<0) {
 				GameOver();		
 			}
-			if (y[1]+pixelstorlek*6>frame.getHeight()) {
+			if (y[1]+pixelstorlek*5>frame.getHeight()) {
 				GameOver();
 			}
-	
-			frame.repaint();
+
+//			frame.repaint();
 			
+			
+			frame.repaint();
 		}
 	}
 	
@@ -2151,6 +2174,7 @@ JButton b1 = new JButton("Spela igen");
 		JFrame ram = new JFrame("GAME OVER");
 public GameOver(){
 	
+	ram.setIconImage(GoJbsBraOchHa.Mouse.FönsterIcon.getImage());
 		ram.add(b1);
 		ram.add(b2);
 		ram.setVisible(true);
