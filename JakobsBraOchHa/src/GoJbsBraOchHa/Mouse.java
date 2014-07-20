@@ -1172,7 +1172,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 			
 		if (snakelängd>highscore[5]) {
-//			String string = JOptionPane.showInputDialog("Skriv ditt namn");
+//			String string = JOptionPane.showInputDialog("Skriv ditt namn");;;
 			highscore[5]=snakelängd;
 			
 			Arrays.sort(highscore);
