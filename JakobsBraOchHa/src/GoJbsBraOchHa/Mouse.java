@@ -121,7 +121,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 	public static 	Font 	Typsnitt = new Font("Arial", 0, 40);
 	
-	public static 	ImageIcon FönsterIcon = null;
+	public static 	Image 	FönsterIcon = null;
 	
 	public Mouse(){
 		
@@ -140,7 +140,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		Laddfönster.setAlwaysOnTop(true);
 		Laddfönster.setResizable(false);
 		Laddfönster.setLocationRelativeTo(null);
-		Laddfönster.setIconImage(FönsterIcon.getImage());
+		Laddfönster.setIconImage(FönsterIcon);
 		Laddfönster.getContentPane().setBackground(Color.yellow);
 		Laddfönster.setUndecorated(true);
 		Laddfönster.setVisible(true);		
@@ -252,7 +252,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		HändelseFönster.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		HändelseFönster.setAlwaysOnTop(true);
 		HändelseFönster.setResizable(false);
-		HändelseFönster.setIconImage(FönsterIcon.getImage());
+		HändelseFönster.setIconImage(FönsterIcon);
 		
 		Slide.setPaintTicks(true);
 		Slide.setPaintLabels(true);
@@ -281,7 +281,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		omtext.addMouseListener(this);
 		om.setSize(400,300);
 		om.add(omtext);
-		om.setIconImage(FönsterIcon.getImage());
+		om.setIconImage(FönsterIcon);
 		om.setLocationRelativeTo(HuvudFönster);
 		
 		HuvudFönster.setJMenuBar(MenyRad);
@@ -290,7 +290,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		HuvudFönster.setMinimumSize(new Dimension(400,400));
 		HuvudFönster.addKeyListener(this);
 		HuvudFönster.addWindowListener(this);
-		HuvudFönster.setIconImage(FönsterIcon.getImage());
+		HuvudFönster.setIconImage(FönsterIcon);
 		HuvudFönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.NORTH);
 		HuvudFönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.WEST);
 		HuvudFönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.EAST);
@@ -339,7 +339,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		Räknare.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.SOUTH);
 		Räknare.setBackground(Color.WHITE);
 		Räknare.pack();
-		Räknare.setIconImage(FönsterIcon.getImage());
+		Räknare.setIconImage(FönsterIcon);
 		Räknare.getContentPane().setBackground(Color.white);
 		
 		AvslutningsText.setFont(Typsnitt);
@@ -352,7 +352,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		AvslutningsFönster.setSize(Laddfönster.getSize());
 		AvslutningsFönster.setResizable(false);
 		AvslutningsFönster.setAlwaysOnTop(true);
-		AvslutningsFönster.setIconImage(FönsterIcon.getImage());
+		AvslutningsFönster.setIconImage(FönsterIcon);
 		AvslutningsFönster.setLocationRelativeTo(null);
 		AvslutningsFönster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		AvslutningsFönster.getContentPane().setBackground(Color.yellow);
@@ -382,7 +382,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 				public setImageIcon() {
 				
 					try {
-					FönsterIcon = new ImageIcon(getClass().getResource("/images/Java-icon.png"));
+						
+					FönsterIcon = new ImageIcon(getClass().getResource("/images/Java-icon.png")).getImage();
 					} catch (Exception e) {
 					((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 			    	JOptionPane.showMessageDialog(null, "ImageIcon hittades inte","Filfel",JOptionPane.ERROR_MESSAGE);
@@ -883,7 +884,7 @@ try {
 			setForeground(Color.red);
 			setPreferredSize(new Dimension(700, 500));
 			frame.setVisible(true);
-			frame.setIconImage(Mouse.FönsterIcon.getImage());
+			frame.setIconImage(Mouse.FönsterIcon);
 			frame.repaint();
 			frame.pack();
 			frame.addWindowListener(this);
@@ -1133,15 +1134,6 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 	
 	public Snakespel() {
 
-		frame.add(this);		
-		frame.setIconImage(Mouse.FönsterIcon.getImage());
-		frame.setResizable(false);		
-		frame.addKeyListener(this);
-		frame.setSize(pixelstorlek*50, pixelstorlek*50);
-		frame.setLocationRelativeTo(null);
-		setBackground(Color.white);
-		frame.setVisible(true);
-		Restart();
 		try {
 			prop.load(getClass().getResource("/images/SnakeScore.txt").openStream());
 		} catch (Exception e) {
@@ -1155,14 +1147,19 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		highscore[5]= Integer.parseInt(prop.getProperty("Score5","0"));
 		System.out.println(highscore[1]);
 		
+		setBackground(Color.white);
+		
+		frame.add(this);		
+		frame.setIconImage(Mouse.FönsterIcon);
+		frame.setResizable(false);		
+		frame.addKeyListener(this);
+		frame.setSize(pixelstorlek*50, pixelstorlek*50);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+		
+		Restart();
 	}
 	private void GameOver(){
-		String [] arr = {"upp", "ner", "höger", "vänster"};
-	
-		int select = random.nextInt(arr.length); 
-		
-		riktning=arr[select];
-		
 		timer.stop();
 		förlust = true;
 		
@@ -1205,8 +1202,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 	private void Restart() {
 		posx = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
 		posy = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
-		
-		
+
 
 //		         
 		if (	posx>frame.getWidth()*0.8||
@@ -1216,7 +1212,12 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 			System.out.println("Räknar om: " + posx);
 			Restart();
 		}
-		else{
+		else{		
+		String [] arr = {"upp", "ner", "höger", "vänster"};
+	
+		int select = random.nextInt(arr.length); 
+		
+		riktning=arr[select];
 		snakelängd = Längd;
 		x[1]=posx;
 		y[1]=posy;
@@ -1388,7 +1389,7 @@ class Studsa extends JPanel implements ActionListener{
 		
 		frame.setSize(1250,1000);
 		frame.setLocationRelativeTo(null);
-		frame.setIconImage(Mouse.FönsterIcon.getImage());
+		frame.setIconImage(Mouse.FönsterIcon);
 		frame.add(this);
 		frame.setUndecorated(true);
 		frame.getContentPane().setBackground(Color.white);
@@ -1455,7 +1456,7 @@ class Hypnos extends JPanel implements ActionListener{
 
 		frame.setSize(500,500);
 		frame.setLocationRelativeTo(null);
-		frame.setIconImage(Mouse.FönsterIcon.getImage());
+		frame.setIconImage(Mouse.FönsterIcon);
 		frame.add(this);
 		frame.setUndecorated(true);
 		frame.getContentPane().setBackground(Color.white);
@@ -1586,7 +1587,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 //			frame.add(rö3);
 //			frame.add(bana);
 			
-			frame.setIconImage(GoJbsBraOchHa.Mouse.FönsterIcon.getImage());
+			frame.setIconImage(GoJbsBraOchHa.Mouse.FönsterIcon);
 			
 			
 			Vinst.setLocationRelativeTo(null);
@@ -2162,12 +2163,12 @@ public void paint (Graphics g) {
 }
 }
 static class GameOver implements ActionListener, WindowListener{
-JButton b1 = new JButton("Spela igen");
-		JButton b2 = new JButton("Avsluta");
-		JFrame ram = new JFrame("GAME OVER");
-public GameOver(){
+	JButton b1 = new JButton("Spela igen");
+	JButton b2 = new JButton("Avsluta");
+	JFrame ram = new JFrame("GAME OVER");
+	public GameOver(){
 	
-	ram.setIconImage(GoJbsBraOchHa.Mouse.FönsterIcon.getImage());
+		ram.setIconImage(GoJbsBraOchHa.Mouse.FönsterIcon);
 		ram.add(b1);
 		ram.add(b2);
 		ram.setVisible(true);
@@ -2179,122 +2180,61 @@ public GameOver(){
 		b1.addActionListener(this);
 		b2.addActionListener(this);
 		ram.addWindowListener(this);
-	ram.setDefaultCloseOperation(3);
-}
-
-
+		ram.setDefaultCloseOperation(3);
+	}
 	
+	public void actionPerformed(ActionEvent arg0) {
+		//  
+		
+		if (arg0.getSource() == b1){
+			RörandeMojäng.qq = RörandeMojäng.qq + 1;
+			RörandeMojäng.ii = 0;
+			new RörandeMojäng();
+			ram.dispose();
+			RörandeMojäng.x = 800;
+			RörandeMojäng.y = 300;
+			
+		}
+		if (arg0.getSource() == b2) {
+			System.exit(3);
+		}
+	}
 
-
-
-
-
-public void actionPerformed(ActionEvent arg0) {
-	//  
-	
-	if (arg0.getSource() == b1){
-		RörandeMojäng.qq = RörandeMojäng.qq + 1;
-		RörandeMojäng.ii = 0;
-		new RörandeMojäng();
-		ram.dispose();
-		RörandeMojäng.x = 800;
-		RörandeMojäng.y = 300;
+	public void windowOpened(WindowEvent e) {
+		//  
 		
 	}
-	if (arg0.getSource() == b2) {
-		System.exit(3);
+	
+	public void windowClosing(WindowEvent e) {
+		//  
+		
+	}
+	
+	public void windowIconified(WindowEvent e) {
+		//  
+		
+	}
+	
+	
+	public void windowDeiconified(WindowEvent e) {
+	//	  
+		
+	}
+	
+	
+	public void windowActivated(WindowEvent e) {
+		
+	}
+	
+	
+	public void windowDeactivated(WindowEvent e) {
+	
+	}
+	
+	public void windowClosed(WindowEvent e) {
+	}
 	}
 }
-
-
-
-
-
-
-
-
-public void windowOpened(WindowEvent e) {
-	//  
-	
-}
-
-
-
-
-
-
-
-
-public void windowClosing(WindowEvent e) {
-	//  
-	
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-public void windowIconified(WindowEvent e) {
-	//  
-	
-}
-
-
-
-
-
-
-
-
-public void windowDeiconified(WindowEvent e) {
-//	  
-	
-}
-
-
-
-
-
-
-
-
-public void windowActivated(WindowEvent e) {
-	
-}
-
-
-
-
-
-
-
-
-public void windowDeactivated(WindowEvent e) {
-	
-		
-
-
-}
-
-
-
-
-
-
-
-
-public void windowClosed(WindowEvent e) {
-}}}
 
 
 class Miniräknare implements ActionListener, KeyListener{
@@ -4481,7 +4421,7 @@ class Pass implements ActionListener{
 	        
 	        användare.add(användareJakob);
 	        användare.add(användareGlenn);
-	        användare.setIconImage(Mouse.FönsterIcon.getImage());
+	        användare.setIconImage(Mouse.FönsterIcon);
 	        användare.setLayout(new FlowLayout());
 	        användare.pack();
 	        användare.setLocationRelativeTo(null);
@@ -4494,7 +4434,7 @@ class Pass implements ActionListener{
 	        frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 	        frame.add(label);
 	        frame.add(passwordField);
-	        frame.setIconImage(Mouse.FönsterIcon.getImage());
+	        frame.setIconImage(Mouse.FönsterIcon);
 	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        frame.pack();
 	        frame.setMinimumSize(frame.getSize());
@@ -4593,7 +4533,7 @@ class SkapaFärg extends JPanel implements ActionListener{
 		frame.add(panel);
 		frame.add(Panel);
 		frame.pack();
-		frame.setIconImage(Mouse.FönsterIcon.getImage());
+		frame.setIconImage(Mouse.FönsterIcon);
 		frame.setDefaultCloseOperation(3);
 		frame.repaint();
 		frame.setLocationRelativeTo(null);
@@ -4725,7 +4665,7 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 		button.setForeground(Color.white);
 		button.setOpaque(true);
 		button.setHorizontalAlignment(SwingConstants.CENTER);
-		frame.setIconImage(Mouse.FönsterIcon.getImage());
+		frame.setIconImage(Mouse.FönsterIcon);
 		frame.addKeyListener(this);
 		frame.add(button);
 		frame.pack();
