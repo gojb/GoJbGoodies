@@ -1640,8 +1640,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		
 		
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
-		  
-		
 
 		Mouse.addActionListener(this);
 		Pong.addActionListener(this);
@@ -1676,13 +1674,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 //	         System.out.println(name + ".setLayout(new GridLayout(3,1));");
 //	      }
 		}
-	
-		
-		
-		    
-		
-		
-
 
 	public void mouseMoved(MouseEvent e) {
 		//  
@@ -1825,12 +1816,10 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 
 
 	public void keyReleased(KeyEvent arg0) {
-		//  
 		
 	}
 	
 	public void windowActivated(WindowEvent arg0) {
-		//  
 		
 	}
 	
@@ -1840,35 +1829,29 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		
 	}
 	
-	public void windowClosing(WindowEvent arg0) {
-		//  
+	public void windowClosing(WindowEvent arg0) { 
 		
 	}
 	
-	public void windowDeactivated(WindowEvent arg0) {
-		//  
+	public void windowDeactivated(WindowEvent arg0) { 
 	
 		
 		
 	}
 	
 	public void windowDeiconified(WindowEvent arg0) {
-		//  
 		System.exit(3);
 	}
 	
-	public void windowIconified(WindowEvent arg0) {
-		//  
+	public void windowIconified(WindowEvent arg0) { 
 		System.exit(3);
 	}
 	
 	public void windowOpened(WindowEvent arg0) {
-		//  
 		
 	}
 	
-	public void mouseDragged(MouseEvent arg0) {
-		//  
+	public void mouseDragged(MouseEvent arg0) { 
 		
 		x = arg0.getX() -18;
 		y = arg0.getY() -72;
@@ -1924,18 +1907,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			frame.dispose();
 		}
 		}
-		
-		
-		
-		
-	
 
-
-
-
-
-
-	
 	public void actionPerformed(ActionEvent arg0) {
 		 
 	
@@ -2157,8 +2129,6 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 
 class RörandeMojäng4 {
 public void paint (Graphics g) {    
- 
-
 
 }
 }
@@ -2201,23 +2171,19 @@ static class GameOver implements ActionListener, WindowListener{
 	}
 
 	public void windowOpened(WindowEvent e) {
-		//  
 		
 	}
 	
 	public void windowClosing(WindowEvent e) {
-		//  
 		
 	}
 	
 	public void windowIconified(WindowEvent e) {
-		//  
 		
 	}
 	
 	
-	public void windowDeiconified(WindowEvent e) {
-	//	  
+	public void windowDeiconified(WindowEvent e) {  
 		
 	}
 	
@@ -2263,9 +2229,6 @@ class Miniräknare implements ActionListener, KeyListener{
 
 
 public Miniräknare(){
-		
-	
-		
 	
 			JFrame frame = new JFrame();
 
@@ -2401,8 +2364,6 @@ int a,b;
 	}
 
 	public void keyPressed(KeyEvent  e) {
-		//  
-		//  
 			
 					System.out.println(e.getKeyCode());
 					char c = e.getKeyChar();
@@ -2483,12 +2444,10 @@ int a,b;
 	
 
 	public void keyReleased(KeyEvent arg0) {
-		//  
 		
 	}
 
 	public void keyTyped(KeyEvent e) {
-		//  
 		
 		}
 	
@@ -2537,8 +2496,6 @@ class Merit extends JComponent implements MouseMotionListener, WindowListener, K
 
 		public Merit(){
 	
-			
-			
 		huvudframe.setVisible(true);
 		huvudframe.setLocationRelativeTo(null);
 		huvudframe.setShape(null);
@@ -2564,7 +2521,7 @@ class Merit extends JComponent implements MouseMotionListener, WindowListener, K
 		E.addActionListener(this);
 		F.addActionListener(this);
 		
-		
+
 		huvudframe.add(Börja);
 		
 		Börja.addActionListener(this);
@@ -2613,7 +2570,6 @@ class Merit extends JComponent implements MouseMotionListener, WindowListener, K
 		Svenska.add(F);
 		
 		
-	
 		Svenska.setLayout(new GridLayout(3,1));
 		Engelska.setLayout(new GridLayout(3,1));
 		Matte.setLayout(new GridLayout(3,1));
@@ -2675,20 +2631,15 @@ class Merit extends JComponent implements MouseMotionListener, WindowListener, K
 		}
 		
 
-
-		
-		public void mouseDragged(MouseEvent arg0) {
-			//  
+		public void mouseDragged(MouseEvent arg0) { 
 			
 		}
 		
 		public void mouseMoved(MouseEvent arg0) {
-			//  
 			
 		}
 		
-		public void actionPerformed(ActionEvent e) {
-			//  
+		public void actionPerformed(ActionEvent e) { 
 			
 			
 			if (e.getSource() == A){
@@ -2727,7 +2678,6 @@ class Merit extends JComponent implements MouseMotionListener, WindowListener, K
 				Engelska.add(E);
 				Engelska.add(F);
 				System.out.println(x);
-				
 			
 			}
 			
@@ -2769,7 +2719,6 @@ class Merit extends JComponent implements MouseMotionListener, WindowListener, K
 				Fysik.add(F);
 				System.out.println(x);
 				
-			
 			}
 			
 			else if (Fysik.isVisible() == true){
@@ -2784,10 +2733,7 @@ class Merit extends JComponent implements MouseMotionListener, WindowListener, K
 				Kemi.add(E);
 				Kemi.add(F);
 				System.out.println(x);
-				
-			
-				
-			
+
 			}
 			else if (Kemi.isVisible() == true){
 			Kemi.setVisible(false);
@@ -2979,7 +2925,7 @@ class Merit extends JComponent implements MouseMotionListener, WindowListener, K
 		
 		
 		public void keyPressed(KeyEvent e) {
-			//  
+			
 			if (Svenska.isVisible() == true){
 				if (e.getSource() == A){
 					x = x + 20;
@@ -3005,13 +2951,11 @@ class Merit extends JComponent implements MouseMotionListener, WindowListener, K
 			
 		}
 		
-		public void keyReleased(KeyEvent arg0) {
-			//  
+		public void keyReleased(KeyEvent arg0) { 
 			
 		}
 		
 		public void keyTyped(KeyEvent e) {
-			//  
 			
 			
 			if (KeyEvent.getKeyText(e.getKeyCode()) == "d"){
@@ -3032,37 +2976,30 @@ class Merit extends JComponent implements MouseMotionListener, WindowListener, K
 		}
 		
 		public void windowActivated(WindowEvent arg0) {
-			//  
 			
 		}
 		
 		public void windowClosed(WindowEvent arg0) {
-			//  
 			
 		}
 		
 		public void windowClosing(WindowEvent arg0) {
-			//  
 			
 		}
 		
 		public void windowDeactivated(WindowEvent arg0) {
-			//  
 			
 		}
 		
 		public void windowDeiconified(WindowEvent arg0) {
-			//  
 			
 		}
 		
 		public void windowIconified(WindowEvent arg0) {
-			//  
 			
 		}
 		
 		public void windowOpened(WindowEvent arg0) {
-			//  
 			
 		}
 	
@@ -3081,8 +3018,6 @@ class Pong extends JPanel implements ActionListener{
 		frame.setSize(200, 200);
 		frame.add(this);
 		timer.start();
-		
-		
 		
 	}
 
@@ -3160,86 +3095,64 @@ class Maze extends JPanel implements ActionListener, KeyListener, MouseListener,
 		level1.revalidate();
 		level1.setResizable(false);
 		
-
-}
+	}
 	
-
-
-public void paintComponent (Graphics g) {
-  Graphics2D g2 = (Graphics2D) g;
-  
-  	g2.setColor(Color.white);
-    g2.fillRect(0, 350, 350, 50);
-    
-    g2.fillRect(0, 0, 200, 40);
-    
-    g2.fillRect(0, 0, 50, 2000);
-    
-    g2.fillRect(300, 50, 50, 300);
-    
-    g2.fillRect(170, 50, 170, 50);
-    
-    g2.fillRect(140, 50, 50, 190);
-    
-    g2.setColor(Color.CYAN);
-    g2.fillRect(150, 200, 30, 30);   
-    
-    g2.setColor(Color.RED);
-    g2.fillRect(x, y, 25, 25);
-    
-  
-
-		}
+	public void paintComponent (Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+	  
+	  	g2.setColor(Color.white);
+	    g2.fillRect(0, 350, 350, 50);
+	    
+	    g2.fillRect(0, 0, 200, 40);
+	    
+	    g2.fillRect(0, 0, 50, 2000);
+	    
+	    g2.fillRect(300, 50, 50, 300);
+	    
+	    g2.fillRect(170, 50, 170, 50);
+	    
+	    g2.fillRect(140, 50, 50, 190);
+	    
+	    g2.setColor(Color.CYAN);
+	    g2.fillRect(150, 200, 30, 30);   
+	    
+	    g2.setColor(Color.RED);
+	    g2.fillRect(x, y, 25, 25);
+	    
+	}
 	
 	public void mouseClicked(MouseEvent arg0) {
 		
-		
 	}
 
-	
-	
 	public void mouseEntered(MouseEvent arg0) {
-		
-		
+			
 	}
 
-	
 	public void mouseExited(MouseEvent arg0) {
 		
-		
 	}
-	
 	
 	public void mousePressed(MouseEvent arg0) {
 		
-		
 	}
-
 	
 	public void mouseReleased(MouseEvent arg0) {
 		
-		
 	}
 
-	
 	public void keyPressed(KeyEvent arg0) {
 	
-		
 	}
 
-	
 	public void keyReleased(KeyEvent arg0) {
 	
-		
 	}
 
-	
 	public void keyTyped(KeyEvent arg0) {
 		
-		
 	}
 
-	
 	public void actionPerformed(ActionEvent arg0) {
 		
 		
@@ -3250,17 +3163,10 @@ public void paintComponent (Graphics g) {
 	
 }
 
-
-
-	
 	public void mouseDragged(MouseEvent arg0) {
-		
 		
 	}
 
-
-
-	
 	public void mouseMoved(MouseEvent e) {
 	
 		x = e.getX() - 17;
@@ -4773,4 +4679,3 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 			}
 	}
 }
-
