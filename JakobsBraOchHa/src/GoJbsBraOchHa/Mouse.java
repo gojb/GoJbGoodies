@@ -1148,24 +1148,21 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 			
 		}
 		
-		highscore[1]= Integer.parseInt(prop.getProperty("Score1",null));
-		highscore[2]= Integer.parseInt(prop.getProperty("Score2",null));
-		highscore[3]= Integer.parseInt(prop.getProperty("Score3",null));
-		highscore[4]= Integer.parseInt(prop.getProperty("Score4",null));
-		highscore[5]= Integer.parseInt(prop.getProperty("Score5",null));
+		highscore[1]= Integer.parseInt(prop.getProperty("Score1","0"));
+		highscore[2]= Integer.parseInt(prop.getProperty("Score2","0"));
+		highscore[3]= Integer.parseInt(prop.getProperty("Score3","0"));
+		highscore[4]= Integer.parseInt(prop.getProperty("Score4","0"));
+		highscore[5]= Integer.parseInt(prop.getProperty("Score5","0"));
 		System.out.println(highscore[1]);
 		
 	}
 	private void GameOver(){
 		String [] arr = {"upp", "ner", "höger", "vänster"};
+	
+		int select = random.nextInt(arr.length); 
 		
-				         // randomly selects an index from the arr
-				         int select = random.nextInt(arr.length); 
+		riktning=arr[select];
 		
-				         // prints out the value at the randomly selected index
-				         System.out.println("Random String selected: " + arr[select]); 
-				    
-				riktning=arr[select];
 		timer.stop();
 		förlust = true;
 		
