@@ -22,6 +22,8 @@ import static GoJbsBraOchHa.Mouse.FönsterIcon;
  * olika saker.
  * 
  * @author GoJb - Glenn Olsson & Jakob Björns
+ * 
+ * @see <a href="http://gojb.bl.ee/">http://gojb.bl.ee/</a>
  */
 
 @SuppressWarnings("serial")
