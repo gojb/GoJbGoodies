@@ -13,13 +13,21 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
+/**
+ * Det här programmet innehåller lite
+ * grejer som kan vara "BraOchHa" och även
+ * andra små program vi gjort för att testa
+ * olika saker.
+ * 
+ * @author GoJb - Glenn Olsson & Jakob Björns
+ */
 
 @SuppressWarnings("serial")
 public class Mouse extends JPanel implements 	ActionListener,
 												MouseInputListener,
 												KeyListener,
 												WindowListener{
-	
+
 	JFrame			HuvudFönster = new JFrame("Hej Hej :D"), 
 					HändelseFönster = new JFrame("Händelser"),
 					HastighetsFönster =  new JFrame(),
@@ -407,8 +415,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 		SkrivHändelsetext("Du drog musen: " + e.getX() + ", " + e.getY());
 		posX = e.getX();
 		posY = e.getY();
-//		repaint();
-//		ee.repaint();
 		HuvudFönster.repaint();
 	
 	}
@@ -425,9 +431,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 	public void actionPerformed(ActionEvent knapp) {
 //		System.out.println(knapp.getSource());
-		
-		
-		
+
 		if (knapp.getSource() == Avsluta){	
 			AvslutningsFönster.setVisible(true);
 			
@@ -485,7 +489,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 		else if(knapp.getSource() == Nytt){
 			new Mouse();
 			
-		
 		}
 		else if (knapp.getSource() == TextByte){
 			setTexten();
