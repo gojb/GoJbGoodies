@@ -118,7 +118,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	double 			a = 0,
 					b = 0;
 	
-	javax.swing.Timer 			StartTimer = new Timer(2, this),
+	Timer 			StartTimer = new Timer(2, this),
 					SlutTimer = new Timer(2, this);
 	
 	Pongspel		pong = new Pongspel();
@@ -1575,53 +1575,40 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 	static int yy = 900;
 	static int y = 300;
 	static int ii = 0;
-		public RörandeMojäng(){
-			GoJbsBraOchHa.Mouse.AntalFönster++;
-			frame.setVisible(true);
+	
+	public RörandeMojäng(){
+		GoJbsBraOchHa.Mouse.AntalFönster++;
+		
 //			frame.getContentPane().setForeground(new Color(49,130,240));
 //			frame.getContentPane().setBackground(new Color(190,230,60));
-		
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	
 //			RörandeMojäng3 rö3 = new RörandeMojäng3();
 //			frame.getContentPane().add(new RörandeMojäng2());
-			
+		
 //			Bana bana = new Bana();
 //			frame.add(rö);
 //			frame.add(rö3);
 //			frame.add(bana);
-			
-			frame.setIconImage(GoJbsBraOchHa.Mouse.FönsterIcon);
-			
-			
-			Vinst.setLocationRelativeTo(null);
-			Vinst.setSize(190, 100);
-			Vinst.add(textruta);
-			textruta.setFont(new Font("",Font.BOLD, 20));
-			textruta.setText("Grattis! Du vann \nefter " + qq + " försök! :D");
-			textruta.setEditable(false);
-			
-			textlabel.setOpaque(false);
-			
-			
-			frame.setBackground(Color.gray);
-			frame.setForeground(Color.pink);
-			
-			frame.setSize(1845, 800);
-			frame.addMouseMotionListener(this);
-			frame.addKeyListener(this);
-			frame.setResizable(false);
-		frame.setJMenuBar(bar);
+		
+		Vinst.setLocationRelativeTo(null);
+		Vinst.setSize(190, 100);
+		Vinst.add(textruta);
+		
+		textruta.setFont(new Font("",Font.BOLD, 20));
+		textruta.setText("Grattis! Du vann \nefter " + qq + " försök! :D");
+		textruta.setEditable(false);
+		textlabel.setOpaque(false);
+		
 //		frame.setJMenuBar(bar2);
+
+		
+//		 Container contentPane = frame.getContentPane();
+//		    contentPane.add(new RörandeMojäng3()); 
+		
 		bar.add(ÖppnaProgram);
 		bar.add(menu);
 		bar.add(menu2);
 		bar.add(menu1);
-		
-		 Container contentPane = frame.getContentPane();
-		    contentPane.add(new RörandeMojäng3());
-		
-		    frame.addWindowListener(this);
-		    
 		menu1.add(Återställ);
 		menu2.add(item);
 		menu2.add(item1);
@@ -1640,9 +1627,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		ÖppnaProgram.add(färg);
 		ÖppnaProgram.add(avsluta);
 		ÖppnaProgram.add(morse);
-		
-		
-		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 
 		Mouse.addActionListener(this);
 		Pong.addActionListener(this);
@@ -1663,7 +1647,19 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		timer.addActionListener(this);
 		timer.start();
 		
-		
+		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+		frame.setBackground(Color.gray);
+		frame.setForeground(Color.pink);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setIconImage(GoJbsBraOchHa.Mouse.FönsterIcon);
+		frame.setSize(1845, 800);
+		frame.addMouseMotionListener(this);
+		frame.addKeyListener(this);
+		frame.setResizable(false);
+		frame.setJMenuBar(bar);
+		frame.addWindowListener(this);
+		frame.getContentPane().add(new RörandeMojäng3());
+		frame.setVisible(true);
 		
 		try {
 			robot = new Robot();
@@ -4514,9 +4510,10 @@ class Avsluta implements ActionListener{
 		f1.setAlwaysOnTop(true);
 		f1.setDefaultCloseOperation(3);
 		f1.getContentPane().setLayout(new BoxLayout(f1.getContentPane(),BoxLayout.Y_AXIS));
-		f1.setVisible(true);
+		f1.setIconImage(Mouse.FönsterIcon);
 		f1.pack();
 		f1.setLocationRelativeTo(null);
+		f1.setVisible(true);
 		}
 
 	
