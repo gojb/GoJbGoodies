@@ -131,7 +131,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 	public static 	Font 	Typsnitt = new Font("Arial", 0, 40);
 	
-	public static 	Image 	FönsterIcon = null;
+	public static 	Image 	FönsterIcon;
 	
 	public Mouse(){
 	
@@ -1401,82 +1401,7 @@ class Studsa extends JPanel implements ActionListener{
 	}
 	
 }
-@SuppressWarnings("serial")
-class Hypnos extends JPanel implements ActionListener{
-	JFrame frame = new JFrame("Studsa");
-	Timer timer = new Timer(1, this),
-			timer2 = new Timer(5, this);
-	Random random = new Random();
-	int x=1,y=1,a=5,b=5,c=2,d=2,r=100,g=255,bl=25;
-	public Hypnos() {
 
-		frame.setSize(500,500);
-		frame.setLocationRelativeTo(null);
-		frame.setIconImage(FönsterIcon);
-		frame.add(this);
-		frame.setUndecorated(true);
-		frame.getContentPane().setBackground(Color.white);
-		frame.setVisible(true);
-		timer.start();
-		timer2.start();
-	}
-	public void paintComponent(Graphics ag){
-//		super.paintComponents(g);
-		Graphics2D g2 = (Graphics2D)ag;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
-		g2.setColor(Color.BLUE);
-	    g2.fillRect(0, 425, 150, 1000);
-	    
-	    g2.setColor(Color.GREEN);
-	    g2.fill3DRect(1000, 200, 100, 350, false);
-	    
-	    g2.setColor(Color.ORANGE);
-	    g2.fill3DRect(1155, 0, 110, 495, true);
-	    
-	    g2.setColor(Color.MAGENTA);
-	    g2.fillRect(205, 550, 1000, 100);
-	    
-	    g2.setColor(Color.WHITE);
-	    g2.drawRect(700, 650, 90, 90);
-	    
-	    g2.setColor(new Color(233,5,6));
-	    g2.fill3DRect(150, 425, 300, 70, true);
-	   
-	    g2.setColor(Color.BLACK);
-	    g2.setFont(new Font("", Font.ROMAN_BASELINE,20));
-	    for(int i = 90; i > 0; i--){
-			
-			r = random.nextInt(255);
-			g = random.nextInt(255);
-			b = random.nextInt(255);
-			
-		g2.setColor(new Color(r,g,b));
-		g2.drawRect(700, 650, i, i);
-				
-}
-	    
-	    g2.setColor(Color.cyan);
-	    g2.fillRect(x, y, 50,50);
-		
-	}
-	
-	public void actionPerformed(ActionEvent e) {
-
-		if(e.getSource() == timer2){
-		r=random.nextInt(255);
-		g=random.nextInt(255);
-		bl=random.nextInt(255);
-		repaint();
-		}
-		if (e.getSource()==timer) {
-			
-	
-		}
-		
-	}
-	
-}
 @SuppressWarnings("serial")
 class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListener, KeyListener, ActionListener{
 
@@ -2036,8 +1961,6 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 						s++;
 			}
 			else h=true;
-			
-
 
 		}
 	    
@@ -2045,10 +1968,8 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 	    g2.fillRect(x, y, 50,50);
 }
 
-	
 	public void actionPerformed(ActionEvent arg0) {
 	
-		
 	}
 	
 }
@@ -2080,7 +2001,6 @@ static class GameOver implements ActionListener, WindowListener{
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {
-		//  
 		
 		if (arg0.getSource() == b1){
 			RörandeMojäng.qq = RörandeMojäng.qq + 1;
@@ -2154,14 +2074,13 @@ class Miniräknare implements ActionListener, KeyListener{
 			summa = new JLabel();
 
 
-public Miniräknare(){
+	public Miniräknare(){
 	
-			JFrame frame = new JFrame();
+		JFrame frame = new JFrame();
 
 		frame.setLayout(new BorderLayout(5,5));
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
-		
 		
 		JPanel fönster = new JPanel();
 		
@@ -2243,13 +2162,11 @@ public Miniräknare(){
 			a = 0;
 		}
 		
-		
-		
 		}
 	
 
 	private void RäknaUt() {
-int a,b;
+		int a,b;
 		try {
 			 a = Integer.parseInt(summa.getText());
 		} catch (Exception e) {
@@ -2282,85 +2199,83 @@ int a,b;
 			summa.setText(Double.toString(a+b));
 		}
 		textruta.setText(null);
-
-		
 		
 	}
 
 	public void keyPressed(KeyEvent  e) {
 			
-					System.out.println(e.getKeyCode());
-					char c = e.getKeyChar();
-					String fj = String.valueOf(c);
-					System.out.println(fj);
-					if (e.getKeyCode() == 49||
-					e.getKeyCode() == 50||
-					e.getKeyCode() == 48||
-					e.getKeyCode() == 49||
-					e.getKeyCode() == 51||
-					e.getKeyCode() == 52||
-					e.getKeyCode() == 53||
-					e.getKeyCode() == 54||
-					e.getKeyCode() == 55||
-					e.getKeyCode() == 56||
-					e.getKeyCode() == 57||
-					e.getKeyCode() == 58||
-					e.getKeyCode() == 59||
-					e.getKeyCode() == 521||
-					e.getKeyCode() == 45||
-					e.getKeyCode() == 222||
-					e.getKeyCode() ==97||
-					e.getKeyCode() ==98||
-					e.getKeyCode() ==99||
-					e.getKeyCode() ==100|
-					e.getKeyCode() ==101||
-					e.getKeyCode() ==102||
-					e.getKeyCode() ==103||
-					e.getKeyCode() ==104||
-					e.getKeyCode() ==105||
-					e.getKeyCode() == 107||
-					e.getKeyCode() == 111||
-					e.getKeyCode() == 106||
-					e.getKeyCode() == 109){
-						textruta.append(fj);
-						}
-					if (e.getKeyCode() == 8){
-						String text = textruta.getText();
-						textruta.setText(text.substring(0, text.length() - 1));
-					}
-					if (e.getKeyCode() == 10){
-						textruta.append("=");
-					}
-//					if (e.getKeyCode()== 49){
-//						textruta.append("1");
-//						}
-//					if (e.getKeyCode()== 50){
-//						textruta.append("2");
-//						}
-//					if (e.getKeyCode()== 51){
-//						textruta.append("3");
-//						}
-//					if (e.getKeyCode()== 52){
-//						textruta.append("4");
-//						}
-//					if (e.getKeyCode()== 53){
-//						textruta.append("5");
-//						}
-//					if (e.getKeyCode()== 54){
-//						textruta.append("6");
-//						}
-//					if (e.getKeyCode()== 55){
-//						textruta.append("7");
-//						}
-//					if (e.getKeyCode()== 56){
-//						textruta.append("8");
-//						}
-//					if (e.getKeyCode()== 57){
-//						textruta.append("9");
-//						}
-//					if (e.getKeyCode()== 58){
-//						textruta.append("1");
-//						}
+		System.out.println(e.getKeyCode());
+		char c = e.getKeyChar();
+		String fj = String.valueOf(c);
+		System.out.println(fj);
+		if (e.getKeyCode() == 49||
+		e.getKeyCode() == 50||
+		e.getKeyCode() == 48||
+		e.getKeyCode() == 49||
+		e.getKeyCode() == 51||
+		e.getKeyCode() == 52||
+		e.getKeyCode() == 53||
+		e.getKeyCode() == 54||
+		e.getKeyCode() == 55||
+		e.getKeyCode() == 56||
+		e.getKeyCode() == 57||
+		e.getKeyCode() == 58||
+		e.getKeyCode() == 59||
+		e.getKeyCode() == 521||
+		e.getKeyCode() == 45||
+		e.getKeyCode() == 222||
+		e.getKeyCode() ==97||
+		e.getKeyCode() ==98||
+		e.getKeyCode() ==99||
+		e.getKeyCode() ==100|
+		e.getKeyCode() ==101||
+		e.getKeyCode() ==102||
+		e.getKeyCode() ==103||
+		e.getKeyCode() ==104||
+		e.getKeyCode() ==105||
+		e.getKeyCode() == 107||
+		e.getKeyCode() == 111||
+		e.getKeyCode() == 106||
+		e.getKeyCode() == 109){
+			textruta.append(fj);
+			}
+		if (e.getKeyCode() == 8){
+			String text = textruta.getText();
+			textruta.setText(text.substring(0, text.length() - 1));
+		}
+		if (e.getKeyCode() == 10){
+			textruta.append("=");
+		}
+//		if (e.getKeyCode()== 49){
+//			textruta.append("1");
+//			}
+//		if (e.getKeyCode()== 50){
+//			textruta.append("2");
+//			}
+//		if (e.getKeyCode()== 51){
+//			textruta.append("3");
+//			}
+//		if (e.getKeyCode()== 52){
+//			textruta.append("4");
+//			}
+//		if (e.getKeyCode()== 53){
+//			textruta.append("5");
+//			}
+//		if (e.getKeyCode()== 54){
+//			textruta.append("6");
+//			}
+//		if (e.getKeyCode()== 55){
+//			textruta.append("7");
+//			}
+//		if (e.getKeyCode()== 56){
+//			textruta.append("8");
+//			}
+//		if (e.getKeyCode()== 57){
+//			textruta.append("9");
+//			}
+//		if (e.getKeyCode()== 58){
+//			textruta.append("1");
+//			}
 	}
 
 	public void keyReleased(KeyEvent arg0) {
@@ -4179,16 +4094,16 @@ class Pass implements ActionListener{
 	 
 	 Timer timer = new Timer(1, this);	
 	 
-	    private JPasswordField passwordField;
-	    private JFrame användare = new JFrame();
+    private JPasswordField passwordField;
+    private JFrame användare = new JFrame();
+    
+    private JFrame frame = new JFrame("Verifiera dig!");
+    
+    JButton användareJakob = new JButton("Jakob"),
+    		användareGlenn = new JButton("Glenn");
+    
+    private JLabel label = new JLabel("Skriv Lösenord -->");
 	    
-	    private JFrame frame = new JFrame("Verifiera dig!");
-	    
-	    JButton användareJakob = new JButton("Jakob"),
-	    		användareGlenn = new JButton("Glenn");
-	    
-	    private JLabel label = new JLabel("Skriv Lösenord -->");
-
 	    
 	  public void actionPerformed(ActionEvent e) {
 
@@ -4247,6 +4162,7 @@ class Pass implements ActionListener{
 	        användare.add(användareGlenn);
 	        användare.setIconImage(FönsterIcon);
 	        användare.setLayout(new FlowLayout());
+	        användare.setDefaultCloseOperation(3);
 	        användare.pack();
 	        användare.setLocationRelativeTo(null);
 	        
