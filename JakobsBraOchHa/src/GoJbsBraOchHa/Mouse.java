@@ -385,18 +385,19 @@ public class Mouse extends JPanel implements 	ActionListener,
 		    }
 		
 		class setImageIcon{
-				public setImageIcon() {
+			public setImageIcon() {
 				
-					try {
-						
+				try {
+					
 					FönsterIcon = new ImageIcon(getClass().getResource("/images/Java-icon.png")).getImage();
-					} catch (Exception e) {
+				} 
+				catch (Exception e) {
 					((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-			    	JOptionPane.showMessageDialog(null, "ImageIcon hittades inte","Filfel",JOptionPane.ERROR_MESSAGE);
-					}
-				
-					}
-					}
+					JOptionPane.showMessageDialog(null, "ImageIcon hittades inte","Filfel",JOptionPane.ERROR_MESSAGE);
+				}
+			
+			}
+		}
 		
 		new setImageIcon();
 		new Pass();
@@ -657,11 +658,9 @@ public class Mouse extends JPanel implements 	ActionListener,
 		}
 		else if (knapp.getSource()==StudsItem) {
 			new Studsa();
-			
 		}
 		else if (knapp.getSource()==Snake) {
 			new Snakespel();
-			
 		}
 		
 		HuvudFönster.revalidate();
@@ -669,7 +668,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 		
 	}
 	
-
 	public void mouseClicked(MouseEvent arg0) {
 		
 	}
@@ -714,7 +712,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 		}
 
 	}
-
 
 	public void keyReleased(KeyEvent arg0) {
 		SkrivHändelsetext("Du släppte : " + KeyEvent.getKeyText(arg0.getKeyCode()));
