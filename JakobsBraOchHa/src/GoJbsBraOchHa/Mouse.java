@@ -395,7 +395,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 					((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 					JOptionPane.showMessageDialog(null, "ImageIcon hittades inte","Filfel",JOptionPane.ERROR_MESSAGE);
 				}
-			
 			}
 		}
 		
@@ -404,7 +403,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 		
 	}
 	
-
 	public void Miniräknare(){
 		Räknare.setVisible(true);
 
@@ -569,43 +567,43 @@ public class Mouse extends JPanel implements 	ActionListener,
 			nyräkning = true;
 		}
 		else if (knapp.getSource() == Miniränkarknapp0){ 
-			 Räknartext.append("0");
+			Räknartext.append("0");
 			 
 		}
 		else if (knapp.getSource() == Miniränkarknapp1){ 
-			 Räknartext.append("1");
+			Räknartext.append("1");
 			 
 		}
 		else if (knapp.getSource() == Miniränkarknapp2){ 
-			 Räknartext.append("2");
+			Räknartext.append("2");
 			 
 		}
 		else if (knapp.getSource() == Miniränkarknapp3){ 
-			 Räknartext.append("3");
+			Räknartext.append("3");
 			 
-			 	}
+		}
 		else if (knapp.getSource() == Miniränkarknapp4){ 
-			 Räknartext.append("4");
+			Räknartext.append("4");
 			 
-			 	}
+		}
 		else if (knapp.getSource() == Miniränkarknapp5){ 
-			 Räknartext.append("5");
+			Räknartext.append("5");
 			 
-			 	}
+		}
 		else if (knapp.getSource() == Miniränkarknapp6){ 
-			 Räknartext.append("6");
+			Räknartext.append("6");
 			 
-			 	}
+		}
 		else if (knapp.getSource() == Miniränkarknapp7){ 
-			 Räknartext.append("7");
+			Räknartext.append("7");
 			 
-			 	}
+		}
 		else if (knapp.getSource() == Miniränkarknapp8){ 
-			 Räknartext.append("8");
+			Räknartext.append("8");
 			 
-			 	}
+		}
 		else if (knapp.getSource() == Miniränkarknapp9){ 
-			 Räknartext.append("9");
+			Räknartext.append("9");
 			 
 		}
 		else if (knapp.getSource() == Punkt) {
@@ -904,7 +902,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 	private void StartaOm(){
 		x = getWidth()/2;
 		y = 5;
-		hastighet =2;
+		hastighet = 2;
 		c = hastighet;
 		d = hastighet;
 		timer.start();
@@ -965,43 +963,30 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		else if (KeyEvent.getKeyText(e.getKeyCode()) == "Esc") {
 			frame.dispose();
 		}
-		
-		
+			
 	}
 
 	public void keyReleased(KeyEvent e) {
 		
 	}
 	
-	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==timer){
-			
 			if (x+bredd>=HögerX) {
-				
-				if (y>=HögerY) {
-					if (y<=HögerY+RektHöjd) {
-						hastighet++;
-						c= -hastighet;
-					}
-					else{
-						GameOver("Vänster");;
-					
-					}
+				if (y>=HögerY&&y<=HögerY+RektHöjd) {
+					hastighet++;
+					c= -hastighet;
+
 				}
 				else{
 					GameOver("Vänster");
 				}
 			}
 			else if (x<=VänsterX+RektBredd) {
-				if (y>=VänsterY) {
-					if (y<=VänsterY+RektHöjd) {
-						hastighet++;
-						c=hastighet;
-					}
-					else{
-						GameOver("Höger");
-					}
+				if (y>=VänsterY&&y<=VänsterY+RektHöjd) {
+					hastighet++;
+					c=hastighet;
+					
 				}
 				else{
 					GameOver("Höger");
@@ -1015,7 +1000,6 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 				d=hastighet;
 			}
 			x=x+c;
-			
 			y=y+d;
 			frame.repaint();
 			HögerX=getWidth()-RektBredd-1;
@@ -1036,7 +1020,6 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		}
 		else {
 			
-		
 		g2.drawOval(x, y, bredd, höjd);
 		g2.fillOval(x, y, bredd, höjd);
 		
@@ -1060,31 +1043,25 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		
 	}
 
-	
 	public void windowClosing(WindowEvent e) {
 		timer.stop();
 	}
 
-	
 	public void windowClosed(WindowEvent e) {
 	}
 
-	
 	public void windowIconified(WindowEvent e) {
 		
 	}
 
-	
 	public void windowDeiconified(WindowEvent e) {
 		
 	}
-
 	
 	public void windowActivated(WindowEvent e) {
 		
 	}
 
-	
 	public void windowDeactivated(WindowEvent e) {
 		
 	}
@@ -1463,8 +1440,6 @@ class Hypnos extends JPanel implements ActionListener{
 	    g2.setColor(Color.WHITE);
 	    g2.drawRect(700, 650, 90, 90);
 	    
-
-	    
 	    g2.setColor(new Color(233,5,6));
 	    g2.fill3DRect(150, 425, 300, 70, true);
 	   
@@ -1741,11 +1716,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 //		System.out.println(y + " " + idd);
 	}
 	
-	
-	
-	
-	
-	
 	public void keyPressed(KeyEvent e) {
 		//  
 		
@@ -1782,10 +1752,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			new GameOver();frame.dispose();
 }
 		}}
-	
-
-
-
 
 	public void keyReleased(KeyEvent arg0) {
 		
@@ -2246,9 +2212,7 @@ public Miniräknare(){
 		
 	}
 	public void actionPerformed(ActionEvent e) {
-		
 	
-		
 		
 		if (e.getSource()==b0){textruta.append("0");}
 		if (e.getSource()==b1){textruta.append("1");}
@@ -2398,10 +2362,6 @@ int a,b;
 //						textruta.append("1");
 //						}
 	}
-					
-	
-	
-	
 
 	public void keyReleased(KeyEvent arg0) {
 		
@@ -2412,9 +2372,8 @@ int a,b;
 		}
 	
 			}
-			
-@SuppressWarnings("serial")
-class Merit extends JComponent implements MouseMotionListener, WindowListener, KeyListener, ActionListener{
+
+class Merit implements MouseMotionListener, WindowListener, KeyListener, ActionListener{
 
 
 	
@@ -2566,7 +2525,6 @@ class Merit extends JComponent implements MouseMotionListener, WindowListener, K
 		Musik.setSize(300, 250);
 		Bild .setSize(300, 250);
 		
-		repaint();
 		/* 
 		 	Ordning
 		 	
