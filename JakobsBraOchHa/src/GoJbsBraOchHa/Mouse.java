@@ -892,12 +892,11 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		VänsterY = getHeight()/2;
 		HögerX=getWidth()-bredd-1;
 		
-		frame.add(this);
 		frame.addMouseMotionListener(this);
 		frame.setIconImage(FönsterIcon);
 		frame.addWindowListener(this);
 		frame.addKeyListener(this);
-		frame.setLocationRelativeTo(null);
+		frame.add(this);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
@@ -909,6 +908,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		hastighet = 2;
 		c = hastighet;
 		d = hastighet;
+		Vänta(100);
 		timer.start();
 		
 	}
