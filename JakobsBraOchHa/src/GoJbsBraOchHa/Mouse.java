@@ -13,7 +13,6 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 import GoJbFrame.GoJbFrame;
-
 import static GoJbsBraOchHa.Mouse.*;
 
 /**
@@ -4498,15 +4497,27 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 	}
 }
 
-class random{
+class random implements ActionListener{
 	
 	JPanel panel = new JPanel();
+	
+	JButton button = new JButton("Start");
 	
 	GoJbFrame frame = new GoJbFrame();
 	
 	public random(){
 		
-		frame.setTitle("sdkjj");
+		frame.setTitle("Random");
+		frame.setLayout(new BorderLayout());
+		frame.add(panel,BorderLayout.SOUTH);
+		frame.add(button,BorderLayout.EAST);
 		
+		frame.setIconImage(FönsterIcon);
+		
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
 	}
 }
