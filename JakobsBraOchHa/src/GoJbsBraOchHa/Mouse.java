@@ -13,7 +13,6 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 import GoJbFrame.GoJbFrame;
-
 import static GoJbsBraOchHa.Mouse.*;
 
 /**
@@ -4509,9 +4508,11 @@ class random implements ActionListener{
 	public random(){
 		
 		frame.setTitle("Random");
-		frame.setLayout(new FlowLayout());
-		frame.add(panel);
-		frame.add(button);
+		frame.setLayout(new BorderLayout());
+		frame.add(panel,BorderLayout.SOUTH);
+		frame.add(button,BorderLayout.EAST);
+		
+		frame.setIconImage(FönsterIcon);
 		
 		
 	}
