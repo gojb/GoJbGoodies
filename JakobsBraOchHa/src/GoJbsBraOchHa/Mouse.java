@@ -14,6 +14,7 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 import static GoJbsBraOchHa.Mouse.FönsterIcon;
+import static GoJbsBraOchHa.Mouse.SkrivHändelsetext;
 
 /**
  * Det här programmet innehåller lite
@@ -39,9 +40,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 					Räknare = new JFrame("Miniräknare"),
 					Laddfönster = new JFrame("Startar..."),
 					AvslutningsFönster = new JFrame("Avslutar...");
-	
-	JTextArea 		text = new JTextArea(), 
-					Räknartext = new JTextArea();
+
+	JTextArea 		Räknartext = new JTextArea();
 			
 	JPanel 			KnappPanel = new JPanel(), 
 					RäknarKnappar = new JPanel(),
@@ -111,9 +111,13 @@ public class Mouse extends JPanel implements 	ActionListener,
 					Räknesätt = new JLabel();
 	
  	JSlider 		Slide = new JSlider(JSlider.HORIZONTAL,0,100,10);
+ 	
+
+	static 			JTextArea text = new JTextArea();
  		
-	boolean 		autoscroll = true,
-					nyräkning = false;
+	static boolean 	autoscroll = true;
+
+	boolean 		nyräkning = false;
 	
 	int				FlyttHastighet = 10,posX = 125, posY = 75;
 	
@@ -428,6 +432,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 	public void actionPerformed(ActionEvent knapp) {
 //		System.out.println(knapp.getSource());
+		SkrivHändelsetext(knapp.getSource().toString());
 
 		if (knapp.getSource() == Avsluta){	
 			AvslutningsFönster.setVisible(true);
@@ -769,12 +774,12 @@ public class Mouse extends JPanel implements 	ActionListener,
 		}
 		
 	}
-	public void SkrivHändelsetext(String Händlsetext){
+	public static void SkrivHändelsetext(String Händlsetext){
 		text.append(Händlsetext + "\n");
 		DefaultCaret caret = (DefaultCaret) text.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 		if (autoscroll == true) {
-		text.setCaretPosition(text.getDocument().getLength());
+			text.setCaretPosition(text.getDocument().getLength());
 		}
 	}
 	public static void Vänta(int millisekunder){
@@ -786,39 +791,39 @@ public class Mouse extends JPanel implements 	ActionListener,
 	}
 	public void RäknaUt() {
 
-			try {
-				 a = Double.parseDouble(Summa.getText());
-			} catch (Exception e) {
-				a = 0;
-			}
+		try {
+			 a = Double.parseDouble(Summa.getText());
+		} catch (Exception e) {
+			a = 0;
+		}
+		
+		try {
+			b = Double.parseDouble(Räknartext.getText());
+		} catch (Exception e) {
+			b = 0;
+		}
+					
+		if (Räknesätt.getText() == "+"){
+			Summa.setText(Double.toString(a+b));
+		}
+		else if (Räknesätt.getText() == "-") {
+			Summa.setText(Double.toString(a-b));
+		}
+		
+		else if (Räknesätt.getText() == "*") {
+			Summa.setText(Double.toString(a*b));
+		}
+		else if (Räknesätt.getText() == "/") {
 			
-			try {
-				b = Double.parseDouble(Räknartext.getText());
-			} catch (Exception e) {
-				b = 0;
-			}
-						
-			if (Räknesätt.getText() == "+"){
-				Summa.setText(Double.toString(a+b));
-			}
-			else if (Räknesätt.getText() == "-") {
-				Summa.setText(Double.toString(a-b));
-			}
-			
-			else if (Räknesätt.getText() == "*") {
-				Summa.setText(Double.toString(a*b));
-			}
-			else if (Räknesätt.getText() == "/") {
-				
-				Summa.setText(Double.toString(a/b));
-			}
-			else if (Räknesätt.getText() == "del") {
-				Summa.setText(Double.toString(a+b));
-			}
-			else {
-				Summa.setText(Double.toString(a+b));
-			}
-			Räknartext.setText(null);
+			Summa.setText(Double.toString(a/b));
+		}
+		else if (Räknesätt.getText() == "del") {
+			Summa.setText(Double.toString(a+b));
+		}
+		else {
+			Summa.setText(Double.toString(a+b));
+		}
+		Räknartext.setText(null);
 		
 	}
 	
@@ -1080,13 +1085,13 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 class Snakespel extends JPanel implements KeyListener, ActionListener{
 	JFrame frame = new JFrame("Snake"),highFrame = new JFrame("Highscore");
 	final int Längd = 3,pixelstorlek=10;
-	int[] x=new int[50],y=new int[50],highscore= new int[6];
-	int snakelängd,posx=100,posy=100,pluppX,pluppY, stringy;
-	Timer timer = new Timer(100, this);
-	String riktning = "ner";
-	Random random = new Random();
-	Properties prop = new Properties();
-	boolean förlust;
+	private int[] x=new int[50],y=new int[50],highscore= new int[6];
+	private int snakelängd,posx=100,posy=100,pluppX,pluppY, stringy;
+	private Timer timer = new Timer(100, this);
+	private String riktning = "ner";
+	private Random random = new Random();
+	private Properties prop = new Properties();
+	private boolean förlust;
 	
 	public Snakespel() {
 
@@ -1149,11 +1154,18 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		try {
 			prop.store(new FileWriter(getClass().getResource("/images/SnakeScore.txt").getFile()),"Inställningar för Txt.java");
 		} catch (Exception e) {}
+		
 		System.err.println(highscore[1]);
 		System.err.println(highscore[2]);
 		System.err.println(highscore[3]);
 		System.err.println(highscore[4]);
 		System.err.println(highscore[5]);
+		
+		SkrivHändelsetext(Integer.toString(highscore[1]));
+		SkrivHändelsetext(Integer.toString(highscore[2]));
+		SkrivHändelsetext(Integer.toString(highscore[3]));
+		SkrivHändelsetext(Integer.toString(highscore[4]));
+		SkrivHändelsetext(Integer.toString(highscore[5]));
 	}
 	private void Restart() {
 		posx = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
@@ -2915,6 +2927,7 @@ class Maze extends JPanel implements ActionListener, KeyListener, MouseListener,
 		startframe.setSize(80, 80);
 		startframe.setLocation(740, 290);
 		startframe.setResizable(false);
+		startframe.setDefaultCloseOperation(3);
 		
 		börja.addActionListener(this);
 		
@@ -2927,6 +2940,7 @@ class Maze extends JPanel implements ActionListener, KeyListener, MouseListener,
 		level1.repaint();
 		level1.revalidate();
 		level1.setResizable(false);
+		level1.setDefaultCloseOperation(3);
 		
 	}
 	
@@ -2989,12 +3003,12 @@ class Maze extends JPanel implements ActionListener, KeyListener, MouseListener,
 	public void actionPerformed(ActionEvent arg0) {
 		
 		
-	if (arg0.getSource() == börja){
-		level1.setVisible(true);
-		startframe.dispose();
-	}
+		if (arg0.getSource() == börja){
+			level1.setVisible(true);
+			startframe.dispose();
+		}
 	
-}
+	}
 
 	public void mouseDragged(MouseEvent arg0) {
 		
@@ -3061,6 +3075,7 @@ class level2 extends JPanel implements MouseMotionListener{
 		level2.setVisible(true);
 		level2.add(this);
 		level2.setResizable(false);
+		level2.setDefaultCloseOperation(3);
 	
 	
 	}
@@ -3143,6 +3158,7 @@ class level3 extends JPanel implements MouseMotionListener{
 		level3.setVisible(true);
 		level3.add(this);
 		level3.setResizable(false);
+		level3.setDefaultCloseOperation(3);
 	
 	
 	}
@@ -3220,6 +3236,7 @@ class Mål{
 		frame.pack();
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(level3.level3);
+		frame.setDefaultCloseOperation(3);
 		
 
 
@@ -4108,7 +4125,7 @@ class Pass implements ActionListener{
 	  public void actionPerformed(ActionEvent e) {
 
 		  
-	        if (timer == e.getSource()) { //Process the password.
+	        if (timer == e.getSource()) {
 	            
 	        	String string = null;
 	            try {
