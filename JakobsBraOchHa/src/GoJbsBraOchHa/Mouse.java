@@ -1412,7 +1412,6 @@ class Studsa extends JPanel implements ActionListener{
 		timer2.start();
 	}
 	public void paintComponent(Graphics ag){
-//		super.paintComponents(g);
 		Graphics2D g2 = (Graphics2D)ag;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
@@ -1421,7 +1420,6 @@ class Studsa extends JPanel implements ActionListener{
 		
 		g2.drawOval(x, y, a, b);
 		g2.fillOval(x, y, a, b);
-//		g2.drawImage(FönsterIcon.getImage(), x, y, null);
 		
 	}
 	
