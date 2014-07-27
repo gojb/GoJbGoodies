@@ -4,13 +4,11 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.io.*;
-import java.util.Arrays;
-import java.util.Properties;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
