@@ -12,6 +12,11 @@ import javax.swing.Timer;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
+import GoJbFrame.GoJbFrame;
+import GoJbsBraOchHa.RörandeMojäng.GameOver;
+
+import com.oracle.xmlns.internal.webservices.jaxws_databinding.JavaParam;
+
 import static GoJbsBraOchHa.Mouse.*;
 
 /**
@@ -1492,7 +1497,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			lösenord = new JMenuItem("Lösenord"),
 			färg = new JMenuItem("Skapa färg"),
 			avsluta = new JMenuItem("Avsluta"),
-			morse = new JMenuItem("Morse");
+			morse = new JMenuItem("Morse"),
+			Random = new JMenuItem("Random");
 	JMenuBar bar = new JMenuBar();
 	
 	Robot robot;
@@ -1556,7 +1562,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		ÖppnaProgram.add(färg);
 		ÖppnaProgram.add(avsluta);
 		ÖppnaProgram.add(morse);
-
+		ÖppnaProgram.add(Random);
+		
 		Mouse.addActionListener(this);
 		Pong.addActionListener(this);
 		Återställ.addActionListener(this);
@@ -1572,6 +1579,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		färg.addActionListener(this);
 		avsluta.addActionListener(this);
 		morse.addActionListener(this);
+		Random.addActionListener(this);
 		
 		timer.addActionListener(this);
 		timer.start();
@@ -1589,6 +1597,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		frame.addWindowListener(this);
 		frame.getContentPane().add(new RörandeMojäng3());
 		frame.setVisible(true);
+		
+		
 		
 		try {
 			robot = new Robot();
@@ -1873,6 +1883,11 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		if (arg0.getSource() == morse) {
 			frame.dispose();
 			new Morse();
+		}
+		
+		if (arg0.getSource() == Random){
+			new random();
+			frame.dispose();
 		}
 		
 		if (arg0.getSource() == Pong){
@@ -4531,5 +4546,18 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 				JOptionPane.showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
 			}
 			
+	}
+}
+
+class random{
+	
+	JPanel panel = new JPanel();
+	
+	GoJbFrame frame = new GoJbFrame();
+	
+	public random(){
+		
+		frame.setTitle("sdkjj");
+		
 	}
 }
