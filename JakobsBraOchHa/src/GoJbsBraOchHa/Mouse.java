@@ -1111,6 +1111,8 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		
 		setBackground(Color.white);
 		
+	
+		
 		frame.add(this);		
 		frame.setIconImage(FönsterIcon);
 		frame.setResizable(false);		
@@ -1120,6 +1122,13 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		frame.setVisible(true);
 		frame.addWindowListener(this);
 		
+		highFrame.add(new Scorepanel());
+		highFrame.setSize(frame.getSize());
+		highFrame.setUndecorated(true);
+		highFrame.setLocation(frame.getX()-frame.getWidth(),frame.getY());
+		highFrame.setVisible(true);
+		
+		frame.setVisible(true);
 		Restart();
 	}
 	private void GameOver(){
@@ -1158,6 +1167,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 			prop.setProperty("Score3", (highscore[3]));
 			prop.setProperty("Score4", (highscore[4]));
 			prop.setProperty("Score5", (highscore[5]));
+			highFrame.repaint();;
 		}
 		
 		try {
@@ -1346,10 +1356,11 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 	}
 	@Override
 	public void windowClosing(WindowEvent e) {
+		timer.stop();
+		highFrame.dispose();
 	}
 	@Override
-	public void windowClosed(WindowEvent e) {
-		timer.stop();
+	public void windowClosed(WindowEvent e) {		
 	}
 	@Override
 	public void windowIconified(WindowEvent e) {
@@ -1362,6 +1373,26 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 	}
 	@Override
 	public void windowDeactivated(WindowEvent e) {
+	}
+	class Scorepanel extends JPanel{
+		public Scorepanel() {
+			setBackground(Color.white);
+		}
+		public void paintComponent(Graphics g){
+			super.paintComponent(g);
+			Graphics2D g2 = (Graphics2D)g;
+			int pos = 50;
+			
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2.setColor(Color.red);
+			g2.setFont(new Font(null, 0, 25));
+			g.drawString("Highscore:",10 , pos);
+			
+			for (int i = 1; i < highscore.length; i++) {
+				pos=pos+25;
+				g.drawString(highscore[i],10 , pos);
+			}
+		}
 	}
 	
 }
