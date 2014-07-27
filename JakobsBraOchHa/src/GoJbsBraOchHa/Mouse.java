@@ -1920,86 +1920,52 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 }
 
 
-class RörandeMojäng2 extends JPanel implements ActionListener {
-	
-	public void actionPreformed(ActionEvent e){
-		repaint();
-	}
-	public void actionPerformed(ActionEvent arg0) {
-		  
-		
-	}
-	public void paint(Graphics gg){
-		super.paint(gg);
-		
-		gg.setColor(new Color(0, 50, 0));
-		gg.fillRect(RörandeMojäng.x, RörandeMojäng.y, 40, 40);
-		
-		
-	}
-}
-//
-//class Bana extends JPanel implements ActionListener{
-//	public void paint(Graphics g){
-//		super.paint(g);
-//		
-//		g.setColor(Color.BLACK);
-//		g.fillRect(RörandeMojäng.x, RörandeMojäng.yy, 100, 100);
-//	}
-//
-//	
-//	public void actionPerformed(ActionEvent arg0) {
-//		//  
-//		
-//	}
-//}
-
 class RörandeMojäng3 extends JPanel implements ActionListener {
 	int[] röd=new int[91],grön=new int[91],blå=new int[91];
 	public void paint (Graphics gr) {
-	    Graphics2D g2 = (Graphics2D) gr;
-	    	    
-	    g2.setColor(Color.BLUE);
-	    g2.fillRect(0, 425, 150, 1000);
-	    
-	    g2.setColor(Color.GREEN);
-	    gr.fill3DRect(1000, 200, 100, 350, false);
-	    
-	    g2.setColor(Color.ORANGE);
-	    gr.fill3DRect(1155, 0, 110, 495, true);
-	    
-	    g2.setColor(Color.MAGENTA);
-	    gr.fillRect(205, 550, 1000, 100);
-	    
-	    g2.setColor(Color.WHITE);
-	    gr.drawRect(700, 650, 90, 90);
-	   
-	    g2.setColor(new Color(233,5,6));
-	    g2.fill3DRect(150, 425, 300, 70, true);
-	   
-	    g2.setColor(Color.BLACK);
-	    g2.setFont(new Font("", Font.ROMAN_BASELINE,20));
-	    g2.drawString("Dra genom labyrinten till den \nfärgglada kvadraten för att vinna.\n Lycka till! :D", 300, 150);
+		Graphics2D g2 = (Graphics2D) gr;
+
+		g2.setColor(Color.BLUE);
+		g2.fillRect(0, 425, 150, 1000);
+
+		g2.setColor(Color.GREEN);
+		gr.fill3DRect(1000, 200, 100, 350, false);
+
+		g2.setColor(Color.ORANGE);
+		gr.fill3DRect(1155, 0, 110, 495, true);
+
+		g2.setColor(Color.MAGENTA);
+		gr.fillRect(205, 550, 1000, 100);
+
+		g2.setColor(Color.WHITE);
+		gr.drawRect(700, 650, 90, 90);
+
+		g2.setColor(new Color(233,5,6));
+		g2.fill3DRect(150, 425, 300, 70, true);
+
+		g2.setColor(Color.BLACK);
+		g2.setFont(new Font("", Font.ROMAN_BASELINE,20));
+		g2.drawString("Dra genom labyrinten till den \nfärgglada kvadraten för att vinna.\n Lycka till! :D", 300, 150);
 
 		//	    for(int i = 90; i > 0; i--){
-//			
-//			r = random.nextInt(255);
-//			g = random.nextInt(255);
-//			b = random.nextInt(255);
-//			
-//		g2.setColor(new Color(r,g,b));
-//		gr.drawRect(700, 650, i, i);
-//				
-//}
-	    röd[röd.length-1] = random.nextInt(255);
+		//			
+		//			r = random.nextInt(255);
+		//			g = random.nextInt(255);
+		//			b = random.nextInt(255);
+		//			
+		//		g2.setColor(new Color(r,g,b));
+		//		gr.drawRect(700, 650, i, i);
+		//				
+		//}
+		röd[röd.length-1] = random.nextInt(255);
 		grön[röd.length-1] = random.nextInt(255);
 		blå[röd.length-1] = random.nextInt(255);
-		
+
 		for (int i = 1; i <= röd.length-2; i++) {
 			röd[i] = röd[i+1];
 			grön[i] = grön[i+1];
 			blå[i] = blå[i+1];
-		
+
 		}
 		boolean h = true;
 		int e=700,s=650;
@@ -2007,30 +1973,24 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 
 			if (h) {
 				h=false;
-						
-						g2.setColor(new Color(röd[i],grön[i],blå[i]));
-						g2.drawRect(e, s, i, i);
-						e++;
-						s++;
+
+				g2.setColor(new Color(röd[i],grön[i],blå[i]));
+				g2.drawRect(e, s, i, i);
+				e++;
+				s++;
 			}
 			else h=true;
 
 		}
-	    
-	    g2.setColor(Color.cyan);
-	    g2.fillRect(x, y, 50,50);
+
+		g2.setColor(Color.cyan);
+		g2.fillRect(x, y, 50,50);
 }
 
 	public void actionPerformed(ActionEvent arg0) {
 	
 	}
 	
-}
-
-class RörandeMojäng4 {
-public void paint (Graphics g) {    
-
-}
 }
 static class GameOver implements ActionListener, WindowListener{
 	JButton b1 = new JButton("Spela igen");
