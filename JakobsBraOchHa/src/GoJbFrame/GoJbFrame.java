@@ -1,4 +1,5 @@
 package GoJbFrame;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 
@@ -9,6 +10,7 @@ public class GoJbFrame extends JFrame{
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(3);
 		setVisible(true);
+		setIconImage(new ImageIcon(getClass().getResource("/images/Java-icon.png")).getImage());
 	}
 
 }
