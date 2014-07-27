@@ -13,9 +13,6 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 import GoJbFrame.GoJbFrame;
-import GoJbsBraOchHa.RörandeMojäng.GameOver;
-
-import com.oracle.xmlns.internal.webservices.jaxws_databinding.JavaParam;
 
 import static GoJbsBraOchHa.Mouse.*;
 
@@ -1415,7 +1412,6 @@ class Studsa extends JPanel implements ActionListener{
 		timer2.start();
 	}
 	public void paintComponent(Graphics ag){
-//		super.paintComponents(g);
 		Graphics2D g2 = (Graphics2D)ag;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
@@ -1424,7 +1420,6 @@ class Studsa extends JPanel implements ActionListener{
 		
 		g2.drawOval(x, y, a, b);
 		g2.fillOval(x, y, a, b);
-//		g2.drawImage(FönsterIcon.getImage(), x, y, null);
 		
 	}
 	
@@ -1514,17 +1509,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 	public RörandeMojäng(){
 		GoJbsBraOchHa.Mouse.AntalFönster++;
 		
-//			frame.getContentPane().setForeground(new Color(49,130,240));
-//			frame.getContentPane().setBackground(new Color(190,230,60));
-	
-//			RörandeMojäng3 rö3 = new RörandeMojäng3();
-//			frame.getContentPane().add(new RörandeMojäng2());
-		
-//			Bana bana = new Bana();
-//			frame.add(rö);
-//			frame.add(rö3);
-//			frame.add(bana);
-		
 		Vinst.setLocationRelativeTo(null);
 		Vinst.setSize(190, 100);
 		Vinst.add(textruta);
@@ -1533,12 +1517,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		textruta.setText("Grattis! Du vann \nefter " + qq + " försök! :D");
 		textruta.setEditable(false);
 		textlabel.setOpaque(false);
-		
-//		frame.setJMenuBar(bar2);
-
-		
-//		 Container contentPane = frame.getContentPane();
-//		    contentPane.add(new RörandeMojäng3()); 
 		
 		bar.add(ÖppnaProgram);
 		bar.add(menu);
@@ -1680,32 +1658,13 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 						}
 			}
 		
-		else {
-//		 for (int i = 1; i <= 1000; i++){
-//					System.out.println(x + y);
-//			text.append(x + ", " + y + NEWLINE);}
-//					repaint();
-//				}}
-			
-		}
 		}
 	
 	public void keyTyped(KeyEvent e){
-//		int id = e.getID();
-//		if (id == KeyEvent.KEY_TYPED){
-//			char c = e.getKeyChar();
-//			System.out.println(c + " " + id);
-//		
-//		}
 
-//	int idd = e.getID();
-//	if (idd == KeyEvent.KEY_LOCATION_NUMPAD) {
-//		char y = e.getKeyChar();
-//		System.out.println(y + " " + idd);
 	}
 	
-	public void keyPressed(KeyEvent e) {
-		//  
+	public void keyPressed(KeyEvent e) { 
 		
 		
 		if (KeyEvent.getKeyText(e.getKeyCode()) == "Vänsterpil") {
@@ -1962,16 +1921,6 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 		g2.setFont(new Font("", Font.ROMAN_BASELINE,20));
 		g2.drawString("Dra genom labyrinten till den \nfärgglada kvadraten för att vinna.\n Lycka till! :D", 300, 150);
 
-		//	    for(int i = 90; i > 0; i--){
-		//			
-		//			r = random.nextInt(255);
-		//			g = random.nextInt(255);
-		//			b = random.nextInt(255);
-		//			
-		//		g2.setColor(new Color(r,g,b));
-		//		gr.drawRect(700, 650, i, i);
-		//				
-		//}
 		röd[röd.length-1] = random.nextInt(255);
 		grön[röd.length-1] = random.nextInt(255);
 		blå[röd.length-1] = random.nextInt(255);
