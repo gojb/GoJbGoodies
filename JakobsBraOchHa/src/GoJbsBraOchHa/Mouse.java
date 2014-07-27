@@ -1110,9 +1110,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		highscore[5]= prop.getProperty("Score5","0");
 		
 		setBackground(Color.white);
-		
-	
-		
+
 		frame.add(this);		
 		frame.setIconImage(FönsterIcon);
 		frame.setResizable(false);		
@@ -1301,9 +1299,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		
-		
-		
+	
 		if (e.getSource()==timer){
 			
 			if (x[1]==pluppX&&y[1]==pluppY) {
@@ -1374,7 +1370,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 	@Override
 	public void windowDeactivated(WindowEvent e) {
 	}
-	class Scorepanel extends JPanel{
+	private class Scorepanel extends JPanel{
 		public Scorepanel() {
 			setBackground(Color.white);
 		}
