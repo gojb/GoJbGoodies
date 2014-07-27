@@ -12,8 +12,7 @@ import javax.swing.Timer;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
-import static GoJbsBraOchHa.Mouse.FönsterIcon;
-import static GoJbsBraOchHa.Mouse.SkrivHändelsetext;
+import static GoJbsBraOchHa.Mouse.*;
 
 /**
  * Det här programmet innehåller lite
@@ -118,7 +117,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 
 	boolean 		nyräkning = false;
 	
-	int				FlyttHastighet = 10,posX = 125, posY = 75;
+	int				FlyttHastighet = 10,posX = 125, posY = 75, textbredd;
 	
 	static int		AntalFönster = 0;
 
@@ -137,7 +136,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	public static 	Image 	FönsterIcon;
 	
 	public Mouse(){
-	
+		
 		Laddtext.setFont(Typsnitt);
 		Laddtext.setHorizontalAlignment(JLabel.CENTER);
 		Laddfönster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -413,7 +412,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 
 	public void mouseDragged(MouseEvent e) {
 		SkrivHändelsetext("Du drog musen: " + e.getX() + ", " + e.getY());
-		posX = e.getX();
+		posX = e.getX()-textbredd/2;
 		posY = e.getY();
 		HuvudFönster.repaint();
 	
@@ -839,6 +838,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	    g2.setFont(new Font("Serif", Font.ROMAN_BASELINE, 35));
 
 		g2.drawString(Texten,posX, posY); 
+		textbredd = g2.getFontMetrics().stringWidth(Texten);
 	  }
 	  public void setTexten(){
 		  String Text = JOptionPane.showInputDialog("Ändra text på dragbar remsa");
@@ -4570,5 +4570,6 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 				JOptionPane.showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
 			}
+			
 	}
 }
