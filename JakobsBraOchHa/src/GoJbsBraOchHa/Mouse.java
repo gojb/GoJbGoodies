@@ -13,9 +13,6 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 import GoJbFrame.GoJbFrame;
-import GoJbsBraOchHa.RörandeMojäng.GameOver;
-
-import com.oracle.xmlns.internal.webservices.jaxws_databinding.JavaParam;
 
 import static GoJbsBraOchHa.Mouse.*;
 
@@ -1962,16 +1959,6 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 		g2.setFont(new Font("", Font.ROMAN_BASELINE,20));
 		g2.drawString("Dra genom labyrinten till den \nfärgglada kvadraten för att vinna.\n Lycka till! :D", 300, 150);
 
-		//	    for(int i = 90; i > 0; i--){
-		//			
-		//			r = random.nextInt(255);
-		//			g = random.nextInt(255);
-		//			b = random.nextInt(255);
-		//			
-		//		g2.setColor(new Color(r,g,b));
-		//		gr.drawRect(700, 650, i, i);
-		//				
-		//}
 		röd[röd.length-1] = random.nextInt(255);
 		grön[röd.length-1] = random.nextInt(255);
 		blå[röd.length-1] = random.nextInt(255);
