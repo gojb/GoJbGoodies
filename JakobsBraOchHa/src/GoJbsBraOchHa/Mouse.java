@@ -7,6 +7,7 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.Random;
+import java.util.Scanner;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -1082,11 +1083,12 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 	}
 }
 @SuppressWarnings("serial")
-class Snakespel extends JPanel implements KeyListener, ActionListener{
-	JFrame frame = new JFrame("Snake"),highFrame = new JFrame("Highscore");
-	final int Längd = 3,pixelstorlek=10;
-	private int[] x=new int[50],y=new int[50],highscore= new int[6];
-	private int snakelängd,posx=100,posy=100,pluppX,pluppY, stringy;
+class Snakespel extends JPanel implements KeyListener, ActionListener,WindowListener{
+	private JFrame frame = new JFrame("Snake"),highFrame = new JFrame("Highscore");
+	final int Längd= 3,pixelstorlek=10;
+	private int[] x=new int[50],y=new int[50];
+	private String[] highscore= new String[6];
+	private int snakelängd,posx=100,posy=100,pluppX,pluppY, stringy, s = 1;
 	private Timer timer = new Timer(100, this);
 	private String riktning = "ner";
 	private Random random = new Random();
@@ -1100,13 +1102,12 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		} catch (Exception e) {
 			
 		}
-		
-		highscore[1]= Integer.parseInt(prop.getProperty("Score1","0"));
-		highscore[2]= Integer.parseInt(prop.getProperty("Score2","0"));
-		highscore[3]= Integer.parseInt(prop.getProperty("Score3","0"));
-		highscore[4]= Integer.parseInt(prop.getProperty("Score4","0"));
-		highscore[5]= Integer.parseInt(prop.getProperty("Score5","0"));
-		System.out.println(highscore[1]);
+		highscore[0]= "";
+		highscore[1]= prop.getProperty("Score1","0");
+		highscore[2]= prop.getProperty("Score2","0");
+		highscore[3]= prop.getProperty("Score3","0");
+		highscore[4]= prop.getProperty("Score4","0");
+		highscore[5]= prop.getProperty("Score5","0");
 		
 		setBackground(Color.white);
 		
@@ -1117,21 +1118,29 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		frame.setSize(pixelstorlek*50, pixelstorlek*50);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		frame.addWindowListener(this);
 		
 		Restart();
 	}
 	private void GameOver(){
 		timer.stop();
 		förlust = true;
+		int hs;
 		
 		((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-			
-		if (snakelängd>highscore[5]) {
-//			String string = JOptionPane.showInputDialog("Skriv ditt namn");;;
-			highscore[5]=snakelängd;
+		
+		Scanner scanner = new Scanner(highscore[5]);
+		hs= scanner.nextInt();
+		scanner.close();
+		if (snakelängd>hs) {
+			String string = JOptionPane.showInputDialog("Skriv ditt namn");
+			highscore[5]=Integer.toString(snakelängd) + " " + string;
+			if (snakelängd<10) {
+				highscore[5]="0"+highscore[5];
+			}
 			
 			Arrays.sort(highscore);
-			int[]tillfälligscore = new int[6];
+			String[]tillfälligscore = new String[6];
 			tillfälligscore[1] = highscore[1];
 			tillfälligscore[2] = highscore[2];
 			tillfälligscore[3] = highscore[3];
@@ -1144,11 +1153,11 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 			highscore[4]= tillfälligscore[2];
 			highscore[5]= tillfälligscore[1];
 			
-			prop.setProperty("Score1", Integer.toString(highscore[1]));
-			prop.setProperty("Score2", Integer.toString(highscore[2]));
-			prop.setProperty("Score3", Integer.toString(highscore[3]));
-			prop.setProperty("Score4", Integer.toString(highscore[4]));
-			prop.setProperty("Score5", Integer.toString(highscore[5]));
+			prop.setProperty("Score1", (highscore[1]));
+			prop.setProperty("Score2", (highscore[2]));
+			prop.setProperty("Score3", (highscore[3]));
+			prop.setProperty("Score4", (highscore[4]));
+			prop.setProperty("Score5", (highscore[5]));
 		}
 		
 		try {
@@ -1161,40 +1170,39 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 		System.err.println(highscore[4]);
 		System.err.println(highscore[5]);
 		
-		SkrivHändelsetext(Integer.toString(highscore[1]));
-		SkrivHändelsetext(Integer.toString(highscore[2]));
-		SkrivHändelsetext(Integer.toString(highscore[3]));
-		SkrivHändelsetext(Integer.toString(highscore[4]));
-		SkrivHändelsetext(Integer.toString(highscore[5]));
+		SkrivHändelsetext(highscore[1]);
+		SkrivHändelsetext(highscore[2]);
+		SkrivHändelsetext(highscore[3]);
+		SkrivHändelsetext(highscore[4]);
+		SkrivHändelsetext(highscore[5]);
 	}
 	private void Restart() {
 		posx = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
 		posy = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
-
-
-//		         
+      
 		if (	posx>frame.getWidth()*0.8||
 				posx<frame.getWidth()*0.2||
 				posy>frame.getHeight()*0.8||
 				posy<frame.getHeight()*0.2) {
+			
 			System.out.println("Räknar om: " + posx);
 			Restart();
 		}
 		else{		
-		String [] arr = {"upp", "ner", "höger", "vänster"};
-	
-		int select = random.nextInt(arr.length); 
+			String [] arr = {"upp", "ner", "höger", "vänster"};
 		
-		riktning=arr[select];
-		snakelängd = Längd;
-		x[1]=posx;
-		y[1]=posy;
-		PlaceraPlupp();
-		timer.start();
-		förlust = false;
-		repaint();
-	}
+			int select = random.nextInt(arr.length); 
+			
+			riktning=arr[select];
+			snakelängd = Längd;
+			x[1]=posx;
+			y[1]=posy;
+			PlaceraPlupp();
+			timer.start();
+			förlust = false;
+			repaint();
 		}
+	}
 	private void PlaceraPlupp(){
 		
 		pluppX = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
@@ -1234,7 +1242,6 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 			y[i]=y[i-1];
 			g.drawRect(x[i], y[i], pixelstorlek, pixelstorlek);
 			g.fillRect(x[i], y[i], pixelstorlek, pixelstorlek);
-			System.out.println(i);
 			s=1;
 		}
 		
@@ -1244,44 +1251,39 @@ class Snakespel extends JPanel implements KeyListener, ActionListener{
 	public void keyTyped(KeyEvent e) {
 		
 	}
-int s = 1;
+	
 	public void keyPressed(KeyEvent e) {
 		if (s==1) {
-			
-		
-		if(KeyEvent.getKeyText(e.getKeyCode()) == "Vänsterpil"){
-			if (riktning!="höger"){
-				riktning="vänster";
-				s=0;
+			if(KeyEvent.getKeyText(e.getKeyCode()) == "Vänsterpil"){
+				if (riktning!="höger"){
+					riktning="vänster";
+					s=0;
+				}
 			}
-			
-
+			else if(KeyEvent.getKeyText(e.getKeyCode()) == "Högerpil"){
+				if (riktning!="vänster"){
+					riktning="höger";
+					s=0;
+				}
+			}
+			else if(KeyEvent.getKeyText(e.getKeyCode()) == "Upp"){
+				if (riktning!="ner"){
+					riktning="upp";
+					s=0;
+				}
+			}
+			else if(KeyEvent.getKeyText(e.getKeyCode()) == "Nedpil"){
+				if (riktning!="upp"){
+					riktning="ner";
+					s=0;
+				}
+			}
 		}
-		else if(KeyEvent.getKeyText(e.getKeyCode()) == "Högerpil"){
-			if (riktning!="vänster"){
-				riktning="höger";
-				s=0;
-			}
-		}
-		else if(KeyEvent.getKeyText(e.getKeyCode()) == "Upp"){
-			if (riktning!="ner"){
-				riktning="upp";
-				s=0;
-			}
-		}
-		else if(KeyEvent.getKeyText(e.getKeyCode()) == "Nedpil"){
-			if (riktning!="upp"){
-				riktning="ner";
-				s=0;
-			}
-		}}
 		if(KeyEvent.getKeyText(e.getKeyCode()) == "F2"){
 			if (timer.isRunning()==false) {
 				Restart();
 			}
-
 		}
-		
 	}
 
 	public void keyReleased(KeyEvent e) {
@@ -1293,8 +1295,6 @@ int s = 1;
 		
 		
 		if (e.getSource()==timer){
-
-			
 			
 			if (x[1]==pluppX&&y[1]==pluppY) {
 				PlaceraPlupp();
@@ -1337,12 +1337,31 @@ int s = 1;
 			if (y[1]+pixelstorlek*5>frame.getHeight()) {
 				GameOver();
 			}
-
-//			frame.repaint();
-			
 			
 			frame.repaint();
 		}
+	}
+	@Override
+	public void windowOpened(WindowEvent e) {
+	}
+	@Override
+	public void windowClosing(WindowEvent e) {
+	}
+	@Override
+	public void windowClosed(WindowEvent e) {
+		timer.stop();
+	}
+	@Override
+	public void windowIconified(WindowEvent e) {
+	}
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+	}
+	@Override
+	public void windowActivated(WindowEvent e) {
+	}
+	@Override
+	public void windowDeactivated(WindowEvent e) {
 	}
 	
 }
@@ -1405,9 +1424,6 @@ class Studsa extends JPanel implements ActionListener{
 			x=x+c;
 			y=y+d;
 			repaint();
-//			frame.repaint();
-//			frame.revalidate();
-//			revalidate();
 		}
 		
 	}

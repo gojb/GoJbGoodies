@@ -65,7 +65,7 @@ public class Txt implements ActionListener {
 		
 //		JButton[] hButtons = {new JButton("ad"),new JButton("ja"),new JButton("gl"),new JButton("jo"),new JButton("ti"),new JButton("ma")};
 		
-		String[] ss = {"","ja","jas","jon","jo","",""};
+		String[] ss = {"","0 j","0 j","0 j","jo","",""};
 		Arrays.sort(ss);
 		
 		for (int i = 1; i < ss.length; i++) {
