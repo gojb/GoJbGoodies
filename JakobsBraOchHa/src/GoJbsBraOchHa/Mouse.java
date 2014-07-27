@@ -4549,15 +4549,25 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 	}
 }
 
-class random{
+class random implements ActionListener{
 	
 	JPanel panel = new JPanel();
+	
+	JButton button = new JButton("Start");
 	
 	GoJbFrame frame = new GoJbFrame();
 	
 	public random(){
 		
-		frame.setTitle("sdkjj");
+		frame.setTitle("Random");
+		frame.setLayout(new FlowLayout());
+		frame.add(panel);
+		frame.add(button);
 		
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
 	}
 }
