@@ -1509,17 +1509,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 	public RörandeMojäng(){
 		GoJbsBraOchHa.Mouse.AntalFönster++;
 		
-//			frame.getContentPane().setForeground(new Color(49,130,240));
-//			frame.getContentPane().setBackground(new Color(190,230,60));
-	
-//			RörandeMojäng3 rö3 = new RörandeMojäng3();
-//			frame.getContentPane().add(new RörandeMojäng2());
-		
-//			Bana bana = new Bana();
-//			frame.add(rö);
-//			frame.add(rö3);
-//			frame.add(bana);
-		
 		Vinst.setLocationRelativeTo(null);
 		Vinst.setSize(190, 100);
 		Vinst.add(textruta);
@@ -1528,12 +1517,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		textruta.setText("Grattis! Du vann \nefter " + qq + " försök! :D");
 		textruta.setEditable(false);
 		textlabel.setOpaque(false);
-		
-//		frame.setJMenuBar(bar2);
-
-		
-//		 Container contentPane = frame.getContentPane();
-//		    contentPane.add(new RörandeMojäng3()); 
 		
 		bar.add(ÖppnaProgram);
 		bar.add(menu);
@@ -1675,32 +1658,13 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 						}
 			}
 		
-		else {
-//		 for (int i = 1; i <= 1000; i++){
-//					System.out.println(x + y);
-//			text.append(x + ", " + y + NEWLINE);}
-//					repaint();
-//				}}
-			
-		}
 		}
 	
 	public void keyTyped(KeyEvent e){
-//		int id = e.getID();
-//		if (id == KeyEvent.KEY_TYPED){
-//			char c = e.getKeyChar();
-//			System.out.println(c + " " + id);
-//		
-//		}
 
-//	int idd = e.getID();
-//	if (idd == KeyEvent.KEY_LOCATION_NUMPAD) {
-//		char y = e.getKeyChar();
-//		System.out.println(y + " " + idd);
 	}
 	
-	public void keyPressed(KeyEvent e) {
-		//  
+	public void keyPressed(KeyEvent e) { 
 		
 		
 		if (KeyEvent.getKeyText(e.getKeyCode()) == "Vänsterpil") {
