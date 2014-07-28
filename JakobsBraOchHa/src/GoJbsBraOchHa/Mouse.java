@@ -592,7 +592,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 			text.setCaretPosition(text.getDocument().getLength());
 		}
 	}
-	public static void Vänta(int millisekunder){
+	public static void vänta(int millisekunder){
 		try {
 			Thread.sleep(millisekunder);
 		} catch (InterruptedException e) {
@@ -904,7 +904,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		hastighet = 2;
 		c = hastighet;
 		d = hastighet;
-		Vänta(100);
+		vänta(100);
 		timer.start();
 		
 	}
@@ -4359,7 +4359,7 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 		x = 0;
 		
 		timer.stop();
-		GoJbsBraOchHa.Mouse.Vänta(100);
+		vänta(100);
 
 		clip.close();
 		try {
@@ -4413,7 +4413,7 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 			x = 0;
 			
 			timer.stop();
-			GoJbsBraOchHa.Mouse.Vänta(100);
+			vänta(100);
 
 			clip.close();
 			try {
