@@ -63,7 +63,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 				  	Händelse = new JMenuItem("Visa Händelsefönster"),
 				  	Räkna = new JMenuItem("Öppna Miniräknare"),
 				  	Spelknapp = new JMenuItem("Spela Pong"),
-				  	Rörande = new JMenuItem("Öppna RörandeMojäng",new ImageIcon(getClass().getResource("/images/Nopeliten.png"))),
+				  	Rörande = new JMenuItem("Öppna RörandeMojäng",
+				  				new ImageIcon(getClass().getResource("/images/Nopeliten.png"))),
 				  	StudsItem = new JMenuItem("Öppna Studsande Objekt"),
 				  	Snake = new JMenuItem("Spela Snake");
 	
@@ -99,13 +100,13 @@ public class Mouse extends JPanel implements 	ActionListener,
 	Timer 			StartTimer = new Timer(2, this),
 					SlutTimer = new Timer(2, this);
 	
-	Robot			robot;
-	
 	Color			Färg = new Color(0, 0, 255);
 	
 	public static 	Font 	Typsnitt = new Font("Arial", 0, 40);
 	
 	public static 	Image 	FönsterIcon;
+	
+	public static 	Robot	robot;
 	
 	String Texten = "Dra eller använd piltangenterna";
 	
@@ -128,13 +129,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		Laddfönster.getContentPane().setBackground(Color.yellow);
 		Laddfönster.setUndecorated(true);
 		Laddfönster.setVisible(true);		
-		
-		try {
-			robot = new Robot();
-		} catch (AWTException e) {
-			e.printStackTrace();
-		}
-		
+				
 		SkrivHändelsetext("Välkommen!");
 		Avsluta.addActionListener(this);
 		Om.addActionListener(this);
@@ -250,7 +245,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 		om.setLocationRelativeTo(HuvudFönster);
 		
 		HuvudFönster.setJMenuBar(MenyRad);
-		HuvudFönster.setSize((int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2),(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2*1.5));
+		HuvudFönster.setSize((int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2),
+				(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2*1.5));
 		HuvudFönster.setLayout(new BorderLayout());
 		HuvudFönster.setMinimumSize(new Dimension(400,400));
 		HuvudFönster.addKeyListener(this);
@@ -265,9 +261,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		HuvudFönster.setLocationRelativeTo(null);		
 		HuvudFönster.revalidate();
 		HuvudFönster.repaint();
-		
-		
-		
+				
 		AvslutningsText.setFont(Typsnitt);
 		AvslutningsText.setHorizontalAlignment(JLabel.CENTER);
 		
@@ -303,6 +297,11 @@ public class Mouse extends JPanel implements 	ActionListener,
 		    	((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 		    	JOptionPane.showMessageDialog(null, "Den angivna LookAndFeel hittades inte!","Error",JOptionPane.ERROR_MESSAGE);
 		    }
+		try {
+			robot = new Robot();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		class setImageIcon{
 			public setImageIcon() {
@@ -457,7 +456,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 					HuvudFönster.setVisible(true);
 					StartTimer.stop();
 					
-					robot.mouseMove(HuvudFönster.getX() + HuvudFönster.getWidth()/2,HuvudFönster.getY() + HuvudFönster.getHeight()/2);
+					robot.mouseMove(HuvudFönster.getX() + HuvudFönster.getWidth()/2,
+									HuvudFönster.getY() + HuvudFönster.getHeight()/2);
 					SpelaLjud("/images/tada.wav");
 				}
 				else {
@@ -1491,8 +1491,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			Random = new JMenuItem("Random");
 	JMenuBar bar = new JMenuBar();
 	
-	Robot robot;
-	
 	Clip clip;
 
 	static int qq = 1;
@@ -1571,16 +1569,10 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		frame.getContentPane().add(new RörandeMojäng3());
 		frame.setVisible(true);
 		
-		
-		
-		try {
-			robot = new Robot();
-		} catch (AWTException e) {
-			
-			e.printStackTrace();
-		}
 		robot.mouseMove(200, 100);
-//		String [] names ={"Biologi", "Fysik", "Kemi", "Teknik", "Historia", "Geografi", "Sammhällskunskap", "Religon", "Slöjd", "ModernaSpråk", "Idrott", "HemOchKonsumentkunskap", "Musik", "Bild"};
+//		String [] names ={"Biologi", "Fysik", "Kemi", "Teknik", 
+//		"Historia", "Geografi", "Sammhällskunskap", "Religon", 
+//		"Slöjd", "ModernaSpråk", "Idrott", "HemOchKonsumentkunskap", "Musik", "Bild"};
 //	      for( String name : names ) {
 //	         System.out.println(name + ".setLayout(new GridLayout(3,1));");
 //	      }
@@ -3085,7 +3077,8 @@ class level2 extends JPanel implements MouseMotionListener{
 		level2.repaint();
 		
 		
-if (y > 355 || x > 380 || y > 256 && y < 340 && x > 165 && x < 365||y < 339 && x > 165 && x < 230|| y < 241 && y > 115 && x > 245|| x < 364 && y < 100||
+if (y > 355 || x > 380 || y > 256 && y < 340 && x > 165 && x < 365||
+		y < 339 && x > 165 && x < 230|| y < 241 && y > 115 && x > 245|| x < 364 && y < 100||
 		x < 140||x < 145 && y > 215||y > 215 && y < 340 && x > 160 && x < 230||y < 190 && x < 230){
 			Maze.startframe.setVisible(true);
 			level2.dispose();
@@ -3347,7 +3340,6 @@ KeyListener, MouseInputListener{
 	Timer timer = new Timer(1, this),
 			timer300 = new Timer(300, this),
 			timer3 = new Timer(3, this);
-	Robot robot;
 	String string = new String();
 	int x,y,r,g,b;
 	String a;
@@ -3380,12 +3372,6 @@ KeyListener, MouseInputListener{
 		timer300.start();
 		timer3.start();
 		
-		try {
-			robot = new Robot();
-		} catch (AWTException e) {
-			
-			e.printStackTrace();
-		}
 		if(frame.isVisible() == true){
 			robot.mouseMove(960, 515);
 
