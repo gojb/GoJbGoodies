@@ -36,15 +36,10 @@ public class Mouse extends JPanel implements 	ActionListener,
 					HändelseFönster = new JFrame("Händelser"),
 					HastighetsFönster =  new JFrame(),
 					om = new JFrame("Om"),
-					Räknare = new JFrame("Miniräknare"),
 					Laddfönster = new JFrame("Startar..."),
 					AvslutningsFönster = new JFrame("Avslutar...");
-
-	JTextArea 		Räknartext = new JTextArea();
 			
-	JPanel 			KnappPanel = new JPanel(), 
-					RäknarKnappar = new JPanel(),
-					RäknarPanel = new JPanel();
+	JPanel 			KnappPanel = new JPanel();
 
 	JMenuBar 		MenyRad = new JMenuBar();
 	
@@ -77,25 +72,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 					knapp3 = new JButton("Röd"),
 					knapp4 = new JButton("Gul"),
 					OK = new JButton("Klar"),
-					Miniränkarknapp0 = new JButton("0"),
-					Miniränkarknapp1 = new JButton("1"),
-					Miniränkarknapp2 = new JButton("2"),
-					Miniränkarknapp3 = new JButton("3"),
-					Miniränkarknapp4 = new JButton("4"),
-					Miniränkarknapp5 = new JButton("5"),
-					Miniränkarknapp6 = new JButton("6"),
-					Miniränkarknapp7 = new JButton("7"),
-					Miniränkarknapp8 = new JButton("8"),
-					Miniränkarknapp9 = new JButton("9"),
-					MiniränkarknappPlus = new JButton("+"),
-					MiniränkarknappMinus = new JButton("-"),
-					MiniränkarknappGånger = new JButton("*"),
-					MiniränkarknappDelat = new JButton("/"),
-					MiniränkarknappLikamed = new JButton("="),
 					Autoscrollknapp = new JButton("Stäng av autoscroll"),
-					RensKnapp = new JButton("Rensa"),
-					C = new JButton("C"),
-					Punkt = new JButton(".");
+					RensKnapp = new JButton("Rensa");
 	
 	JScrollPane 	Jaha = new JScrollPane(text,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 											JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -105,9 +83,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 	JLabel 			omtext = new JLabel("<html>Hallåj! Det här programmet är skapat av GoJbs Javaprogrammering"),
 					Laddtext = new JLabel("Startar program..."),
-					AvslutningsText = new JLabel("Avslutar program..."),
-					Summa = new JLabel(""),
-					Räknesätt = new JLabel();
+					AvslutningsText = new JLabel("Avslutar program...");
 	
  	JSlider 		Slide = new JSlider(JSlider.HORIZONTAL,0,100,10);
  	
@@ -115,15 +91,10 @@ public class Mouse extends JPanel implements 	ActionListener,
 	static 			JTextArea text = new JTextArea();
  		
 	static boolean 	autoscroll = true;
-
-	boolean 		nyräkning = false;
 	
 	int				FlyttHastighet = 10,posX = 125, posY = 75, textbredd;
 	
 	static int		AntalFönster = 0;
-
-	double 			a = 0,
-					b = 0;
 	
 	Timer 			StartTimer = new Timer(2, this),
 					SlutTimer = new Timer(2, this);
@@ -177,26 +148,9 @@ public class Mouse extends JPanel implements 	ActionListener,
 		Händelse.addActionListener(this);
 		OK.addActionListener(this);
 		Räkna.addActionListener(this);
-		Miniränkarknapp0.addActionListener(this);
-		Miniränkarknapp1.addActionListener(this);
-		Miniränkarknapp2.addActionListener(this);
-		Miniränkarknapp3.addActionListener(this);
-		Miniränkarknapp4.addActionListener(this);
-		Miniränkarknapp5.addActionListener(this);
-		Miniränkarknapp6.addActionListener(this);
-		Miniränkarknapp7.addActionListener(this);
-		Miniränkarknapp8.addActionListener(this);
-		Miniränkarknapp9.addActionListener(this);
-		MiniränkarknappGånger.addActionListener(this);
-		MiniränkarknappDelat.addActionListener(this);
-		MiniränkarknappMinus.addActionListener(this);
-		MiniränkarknappPlus.addActionListener(this);
-		MiniränkarknappLikamed.addActionListener(this);
 		Autoscrollknapp.addActionListener(this);
 		RensKnapp.addActionListener(this);
 		KnappPanel.addMouseListener(this);
-		C.addActionListener(this);
-		Punkt.addActionListener(this);
 		Spelknapp.addActionListener(this);
 		Rörande.addActionListener(this);
 		StudsItem.addActionListener(this);
@@ -310,46 +264,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		HuvudFönster.revalidate();
 		HuvudFönster.repaint();
 		
-		RäknarKnappar.setLayout(new GridLayout(5,5,5,5));
-		RäknarKnappar.add(Miniränkarknapp1);
-		RäknarKnappar.add(Miniränkarknapp2);
-		RäknarKnappar.add(Miniränkarknapp3);
-		RäknarKnappar.add(MiniränkarknappPlus);
-		RäknarKnappar.add(Miniränkarknapp4);
-		RäknarKnappar.add(Miniränkarknapp5);
-		RäknarKnappar.add(Miniränkarknapp6);
-		RäknarKnappar.add(MiniränkarknappMinus);
-		RäknarKnappar.add(Miniränkarknapp7);
-		RäknarKnappar.add(Miniränkarknapp8);
-		RäknarKnappar.add(Miniränkarknapp9);
-		RäknarKnappar.add(MiniränkarknappGånger);
-		RäknarKnappar.add(Punkt);
-		RäknarKnappar.add(Miniränkarknapp0);
-		RäknarKnappar.add(MiniränkarknappLikamed);	
-		RäknarKnappar.add(MiniränkarknappDelat);
-		RäknarKnappar.add(C);
-		RäknarKnappar.setBackground(Color.white);
-		Miniränkarknapp0.setPreferredSize(new Dimension(120,100));
 		
-		RäknarPanel.add(Summa);
-		RäknarPanel.add(Räknesätt);
-		RäknarPanel.add(Räknartext);
-		RäknarPanel.setBackground(Color.white);
-
-		Räknartext.setFont(Typsnitt);
-		Summa.setFont(Typsnitt);
-		Räknesätt.setFont(Typsnitt);
-		
-		Räknare.setLayout(new BorderLayout());
-		Räknare.add(RäknarPanel,BorderLayout.NORTH);
-		Räknare.add(RäknarKnappar,BorderLayout.CENTER);
-		Räknare.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.WEST);
-		Räknare.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.EAST);
-		Räknare.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.SOUTH);
-		Räknare.setBackground(Color.WHITE);
-		Räknare.pack();
-		Räknare.setIconImage(FönsterIcon);
-		Räknare.getContentPane().setBackground(Color.white);
 		
 		AvslutningsText.setFont(Typsnitt);
 		AvslutningsText.setHorizontalAlignment(JLabel.CENTER);
@@ -404,11 +319,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 		new setImageIcon();
 		new Pass();
 		
-	}
-	
-	public void Miniräknare(){
-		Räknare.setVisible(true);
-
 	}
 
 	public void mouseDragged(MouseEvent e) {
@@ -527,91 +437,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 			
 		}
 		else if (knapp.getSource() == Räkna){
-			Miniräknare();
+			new Räknare();
 			
-		}
-		else if (knapp.getSource() == MiniränkarknappDelat){ 
-			if (Räknesätt.getText()==("")) {
-				Räknesätt.setText("del");
-			}
-			RäknaUt();
-			Räknesätt.setText("/");
-			nyräkning = false;
-		}
-		else if (knapp.getSource() == MiniränkarknappGånger){ 
-			RäknaUt();
-			Räknesätt.setText("*");
-			nyräkning = false;
-		}
-		else if (knapp.getSource() == MiniränkarknappMinus){ 
-			RäknaUt();
-			Räknesätt.setText("-");
-			nyräkning = false;
-		}
-		else if (knapp.getSource() == MiniränkarknappPlus){ 
-			RäknaUt();
-			Räknesätt.setText("+");
-			nyräkning = false;
-			
-		}
-		else if (knapp.getSource()==C) {
-			Räknesätt.setText(null);
-			Summa.setText(null);
-			Räknartext.setText(null);
-		}
-		
-		if (nyräkning==true){
-			nyräkning = false;
-			C.doClick();
-			
-		}
-		if (knapp.getSource() == MiniränkarknappLikamed){
-			RäknaUt();
-			Räknesätt.setText("");
-			nyräkning = true;
-		}
-		else if (knapp.getSource() == Miniränkarknapp0){ 
-			Räknartext.append("0");
-			 
-		}
-		else if (knapp.getSource() == Miniränkarknapp1){ 
-			Räknartext.append("1");
-			 
-		}
-		else if (knapp.getSource() == Miniränkarknapp2){ 
-			Räknartext.append("2");
-			 
-		}
-		else if (knapp.getSource() == Miniränkarknapp3){ 
-			Räknartext.append("3");
-			 
-		}
-		else if (knapp.getSource() == Miniränkarknapp4){ 
-			Räknartext.append("4");
-			 
-		}
-		else if (knapp.getSource() == Miniränkarknapp5){ 
-			Räknartext.append("5");
-			 
-		}
-		else if (knapp.getSource() == Miniränkarknapp6){ 
-			Räknartext.append("6");
-			 
-		}
-		else if (knapp.getSource() == Miniränkarknapp7){ 
-			Räknartext.append("7");
-			 
-		}
-		else if (knapp.getSource() == Miniränkarknapp8){ 
-			Räknartext.append("8");
-			 
-		}
-		else if (knapp.getSource() == Miniränkarknapp9){ 
-			Räknartext.append("9");
-			 
-		}
-		else if (knapp.getSource() == Punkt) {
-			Räknartext.append(".");
 		}
 		else if (knapp.getSource() == Autoscrollknapp){
 			if (autoscroll == true) {
@@ -737,7 +564,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 		HändelseFönster.dispose();
 		HastighetsFönster.dispose();
 		om.dispose();
-		Räknare.dispose();
 		if (AntalFönster == 0) {
 		
 			AvslutningsFönster.setVisible(true);
@@ -788,6 +614,221 @@ public class Mouse extends JPanel implements 	ActionListener,
 			e.printStackTrace();
 		}
 	}
+	public String Texten = "Dra eller använd piltangenterna";
+
+	public void paintComponent(Graphics g){
+		  
+		super.paintComponent(g);
+		
+	    Graphics2D g2 = (Graphics2D)g;
+	    
+	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+	    g2.setFont(new Font("Serif", Font.ROMAN_BASELINE, 35));
+
+		g2.drawString(Texten,posX, posY); 
+		textbredd = g2.getFontMetrics().stringWidth(Texten);
+	  }
+	  public void setTexten(){
+		  String Text = JOptionPane.showInputDialog("Ändra text på dragbar remsa");
+		  setTexten(Text);
+		  
+	  }
+	  public void setTexten(String Text){
+		  if(Text == null){
+			  Text = "Dra eller använd piltangenterna";
+		  }
+		  Texten = Text;
+		  System.out.println("Texten ändrad till: " + Texten);
+	  
+	}
+	
+}
+class Räknare implements ActionListener{
+	
+	JFrame 	Räknare = new JFrame("Miniräknare");
+	
+	JPanel 	RäknarKnappar = new JPanel(),
+			RäknarPanel = new JPanel();
+	
+	JButton Miniränkarknapp0 = new JButton("0"),
+			Miniränkarknapp1 = new JButton("1"),
+			Miniränkarknapp2 = new JButton("2"),
+			Miniränkarknapp3 = new JButton("3"),
+			Miniränkarknapp4 = new JButton("4"),
+			Miniränkarknapp5 = new JButton("5"),
+			Miniränkarknapp6 = new JButton("6"),
+			Miniränkarknapp7 = new JButton("7"),
+			Miniränkarknapp8 = new JButton("8"),
+			Miniränkarknapp9 = new JButton("9"),
+			MiniränkarknappPlus = new JButton("+"),
+			MiniränkarknappMinus = new JButton("-"),
+			MiniränkarknappGånger = new JButton("*"),
+			MiniränkarknappDelat = new JButton("/"),
+			MiniränkarknappLikamed = new JButton("=");
+	
+	JLabel	Summa = new JLabel(""),
+			Räknesätt = new JLabel();
+	
+	JTextArea 		Räknartext = new JTextArea();
+
+	boolean 		nyräkning = false;
+	
+	JButton C = new JButton("C"),
+			Punkt = new JButton(".");
+	
+	double 			a = 0,
+					b = 0;
+	
+	public Räknare() {
+		
+		RäknarKnappar.setLayout(new GridLayout(5,5,5,5));
+		RäknarKnappar.add(Miniränkarknapp1);
+		RäknarKnappar.add(Miniränkarknapp2);
+		RäknarKnappar.add(Miniränkarknapp3);
+		RäknarKnappar.add(MiniränkarknappPlus);
+		RäknarKnappar.add(Miniränkarknapp4);
+		RäknarKnappar.add(Miniränkarknapp5);
+		RäknarKnappar.add(Miniränkarknapp6);
+		RäknarKnappar.add(MiniränkarknappMinus);
+		RäknarKnappar.add(Miniränkarknapp7);
+		RäknarKnappar.add(Miniränkarknapp8);
+		RäknarKnappar.add(Miniränkarknapp9);
+		RäknarKnappar.add(MiniränkarknappGånger);
+		RäknarKnappar.add(Punkt);
+		RäknarKnappar.add(Miniränkarknapp0);
+		RäknarKnappar.add(MiniränkarknappLikamed);	
+		RäknarKnappar.add(MiniränkarknappDelat);
+		RäknarKnappar.add(C);
+		RäknarKnappar.setBackground(Color.white);
+		
+		Miniränkarknapp0.setPreferredSize(new Dimension(120,100));
+		Miniränkarknapp0.addActionListener(this);
+		Miniränkarknapp1.addActionListener(this);
+		Miniränkarknapp2.addActionListener(this);
+		Miniränkarknapp3.addActionListener(this);
+		Miniränkarknapp4.addActionListener(this);
+		Miniränkarknapp5.addActionListener(this);
+		Miniränkarknapp6.addActionListener(this);
+		Miniränkarknapp7.addActionListener(this);
+		Miniränkarknapp8.addActionListener(this);
+		Miniränkarknapp9.addActionListener(this);
+		MiniränkarknappGånger.addActionListener(this);
+		MiniränkarknappDelat.addActionListener(this);
+		MiniränkarknappMinus.addActionListener(this);
+		MiniränkarknappPlus.addActionListener(this);
+		MiniränkarknappLikamed.addActionListener(this);
+		C.addActionListener(this);
+		Punkt.addActionListener(this);
+		
+		RäknarPanel.add(Summa);
+		RäknarPanel.add(Räknesätt);
+		RäknarPanel.add(Räknartext);
+		RäknarPanel.setBackground(Color.white);
+
+		Räknartext.setFont(Typsnitt);
+		Summa.setFont(Typsnitt);
+		Räknesätt.setFont(Typsnitt);
+		
+
+		Räknare.setLayout(new BorderLayout());
+		Räknare.add(RäknarPanel,BorderLayout.NORTH);
+		Räknare.add(RäknarKnappar,BorderLayout.CENTER);
+		Räknare.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.WEST);
+		Räknare.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.EAST);
+		Räknare.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.SOUTH);
+		Räknare.setBackground(Color.WHITE);
+		Räknare.pack();
+		Räknare.setIconImage(FönsterIcon);
+		Räknare.getContentPane().setBackground(Color.white);
+		Räknare.setVisible(true);
+	}
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == MiniränkarknappDelat){ 
+			if (Räknesätt.getText()==("")) {
+				Räknesätt.setText("del");
+			}
+			RäknaUt();
+			Räknesätt.setText("/");
+			nyräkning = false;
+		}
+		else if (e.getSource() == MiniränkarknappGånger){ 
+			RäknaUt();
+			Räknesätt.setText("*");
+			nyräkning = false;
+		}
+		else if (e.getSource() == MiniränkarknappMinus){ 
+			RäknaUt();
+			Räknesätt.setText("-");
+			nyräkning = false;
+		}
+		else if (e.getSource() == MiniränkarknappPlus){ 
+			RäknaUt();
+			Räknesätt.setText("+");
+			nyräkning = false;
+			
+		}
+		else if (e.getSource()==C) {
+			Räknesätt.setText(null);
+			Summa.setText(null);
+			Räknartext.setText(null);
+		}
+		
+		if (nyräkning){
+			nyräkning = false;
+			C.doClick();
+			
+		}
+		if (e.getSource() == MiniränkarknappLikamed){
+			RäknaUt();
+			Räknesätt.setText("");
+			nyräkning = true;
+		}
+		else if (e.getSource() == Miniränkarknapp0){ 
+			Räknartext.append("0");
+			 
+		}
+		else if (e.getSource() == Miniränkarknapp1){ 
+			Räknartext.append("1");
+			 
+		}
+		else if (e.getSource() == Miniränkarknapp2){ 
+			Räknartext.append("2");
+			 
+		}
+		else if (e.getSource() == Miniränkarknapp3){ 
+			Räknartext.append("3");
+			 
+		}
+		else if (e.getSource() == Miniränkarknapp4){ 
+			Räknartext.append("4");
+			 
+		}
+		else if (e.getSource() == Miniränkarknapp5){ 
+			Räknartext.append("5");
+			 
+		}
+		else if (e.getSource() == Miniränkarknapp6){ 
+			Räknartext.append("6");
+			 
+		}
+		else if (e.getSource() == Miniränkarknapp7){ 
+			Räknartext.append("7");
+			 
+		}
+		else if (e.getSource() == Miniränkarknapp8){ 
+			Räknartext.append("8");
+			 
+		}
+		else if (e.getSource() == Miniränkarknapp9){ 
+			Räknartext.append("9");
+			 
+		}
+		else if (e.getSource() == Punkt) {
+			Räknartext.append(".");
+		}
+		
+	}
 	public void RäknaUt() {
 
 		try {
@@ -826,37 +867,9 @@ public class Mouse extends JPanel implements 	ActionListener,
 		
 	}
 	
-	public String Texten = "Dra eller använd piltangenterna";
-
-	public void paintComponent(Graphics g){
-		  
-		super.paintComponent(g);
-		
-	    Graphics2D g2 = (Graphics2D)g;
-	    
-	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-	    g2.setFont(new Font("Serif", Font.ROMAN_BASELINE, 35));
-
-		g2.drawString(Texten,posX, posY); 
-		textbredd = g2.getFontMetrics().stringWidth(Texten);
-	  }
-	  public void setTexten(){
-		  String Text = JOptionPane.showInputDialog("Ändra text på dragbar remsa");
-		  setTexten(Text);
-		  
-	  }
-	  public void setTexten(String Text){
-		  if(Text == null){
-			  Text = "Dra eller använd piltangenterna";
-		  }
-		  Texten = Text;
-		  System.out.println("Texten ändrad till: " + Texten);
-	  
-	}
+	
 	
 }
-
 @SuppressWarnings("serial")
 class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListener,MouseMotionListener{
 	
@@ -4066,29 +4079,28 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 	}
 }
 
-class Pass implements ActionListener{
+final class Pass implements ActionListener{
 	
-	int x;
+	private int x;
 	
 	private static String OK = "What Ever!";
 	 
 	 
-	 Timer timer = new Timer(1, this);	
+	private Timer timer = new Timer(1, this);	
 	 
     private JPasswordField passwordField;
     private JFrame användare = new JFrame();
     
     private JFrame frame = new JFrame("Verifiera dig!");
     
-    JButton användareJakob = new JButton("Jakob"),
-    		användareGlenn = new JButton("Glenn");
+    private JButton användareJakob = new JButton("Jakob"),
+    			användareGlenn = new JButton("Glenn");
     
     private JLabel label = new JLabel("Skriv Lösenord -->");
 	    
 	    
-	  public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 
-		  
 	        if (timer == e.getSource()) {
 	            
 	        	String string = null;
@@ -4105,11 +4117,9 @@ class Pass implements ActionListener{
 					
 				} 
 	            
-	            
-	            char[] input = passwordField.getPassword();
 	            char[] correctPassword = { 'U','g','g','e','n','0','6','8','4'};
 	            
-	            if (Arrays.equals (input, correctPassword)) {
+	            if (Arrays.equals(passwordField.getPassword(),correctPassword)) {
 	            	frame.dispose();
 		              användare.setVisible(true);
 		              timer.stop();
@@ -4133,7 +4143,7 @@ class Pass implements ActionListener{
 	        
 	    }
 	 
-	    public Pass() {
+	    Pass() {
 	    	
 	        passwordField = new JPasswordField(10);
 	        passwordField.setActionCommand(OK);
