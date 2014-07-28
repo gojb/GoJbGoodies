@@ -3163,8 +3163,10 @@ class Maze extends JPanel implements ActionListener, KeyListener, MouseListener,
 			System.out.println("Musen rör sig på: " + x  + ", " + y);
 			level3.repaint();
 
-			if (x > 290 && y < 235 && y > 30||y < 235 && y > 150 && x > 82|| x > 395|| x > 364 && y > 30|| y < 310 && y > 291 && x > 173|| y > 246 &&
-					y < 283 && x < 353|| x < 170 && y > 246 && y < 310||x < 270 && y < 135){
+			if (x > 290 && y < 235 && y > 30||y < 235 && y > 150 && x > 82||
+				x > 395|| x > 364 && y > 30|| y < 310 && y > 291 && x > 173||y > 246 && 
+				y < 283 && x < 353|| x < 170 && y > 246 && y < 310||x < 270 && y < 135){
+				
 				level3.dispose();
 				Maze.startframe.setVisible(true);
 			}
@@ -3233,99 +3235,88 @@ class Snake extends JPanel implements KeyListener, ActionListener{
 
 	public void keyPressed(KeyEvent arg0) {
 
-		 if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Vänsterpil"){
+		if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Vänsterpil"){
 			a = -1;
 			b = 0;
-		
-				if (bredd < höjd){
-			
-			
-			q = höjd;
-			höjd = bredd;
-			bredd = q;
-			
-			
-			frame.repaint();
-			System.out.println(a + "," + b);
-		}}
-	else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Högerpil"){
-		a = +1;
-		b = 0;
-	
+
 			if (bredd < höjd){
-		
-		
-		q = höjd;
-		höjd = bredd;
-		bredd = q;
-		
-		
-		frame.repaint();
-		System.out.println(a + "," + b);
+
+
+				q = höjd;
+				höjd = bredd;
+				bredd = q;
+
+
+				frame.repaint();
+				System.out.println(a + "," + b);
 			}}
-	else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Upp"){
-			
-		a = 0;
-		b = -1;
-	
+		else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Högerpil"){
+			a = +1;
+			b = 0;
+
+			if (bredd < höjd){
+
+				q = höjd;
+				höjd = bredd;
+				bredd = q;
+
+
+				frame.repaint();
+				System.out.println(a + "," + b);
+			}}
+		else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Upp"){
+
+			a = 0;
+			b = -1;
+
 			if (bredd > höjd){
-		
-		
-		q = höjd;
-		höjd = bredd;
-		bredd = q;
-		
-		
-		frame.repaint();
-		System.out.println(a + "," + b);
+
+
+				q = höjd;
+				höjd = bredd;
+				bredd = q;
+
+
+				frame.repaint();
+				System.out.println(a + "," + b);
 			}
-			}
-	else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Nedpil"){
-		
-		a = 0;
-		b = +1;
-	
+		}
+		else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Nedpil"){
+
+			a = 0;
+			b = +1;
+
 			if (bredd > höjd){
-		
-		
-		q = höjd;
-		höjd = bredd;
-		bredd = q;
-		
-		
-		frame.repaint();
-		System.out.println(a + "," + b);
+
+
+				q = höjd;
+				höjd = bredd;
+				bredd = q;
+
+
+				frame.repaint();
+				System.out.println(a + "," + b);
 			}
-			}
-		
+		}
 	}
 
-	
 	public void keyReleased(KeyEvent arg0) {
-	
-		
+			
 	}
 
-	
 	public void keyTyped(KeyEvent arg0) {
-	
-		
+			
 	}
 
-	
 	public void actionPerformed(ActionEvent arg0) {
-	if (arg0.getSource()==timer){
-		
-		
-	
-		x = x + a;
-		y = y + b;
-		frame.repaint();
+		if (arg0.getSource()==timer){
+			
+			x = x + a;
+			y = y + b;
+			frame.repaint();
+		}
 	}
-		
-	}}
-	
-
+}
 
 @SuppressWarnings("serial")
 class Impossible extends JPanel implements WindowListener, ActionListener,
@@ -3340,12 +3331,13 @@ KeyListener, MouseInputListener{
 	String a;
 	
 	public Impossible(String textString){
+
+		Image image = new ImageIcon(getClass().getResource("/images/Nope.png")).getImage();
 		
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		  Image image = toolkit.getImage(getClass().getResource("/images/Nope.png"));
-		  Cursor c = toolkit.createCustomCursor(image , new Point(frame.getX(),
-		     frame.getY()), "img");
-		  frame.setCursor (c);
+		Cursor c = Toolkit.getDefaultToolkit().createCustomCursor(
+				image , new Point(frame.getX(),frame.getY()), "img");
+		
+		frame.setCursor (c);
 		a=textString;
 		frame.setSize(1920,1030 );
 		frame.add(this);
@@ -3359,20 +3351,19 @@ KeyListener, MouseInputListener{
 		frame.addMouseMotionListener(this);
 		frame.addKeyListener(this);
 		frame.addMouseListener(this);
-		
+
 		frame.setAlwaysOnTop(true);
-		
-		
+
+
 		timer.start();
 		timer300.start();
 		timer3.start();
-		
+
 		if(frame.isVisible() == true){
 			robot.mouseMove(960, 515);
 
-			
 		}
-		
+
 	}
 	
 	public void mouseDragged(MouseEvent arg0) {
@@ -3999,48 +3990,47 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 	}
 }
 
-final class Pass implements ActionListener{
+class Pass implements ActionListener{
 
 	private int x;
 
-	private static String OK = "What Ever!";
-
-	private Timer timer = new Timer(1, this);	
+	private Timer timer = new Timer(10, this);	
 
 	private JPasswordField passwordField;
-	
+
 	private JFrame användare = new JFrame();
 
 	private JFrame frame = new JFrame("Verifiera dig!");
 
 	private JButton användareJakob = new JButton("Jakob"),
-			användareGlenn = new JButton("Glenn");
+					användareGlenn = new JButton("Glenn");
 
 	private JLabel label = new JLabel("Skriv Lösenord -->");
-	
+
 	private char[] correctPassword = {'U','g','g','e','n','0','6','8','4'};
 
 	public void actionPerformed(ActionEvent e) {
 
 		if (timer == e.getSource()) {
 			char[] pass = passwordField.getPassword();
-			
-				try {
-					if(Arrays.equals(Toolkit.getDefaultToolkit().getSystemClipboard()
-							.getData(DataFlavor.stringFlavor).toString()
-							.toCharArray(),correctPassword)){
-						pass = correctPassword;
-					}
-				} catch (Exception e1){}
+
+			try {
+				if(Arrays.equals(Toolkit.getDefaultToolkit().getSystemClipboard()
+						.getData(DataFlavor.stringFlavor).toString()
+						.toCharArray(),correctPassword)){
+					pass = correctPassword;
+				}
+			} catch (Exception e1){}
 
 			if (Arrays.equals(pass,correctPassword)) {
-				
+
 				frame.dispose();
 				användare.setVisible(true);
 				timer.stop();
 			}
 			x++;
-			if(x == 4000){
+			if(x == 600){
+				timer.stop();
 				new Impossible("Tiden gick ut!! Datorn spärrad...");
 			}
 
@@ -4057,10 +4047,9 @@ final class Pass implements ActionListener{
 
 	}
 
-	Pass() {
+	public Pass() {
 
 		passwordField = new JPasswordField(10);
-		passwordField.setActionCommand(OK);
 		passwordField.addActionListener(this);
 
 		användare.add(användareJakob);
@@ -4068,6 +4057,7 @@ final class Pass implements ActionListener{
 		användare.setIconImage(fönsterIcon);
 		användare.setLayout(new FlowLayout());
 		användare.setDefaultCloseOperation(3);
+		användare.setResizable(false);
 		användare.pack();
 		användare.setLocationRelativeTo(null);
 
@@ -4088,7 +4078,6 @@ final class Pass implements ActionListener{
 		timer.start();
 
 	}
-
 }
 @SuppressWarnings("serial")
 class SkapaFärg extends JPanel implements ActionListener{
@@ -4185,7 +4174,7 @@ class SkapaFärg extends JPanel implements ActionListener{
 		
 		timer.start();
 	
-		}
+	}
 	
 	
 	
