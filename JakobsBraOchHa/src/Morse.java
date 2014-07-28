@@ -17,7 +17,7 @@ public class Morse implements KeyListener,ActionListener, MouseListener {
 	}
 	public Morse(){
 		
-		button.setFont(GoJbsBraOchHa.Mouse.Typsnitt);
+		button.setFont(GoJbsBraOchHa.Mouse.typsnitt);
 		button.addMouseListener(this);
 		button.addKeyListener(this);
 		button.setBackground(Color.black);

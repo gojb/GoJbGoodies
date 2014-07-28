@@ -32,126 +32,125 @@ public class Mouse extends JPanel implements 	ActionListener,
 												KeyListener,
 												WindowListener{
 
-	JFrame			HuvudFönster = new JFrame("Hej Hej :D"), 
-					HändelseFönster = new JFrame("Händelser"),
-					HastighetsFönster =  new JFrame(),
+	JFrame			huvudfönster = new JFrame("Hej Hej :D"), 
+					händelsefönster = new JFrame("Händelser"),
+					hastighetsfönster =  new JFrame(),
 					om = new JFrame("Om"),
-					Laddfönster = new JFrame("Startar..."),
-					AvslutningsFönster = new JFrame("Avslutar...");
+					laddfönster = new JFrame("Startar..."),
+					avslutningsfönster = new JFrame("Avslutar...");
 			
-	JPanel 			KnappPanel = new JPanel();
+	JPanel 			knappPanel = new JPanel();
 
-	JMenuBar 		MenyRad = new JMenuBar();
+	JMenuBar 		menyBar = new JMenuBar();
 	
-	JMenu 			Arkiv = new JMenu("Arkiv"), 
-					Hjälp = new JMenu("Hjälp"),
-					Redigera = new JMenu("Redigera"),
-					Färgbyte = new JMenu("Byt bakgrundsfärg"),
-					TextFärgByte = new JMenu("Byt Textfärg");
+	JMenu 			arkivMeny = new JMenu("Arkiv"), 
+					hjälpMeny = new JMenu("Hjälp"),
+					redigeraMeny = new JMenu("Redigera"),
+					färgbyteMeny = new JMenu("Byt bakgrundsfärg"),
+					textFärgByte = new JMenu("Byt Textfärg");
 
-	JMenuItem 		Avsluta = new JMenuItem("Avsluta"), 
-				  	Om = new JMenuItem("Om"),
-				  	Visa = new JMenuItem("Visa"),
-				  	Dölj = new JMenuItem("Dölj"),
-				  	Nytt = new JMenuItem("Nytt"),
-				  	TextByte = new JMenuItem("Ändra text på remsa"),
-				  	Grön = new JMenuItem("Grön"),
-				  	Röd = new JMenuItem("Röd"),
-				  	Blå = new JMenuItem("Blå"),
-				  	Gul = new JMenuItem("Gul"),
-				  	Hastighet = new JMenuItem("Ändra hastighet på piltangenterna"),
-				  	Händelse = new JMenuItem("Visa Händelsefönster"),
-				  	Räkna = new JMenuItem("Öppna Miniräknare"),
-				  	Spelknapp = new JMenuItem("Spela Pong"),
-				  	Rörande = new JMenuItem("Öppna RörandeMojäng",
+	JMenuItem 		avslutaItem = new JMenuItem("Avsluta"), 
+				  	omItem = new JMenuItem("Om"),
+				  	visaItem = new JMenuItem("Visa"),
+				  	döljItem = new JMenuItem("Dölj"),
+				  	nyttItem = new JMenuItem("Nytt"),
+				  	textByteItem = new JMenuItem("Ändra text på remsa"),
+				  	grönItem = new JMenuItem("Grön"),
+				  	rödItem = new JMenuItem("Röd"),
+				  	blåItem = new JMenuItem("Blå"),
+				  	gulItem = new JMenuItem("Gul"),
+				  	hastighetItem = new JMenuItem("Ändra hastighet på piltangenterna"),
+				  	händelseItem = new JMenuItem("Visa Händelsefönster"),
+				  	räknaItem = new JMenuItem("Öppna Miniräknare"),
+				  	pongItem = new JMenuItem("Spela Pong"),
+				  	rörandeItem = new JMenuItem("Öppna RörandeMojäng",
 				  				new ImageIcon(getClass().getResource("/images/Nopeliten.png"))),
-				  	StudsItem = new JMenuItem("Öppna Studsande Objekt"),
-				  	Snake = new JMenuItem("Spela Snake");
+				  	studsItem = new JMenuItem("Öppna Studsande Objekt"),
+				  	snakeItem = new JMenuItem("Spela Snake");
 	
 	JButton 		knapp1 = new JButton("Blå"),
 					knapp2 = new JButton("Grön"),
 					knapp3 = new JButton("Röd"),
 					knapp4 = new JButton("Gul"),
-					OK = new JButton("Klar"),
+					ok = new JButton("Klar"),
 					Autoscrollknapp = new JButton("Stäng av autoscroll"),
 					RensKnapp = new JButton("Rensa");
 	
-	JScrollPane 	Jaha = new JScrollPane(text,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+	JScrollPane 	jahaPane = new JScrollPane(text,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 											JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	
-	JProgressBar	LaddstapelStart = new JProgressBar(0,100),
-				 	LaddstapelAvslut = new JProgressBar(0, 100);
+	JProgressBar	laddstapelStart = new JProgressBar(0,100),
+				 	laddstapelAvslut = new JProgressBar(0, 100);
 	
 	JLabel 			omtext = new JLabel("<html>Hallåj! Det här programmet är skapat av GoJbs Javaprogrammering"),
-					Laddtext = new JLabel("Startar program..."),
-					AvslutningsText = new JLabel("Avslutar program...");
+					laddtext = new JLabel("Startar program..."),
+					avslutningstext = new JLabel("Avslutar program...");
 	
- 	JSlider 		Slide = new JSlider(JSlider.HORIZONTAL,0,100,10);
+ 	JSlider 		slider = new JSlider(JSlider.HORIZONTAL,0,100,10);
  	
-
 	static 			JTextArea text = new JTextArea();
  		
 	static boolean 	autoscroll = true;
 	
-	int				FlyttHastighet = 10,posX = 125, posY = 75, textbredd;
+	int				flyttHastighet = 10,posX = 125, posY = 75, textbredd;
 	
-	static int		AntalFönster = 0;
+	static int		antalFönster = 0;
 	
-	Timer 			StartTimer = new Timer(2, this),
-					SlutTimer = new Timer(2, this);
+	Timer 			startTimer = new Timer(2, this),
+					slutTimer = new Timer(2, this);
 	
-	Color			Färg = new Color(0, 0, 255);
+	Color			färg = new Color(0, 0, 255);
 	
-	public static 	Font 	Typsnitt = new Font("Arial", 0, 40);
+	public static 	Font 	typsnitt = new Font("Arial", 0, 40);
 	
-	public static 	Image 	FönsterIcon;
+	public static 	Image 	fönsterIcon;
 	
 	public static 	Robot	robot;
 	
-	String Texten = "Dra eller använd piltangenterna";
+	String texten = "Dra eller använd piltangenterna";
 	
 	public Mouse(){
 		
-		Laddtext.setFont(Typsnitt);
-		Laddtext.setHorizontalAlignment(JLabel.CENTER);
-		Laddfönster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Laddfönster.setLayout(new BorderLayout(10,10));	
-		Laddfönster.add(LaddstapelStart,BorderLayout.CENTER);
-		Laddfönster.add(Laddtext,BorderLayout.NORTH);
-		Laddfönster.add(Box.createRigidArea(new Dimension(5,5)),BorderLayout.EAST);
-		Laddfönster.add(Box.createRigidArea(new Dimension(5,5)),BorderLayout.WEST);
-		Laddfönster.add(Box.createRigidArea(new Dimension(5,5)),BorderLayout.SOUTH);
-		Laddfönster.setSize(400, 100);
-		Laddfönster.setAlwaysOnTop(true);
-		Laddfönster.setResizable(false);
-		Laddfönster.setLocationRelativeTo(null);
-		Laddfönster.setIconImage(FönsterIcon);
-		Laddfönster.getContentPane().setBackground(Color.yellow);
-		Laddfönster.setUndecorated(true);
-		Laddfönster.setVisible(true);		
-				
-		SkrivHändelsetext("Välkommen!");
-		Avsluta.addActionListener(this);
-		Om.addActionListener(this);
-		Visa.addActionListener(this);
-		Dölj.addActionListener(this);
-		Nytt.addActionListener(this);
-		TextByte.addActionListener(this);
-		Gul.addActionListener(this);
-		Röd.addActionListener(this);
-		Grön.addActionListener(this);
-		Blå.addActionListener(this);
-		Hastighet.addActionListener(this);
-		Händelse.addActionListener(this);
-		OK.addActionListener(this);
-		Räkna.addActionListener(this);
+		laddtext.setFont(typsnitt);
+		laddtext.setHorizontalAlignment(JLabel.CENTER);
+		laddfönster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		laddfönster.setLayout(new BorderLayout(10,10));	
+		laddfönster.add(laddstapelStart,BorderLayout.CENTER);
+		laddfönster.add(laddtext,BorderLayout.NORTH);
+		laddfönster.add(Box.createRigidArea(new Dimension(5,5)),BorderLayout.EAST);
+		laddfönster.add(Box.createRigidArea(new Dimension(5,5)),BorderLayout.WEST);
+		laddfönster.add(Box.createRigidArea(new Dimension(5,5)),BorderLayout.SOUTH);
+		laddfönster.setSize(400, 100);
+		laddfönster.setAlwaysOnTop(true);
+		laddfönster.setResizable(false);
+		laddfönster.setLocationRelativeTo(null);
+		laddfönster.setIconImage(fönsterIcon);
+		laddfönster.getContentPane().setBackground(Color.yellow);
+		laddfönster.setUndecorated(true);
+		laddfönster.setVisible(true);		
+		
+		skrivHändelsetext("Välkommen!");
+		avslutaItem.addActionListener(this);
+		omItem.addActionListener(this);
+		visaItem.addActionListener(this);
+		döljItem.addActionListener(this);
+		nyttItem.addActionListener(this);
+		textByteItem.addActionListener(this);
+		gulItem.addActionListener(this);
+		rödItem.addActionListener(this);
+		grönItem.addActionListener(this);
+		blåItem.addActionListener(this);
+		hastighetItem.addActionListener(this);
+		händelseItem.addActionListener(this);
+		ok.addActionListener(this);
+		räknaItem.addActionListener(this);
 		Autoscrollknapp.addActionListener(this);
 		RensKnapp.addActionListener(this);
-		KnappPanel.addMouseListener(this);
-		Spelknapp.addActionListener(this);
-		Rörande.addActionListener(this);
-		StudsItem.addActionListener(this);
-		Snake.addActionListener(this);
+		knappPanel.addMouseListener(this);
+		pongItem.addActionListener(this);
+		rörandeItem.addActionListener(this);
+		studsItem.addActionListener(this);
+		snakeItem.addActionListener(this);
 		
 		knapp1.setEnabled(false);
 		knapp1.addActionListener(this);
@@ -167,37 +166,37 @@ public class Mouse extends JPanel implements 	ActionListener,
 		knapp4.addMouseListener(this);
 		knapp4.addKeyListener(this);
 		
-		Arkiv.add(Nytt);
-		Arkiv.add(Rörande);
-		Arkiv.add(StudsItem);
-		Arkiv.add(Räkna);
-		Arkiv.add(Spelknapp);
-		Arkiv.add(Snake);
-		Arkiv.addSeparator();
-		Arkiv.add(Avsluta);
+		arkivMeny.add(nyttItem);
+		arkivMeny.add(rörandeItem);
+		arkivMeny.add(studsItem);
+		arkivMeny.add(räknaItem);
+		arkivMeny.add(pongItem);
+		arkivMeny.add(snakeItem);
+		arkivMeny.addSeparator();
+		arkivMeny.add(avslutaItem);
 		
-		Redigera.add(Färgbyte);
-		Redigera.add(TextByte);
-		Redigera.add(TextFärgByte);
-		Redigera.add(Hastighet);
-		Redigera.add(Händelse);
+		redigeraMeny.add(färgbyteMeny);
+		redigeraMeny.add(textByteItem);
+		redigeraMeny.add(textFärgByte);
+		redigeraMeny.add(hastighetItem);
+		redigeraMeny.add(händelseItem);
 		
-		Hjälp.add(Om);
+		hjälpMeny.add(omItem);
 		
-		Färgbyte.add(Dölj);
-		Färgbyte.add(Visa);
+		färgbyteMeny.add(döljItem);
+		färgbyteMeny.add(visaItem);
 		
-		TextFärgByte.add(Röd);
-		TextFärgByte.add(Grön);
-		TextFärgByte.add(Blå);
-		TextFärgByte.add(Gul);
+		textFärgByte.add(rödItem);
+		textFärgByte.add(grönItem);
+		textFärgByte.add(blåItem);
+		textFärgByte.add(gulItem);
 		
-		MenyRad.add(Arkiv);
-		MenyRad.add(Redigera);
-		MenyRad.add(Hjälp);
+		menyBar.add(arkivMeny);
+		menyBar.add(redigeraMeny);
+		menyBar.add(hjälpMeny);
 		
 		setOpaque(true);
-		setBackground(Färg);
+		setBackground(färg);
 		setForeground(Color.YELLOW);
 		addMouseMotionListener(this);
 		addMouseListener(this);
@@ -205,88 +204,88 @@ public class Mouse extends JPanel implements 	ActionListener,
 
 		text.setEditable(false);
 		
-		HändelseFönster.setSize(500,500);
-		HändelseFönster.setLayout(new BorderLayout());
-		HändelseFönster.add(Autoscrollknapp,BorderLayout.NORTH);
-		HändelseFönster.add(Jaha,BorderLayout.CENTER);
-		HändelseFönster.add(RensKnapp,BorderLayout.SOUTH);
-		HändelseFönster.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		HändelseFönster.setAlwaysOnTop(true);
-		HändelseFönster.setResizable(false);
-		HändelseFönster.setIconImage(FönsterIcon);
+		händelsefönster.setSize(500,500);
+		händelsefönster.setLayout(new BorderLayout());
+		händelsefönster.add(Autoscrollknapp,BorderLayout.NORTH);
+		händelsefönster.add(jahaPane,BorderLayout.CENTER);
+		händelsefönster.add(RensKnapp,BorderLayout.SOUTH);
+		händelsefönster.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		händelsefönster.setAlwaysOnTop(true);
+		händelsefönster.setResizable(false);
+		händelsefönster.setIconImage(fönsterIcon);
 		
-		Slide.setPaintTicks(true);
-		Slide.setPaintLabels(true);
-		Slide.setMajorTickSpacing(10);
-		Slide.setMinorTickSpacing(1);
+		slider.setPaintTicks(true);
+		slider.setPaintLabels(true);
+		slider.setMajorTickSpacing(10);
+		slider.setMinorTickSpacing(1);
 		
-		HastighetsFönster.setSize(500,200);
-		HastighetsFönster.setLayout(new BorderLayout());
-		HastighetsFönster.add(Slide,BorderLayout.NORTH);
-		HastighetsFönster.add(OK,BorderLayout.CENTER);
-		HastighetsFönster.add(Box.createRigidArea(new Dimension(100,100)),BorderLayout.WEST);
-		HastighetsFönster.add(Box.createRigidArea(new Dimension(100,100)),BorderLayout.EAST);
-		HastighetsFönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.SOUTH);
-		HastighetsFönster.setLocationRelativeTo(null);
-		HastighetsFönster.setResizable(false);
-		HastighetsFönster.revalidate();
+		hastighetsfönster.setSize(500,200);
+		hastighetsfönster.setLayout(new BorderLayout());
+		hastighetsfönster.add(slider,BorderLayout.NORTH);
+		hastighetsfönster.add(ok,BorderLayout.CENTER);
+		hastighetsfönster.add(Box.createRigidArea(new Dimension(100,100)),BorderLayout.WEST);
+		hastighetsfönster.add(Box.createRigidArea(new Dimension(100,100)),BorderLayout.EAST);
+		hastighetsfönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.SOUTH);
+		hastighetsfönster.setLocationRelativeTo(null);
+		hastighetsfönster.setResizable(false);
+		hastighetsfönster.revalidate();
 		
-		KnappPanel.add(knapp1);
-		KnappPanel.add(knapp2);
-		KnappPanel.add(knapp3);
-		KnappPanel.add(knapp4);
+		knappPanel.add(knapp1);
+		knappPanel.add(knapp2);
+		knappPanel.add(knapp3);
+		knappPanel.add(knapp4);
 				
 		omtext.setVerticalTextPosition(1);
-		omtext.setFont(Typsnitt);
+		omtext.setFont(typsnitt);
 		omtext.addMouseListener(this);
 		om.setSize(400,300);
 		om.add(omtext);
-		om.setIconImage(FönsterIcon);
-		om.setLocationRelativeTo(HuvudFönster);
+		om.setIconImage(fönsterIcon);
+		om.setLocationRelativeTo(huvudfönster);
 		
-		HuvudFönster.setJMenuBar(MenyRad);
-		HuvudFönster.setSize((int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2),
+		huvudfönster.setJMenuBar(menyBar);
+		huvudfönster.setSize((int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2),
 				(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2*1.5));
-		HuvudFönster.setLayout(new BorderLayout());
-		HuvudFönster.setMinimumSize(new Dimension(400,400));
-		HuvudFönster.addKeyListener(this);
-		HuvudFönster.addWindowListener(this);
-		HuvudFönster.setIconImage(FönsterIcon);
-		HuvudFönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.NORTH);
-		HuvudFönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.WEST);
-		HuvudFönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.EAST);
-		HuvudFönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.SOUTH);
-		HuvudFönster.add(this,BorderLayout.CENTER);
-		HuvudFönster.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		HuvudFönster.setLocationRelativeTo(null);		
-		HuvudFönster.revalidate();
-		HuvudFönster.repaint();
+		huvudfönster.setLayout(new BorderLayout());
+		huvudfönster.setMinimumSize(new Dimension(400,400));
+		huvudfönster.addKeyListener(this);
+		huvudfönster.addWindowListener(this);
+		huvudfönster.setIconImage(fönsterIcon);
+		huvudfönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.NORTH);
+		huvudfönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.WEST);
+		huvudfönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.EAST);
+		huvudfönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.SOUTH);
+		huvudfönster.add(this,BorderLayout.CENTER);
+		huvudfönster.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		huvudfönster.setLocationRelativeTo(null);		
+		huvudfönster.revalidate();
+		huvudfönster.repaint();
 				
-		AvslutningsText.setFont(Typsnitt);
-		AvslutningsText.setHorizontalAlignment(JLabel.CENTER);
+		avslutningstext.setFont(typsnitt);
+		avslutningstext.setHorizontalAlignment(JLabel.CENTER);
 		
-		AvslutningsFönster.setLayout(new BorderLayout(10,10));
-		AvslutningsFönster.add(LaddstapelAvslut,BorderLayout.CENTER);
-		AvslutningsFönster.add(AvslutningsText,BorderLayout.NORTH);
-		AvslutningsFönster.setUndecorated(true);
-		AvslutningsFönster.setSize(Laddfönster.getSize());
-		AvslutningsFönster.setResizable(false);
-		AvslutningsFönster.setAlwaysOnTop(true);
-		AvslutningsFönster.setIconImage(FönsterIcon);
-		AvslutningsFönster.setLocationRelativeTo(null);
-		AvslutningsFönster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		AvslutningsFönster.getContentPane().setBackground(Color.yellow);
-		AvslutningsFönster.add(Box.createRigidArea(new Dimension(5,5)),BorderLayout.EAST);
-		AvslutningsFönster.add(Box.createRigidArea(new Dimension(5,5)),BorderLayout.WEST);
-		AvslutningsFönster.add(Box.createRigidArea(new Dimension(5,5)),BorderLayout.SOUTH);
+		avslutningsfönster.setLayout(new BorderLayout(10,10));
+		avslutningsfönster.add(laddstapelAvslut,BorderLayout.CENTER);
+		avslutningsfönster.add(avslutningstext,BorderLayout.NORTH);
+		avslutningsfönster.setUndecorated(true);
+		avslutningsfönster.setSize(laddfönster.getSize());
+		avslutningsfönster.setResizable(false);
+		avslutningsfönster.setAlwaysOnTop(true);
+		avslutningsfönster.setIconImage(fönsterIcon);
+		avslutningsfönster.setLocationRelativeTo(null);
+		avslutningsfönster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		avslutningsfönster.getContentPane().setBackground(Color.yellow);
+		avslutningsfönster.add(Box.createRigidArea(new Dimension(5,5)),BorderLayout.EAST);
+		avslutningsfönster.add(Box.createRigidArea(new Dimension(5,5)),BorderLayout.WEST);
+		avslutningsfönster.add(Box.createRigidArea(new Dimension(5,5)),BorderLayout.SOUTH);
 		
-		LaddstapelAvslut.setValue(100);
+		laddstapelAvslut.setValue(100);
 		
-		AntalFönster++;
+		antalFönster++;
 		
-		System.out.println(AntalFönster);
+		System.out.println(antalFönster);
 		
-		StartTimer.start();
+		startTimer.start();
 		
 	}
 
@@ -308,7 +307,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 				
 				try {
 					
-					FönsterIcon = new ImageIcon(getClass().getResource("/images/Java-icon.png")).getImage();
+					fönsterIcon = new ImageIcon(getClass().getResource("/images/Java-icon.png")).getImage();
 				} 
 				catch (Exception e) {
 					((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
@@ -323,16 +322,16 @@ public class Mouse extends JPanel implements 	ActionListener,
 	}
 
 	public void mouseDragged(MouseEvent e) {
-		SkrivHändelsetext("Du drog musen: " + e.getX() + ", " + e.getY());
+		skrivHändelsetext("Du drog musen: " + e.getX() + ", " + e.getY());
 		posX = e.getX()-textbredd/2;
 		posY = e.getY();
-		HuvudFönster.repaint();
+		huvudfönster.repaint();
 	
 	}
 
 	public void mouseMoved(MouseEvent e) {
 		
-		SkrivHändelsetext("Du rörde musen: " + e.getX() + ", " + e.getY());
+		skrivHändelsetext("Du rörde musen: " + e.getX() + ", " + e.getY());
 		if(e.getX() == 50 && e.getY() == 50){
 			System.exit(1);
 		
@@ -342,29 +341,29 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 	public void actionPerformed(ActionEvent knapp) {
 //		System.out.println(knapp.getSource());
-		SkrivHändelsetext(knapp.getSource().toString());
+		skrivHändelsetext(knapp.getSource().toString());
 
-		if (knapp.getSource() == Avsluta){	
-			AvslutningsFönster.setVisible(true);
+		if (knapp.getSource() == avslutaItem){	
+			avslutningsfönster.setVisible(true);
 			
-			SlutTimer.start();
+			slutTimer.start();
 			
 		}
-		else if(knapp.getSource() == Om){
+		else if(knapp.getSource() == omItem){
 			om.setVisible(true);
 			
 		}
 		else if(knapp.getSource() == knapp1){
-			Färg = Color.blue;
-			setBackground(Färg);
+			färg = Color.blue;
+			setBackground(färg);
 			knapp1.setEnabled(false);
 			knapp2.setEnabled(true);
 			knapp3.setEnabled(true);
 			knapp4.setEnabled(true);
 		}
 		else if(knapp.getSource() == knapp2){
-			Färg = Color.GREEN;
-			setBackground(Färg);
+			färg = Color.GREEN;
+			setBackground(färg);
 			knapp1.setEnabled(true);
 			knapp2.setEnabled(false);
 			knapp3.setEnabled(true);
@@ -372,8 +371,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 			
 		}
 		else if(knapp.getSource() == knapp3){
-			Färg = Color.red;
-			setBackground(Färg);
+			färg = Color.red;
+			setBackground(färg);
 			knapp1.setEnabled(true);
 			knapp2.setEnabled(true);
 			knapp3.setEnabled(false);
@@ -381,108 +380,108 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 		}	
 		else if(knapp.getSource() == knapp4){
-			Färg = Color.yellow;
-			setBackground(Färg);
+			färg = Color.yellow;
+			setBackground(färg);
 			knapp1.setEnabled(true);
 			knapp2.setEnabled(true);
 			knapp3.setEnabled(true);
 			knapp4.setEnabled(false);
 		}
-		else if(knapp.getSource() == Visa){
-			HuvudFönster.add(KnappPanel,BorderLayout.SOUTH);
+		else if(knapp.getSource() == visaItem){
+			huvudfönster.add(knappPanel,BorderLayout.SOUTH);
 		}
-		else if(knapp.getSource() == Dölj){
-			HuvudFönster.remove(KnappPanel);
-			HuvudFönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.SOUTH);
+		else if(knapp.getSource() == döljItem){
+			huvudfönster.remove(knappPanel);
+			huvudfönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.SOUTH);
 		}
-		else if(knapp.getSource() == Nytt){
+		else if(knapp.getSource() == nyttItem){
 			new Mouse();
 		}
-		else if (knapp.getSource() == TextByte){
+		else if (knapp.getSource() == textByteItem){
 			setTexten();
 			repaint();
 		}
-		else if (knapp.getSource() == Blå){
+		else if (knapp.getSource() == blåItem){
 			setForeground(Color.BLUE);
 			text.append("Textfärg ändrad till Blå");
 		}
-		else if (knapp.getSource() == Röd){
+		else if (knapp.getSource() == rödItem){
 			setForeground(Color.RED);
 		}
-		else if (knapp.getSource() == Grön){
+		else if (knapp.getSource() == grönItem){
 			setForeground(Color.GREEN);
 		}
-		else if (knapp.getSource() == Gul){
+		else if (knapp.getSource() == gulItem){
 			setForeground(Color.YELLOW);
 		}
-		else if (knapp.getSource() == Hastighet){
-			HastighetsFönster.setVisible(true);
+		else if (knapp.getSource() == hastighetItem){
+			hastighetsfönster.setVisible(true);
 		}
-		else if (knapp.getSource() == Händelse){
-			HändelseFönster.setVisible(true);
-			HuvudFönster.toFront();
+		else if (knapp.getSource() == händelseItem){
+			händelsefönster.setVisible(true);
+			huvudfönster.toFront();
 		}
-		else if (knapp.getSource() == OK){
-			FlyttHastighet = Slide.getValue();
-			HastighetsFönster.dispose();
+		else if (knapp.getSource() == ok){
+			flyttHastighet = slider.getValue();
+			hastighetsfönster.dispose();
 		}
-		else if (knapp.getSource() == Räkna){
+		else if (knapp.getSource() == räknaItem){
 			new Räknare();
 		}
 		else if (knapp.getSource() == Autoscrollknapp){
 			if (autoscroll == true) {
 				autoscroll = false;
 				Autoscrollknapp.setText("Slå på autoscroll");
-				SkrivHändelsetext("Autoscroll avstängt");
+				skrivHändelsetext("Autoscroll avstängt");
 			}
 			else{
 				autoscroll = true;
 				Autoscrollknapp.setText("Stäng av autoscroll");
-				SkrivHändelsetext("Autoscroll påslaget");
+				skrivHändelsetext("Autoscroll påslaget");
 			}			
 		}
 		
-		else if (knapp.getSource()== SlutTimer){
-			if (LaddstapelAvslut.getValue()==LaddstapelAvslut.getMinimum()){
+		else if (knapp.getSource()== slutTimer){
+			if (laddstapelAvslut.getValue()==laddstapelAvslut.getMinimum()){
 				System.exit(0);
 			}
 			else 
-				LaddstapelAvslut.setValue(LaddstapelAvslut.getValue()-1);
+				laddstapelAvslut.setValue(laddstapelAvslut.getValue()-1);
 		}
-		else if (knapp.getSource()== StartTimer){
+		else if (knapp.getSource()== startTimer){
 			
-				if(LaddstapelStart.getValue()==100){
-					Laddfönster.dispose();
-					HuvudFönster.setVisible(true);
-					StartTimer.stop();
+				if(laddstapelStart.getValue()==100){
+					laddfönster.dispose();
+					huvudfönster.setVisible(true);
+					startTimer.stop();
 					
-					robot.mouseMove(HuvudFönster.getX() + HuvudFönster.getWidth()/2,
-									HuvudFönster.getY() + HuvudFönster.getHeight()/2);
+					robot.mouseMove(huvudfönster.getX() + huvudfönster.getWidth()/2,
+									huvudfönster.getY() + huvudfönster.getHeight()/2);
 					SpelaLjud("/images/tada.wav");
 				}
 				else {
-					LaddstapelStart.setValue(LaddstapelStart.getValue()+1);
+					laddstapelStart.setValue(laddstapelStart.getValue()+1);
 				}
 		}
 		else if (knapp.getSource()==RensKnapp){
 			text.setText(null);
 		}
-		else if (knapp.getSource()==Spelknapp) {
+		else if (knapp.getSource()==pongItem) {
 			new Pongspel();
 		}
-		else if (knapp.getSource()==Rörande) {
+		else if (knapp.getSource()==rörandeItem) {
 			new RörandeMojäng();
-			HuvudFönster.dispose();
+			huvudfönster.dispose();
 		}
-		else if (knapp.getSource()==StudsItem) {
+		else if (knapp.getSource()==studsItem) {
 			new Studsa();
 		}
-		else if (knapp.getSource()==Snake) {
+		else if (knapp.getSource()==snakeItem) {
 			new Snakespel();
 		}
 		
-		HuvudFönster.revalidate();
-		HuvudFönster.repaint();
+		huvudfönster.revalidate();
+		huvudfönster.repaint();
 		
 	}
 	
@@ -491,7 +490,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	}
 
 	public void mouseEntered(MouseEvent e) {
-		setBackground(Färg);
+		setBackground(färg);
 		
 	}
 
@@ -508,30 +507,30 @@ public class Mouse extends JPanel implements 	ActionListener,
 	}
 
 	public void keyPressed(KeyEvent arg0) {
-		SkrivHändelsetext("Du tryckte på: " + KeyEvent.getKeyText(arg0.getKeyCode()));
+		skrivHändelsetext("Du tryckte på: " + KeyEvent.getKeyText(arg0.getKeyCode()));
 		if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Esc"){
 			System.exit(0);
 		}
 		else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Vänsterpil"){
-			posX = posX - FlyttHastighet;
+			posX = posX - flyttHastighet;
 			repaint();
 		}
 		else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Högerpil"){
-			posX = posX + FlyttHastighet;
+			posX = posX + flyttHastighet;
 			repaint();
 		}
 		else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Upp"){
-			posY = posY - FlyttHastighet;
+			posY = posY - flyttHastighet;
 			repaint();
 		}
 		else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Nedpil"){
-			posY = posY + FlyttHastighet;
+			posY = posY + flyttHastighet;
 			repaint();
 		}
 	}
 
 	public void keyReleased(KeyEvent arg0) {
-		SkrivHändelsetext("Du släppte : " + KeyEvent.getKeyText(arg0.getKeyCode()));
+		skrivHändelsetext("Du släppte : " + KeyEvent.getKeyText(arg0.getKeyCode()));
 	}
 
 	public void keyTyped(KeyEvent arg0) {
@@ -547,15 +546,15 @@ public class Mouse extends JPanel implements 	ActionListener,
 	}
 
 	public void windowClosed(WindowEvent e) {
-		AntalFönster--;
-		System.out.println(AntalFönster);
-		HändelseFönster.dispose();
-		HastighetsFönster.dispose();
+		antalFönster--;
+		System.out.println(antalFönster);
+		händelsefönster.dispose();
+		hastighetsfönster.dispose();
 		om.dispose();
-		if (AntalFönster == 0) {
+		if (antalFönster == 0) {
 		
-			AvslutningsFönster.setVisible(true);
-			SlutTimer.start();
+			avslutningsfönster.setVisible(true);
+			slutTimer.start();
 		}
 	}
 
@@ -586,7 +585,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		}
 		
 	}
-	public static void SkrivHändelsetext(String Händlsetext){
+	public static void skrivHändelsetext(String Händlsetext){
 		text.append(Händlsetext + "\n");
 		((DefaultCaret) text.getCaret()).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 		if (autoscroll == true) {
@@ -608,9 +607,9 @@ public class Mouse extends JPanel implements 	ActionListener,
 	    
 	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    g2.setFont(new Font("Serif", Font.ROMAN_BASELINE, 35));
-		g2.drawString(Texten,posX, posY); 
+		g2.drawString(texten,posX, posY); 
 		
-		textbredd = g2.getFontMetrics().stringWidth(Texten);
+		textbredd = g2.getFontMetrics().stringWidth(texten);
 	  }
 	  public void setTexten(){
 		  String Text = JOptionPane.showInputDialog("Ändra text på dragbar remsa");
@@ -621,8 +620,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 		  if(Text == null){
 			  Text = "Dra eller använd piltangenterna";
 		  }
-		  Texten = Text;
-		  System.out.println("Texten ändrad till: " + Texten);
+		  texten = Text;
+		  System.out.println("Texten ändrad till: " + texten);
 	  
 	}
 	
@@ -709,9 +708,9 @@ class Räknare implements ActionListener{
 		RäknarPanel.add(Räknartext);
 		RäknarPanel.setBackground(Color.white);
 
-		Räknartext.setFont(Typsnitt);
-		Summa.setFont(Typsnitt);
-		Räknesätt.setFont(Typsnitt);
+		Räknartext.setFont(typsnitt);
+		Summa.setFont(typsnitt);
+		Räknesätt.setFont(typsnitt);
 		
 
 		Räknare.setLayout(new BorderLayout());
@@ -722,7 +721,7 @@ class Räknare implements ActionListener{
 		Räknare.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.SOUTH);
 		Räknare.setBackground(Color.WHITE);
 		Räknare.pack();
-		Räknare.setIconImage(FönsterIcon);
+		Räknare.setIconImage(fönsterIcon);
 		Räknare.getContentPane().setBackground(Color.white);
 		Räknare.setVisible(true);
 	}
@@ -890,7 +889,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		HögerX=getWidth()-bredd-1;
 		
 		frame.addMouseMotionListener(this);
-		frame.setIconImage(FönsterIcon);
+		frame.setIconImage(fönsterIcon);
 		frame.addWindowListener(this);
 		frame.addKeyListener(this);
 		frame.add(this);
@@ -1080,7 +1079,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 @SuppressWarnings("serial")
 class Snakespel extends JPanel implements KeyListener, ActionListener,WindowListener{
 	private JFrame frame = new JFrame("Snake"),highFrame = new JFrame("Highscore");
-	final int Längd= 3,pixelstorlek=10;
+	final int startlängd= 3,pixelstorlek=10;
 	private int[] x=new int[50],y=new int[50];
 	private String[] highscore= new String[6];
 	private int snakelängd,posx=100,posy=100,pluppX,pluppY, stringy, s = 1;
@@ -1105,15 +1104,20 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		highscore[5]= prop.getProperty("Score5","0");
 		
 		setBackground(Color.white);
-
-		frame.add(this);		
-		frame.setIconImage(FönsterIcon);
+		setPreferredSize(new Dimension(pixelstorlek*50, pixelstorlek*50));
+		setOpaque(true);
+		
+		frame.setLayout(new BorderLayout());
+		frame.add(this,BorderLayout.CENTER);		
+		frame.setIconImage(fönsterIcon);
 		frame.setResizable(false);		
 		frame.addKeyListener(this);
-		frame.setSize(pixelstorlek*50, pixelstorlek*50);
+		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		frame.addWindowListener(this);
+		frame.getContentPane().setBackground(Color.black);
+		
 		
 		highFrame.add(new Scorepanel());
 		highFrame.setSize(frame.getSize());
@@ -1173,20 +1177,20 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		System.err.println(highscore[4]);
 		System.err.println(highscore[5]);
 		
-		SkrivHändelsetext(highscore[1]);
-		SkrivHändelsetext(highscore[2]);
-		SkrivHändelsetext(highscore[3]);
-		SkrivHändelsetext(highscore[4]);
-		SkrivHändelsetext(highscore[5]);
+		skrivHändelsetext(highscore[1]);
+		skrivHändelsetext(highscore[2]);
+		skrivHändelsetext(highscore[3]);
+		skrivHändelsetext(highscore[4]);
+		skrivHändelsetext(highscore[5]);
 	}
 	private void Restart() {
 		posx = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
 		posy = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
       
-		if (	posx>frame.getWidth()*0.8||
-				posx<frame.getWidth()*0.2||
-				posy>frame.getHeight()*0.8||
-				posy<frame.getHeight()*0.2) {
+		if (	posx>getWidth()*0.8||
+				posx<getWidth()*0.2||
+				posy>getHeight()*0.8||
+				posy<getHeight()*0.2) {
 			
 			System.out.println("Räknar om: " + posx);
 			Restart();
@@ -1197,13 +1201,14 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 			int select = random.nextInt(arr.length); 
 			
 			riktning=arr[select];
-			snakelängd = Längd;
+			snakelängd = startlängd;
 			x[1]=posx;
 			y[1]=posy;
 			PlaceraPlupp();
-			timer.start();
-			förlust = false;
+			förlust= false;
 			repaint();
+			timer.start();
+			
 		}
 	}
 	private void PlaceraPlupp(){
@@ -1227,24 +1232,24 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		if (förlust) {
 			g.setColor(Color.red);
 			g.setFont(new Font(null, 0, 25));
-			g.drawString("Du förlorade! Tryck F2 för att spela igen",10 , frame.getHeight()/2);
+			g.drawString("Du förlorade! Tryck F2 för att spela igen",10 , getHeight()/2);
 		}
 		g.setColor(Color.red);
-		g.drawOval(pluppX, pluppY, 8, 8);
-		g.fillOval(pluppX, pluppY, 8, 8);
+		g.drawOval(pluppX, pluppY, pixelstorlek-2, pixelstorlek-2);
+		g.fillOval(pluppX, pluppY, pixelstorlek-2, pixelstorlek-2);
 		g.setColor(Color.black);
-		g.drawRect(x[1], y[1], pixelstorlek, pixelstorlek);
-		g.fillRect(x[1], y[1], pixelstorlek, pixelstorlek);
+		g.drawRect(x[1], y[1], pixelstorlek-2, pixelstorlek-2);
+		g.fillRect(x[1], y[1], pixelstorlek-2, pixelstorlek-2);
 		g.setColor(Color.GREEN);
-		g.setFont(Mouse.Typsnitt);
+		g.setFont(Mouse.typsnitt);
 		g.drawString(Integer.toString(snakelängd), x[1], stringy);
 		for (int i = snakelängd+1; i >= 2; i--) {
 			
 			g.setColor(Color.black);
 			x[i]=x[i-1];
 			y[i]=y[i-1];
-			g.drawRect(x[i], y[i], pixelstorlek, pixelstorlek);
-			g.fillRect(x[i], y[i], pixelstorlek, pixelstorlek);
+			g.drawRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
+			g.fillRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
 			s=1;
 		}
 		
@@ -1329,13 +1334,13 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 			if (x[1]<0) {
 				GameOver();
 			}
-			if (x[1]+pixelstorlek*2>frame.getWidth()) {
+			if (x[1]+pixelstorlek>getWidth()) {
 				GameOver();
 			}
 			if (y[1]<0) {
 				GameOver();		
 			}
-			if (y[1]+pixelstorlek*5>frame.getHeight()) {
+			if (y[1]+pixelstorlek>getHeight()) {
 				GameOver();
 			}
 			
@@ -1398,7 +1403,7 @@ class Studsa extends JPanel implements ActionListener{
 		
 		frame.setSize(1250,1000);
 		frame.setLocationRelativeTo(null);
-		frame.setIconImage(FönsterIcon);
+		frame.setIconImage(fönsterIcon);
 		frame.add(this);
 		frame.setUndecorated(true);
 		frame.getContentPane().setBackground(Color.white);
@@ -1500,7 +1505,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 	static int ii = 0;
 	
 	public RörandeMojäng(){
-		GoJbsBraOchHa.Mouse.AntalFönster++;
+		GoJbsBraOchHa.Mouse.antalFönster++;
 		
 		Vinst.setLocationRelativeTo(null);
 		Vinst.setSize(190, 100);
@@ -1559,7 +1564,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		frame.setBackground(Color.gray);
 		frame.setForeground(Color.pink);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setIconImage(FönsterIcon);
+		frame.setIconImage(fönsterIcon);
 		frame.setSize(1845, 800);
 		frame.addMouseMotionListener(this);
 		frame.addKeyListener(this);
@@ -1696,7 +1701,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 	}
 	
 	public void windowClosed(WindowEvent arg0) {
-		GoJbsBraOchHa.Mouse.AntalFönster--;
+		GoJbsBraOchHa.Mouse.antalFönster--;
 		
 		
 	}
@@ -1949,7 +1954,7 @@ static class GameOver implements ActionListener, WindowListener{
 	JFrame ram = new JFrame("GAME OVER");
 	public GameOver(){
 	
-		ram.setIconImage(FönsterIcon);
+		ram.setIconImage(fönsterIcon);
 		ram.add(b1);
 		ram.add(b2);
 		ram.setVisible(true);
@@ -4070,7 +4075,7 @@ final class Pass implements ActionListener{
 
 		användare.add(användareJakob);
 		användare.add(användareGlenn);
-		användare.setIconImage(FönsterIcon);
+		användare.setIconImage(fönsterIcon);
 		användare.setLayout(new FlowLayout());
 		användare.setDefaultCloseOperation(3);
 		användare.pack();
@@ -4084,7 +4089,7 @@ final class Pass implements ActionListener{
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 		frame.add(label);
 		frame.add(passwordField);
-		frame.setIconImage(FönsterIcon);
+		frame.setIconImage(fönsterIcon);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setMinimumSize(frame.getSize());
@@ -4182,7 +4187,7 @@ class SkapaFärg extends JPanel implements ActionListener{
 		frame.add(panel);
 		frame.add(Panel);
 		frame.pack();
-		frame.setIconImage(FönsterIcon);
+		frame.setIconImage(fönsterIcon);
 		frame.setDefaultCloseOperation(3);
 		frame.repaint();
 		frame.setLocationRelativeTo(null);
@@ -4254,7 +4259,7 @@ class Avsluta implements ActionListener{
 		f1.setAlwaysOnTop(true);
 		f1.setDefaultCloseOperation(3);
 		f1.getContentPane().setLayout(new BoxLayout(f1.getContentPane(),BoxLayout.Y_AXIS));
-		f1.setIconImage(FönsterIcon);
+		f1.setIconImage(fönsterIcon);
 		f1.pack();
 		f1.setLocationRelativeTo(null);
 		f1.setVisible(true);
@@ -4308,14 +4313,14 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 	int x,y;
 	public Morse(){
 		
-		button.setFont(GoJbsBraOchHa.Mouse.Typsnitt);
+		button.setFont(GoJbsBraOchHa.Mouse.typsnitt);
 		button.addMouseListener(this);
 		button.addKeyListener(this);
 		button.setBackground(Color.black);
 		button.setForeground(Color.white);
 		button.setOpaque(true);
 		button.setHorizontalAlignment(SwingConstants.CENTER);
-		frame.setIconImage(FönsterIcon);
+		frame.setIconImage(fönsterIcon);
 		frame.addKeyListener(this);
 		frame.add(button);
 		frame.pack();
@@ -4419,7 +4424,8 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 				
 			} catch (Exception e) {
 				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-				JOptionPane.showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", 
+													"Ljud", JOptionPane.ERROR_MESSAGE);
 			}
 			
 	}
@@ -4440,7 +4446,7 @@ class random implements ActionListener{
 		frame.add(panel,BorderLayout.SOUTH);
 		frame.add(button,BorderLayout.EAST);
 		
-		frame.setIconImage(FönsterIcon);
+		frame.setIconImage(fönsterIcon);
 		
 	}
 
