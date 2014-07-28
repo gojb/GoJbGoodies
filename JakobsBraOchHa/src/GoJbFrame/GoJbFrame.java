@@ -6,6 +6,13 @@ import javax.swing.JFrame;
 @SuppressWarnings("serial")
 public class GoJbFrame extends JFrame{
 	public GoJbFrame() {
+		set();
+	}
+	public GoJbFrame(String title){
+		set();
+		setTitle(title);
+	}
+	private void set() {
 		setSize(500, 500);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(3);

@@ -588,8 +588,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	}
 	public static void SkrivHändelsetext(String Händlsetext){
 		text.append(Händlsetext + "\n");
-		DefaultCaret caret = (DefaultCaret) text.getCaret();
-		caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+		((DefaultCaret) text.getCaret()).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 		if (autoscroll == true) {
 			text.setCaretPosition(text.getDocument().getLength());
 		}
@@ -3746,7 +3745,6 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 
 			frame.setAlwaysOnTop(true);
 
-
 			if(label[1].getIcon() == o||
 					label[1].getIcon() == x){
 
@@ -3791,8 +3789,6 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 				}
 			}		
 			frame.setLocationRelativeTo(null);
-
-
 
 			if (label[4].getIcon() == o){
 				if (label[5].getIcon() == o){
@@ -4023,103 +4019,96 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 }
 
 final class Pass implements ActionListener{
-	
+
 	private int x;
-	
+
 	private static String OK = "What Ever!";
-	 
-	 
+
 	private Timer timer = new Timer(1, this);	
-	 
-    private JPasswordField passwordField;
-    private JFrame användare = new JFrame();
-    
-    private JFrame frame = new JFrame("Verifiera dig!");
-    
-    private JButton användareJakob = new JButton("Jakob"),
-    			användareGlenn = new JButton("Glenn");
-    
-    private JLabel label = new JLabel("Skriv Lösenord -->");
-	    
-	    
+
+	private JPasswordField passwordField;
+	
+	private JFrame användare = new JFrame();
+
+	private JFrame frame = new JFrame("Verifiera dig!");
+
+	private JButton användareJakob = new JButton("Jakob"),
+			användareGlenn = new JButton("Glenn");
+
+	private JLabel label = new JLabel("Skriv Lösenord -->");
+	
+	private char[] correctPassword = {'U','g','g','e','n','0','6','8','4'};
+
 	public void actionPerformed(ActionEvent e) {
 
-	        if (timer == e.getSource()) {
-	            
-	        	String string = null;
-	            try {
-	            	Toolkit toolkit = Toolkit.getDefaultToolkit();
-	        		Clipboard clipboard = toolkit.getSystemClipboard();
-	        		string = (String) clipboard.getData(DataFlavor.stringFlavor);
-	        		if(string.equals("Uggen0684")){
-	    	             passwordField.setText("Uggen0684");
-	    		               
-	    	            }
-	        		
-				} catch (Exception e1) {
-					
-				} 
-	            
-	            char[] correctPassword = { 'U','g','g','e','n','0','6','8','4'};
-	            
-	            if (Arrays.equals(passwordField.getPassword(),correctPassword)) {
-	            	frame.dispose();
-		              användare.setVisible(true);
-		              timer.stop();
-				}
-	            
-	            x++;
-	            if(x == 4000){
-	            	new Impossible("Tiden gick ut!! Datorn spärrad...");
-	            }
-	            
-	        }
-	        
-	        if(e.getSource() == användareJakob){
-	        	new Mouse();
-	        	användare.dispose();
-	        }
-	        else if(e.getSource() == användareGlenn){
-	        	new RörandeMojäng();
-	        	användare.dispose();
-	        }
-	        
-	    }
-	 
-	    Pass() {
-	    	
-	        passwordField = new JPasswordField(10);
-	        passwordField.setActionCommand(OK);
-	        passwordField.addActionListener(this);
-	        
-	        användare.add(användareJakob);
-	        användare.add(användareGlenn);
-	        användare.setIconImage(FönsterIcon);
-	        användare.setLayout(new FlowLayout());
-	        användare.setDefaultCloseOperation(3);
-	        användare.pack();
-	        användare.setLocationRelativeTo(null);
-	        
-	        användareGlenn.addActionListener(this);
-	        användareJakob.addActionListener(this);
-	        
-	    	frame.setUndecorated(true);
-	    	frame.setAlwaysOnTop(true);
-	        frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
-	        frame.add(label);
-	        frame.add(passwordField);
-	        frame.setIconImage(FönsterIcon);
-	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        frame.pack();
-	        frame.setMinimumSize(frame.getSize());
-	        frame.setVisible(true);
-	        frame.setLocationRelativeTo(null);
-	        timer.start();
-	        
-	    }
+		if (timer == e.getSource()) {
+			char[] pass = passwordField.getPassword();
+			
+				try {
+					if(Arrays.equals(Toolkit.getDefaultToolkit().getSystemClipboard()
+							.getData(DataFlavor.stringFlavor).toString()
+							.toCharArray(),correctPassword)){
+						pass = correctPassword;
+					}
+				} catch (Exception e1){}
 
+			if (Arrays.equals(pass,correctPassword)) {
+				
+				frame.dispose();
+				användare.setVisible(true);
+				timer.stop();
+			}
+			x++;
+			if(x == 4000){
+				new Impossible("Tiden gick ut!! Datorn spärrad...");
+			}
+
+		}
+
+		else if(e.getSource() == användareJakob){
+			new Mouse();
+			användare.dispose();
+		}
+		else if(e.getSource() == användareGlenn){
+			new RörandeMojäng();
+			användare.dispose();
+		}
 
 	}
+
+	Pass() {
+
+		passwordField = new JPasswordField(10);
+		passwordField.setActionCommand(OK);
+		passwordField.addActionListener(this);
+
+		användare.add(användareJakob);
+		användare.add(användareGlenn);
+		användare.setIconImage(FönsterIcon);
+		användare.setLayout(new FlowLayout());
+		användare.setDefaultCloseOperation(3);
+		användare.pack();
+		användare.setLocationRelativeTo(null);
+
+		användareGlenn.addActionListener(this);
+		användareJakob.addActionListener(this);
+
+		frame.setUndecorated(true);
+		frame.setAlwaysOnTop(true);
+		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
+		frame.add(label);
+		frame.add(passwordField);
+		frame.setIconImage(FönsterIcon);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setMinimumSize(frame.getSize());
+		frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
+		timer.start();
+
+	}
+
+}
 @SuppressWarnings("serial")
 class SkapaFärg extends JPanel implements ActionListener{
 	
@@ -4220,13 +4209,13 @@ class SkapaFärg extends JPanel implements ActionListener{
 	
 	
 	public void actionPerformed(ActionEvent e) {
-	
+
 		if (timer == e.getSource()){
 			paneliPanel.setBackground(new Color(r.getValue(),g.getValue(), b.getValue()));
 			String hexColour = Integer.toHexString(paneliPanel.getBackground().getRGB() & 0xffffff);
-			 hexColour = "000000".substring(0, 6 - hexColour.length()) + hexColour;
-			  System.out.println("#" + hexColour);
-		
+			hexColour = "000000".substring(0, 6 - hexColour.length()) + hexColour;
+			System.out.println("#" + hexColour);
+
 		}	
 	}
 }
@@ -4466,7 +4455,6 @@ class random implements ActionListener{
 		frame.add(button,BorderLayout.EAST);
 		
 		frame.setIconImage(FönsterIcon);
-		
 		
 	}
 
