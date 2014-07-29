@@ -4,13 +4,18 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
+import javax.crypto.*;
+import javax.crypto.spec.*;
 import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.event.*;
 import javax.swing.text.*;
+
+import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 import GoJbFrame.GoJbFrame;
 import static GoJbsBraOchHa.Mouse.*;
@@ -101,13 +106,15 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 	Color			färg = new Color(0, 0, 255);
 	
+	String texten = "Dra eller använd piltangenterna";
+	
 	public static 	Font 	typsnitt = new Font("Arial", 0, 40);
 	
 	public static 	Image 	fönsterIcon;
 	
 	public static 	Robot	robot;
 	
-	String texten = "Dra eller använd piltangenterna";
+	
 	
 	public Mouse(){
 		
@@ -315,7 +322,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 				}
 			}
 		}
-		
 		new setImageIcon();
 		new Pass();
 		
@@ -1168,7 +1174,8 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		}
 		
 		try {
-			prop.store(new FileWriter(getClass().getResource("/images/SnakeScore.txt").getFile()),"Inställningar för Txt.java");
+			prop.store(new FileWriter(getClass().getResource("/images/SnakeScore.txt").getFile()),
+																	"Inställningar för Txt.java");
 		} catch (Exception e) {}
 		
 		System.err.println(highscore[1]);
@@ -3376,11 +3383,7 @@ KeyListener, MouseInputListener{
 		
 		
 		robot.mouseMove(960, 515);
-		System.out.println(frame.getX() + ",,,," + frame.getY());
-		
-//	if (frame.getY() > frame.getHeight()/2 - 10){
-//		frame.dispose();
-//	}
+//		System.out.println(frame.getX() + ",,,," + frame.getY());
 }
 	
 	
@@ -3412,42 +3415,39 @@ KeyListener, MouseInputListener{
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {
-	if (arg0.getSource() == timer){
-		
-		if(frame.isVisible() == true){
-			robot.mouseMove(960, 515);
-			
-			
+		if (arg0.getSource() == timer){
+
+			if(frame.isVisible() == true){
+				robot.mouseMove(960, 515);
+
+
+			}
+
+		}
+
+		if (timer3 == arg0.getSource()){
+			Random random = new Random();
+			r = random.nextInt(255);
+
+			g = random.nextInt(255);
+
+			b = random.nextInt(255);
+
+		}
+
+
+		if (arg0.getSource() == timer300){
+			Random random = new Random();
+			x = random.nextInt(1880);
+			System.out.println(x);
+
+			y = random.nextInt(990);
+			System.out.println(y);
+
+		}
 	}
-		
-	}
-	
-	if (timer3 == arg0.getSource()){
-		Random random = new Random();
-		r = random.nextInt(255);
-		System.out.println(r);
-		
-		g = random.nextInt(255);
-		System.out.println(g);
-		
-		b = random.nextInt(255);
-		System.out.println(b);
-		
-	}
-	
-	
-	if (arg0.getSource() == timer300){
-		Random random = new Random();
-		x = random.nextInt(1880);
-		System.out.println(x);
-		
-		y = random.nextInt(990);
-		System.out.println(y);
-	
-	}
-	}
-	
-	
+
+
 	public void keyPressed(KeyEvent arg0) {
 	}
 	
@@ -3993,27 +3993,103 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 class Pass implements ActionListener{
 
 	private int x;
-
 	private Timer timer = new Timer(10, this);	
-
 	private JPasswordField passwordField;
-
 	private JFrame användare = new JFrame();
-
 	private JFrame frame = new JFrame("Verifiera dig!");
-
 	private JButton användareJakob = new JButton("Jakob"),
 					användareGlenn = new JButton("Glenn");
-
 	private JLabel label = new JLabel("Skriv Lösenord -->");
-
 	private char[] correctPassword = {'U','g','g','e','n','0','6','8','4'};
+	private Properties prop = new Properties();
+	private Cipher cipher;
+	private String IV = "gojbsjavaprogram";
+	private String key =  correctPassword.toString();
+	private String tid = new SimpleDateFormat("yy MM dd HH").format(new Date());
+	private char[] pass;
+	public Pass() {
+		checkLogin();
+		
+		passwordField = new JPasswordField(10);
+		passwordField.addActionListener(this);
 
+		användare.add(användareJakob);
+		användare.add(användareGlenn);
+		användare.setIconImage(fönsterIcon);
+		användare.setLayout(new FlowLayout());
+		användare.setDefaultCloseOperation(3);
+		användare.setResizable(false);
+		användare.setAlwaysOnTop(true);
+		användare.pack();
+		användare.setLocationRelativeTo(null);
+
+		användareGlenn.addActionListener(this);
+		användareJakob.addActionListener(this);
+
+		frame.setUndecorated(true);
+		frame.setAlwaysOnTop(true);
+		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
+		frame.add(label);
+		frame.add(passwordField);
+		frame.setIconImage(fönsterIcon);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setMinimumSize(frame.getSize());
+	
+		frame.setLocationRelativeTo(null);	
+		frame.setVisible(true);
+		timer.start();
+
+	}
+	private void checkLogin() {
+		try {
+			cipher = Cipher.getInstance("AES/CBC/NoPadding", "SunJCE");
+			while (true) {
+				try {
+					cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key.getBytes("UTF-8"),"AES"),
+							new IvParameterSpec(IV.getBytes("UTF-8")));
+					break;
+				} catch (Exception e) {
+					key = key + "\0";
+				}
+			}
+			prop.load(getClass().getResource("/images/Login.txt").openStream());
+		} catch (Exception e) {
+			System.err.println("2");
+			return;
+		}
+
+		Scanner pr;
+		Scanner pc;
+
+		try {
+
+			pr = new Scanner(new String(cipher.doFinal(Base64.decode((prop.getProperty("pass")))),"UTF-8"));
+			pc = new Scanner(tid);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("3");
+			return; 
+		}
+
+		if (pr.next().equals(pc.next())&&pr.next().equals(pc.next())&&pr.next().equals(pc.next())) {
+			Double ett = Double.parseDouble(pr.next());
+			Double två = Double.parseDouble(pc.next());
+			
+			if (två>=ett&&två<ett+2) {
+				System.out.println("fj");
+				pass = correctPassword;
+			}
+
+		}
+		pc.close();
+		pr.close();
+	}
+	
 	public void actionPerformed(ActionEvent e) {
 
 		if (timer == e.getSource()) {
-			char[] pass = passwordField.getPassword();
-
+			
 			try {
 				if(Arrays.equals(Toolkit.getDefaultToolkit().getSystemClipboard()
 						.getData(DataFlavor.stringFlavor).toString()
@@ -4023,11 +4099,27 @@ class Pass implements ActionListener{
 			} catch (Exception e1){}
 
 			if (Arrays.equals(pass,correctPassword)) {
-
+				
+				timer.stop();
 				frame.dispose();
 				användare.setVisible(true);
-				timer.stop();
+				
+				try {
+					cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key.getBytes("UTF-8"), "AES"),new IvParameterSpec(IV.getBytes("UTF-8")));
+					byte[] bs = null;
+					while (true) {
+						try {
+							bs = cipher.doFinal(tid.getBytes("UTF-8"));
+							break;
+						} catch (Exception e1) {
+							tid = tid + "\0";
+						}
+					}
+					prop.setProperty("pass", Base64.encode(bs));
+					prop.store(new FileWriter(getClass().getResource("/images/Login.txt").getFile()), "login");
+				} catch (Exception e1) {}
 			}
+			pass = passwordField.getPassword();
 			x++;
 			if(x == 600){
 				timer.stop();
@@ -4047,37 +4139,6 @@ class Pass implements ActionListener{
 
 	}
 
-	public Pass() {
-
-		passwordField = new JPasswordField(10);
-		passwordField.addActionListener(this);
-
-		användare.add(användareJakob);
-		användare.add(användareGlenn);
-		användare.setIconImage(fönsterIcon);
-		användare.setLayout(new FlowLayout());
-		användare.setDefaultCloseOperation(3);
-		användare.setResizable(false);
-		användare.pack();
-		användare.setLocationRelativeTo(null);
-
-		användareGlenn.addActionListener(this);
-		användareJakob.addActionListener(this);
-
-		frame.setUndecorated(true);
-		frame.setAlwaysOnTop(true);
-		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
-		frame.add(label);
-		frame.add(passwordField);
-		frame.setIconImage(fönsterIcon);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setMinimumSize(frame.getSize());
-		frame.setVisible(true);
-		frame.setLocationRelativeTo(null);
-		timer.start();
-
-	}
 }
 @SuppressWarnings("serial")
 class SkapaFärg extends JPanel implements ActionListener{
