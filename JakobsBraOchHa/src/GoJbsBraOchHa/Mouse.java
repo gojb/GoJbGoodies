@@ -114,7 +114,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 	public static 	Robot	robot;
 	
-	
+	public static 	Random random = new Random();
 	
 	public Mouse(){
 		
@@ -1091,7 +1091,6 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 	private int snakelängd,posx=100,posy=100,pluppX,pluppY, stringy, s = 1;
 	private Timer timer = new Timer(100, this);
 	private String riktning = "ner";
-	private Random random = new Random();
 	private Properties prop = new Properties();
 	private boolean förlust;
 	
@@ -1404,7 +1403,6 @@ class Studsa extends JPanel implements ActionListener{
 	JFrame frame = new JFrame("Studsa");
 	Timer timer = new Timer(1, this),
 			timer2 = new Timer(5, this);
-	Random random = new Random();
 	int x=1,y=1,a=5,b=5,c=2,d=2,r=100,g=255,bl=25;
 	public Studsa(){
 		
@@ -1474,8 +1472,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
  	JLabel textlabel = new JLabel();
  
  	JTextArea textruta = new JTextArea();
- 	
- 	Random random = new Random();
  	
  	int r,g,b;
 	
@@ -3215,9 +3211,7 @@ class Snake extends JPanel implements KeyListener, ActionListener{
 	
 	JFrame frame = new JFrame("Snake");
 	int x = 250,y = 250,a,b = 1,bredd = 25,höjd = 100,q;
-	Timer timer = new Timer(30,this);
-	Random r = new Random();
-	
+	Timer timer = new Timer(30,this);	
 
 	public Snake(){
 		
@@ -3228,8 +3222,8 @@ class Snake extends JPanel implements KeyListener, ActionListener{
 		frame.add(this);
 		timer.start();
 		frame.addKeyListener(this);
-		r.nextInt(5);
-		System.out.println(r.nextInt());
+		random.nextInt(5);
+		System.out.println(random.nextInt());
 		
 	}
 	public void paintComponent (Graphics g) {
@@ -3344,7 +3338,7 @@ KeyListener, MouseInputListener{
 		Cursor c = Toolkit.getDefaultToolkit().createCustomCursor(
 				image , new Point(frame.getX(),frame.getY()), "img");
 		
-		frame.setCursor (c);
+		frame.setCursor(c);
 		a=textString;
 		frame.setSize(1920,1030 );
 		frame.add(this);
@@ -3424,9 +3418,9 @@ KeyListener, MouseInputListener{
 			}
 
 		}
-
+		
 		if (timer3 == arg0.getSource()){
-			Random random = new Random();
+			
 			r = random.nextInt(255);
 
 			g = random.nextInt(255);
@@ -3437,7 +3431,6 @@ KeyListener, MouseInputListener{
 
 
 		if (arg0.getSource() == timer300){
-			Random random = new Random();
 			x = random.nextInt(1880);
 			System.out.println(x);
 
@@ -4022,7 +4015,6 @@ class Pass implements ActionListener{
 		användare.setAlwaysOnTop(true);
 		användare.pack();
 		användare.setLocationRelativeTo(null);
-
 		användareGlenn.addActionListener(this);
 		användareJakob.addActionListener(this);
 
@@ -4035,13 +4027,23 @@ class Pass implements ActionListener{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setMinimumSize(frame.getSize());
-	
 		frame.setLocationRelativeTo(null);	
 		frame.setVisible(true);
 		timer.start();
-
+		
 	}
-	private void checkLogin() {
+	public void logout() {
+		try {
+			prop.setProperty("pass", "0000000000000000");
+			prop.store(new FileWriter(getClass().getResource("/images/Login.txt").getFile()), "login");
+		} catch (IOException e) {
+			e.printStackTrace();
+			 
+		}
+	}
+	private void checkLogin() {	
+		Scanner pr;
+		Scanner pc;
 		try {
 			cipher = Cipher.getInstance("AES/CBC/NoPadding", "SunJCE");
 			while (true) {
@@ -4054,22 +4056,11 @@ class Pass implements ActionListener{
 				}
 			}
 			prop.load(getClass().getResource("/images/Login.txt").openStream());
-		} catch (Exception e) {
-			System.err.println("2");
-			return;
-		}
-
-		Scanner pr;
-		Scanner pc;
-
-		try {
-
 			pr = new Scanner(new String(cipher.doFinal(Base64.decode((prop.getProperty("pass")))),"UTF-8"));
 			pc = new Scanner(tid);
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("3");
-			return; 
+			System.err.println("2");
+			return;
 		}
 
 		if (pr.next().equals(pc.next())&&pr.next().equals(pc.next())&&pr.next().equals(pc.next())) {
@@ -4077,7 +4068,7 @@ class Pass implements ActionListener{
 			Double två = Double.parseDouble(pc.next());
 			
 			if (två>=ett&&två<ett+2) {
-				System.out.println("fj");
+				System.out.println("Inloggad för mindre än två timmar sedan");
 				pass = correctPassword;
 			}
 
@@ -4090,14 +4081,6 @@ class Pass implements ActionListener{
 
 		if (timer == e.getSource()) {
 			
-			try {
-				if(Arrays.equals(Toolkit.getDefaultToolkit().getSystemClipboard()
-						.getData(DataFlavor.stringFlavor).toString()
-						.toCharArray(),correctPassword)){
-					pass = correctPassword;
-				}
-			} catch (Exception e1){}
-
 			if (Arrays.equals(pass,correctPassword)) {
 				
 				timer.stop();
@@ -4117,9 +4100,21 @@ class Pass implements ActionListener{
 					}
 					prop.setProperty("pass", Base64.encode(bs));
 					prop.store(new FileWriter(getClass().getResource("/images/Login.txt").getFile()), "login");
+					return;
 				} catch (Exception e1) {}
 			}
 			pass = passwordField.getPassword();
+			try {
+				if(Arrays.equals(Toolkit.getDefaultToolkit().getSystemClipboard()
+						.getData(DataFlavor.stringFlavor).toString()
+						.toCharArray(),correctPassword)){
+					pass = correctPassword;
+					System.out.println("Lösenord från urklipp");
+					
+				}
+			} catch (Exception e1){}
+			
+			
 			x++;
 			if(x == 600){
 				timer.stop();
@@ -4160,8 +4155,6 @@ class SkapaFärg extends JPanel implements ActionListener{
 			b;
 	
 	Timer timer = new Timer(1, this);
-	
-	Random random = new Random();
 	
 	Color y;
 	
