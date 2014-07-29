@@ -6,6 +6,9 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 
+import javafx.scene.control.Slider;
+import javafx.scene.layout.Border;
+
 import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.Timer;
@@ -14,6 +17,7 @@ import javax.swing.text.*;
 
 import GoJbFrame.GoJbFrame;
 import static GoJbsBraOchHa.Mouse.*;
+import static javax.swing.SwingConstants.*;
 
 /**
  * Det här programmet innehåller lite
@@ -4499,25 +4503,88 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 
 class random implements ActionListener{
 	
-	JPanel panel = new JPanel();
+	JLabel label = new JLabel();
+	
+	JPanel panel1 = new JPanel(),
+			panel2 = new JPanel();
 	
 	JButton button = new JButton("Start");
 	
 	GoJbFrame frame = new GoJbFrame();
 	
+	JSlider slider = new JSlider();
+
+	
+	long z,x,i;
+	
+	Timer timer = new Timer(1, this);
+	
+	
+	
 	public random(){
 		
 		frame.setTitle("Random");
 		frame.setLayout(new BorderLayout());
-		frame.add(panel,BorderLayout.SOUTH);
-		frame.add(button,BorderLayout.EAST);
 		
-		frame.setIconImage(FönsterIcon);
+		panel1.setPreferredSize(new Dimension(250,250));
+		panel2.setPreferredSize(new Dimension(250,250));
 		
+		frame.add(panel1,BorderLayout.NORTH);
+		frame.add(panel2,BorderLayout.SOUTH);
+		
+		panel1.setLayout(new BorderLayout());
+		panel1.add(slider,BorderLayout.WEST);
+		panel1.add(button,BorderLayout.CENTER);
+		
+		panel2.setLayout(new BorderLayout());
+		panel2.add(label,BorderLayout.CENTER);
+		label.setVerticalTextPosition(CENTER);
+		label.setHorizontalAlignment(CENTER);
+		label.setFont(Typsnitt);
+		button.addActionListener(this);
+		
+		timer.start();
 		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+	if (arg0.getSource() == button){
+		ranidom();
 	}
+	if (arg0.getSource() == timer){
+		System.err.println(System.currentTimeMillis());
+	}
+	}
+	
+	public void ranidom() {
+			long y = System.currentTimeMillis();
+			
+			if (i == 0){
+				z = System.currentTimeMillis();
+			}
+			else if (i == 1) {
+				z = 1406502275265;
+			}
+			else if (i == 2) {
+				z = 465656464565;
+			}
+			else if (i == 3) {
+				z = 856746;
+			}
+			else if (i == 4) {
+				z = 12876575;
+			}
+			else if (i == 5) {
+				z = 177657690;
+				i = 0;
+			}
+			
+			x = y-z;
+			i++;
+			
+			
+			label.setText(Long.toString(x));
+	}
+	
 }
