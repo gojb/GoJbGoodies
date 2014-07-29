@@ -37,84 +37,81 @@ public class Mouse extends JPanel implements 	ActionListener,
 												KeyListener,
 												WindowListener{
 
-	private JFrame		huvudfönster = new JFrame("Hej Hej :D"), 
-						händelsefönster = new JFrame("Händelser"),
-						hastighetsfönster =  new JFrame(),
-						om = new JFrame("Om"),
-						laddfönster = new JFrame("Startar..."),
-						avslutningsfönster = new JFrame("Avslutar...");
+	private JFrame			huvudfönster = new JFrame("Hej Hej :D"), 
+							händelsefönster = new JFrame("Händelser"),
+							hastighetsfönster =  new JFrame(),
+							om = new JFrame("Om"),
+							laddfönster = new JFrame("Startar..."),
+							avslutningsfönster = new JFrame("Avslutar...");
 			
-	private JPanel 		knappPanel = new JPanel();
+	private JPanel 			knappPanel = new JPanel();
 
-	private JMenuBar 	menyBar = new JMenuBar();
+	private JMenuBar 		menyBar = new JMenuBar();
 	
-	private JMenu 		arkivMeny = new JMenu("Arkiv"), 
-						hjälpMeny = new JMenu("Hjälp"),
-						redigeraMeny = new JMenu("Redigera"),
-						färgbyteMeny = new JMenu("Byt bakgrundsfärg"),
-						textFärgByte = new JMenu("Byt Textfärg");
+	private JMenu 			arkivMeny = new JMenu("Arkiv"), 
+							hjälpMeny = new JMenu("Hjälp"),
+							redigeraMeny = new JMenu("Redigera"),
+							färgbyteMeny = new JMenu("Byt bakgrundsfärg"),
+							textFärgByte = new JMenu("Byt Textfärg");
 
-	private JMenuItem 	avslutaItem = new JMenuItem("Avsluta"), 
-					  	omItem = new JMenuItem("Om"),
-					  	visaItem = new JMenuItem("Visa"),
-					  	döljItem = new JMenuItem("Dölj"),
-					  	nyttItem = new JMenuItem("Nytt"),
-					  	textByteItem = new JMenuItem("Ändra text på remsa"),
-					  	grönItem = new JMenuItem("Grön"),
-					  	rödItem = new JMenuItem("Röd"),
-					  	blåItem = new JMenuItem("Blå"),
-					  	gulItem = new JMenuItem("Gul"),
-					  	hastighetItem = new JMenuItem("Ändra hastighet på piltangenterna"),
-					  	händelseItem = new JMenuItem("Visa Händelsefönster"),
-					  	räknaItem = new JMenuItem("Öppna Miniräknare"),
-					  	pongItem = new JMenuItem("Spela Pong"),
-					  	rörandeItem = new JMenuItem("Öppna RörandeMojäng",
-					  				new ImageIcon(getClass().getResource("/images/Nopeliten.png"))),
-					  	studsItem = new JMenuItem("Öppna Studsande Objekt"),
-					  	snakeItem = new JMenuItem("Spela Snake");
+	private JMenuItem 		avslutaItem = new JMenuItem("Avsluta"), 
+						  	omItem = new JMenuItem("Om"),
+						  	visaItem = new JMenuItem("Visa"),
+						  	döljItem = new JMenuItem("Dölj"),
+						  	nyttItem = new JMenuItem("Nytt"),
+						  	textByteItem = new JMenuItem("Ändra text på remsa"),
+						  	grönItem = new JMenuItem("Grön"),
+						  	rödItem = new JMenuItem("Röd"),
+						  	blåItem = new JMenuItem("Blå"),
+						  	gulItem = new JMenuItem("Gul"),
+						  	hastighetItem = new JMenuItem("Ändra hastighet på piltangenterna"),
+						  	händelseItem = new JMenuItem("Visa Händelsefönster"),
+						  	räknaItem = new JMenuItem("Öppna Miniräknare"),
+						  	pongItem = new JMenuItem("Spela Pong"),
+						  	rörandeItem = new JMenuItem("Öppna RörandeMojäng",
+						  				new ImageIcon(getClass().getResource("/images/Nopeliten.png"))),
+						  	studsItem = new JMenuItem("Öppna Studsande Objekt"),
+						  	snakeItem = new JMenuItem("Spela Snake"),
+							loggaUtItem = new JMenuItem("Logga ut");
+		
 	
-	private JButton 	knapp1 = new JButton("Blå"),
-						knapp2 = new JButton("Grön"),
-						knapp3 = new JButton("Röd"),
-						knapp4 = new JButton("Gul"),
-						ok = new JButton("Klar"),
-						Autoscrollknapp = new JButton("Stäng av autoscroll"),
-						RensKnapp = new JButton("Rensa");
+	private JButton 		knapp1 = new JButton("Blå"),
+							knapp2 = new JButton("Grön"),
+							knapp3 = new JButton("Röd"),
+							knapp4 = new JButton("Gul"),
+							ok = new JButton("Klar"),
+							Autoscrollknapp = new JButton("Stäng av autoscroll"),
+							RensKnapp = new JButton("Rensa");
 	
-	private JScrollPane jahaPane = new JScrollPane(text,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+	private JScrollPane 	jahaPane = new JScrollPane(text,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 											JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	
-	private 			JProgressBar 	laddstapelStart = new JProgressBar(0,100),
-				 						laddstapelAvslut = new JProgressBar(0, 100);
+	private JProgressBar 	laddstapelStart = new JProgressBar(0,100),
+				 			laddstapelAvslut = new JProgressBar(0, 100);
 	
-	private JLabel 		omtext = new JLabel("<html>Hallåj! Det här programmet är skapat av GoJbs Javaprogrammering"),
-						laddtext = new JLabel("Startar program..."),
-						avslutningstext = new JLabel("Avslutar program...");
+	private JLabel 			omtext = new JLabel("<html>Hallåj! Det här programmet är skapat av GoJbs Javaprogrammering"),
+							laddtext = new JLabel("Startar program..."),
+							avslutningstext = new JLabel("Avslutar program...");
 	
-	private JSlider 	slider = new JSlider(JSlider.HORIZONTAL,0,100,10);
+	private JSlider 		slider = new JSlider(JSlider.HORIZONTAL,0,100,10);
  	
-	private static 		JTextArea text = new JTextArea();
- 		
-	private static 		boolean 	autoscroll = true;
+	private int				flyttHastighet = 10,posX = 125, posY = 75, textbredd;
 	
-	private int			flyttHastighet = 10,posX = 125, posY = 75, textbredd;
+	private Timer 			startTimer = new Timer(2, this),
+							slutTimer = new Timer(2, this);
 	
-	public static int	antalFönster = 0;
+	private Color			färg = new Color(0, 0, 255);
 	
-	private Timer 		startTimer = new Timer(2, this),
-						slutTimer = new Timer(2, this);
+	private String 			texten = "Dra eller använd piltangenterna";
 	
-	private Color		färg = new Color(0, 0, 255);
+	private static JTextArea text = new JTextArea();
+	private static boolean 	autoscroll = true;
 	
-	private String 		texten = "Dra eller använd piltangenterna";
-	
-	public static Font 	typsnitt = new Font("Arial", 0, 40);
-	
-	public static Image fönsterIcon;
-	
-	public static Robot	robot;
-	
-	public static Random random = new Random();
+	public static int		antalFönster = 0;
+	public static Font 		typsnitt = new Font("Arial", 0, 40);
+	public static Image 	fönsterIcon;
+	public static Robot		robot;
+	public static Random 	random = new Random();
 	
 	public Mouse(){
 		
@@ -136,7 +133,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 		laddfönster.setUndecorated(true);
 		laddfönster.setVisible(true);		
 		
-		skrivHändelsetext("Välkommen!");
 		avslutaItem.addActionListener(this);
 		omItem.addActionListener(this);
 		visaItem.addActionListener(this);
@@ -158,6 +154,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		rörandeItem.addActionListener(this);
 		studsItem.addActionListener(this);
 		snakeItem.addActionListener(this);
+		loggaUtItem.addActionListener(this);
 		
 		knapp1.setEnabled(false);
 		knapp1.addActionListener(this);
@@ -180,6 +177,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		arkivMeny.add(pongItem);
 		arkivMeny.add(snakeItem);
 		arkivMeny.addSeparator();
+		arkivMeny.add(loggaUtItem);
 		arkivMeny.add(avslutaItem);
 		
 		redigeraMeny.add(färgbyteMeny);
@@ -207,9 +205,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 		setForeground(Color.YELLOW);
 		addMouseMotionListener(this);
 		addMouseListener(this);
-		setSize(10000,10000);
-
-		text.setEditable(false);
 		
 		händelsefönster.setSize(500,500);
 		händelsefönster.setLayout(new BorderLayout());
@@ -236,6 +231,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		hastighetsfönster.setLocationRelativeTo(null);
 		hastighetsfönster.setResizable(false);
 		hastighetsfönster.revalidate();
+		hastighetsfönster.setIconImage(fönsterIcon);
 		
 		knappPanel.add(knapp1);
 		knappPanel.add(knapp2);
@@ -289,8 +285,9 @@ public class Mouse extends JPanel implements 	ActionListener,
 		laddstapelAvslut.setValue(100);
 		
 		antalFönster++;
-		
 		System.out.println(antalFönster);
+		text.setEditable(false);
+		skrivHändelsetext("Välkommen!");
 		
 		startTimer.start();
 		
@@ -349,7 +346,29 @@ public class Mouse extends JPanel implements 	ActionListener,
 //		System.out.println(knapp.getSource());
 		skrivHändelsetext(knapp.getSource().toString());
 
-		if (knapp.getSource() == avslutaItem){	
+		if (knapp.getSource()== startTimer){
+
+			if(laddstapelStart.getValue()==100){
+				laddfönster.dispose();
+				huvudfönster.setVisible(true);
+				startTimer.stop();
+
+				robot.mouseMove(huvudfönster.getX() + huvudfönster.getWidth()/2,
+								huvudfönster.getY() + huvudfönster.getHeight()/2);
+				spelaLjud("/images/tada.wav");
+			}
+			else {
+				laddstapelStart.setValue(laddstapelStart.getValue()+1);
+			}
+		}
+		else if (knapp.getSource()== slutTimer){
+			if (laddstapelAvslut.getValue()==laddstapelAvslut.getMinimum()){
+				System.exit(0);
+			}
+			else 
+				laddstapelAvslut.setValue(laddstapelAvslut.getValue()-1);
+		}
+		else if (knapp.getSource() == avslutaItem){	
 			avslutningsfönster.setVisible(true);
 			
 			slutTimer.start();
@@ -446,29 +465,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 				skrivHändelsetext("Autoscroll påslaget");
 			}			
 		}
-		
-		else if (knapp.getSource()== slutTimer){
-			if (laddstapelAvslut.getValue()==laddstapelAvslut.getMinimum()){
-				System.exit(0);
-			}
-			else 
-				laddstapelAvslut.setValue(laddstapelAvslut.getValue()-1);
-		}
-		else if (knapp.getSource()== startTimer){
-			
-				if(laddstapelStart.getValue()==100){
-					laddfönster.dispose();
-					huvudfönster.setVisible(true);
-					startTimer.stop();
-					
-					robot.mouseMove(huvudfönster.getX() + huvudfönster.getWidth()/2,
-									huvudfönster.getY() + huvudfönster.getHeight()/2);
-					SpelaLjud("/images/tada.wav");
-				}
-				else {
-					laddstapelStart.setValue(laddstapelStart.getValue()+1);
-				}
-		}
 		else if (knapp.getSource()==RensKnapp){
 			text.setText(null);
 		}
@@ -484,6 +480,12 @@ public class Mouse extends JPanel implements 	ActionListener,
 		}
 		else if (knapp.getSource()==snakeItem) {
 			new Snakespel();
+		}
+		else if (knapp.getSource()==loggaUtItem) {
+			Pass.logout();
+			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
+			JOptionPane.showMessageDialog(huvudfönster, "Utloggad!");
+			
 		}
 		
 		huvudfönster.revalidate();
@@ -579,7 +581,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	public void windowDeactivated(WindowEvent e) {
 		
 	}
-	public void SpelaLjud(String Filnamn){
+	public void spelaLjud(String Filnamn){
 		try {
 			Clip clip = AudioSystem.getClip();
 			clip.open(AudioSystem.getAudioInputStream(getClass().getResource(Filnamn)));
@@ -1083,7 +1085,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 	}
 }
 @SuppressWarnings("serial")
-class Snakespel extends JPanel implements KeyListener, ActionListener,WindowListener{
+class Snakespel extends JPanel implements KeyListener, ActionListener,WindowListener,ComponentListener{
 	private JFrame frame = new JFrame("Snake"),highFrame = new JFrame("Highscore");
 	final int startlängd= 3,pixelstorlek=10;
 	private int[] x=new int[50],y=new int[50];
@@ -1122,7 +1124,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		frame.setVisible(true);
 		frame.addWindowListener(this);
 		frame.getContentPane().setBackground(Color.black);
-		
+		frame.addComponentListener(this);
 		
 		highFrame.add(new Scorepanel());
 		highFrame.setSize(frame.getSize());
@@ -1176,12 +1178,6 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 			prop.store(new FileWriter(getClass().getResource("/images/SnakeScore.txt").getFile()),
 																	"Inställningar för Txt.java");
 		} catch (Exception e) {}
-		
-		System.err.println(highscore[1]);
-		System.err.println(highscore[2]);
-		System.err.println(highscore[3]);
-		System.err.println(highscore[4]);
-		System.err.println(highscore[5]);
 		
 		skrivHändelsetext(highscore[1]);
 		skrivHändelsetext(highscore[2]);
@@ -1376,6 +1372,19 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 	@Override
 	public void windowDeactivated(WindowEvent e) {
 	}
+	@Override
+	public void componentResized(ComponentEvent e) {
+	}
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		highFrame.setLocation(frame.getX()-frame.getWidth(),frame.getY());
+	}
+	@Override
+	public void componentShown(ComponentEvent e) {
+	}
+	@Override
+	public void componentHidden(ComponentEvent e) {
+	}
 	private class Scorepanel extends JPanel{
 		public Scorepanel() {
 			setBackground(Color.white);
@@ -1396,6 +1405,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 			}
 		}
 	}
+	
 	
 }
 @SuppressWarnings("serial")
@@ -3994,7 +4004,7 @@ class Pass implements ActionListener{
 					användareGlenn = new JButton("Glenn");
 	private JLabel label = new JLabel("Skriv Lösenord -->");
 	private char[] correctPassword = {'U','g','g','e','n','0','6','8','4'};
-	private Properties prop = new Properties();
+	private static Properties prop = new Properties();
 	private Cipher cipher;
 	private String IV = "gojbsjavaprogram";
 	private String key =  correctPassword.toString();
@@ -4032,14 +4042,21 @@ class Pass implements ActionListener{
 		timer.start();
 		
 	}
-	public void logout() {
-		try {
-			prop.setProperty("pass", "0000000000000000");
-			prop.store(new FileWriter(getClass().getResource("/images/Login.txt").getFile()), "login");
-		} catch (IOException e) {
-			e.printStackTrace();
-			 
+	public static void logout() {
+
+		class log{
+			log() {
+
+				try {
+					prop.setProperty("pass", "0000000000000000");
+					prop.store(new FileWriter(getClass().getResource("/images/Login.txt").getFile()), "login");
+				} catch (IOException e) {
+					e.printStackTrace();
+
+				}
+			}
 		}
+		new log();
 	}
 	private void checkLogin() {	
 		Scanner pr;
