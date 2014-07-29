@@ -17,7 +17,7 @@ public class Morse implements KeyListener,ActionListener, MouseListener {
 	}
 	public Morse(){
 		
-		button.setFont(GoJbsBraOchHa.Mouse.Typsnitt);
+		button.setFont(GoJbsBraOchHa.Mouse.typsnitt);
 		button.addMouseListener(this);
 		button.addKeyListener(this);
 		button.setBackground(Color.black);
@@ -61,7 +61,7 @@ public class Morse implements KeyListener,ActionListener, MouseListener {
 		x = 0;
 		
 		timer.stop();
-		GoJbsBraOchHa.Mouse.Vänta(100);
+		GoJbsBraOchHa.Mouse.vänta(100);
 
 		clip.close();
 		try {
@@ -115,7 +115,7 @@ public class Morse implements KeyListener,ActionListener, MouseListener {
 			x = 0;
 			
 			timer.stop();
-			GoJbsBraOchHa.Mouse.Vänta(100);
+			GoJbsBraOchHa.Mouse.vänta(100);
 
 			clip.close();
 			try {
