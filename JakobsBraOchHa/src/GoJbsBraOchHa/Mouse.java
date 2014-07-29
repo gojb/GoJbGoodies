@@ -37,84 +37,84 @@ public class Mouse extends JPanel implements 	ActionListener,
 												KeyListener,
 												WindowListener{
 
-	JFrame			huvudfönster = new JFrame("Hej Hej :D"), 
-					händelsefönster = new JFrame("Händelser"),
-					hastighetsfönster =  new JFrame(),
-					om = new JFrame("Om"),
-					laddfönster = new JFrame("Startar..."),
-					avslutningsfönster = new JFrame("Avslutar...");
+	private JFrame		huvudfönster = new JFrame("Hej Hej :D"), 
+						händelsefönster = new JFrame("Händelser"),
+						hastighetsfönster =  new JFrame(),
+						om = new JFrame("Om"),
+						laddfönster = new JFrame("Startar..."),
+						avslutningsfönster = new JFrame("Avslutar...");
 			
-	JPanel 			knappPanel = new JPanel();
+	private JPanel 		knappPanel = new JPanel();
 
-	JMenuBar 		menyBar = new JMenuBar();
+	private JMenuBar 	menyBar = new JMenuBar();
 	
-	JMenu 			arkivMeny = new JMenu("Arkiv"), 
-					hjälpMeny = new JMenu("Hjälp"),
-					redigeraMeny = new JMenu("Redigera"),
-					färgbyteMeny = new JMenu("Byt bakgrundsfärg"),
-					textFärgByte = new JMenu("Byt Textfärg");
+	private JMenu 		arkivMeny = new JMenu("Arkiv"), 
+						hjälpMeny = new JMenu("Hjälp"),
+						redigeraMeny = new JMenu("Redigera"),
+						färgbyteMeny = new JMenu("Byt bakgrundsfärg"),
+						textFärgByte = new JMenu("Byt Textfärg");
 
-	JMenuItem 		avslutaItem = new JMenuItem("Avsluta"), 
-				  	omItem = new JMenuItem("Om"),
-				  	visaItem = new JMenuItem("Visa"),
-				  	döljItem = new JMenuItem("Dölj"),
-				  	nyttItem = new JMenuItem("Nytt"),
-				  	textByteItem = new JMenuItem("Ändra text på remsa"),
-				  	grönItem = new JMenuItem("Grön"),
-				  	rödItem = new JMenuItem("Röd"),
-				  	blåItem = new JMenuItem("Blå"),
-				  	gulItem = new JMenuItem("Gul"),
-				  	hastighetItem = new JMenuItem("Ändra hastighet på piltangenterna"),
-				  	händelseItem = new JMenuItem("Visa Händelsefönster"),
-				  	räknaItem = new JMenuItem("Öppna Miniräknare"),
-				  	pongItem = new JMenuItem("Spela Pong"),
-				  	rörandeItem = new JMenuItem("Öppna RörandeMojäng",
-				  				new ImageIcon(getClass().getResource("/images/Nopeliten.png"))),
-				  	studsItem = new JMenuItem("Öppna Studsande Objekt"),
-				  	snakeItem = new JMenuItem("Spela Snake");
+	private JMenuItem 	avslutaItem = new JMenuItem("Avsluta"), 
+					  	omItem = new JMenuItem("Om"),
+					  	visaItem = new JMenuItem("Visa"),
+					  	döljItem = new JMenuItem("Dölj"),
+					  	nyttItem = new JMenuItem("Nytt"),
+					  	textByteItem = new JMenuItem("Ändra text på remsa"),
+					  	grönItem = new JMenuItem("Grön"),
+					  	rödItem = new JMenuItem("Röd"),
+					  	blåItem = new JMenuItem("Blå"),
+					  	gulItem = new JMenuItem("Gul"),
+					  	hastighetItem = new JMenuItem("Ändra hastighet på piltangenterna"),
+					  	händelseItem = new JMenuItem("Visa Händelsefönster"),
+					  	räknaItem = new JMenuItem("Öppna Miniräknare"),
+					  	pongItem = new JMenuItem("Spela Pong"),
+					  	rörandeItem = new JMenuItem("Öppna RörandeMojäng",
+					  				new ImageIcon(getClass().getResource("/images/Nopeliten.png"))),
+					  	studsItem = new JMenuItem("Öppna Studsande Objekt"),
+					  	snakeItem = new JMenuItem("Spela Snake");
 	
-	JButton 		knapp1 = new JButton("Blå"),
-					knapp2 = new JButton("Grön"),
-					knapp3 = new JButton("Röd"),
-					knapp4 = new JButton("Gul"),
-					ok = new JButton("Klar"),
-					Autoscrollknapp = new JButton("Stäng av autoscroll"),
-					RensKnapp = new JButton("Rensa");
+	private JButton 	knapp1 = new JButton("Blå"),
+						knapp2 = new JButton("Grön"),
+						knapp3 = new JButton("Röd"),
+						knapp4 = new JButton("Gul"),
+						ok = new JButton("Klar"),
+						Autoscrollknapp = new JButton("Stäng av autoscroll"),
+						RensKnapp = new JButton("Rensa");
 	
-	JScrollPane 	jahaPane = new JScrollPane(text,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+	private JScrollPane jahaPane = new JScrollPane(text,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 											JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	
-	JProgressBar	laddstapelStart = new JProgressBar(0,100),
-				 	laddstapelAvslut = new JProgressBar(0, 100);
+	private 			JProgressBar 	laddstapelStart = new JProgressBar(0,100),
+				 						laddstapelAvslut = new JProgressBar(0, 100);
 	
-	JLabel 			omtext = new JLabel("<html>Hallåj! Det här programmet är skapat av GoJbs Javaprogrammering"),
-					laddtext = new JLabel("Startar program..."),
-					avslutningstext = new JLabel("Avslutar program...");
+	private JLabel 		omtext = new JLabel("<html>Hallåj! Det här programmet är skapat av GoJbs Javaprogrammering"),
+						laddtext = new JLabel("Startar program..."),
+						avslutningstext = new JLabel("Avslutar program...");
 	
- 	JSlider 		slider = new JSlider(JSlider.HORIZONTAL,0,100,10);
+	private JSlider 	slider = new JSlider(JSlider.HORIZONTAL,0,100,10);
  	
-	static 			JTextArea text = new JTextArea();
+	private static 		JTextArea text = new JTextArea();
  		
-	static boolean 	autoscroll = true;
+	private static 		boolean 	autoscroll = true;
 	
-	int				flyttHastighet = 10,posX = 125, posY = 75, textbredd;
+	private int			flyttHastighet = 10,posX = 125, posY = 75, textbredd;
 	
-	static int		antalFönster = 0;
+	public static int	antalFönster = 0;
 	
-	Timer 			startTimer = new Timer(2, this),
-					slutTimer = new Timer(2, this);
+	private Timer 		startTimer = new Timer(2, this),
+						slutTimer = new Timer(2, this);
 	
-	Color			färg = new Color(0, 0, 255);
+	private Color		färg = new Color(0, 0, 255);
 	
-	String texten = "Dra eller använd piltangenterna";
+	private String 		texten = "Dra eller använd piltangenterna";
 	
-	public static 	Font 	typsnitt = new Font("Arial", 0, 40);
+	public static Font 	typsnitt = new Font("Arial", 0, 40);
 	
-	public static 	Image 	fönsterIcon;
+	public static Image fönsterIcon;
 	
-	public static 	Robot	robot;
+	public static Robot	robot;
 	
-	public static 	Random random = new Random();
+	public static Random random = new Random();
 	
 	public Mouse(){
 		
