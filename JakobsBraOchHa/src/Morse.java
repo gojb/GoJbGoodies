@@ -3,6 +3,8 @@ import java.awt.event.*;
 import javax.sound.sampled.*;
 import javax.swing.*;
 
+import static GoJbsBraOchHa.Mouse.*;
+
 
 public class Morse implements KeyListener,ActionListener, MouseListener {
 	
@@ -17,7 +19,7 @@ public class Morse implements KeyListener,ActionListener, MouseListener {
 	}
 	public Morse(){
 		
-		button.setFont(GoJbsBraOchHa.Mouse.typsnitt);
+		button.setFont(typsnitt);
 		button.addMouseListener(this);
 		button.addKeyListener(this);
 		button.setBackground(Color.black);
