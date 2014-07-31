@@ -3352,14 +3352,16 @@ KeyListener, MouseInputListener{
 		
 		Cursor c = Toolkit.getDefaultToolkit().createCustomCursor(
 				image , new Point(frame.getX(),frame.getY()), "img");
-		
+			
+		frame.setIconImage(fönsterIcon);
+
 		frame.setCursor(c);
 		a=textString;
 		frame.setSize(1920,1030 );
 		frame.add(this);
 		frame.setLocationRelativeTo(null);
 		frame.setUndecorated(true);
-		frame.setVisible(true);
+		
 		frame.add(this);
 		frame.setDefaultCloseOperation(0);
 		setBackground(Color.WHITE);
@@ -3370,16 +3372,11 @@ KeyListener, MouseInputListener{
 
 		frame.setAlwaysOnTop(true);
 
-
 		timer.start();
 		timer300.start();
 		timer3.start();
-
-		if(frame.isVisible() == true){
-			robot.mouseMove(960, 515);
-
-		}
-
+		frame.setVisible(true);
+	
 	}
 	
 	public void mouseDragged(MouseEvent arg0) {
@@ -3426,6 +3423,8 @@ KeyListener, MouseInputListener{
 	public void actionPerformed(ActionEvent arg0) {
 		if (arg0.getSource() == timer){
 
+			frame.toFront();
+			
 			if(frame.isVisible() == true){
 				robot.mouseMove(960, 515);
 
@@ -3462,24 +3461,42 @@ KeyListener, MouseInputListener{
 	public void keyReleased(KeyEvent arg0) {
 	}
 
-	
+	int nr;
 	public void keyTyped(KeyEvent arg0) {
-		if(arg0.getKeyChar() == 'Å'){
-			System.exit(3);
-				}
-		else{
-			frame.add(this);
-			repaint();
-			
-				}
-			
-		
+		if (nr==0) {
+
+			if(arg0.getKeyChar() == 'Å'){
+				nr++;
+
+			}
 		}
+		else if (nr==1) {
+			if(arg0.getKeyChar() == 'ä'){
+				nr++;
+
+			}
+			else {
+				nr=0;
+			}
+			
+		}
+		else if (nr==2) {
+			if(arg0.getKeyChar() == 'Ö'){
+				System.exit(3);
+
+			}
+			else {
+				nr=0;
+			}
+		}
+		repaint();
+
+	}
 	
 	public void mouseClicked(MouseEvent arg0) {
 	
-	frame.add(this);
-	repaint();
+		frame.add(this);
+		repaint();
 	
 	}
 	
