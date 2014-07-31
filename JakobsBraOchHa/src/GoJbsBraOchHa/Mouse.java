@@ -2884,7 +2884,7 @@ class Pong extends JPanel implements ActionListener{
 
 
 @SuppressWarnings("serial")
-class Maze extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener{
+class Maze extends JPanel implements ActionListener, MouseMotionListener{
 
 	JFrame  level1 = new JFrame("Level 1");
 
@@ -2942,38 +2942,6 @@ class Maze extends JPanel implements ActionListener, KeyListener, MouseListener,
 
 		g2.setColor(Color.RED);
 		g2.fillRect(x, y, 25, 25);
-
-	}
-
-	public void mouseClicked(MouseEvent arg0) {
-
-	}
-
-	public void mouseEntered(MouseEvent arg0) {
-
-	}
-
-	public void mouseExited(MouseEvent arg0) {
-
-	}
-
-	public void mousePressed(MouseEvent arg0) {
-
-	}
-
-	public void mouseReleased(MouseEvent arg0) {
-
-	}
-
-	public void keyPressed(KeyEvent arg0) {
-
-	}
-
-	public void keyReleased(KeyEvent arg0) {
-
-	}
-
-	public void keyTyped(KeyEvent arg0) {
 
 	}
 
