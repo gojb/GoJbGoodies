@@ -4084,7 +4084,7 @@ class Pass implements ActionListener{
 			pr = new Scanner(new String(cipher.doFinal(Base64.decode((prop.getProperty("pass")))),"UTF-8"));
 			pc = new Scanner(tid);
 		} catch (Exception e) {
-			System.err.println("2");
+			System.err.println("Logga in!");
 			return;
 		}
 
@@ -4125,10 +4125,24 @@ class Pass implements ActionListener{
 						}
 					}
 					prop.setProperty("pass", Base64.encode(bs));
-					prop.store(new FileWriter(new File(System.getProperty("user.home") + 
-											"\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), "login");
+					try {
+						prop.store(new FileWriter(new File(System.getProperty("user.home") + 
+												"\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), "login");
+					} catch (Exception e1) {
+						try {
+							new File((System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\")).mkdir();
+							new File((System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\")).mkdir();
+							prop.store(new FileWriter(new File(System.getProperty("user.home") + 
+									"\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), "login");
+						} catch (Exception e2) {
+							System.err.println("Problem med åtkomst till disk!");
+							 
+						}
+					}
 					return;
-				} catch (Exception e1) {}
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 			}
 			pass = passwordField.getPassword();
 			try {
