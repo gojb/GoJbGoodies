@@ -9,7 +9,6 @@ import java.util.*;
 
 import javax.crypto.*;
 import javax.crypto.spec.*;
-
 import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.Timer;
@@ -21,6 +20,10 @@ import com.sun.org.apache.xml.internal.security.utils.Base64;
 import GoJbFrame.GoJbFrame;
 import static GoJbsBraOchHa.Mouse.*;
 import static javax.swing.SwingConstants.*;
+import static java.awt.Color.*;
+import static javax.swing.JFrame.*;
+import static javax.swing.JOptionPane.*;
+
 
 /**
  * Det här programmet innehåller lite
@@ -95,7 +98,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 							laddtext = new JLabel("Startar program..."),
 							avslutningstext = new JLabel("Avslutar program...");
 	
-	private JSlider 		slider = new JSlider(JSlider.HORIZONTAL,0,100,10);
+	private JSlider 		slider = new JSlider(HORIZONTAL,0,100,10);
  	
 	private int				flyttHastighet = 10,posX = 125, posY = 75, textbredd;
 	
@@ -114,12 +117,50 @@ public class Mouse extends JPanel implements 	ActionListener,
 	public static Image 	fönsterIcon;
 	public static Robot		robot;
 	public static Random 	random = new Random();
+	public static Properties prop = new Properties();
 	
+	public static void main(String[] arg) {
+
+		try {
+		      UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		    } catch (Exception e) {
+		    	((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+		    	showMessageDialog(null, "Den angivna LookAndFeel hittades inte!","Error",ERROR_MESSAGE);
+		    }
+		try {
+			robot = new Robot();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			prop.load(new FileInputStream(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb"));
+		} catch (Exception e) {
+			
+		}
+		
+		class setImageIcon{
+			public setImageIcon() {
+				
+				try {
+					
+					fönsterIcon = new ImageIcon(getClass().getResource("/images/Java-icon.png")).getImage();
+				} 
+				catch (Exception e) {
+					((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+					showMessageDialog(null, "ImageIcon hittades inte","Filfel",ERROR_MESSAGE);
+				}
+			}
+		}
+		new setImageIcon();
+		new Pass();
+		
+	}
+
 	public Mouse(){
 		
 		laddtext.setFont(typsnitt);
-		laddtext.setHorizontalAlignment(JLabel.CENTER);
-		laddfönster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		laddtext.setHorizontalAlignment(CENTER);
+		laddfönster.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		laddfönster.setLayout(new BorderLayout(10,10));	
 		laddfönster.add(laddstapelStart,BorderLayout.CENTER);
 		laddfönster.add(laddtext,BorderLayout.NORTH);
@@ -131,7 +172,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		laddfönster.setResizable(false);
 		laddfönster.setLocationRelativeTo(null);
 		laddfönster.setIconImage(fönsterIcon);
-		laddfönster.getContentPane().setBackground(Color.yellow);
+		laddfönster.getContentPane().setBackground(yellow);
 		laddfönster.setUndecorated(true);
 		laddfönster.setVisible(true);		
 		
@@ -204,7 +245,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		
 		setOpaque(true);
 		setBackground(färg);
-		setForeground(Color.YELLOW);
+		setForeground(YELLOW);
 		addMouseMotionListener(this);
 		addMouseListener(this);
 		
@@ -213,7 +254,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		händelsefönster.add(Autoscrollknapp,BorderLayout.NORTH);
 		händelsefönster.add(jahaPane,BorderLayout.CENTER);
 		händelsefönster.add(RensKnapp,BorderLayout.SOUTH);
-		händelsefönster.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		händelsefönster.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		händelsefönster.setAlwaysOnTop(true);
 		händelsefönster.setResizable(false);
 		händelsefönster.setIconImage(fönsterIcon);
@@ -250,7 +291,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		
 		huvudfönster.setJMenuBar(menyBar);
 		huvudfönster.setSize((int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2),
-				(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2*1.5));
+							(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2*1.5));
 		huvudfönster.setLayout(new BorderLayout());
 		huvudfönster.setMinimumSize(new Dimension(400,400));
 		huvudfönster.addKeyListener(this);
@@ -261,13 +302,13 @@ public class Mouse extends JPanel implements 	ActionListener,
 		huvudfönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.EAST);
 		huvudfönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.SOUTH);
 		huvudfönster.add(this,BorderLayout.CENTER);
-		huvudfönster.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		huvudfönster.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		huvudfönster.setLocationRelativeTo(null);		
 		huvudfönster.revalidate();
 		huvudfönster.repaint();
 				
 		avslutningstext.setFont(typsnitt);
-		avslutningstext.setHorizontalAlignment(JLabel.CENTER);
+		avslutningstext.setHorizontalAlignment(CENTER);
 		
 		avslutningsfönster.setLayout(new BorderLayout(10,10));
 		avslutningsfönster.add(laddstapelAvslut,BorderLayout.CENTER);
@@ -278,8 +319,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 		avslutningsfönster.setAlwaysOnTop(true);
 		avslutningsfönster.setIconImage(fönsterIcon);
 		avslutningsfönster.setLocationRelativeTo(null);
-		avslutningsfönster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		avslutningsfönster.getContentPane().setBackground(Color.yellow);
+		avslutningsfönster.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		avslutningsfönster.getContentPane().setBackground(yellow);
 		avslutningsfönster.add(Box.createRigidArea(new Dimension(5,5)),BorderLayout.EAST);
 		avslutningsfönster.add(Box.createRigidArea(new Dimension(5,5)),BorderLayout.WEST);
 		avslutningsfönster.add(Box.createRigidArea(new Dimension(5,5)),BorderLayout.SOUTH);
@@ -292,37 +333,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 		skrivHändelsetext("Välkommen!");
 		
 		startTimer.start();
-		
-	}
-
-	public static void main(String[] Jakob) {
-		try {
-		      UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		    } catch (Exception e) {
-		    	((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-		    	JOptionPane.showMessageDialog(null, "Den angivna LookAndFeel hittades inte!","Error",JOptionPane.ERROR_MESSAGE);
-		    }
-		try {
-			robot = new Robot();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		class setImageIcon{
-			public setImageIcon() {
-				
-				try {
-					
-					fönsterIcon = new ImageIcon(getClass().getResource("/images/Java-icon.png")).getImage();
-				} 
-				catch (Exception e) {
-					((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-					JOptionPane.showMessageDialog(null, "ImageIcon hittades inte","Filfel",JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		}
-		new setImageIcon();
-		new Pass();
 		
 	}
 
@@ -360,7 +370,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 				spelaLjud("/images/tada.wav");
 			}
 			else {
-				laddstapelStart.setValue(laddstapelStart.getValue()+1);
+				laddstapelStart.setValue(laddstapelStart.getValue()+2);
 			}
 		}
 		else if (knapp.getSource()== slutTimer){
@@ -368,7 +378,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 				System.exit(0);
 			}
 			else 
-				laddstapelAvslut.setValue(laddstapelAvslut.getValue()-1);
+				laddstapelAvslut.setValue(laddstapelAvslut.getValue()-2);
 		}
 		else if (knapp.getSource() == avslutaItem){	
 			avslutningsfönster.setVisible(true);
@@ -381,7 +391,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 			
 		}
 		else if(knapp.getSource() == knapp1){
-			färg = Color.blue;
+			färg = blue;
 			setBackground(färg);
 			knapp1.setEnabled(false);
 			knapp2.setEnabled(true);
@@ -389,7 +399,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 			knapp4.setEnabled(true);
 		}
 		else if(knapp.getSource() == knapp2){
-			färg = Color.GREEN;
+			färg = GREEN;
 			setBackground(färg);
 			knapp1.setEnabled(true);
 			knapp2.setEnabled(false);
@@ -398,7 +408,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 			
 		}
 		else if(knapp.getSource() == knapp3){
-			färg = Color.red;
+			färg = red;
 			setBackground(färg);
 			knapp1.setEnabled(true);
 			knapp2.setEnabled(true);
@@ -407,7 +417,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 		}	
 		else if(knapp.getSource() == knapp4){
-			färg = Color.yellow;
+			färg = yellow;
 			setBackground(färg);
 			knapp1.setEnabled(true);
 			knapp2.setEnabled(true);
@@ -429,17 +439,17 @@ public class Mouse extends JPanel implements 	ActionListener,
 			repaint();
 		}
 		else if (knapp.getSource() == blåItem){
-			setForeground(Color.BLUE);
+			setForeground(BLUE);
 			text.append("Textfärg ändrad till Blå");
 		}
 		else if (knapp.getSource() == rödItem){
-			setForeground(Color.RED);
+			setForeground(RED);
 		}
 		else if (knapp.getSource() == grönItem){
-			setForeground(Color.GREEN);
+			setForeground(GREEN);
 		}
 		else if (knapp.getSource() == gulItem){
-			setForeground(Color.YELLOW);
+			setForeground(YELLOW);
 		}
 		else if (knapp.getSource() == hastighetItem){
 			hastighetsfönster.setVisible(true);
@@ -486,8 +496,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 		else if (knapp.getSource()==loggaUtItem) {
 			Pass.logout();
 			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
-			JOptionPane.showMessageDialog(huvudfönster, "Utloggad!");
-			
+			showMessageDialog(huvudfönster, "Utloggad!");
+			huvudfönster.dispose();
 		}
 		
 		huvudfönster.revalidate();
@@ -505,7 +515,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	}
 
 	public void mouseExited(MouseEvent e) {
-		setBackground(Color.gray);
+		setBackground(gray);
 	}
 
 	public void mousePressed(MouseEvent e) {
@@ -591,7 +601,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 			
 		} catch (Exception e) {
 			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-			JOptionPane.showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
+			showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", "Ljud", ERROR_MESSAGE);
 		}
 		
 	}
@@ -622,7 +632,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		textbredd = g2.getFontMetrics().stringWidth(texten);
 	  }
 	  public void setTexten(){
-		  String Text = JOptionPane.showInputDialog("Ändra text på dragbar remsa");
+		  String Text = showInputDialog("Ändra text på dragbar remsa");
 		  setTexten(Text);
 		  
 	  }
@@ -692,7 +702,7 @@ class Räknare implements ActionListener{
 		RäknarKnappar.add(MiniränkarknappLikamed);	
 		RäknarKnappar.add(MiniränkarknappDelat);
 		RäknarKnappar.add(C);
-		RäknarKnappar.setBackground(Color.white);
+		RäknarKnappar.setBackground(white);
 		
 		Miniränkarknapp0.setPreferredSize(new Dimension(120,100));
 		Miniränkarknapp0.addActionListener(this);
@@ -716,7 +726,7 @@ class Räknare implements ActionListener{
 		RäknarPanel.add(Summa);
 		RäknarPanel.add(Räknesätt);
 		RäknarPanel.add(Räknartext);
-		RäknarPanel.setBackground(Color.white);
+		RäknarPanel.setBackground(white);
 
 		Räknartext.setFont(typsnitt);
 		Summa.setFont(typsnitt);
@@ -729,10 +739,10 @@ class Räknare implements ActionListener{
 		Räknare.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.WEST);
 		Räknare.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.EAST);
 		Räknare.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.SOUTH);
-		Räknare.setBackground(Color.WHITE);
+		Räknare.setBackground(WHITE);
 		Räknare.pack();
 		Räknare.setIconImage(fönsterIcon);
-		Räknare.getContentPane().setBackground(Color.white);
+		Räknare.getContentPane().setBackground(white);
 		Räknare.setVisible(true);
 	}
 	public void actionPerformed(ActionEvent e) {
@@ -873,14 +883,14 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 	private String PoängTill,SpelareVänster,SpelareHöger;
 	
 	public Pongspel() {
-		SpelareVänster = JOptionPane.showInputDialog("Spelare till vänster:");
+		SpelareVänster = showInputDialog("Spelare till vänster:");
 		if (SpelareVänster == null) {
 			return;
 		}
 		else if (SpelareVänster.equals("")) {
 			SpelareVänster = "Spelare 1";
 		}
-		SpelareHöger = JOptionPane.showInputDialog("Spelare till höger:");
+		SpelareHöger = showInputDialog("Spelare till höger:");
 		if (SpelareHöger == null) {
 			return;
 		}
@@ -889,10 +899,10 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		}
 		
 		addMouseMotionListener(this);
-		setForeground(Color.red);
+		setForeground(red);
 		setPreferredSize(new Dimension(700, 500));
 		setOpaque(true);	
-		setBackground(Color.black.brighter());
+		setBackground(black.brighter());
 
 		HögerY = getHeight()/2;
 		VänsterY = getHeight()/2;
@@ -902,6 +912,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		frame.setIconImage(fönsterIcon);
 		frame.addWindowListener(this);
 		frame.addKeyListener(this);
+		frame.addKeyListener(kl);
 		frame.add(this);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
@@ -940,18 +951,32 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 	public void keyTyped(KeyEvent e) {
 		
 	}
-
+	KeyListener kl = new KeyListener() {
+		
+		@Override
+		public void keyTyped(KeyEvent e) {
+		}
+		
+		@Override
+		public void keyReleased(KeyEvent e) {
+		}
+		
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == 87 ) {
+				if (VänsterY>0) {
+					VänsterY=VänsterY-20;
+				}
+			}
+			else if (e.getKeyCode() == 83) {
+				if (VänsterY+RektHöjd+60<frame.getHeight()) {
+					VänsterY=VänsterY+20;
+				}
+			}
+			
+		}
+	};
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == 87 ) {
-			if (VänsterY>0) {
-				VänsterY=VänsterY-20;
-			}
-		}
-		else if (e.getKeyCode() == 83) {
-			if (VänsterY+RektHöjd+60<frame.getHeight()) {
-				VänsterY=VänsterY+20;
-			}
-		}
 		if(KeyEvent.getKeyText(e.getKeyCode()) == "Upp"){
 			if (HögerY>0) {
 				HögerY=HögerY-20;
@@ -1023,7 +1048,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		if (GameOver==true) {
 			g2.setFont(new Font("", Font.BOLD, 50));
-			g2.setColor(Color.green);
+			g2.setColor(green);
 			g2.drawString("Poäng till " + PoängTill, getWidth()/2-200, getHeight()/2);
 			g2.drawString(Integer.toString(PoängVänster) + " - " + Integer.toString(PoängHöger), getWidth()/2-70, 40);
 			g2.drawString(Integer.toString(PoängVänster) + " - " + Integer.toString(PoängHöger), px,py);
@@ -1039,7 +1064,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		g2.drawRect(HögerX, HögerY, RektBredd, RektHöjd);
 		g2.fillRect(HögerX, HögerY, RektBredd, RektHöjd);
 		
-		g2.setColor(Color.green);
+		g2.setColor(green);
 		g2.setFont(new Font("", Font.BOLD, 50));
 		g2.drawString(Integer.toString(PoängVänster) + " - " + Integer.toString(PoängHöger), getWidth()/2-80, 40);
 		
@@ -1095,16 +1120,10 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 	private int snakelängd,posx=100,posy=100,pluppX,pluppY, stringy, s = 1;
 	private Timer timer = new Timer(100, this);
 	private String riktning = "ner";
-	private Properties prop = new Properties();
 	private boolean förlust;
 	
 	public Snakespel() {
 
-		try {
-			prop.load(getClass().getResource("/images/SnakeScore.txt").openStream());
-		} catch (Exception e) {
-			
-		}
 		highscore[0]= "";
 		highscore[1]= prop.getProperty("Score1","0");
 		highscore[2]= prop.getProperty("Score2","0");
@@ -1112,7 +1131,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		highscore[4]= prop.getProperty("Score4","0");
 		highscore[5]= prop.getProperty("Score5","0");
 		
-		setBackground(Color.white);
+		setBackground(white);
 		setPreferredSize(new Dimension(pixelstorlek*50, pixelstorlek*50));
 		setOpaque(true);
 		
@@ -1125,7 +1144,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		frame.addWindowListener(this);
-		frame.getContentPane().setBackground(Color.black);
+		frame.getContentPane().setBackground(black);
 		frame.addComponentListener(this);
 		
 		highFrame.add(new Scorepanel());
@@ -1148,7 +1167,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		hs= scanner.nextInt();
 		scanner.close();
 		if (snakelängd>hs) {
-			String string = JOptionPane.showInputDialog("Skriv ditt namn");
+			String string = showInputDialog("Skriv ditt namn");
 			highscore[5]=Integer.toString(snakelängd) + " " + string;
 			if (snakelängd<10) {
 				highscore[5]="0"+highscore[5];
@@ -1177,8 +1196,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		}
 		
 		try {
-			prop.store(new FileWriter(getClass().getResource("/images/SnakeScore.txt").getFile()),
-																	"Inställningar för Txt.java");
+			prop.store(new FileWriter(new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")),"Highscore i Snakespel");
 		} catch (Exception e) {}
 		
 		skrivHändelsetext(highscore[1]);
@@ -1234,22 +1252,22 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		if (förlust) {
-			g.setColor(Color.red);
+			g.setColor(red);
 			g.setFont(new Font(null, 0, 25));
 			g.drawString("Du förlorade! Tryck F2 för att spela igen",10 , getHeight()/2);
 		}
-		g.setColor(Color.red);
+		g.setColor(red);
 		g.drawOval(pluppX, pluppY, pixelstorlek-2, pixelstorlek-2);
 		g.fillOval(pluppX, pluppY, pixelstorlek-2, pixelstorlek-2);
-		g.setColor(Color.black);
+		g.setColor(black);
 		g.drawRect(x[1], y[1], pixelstorlek-2, pixelstorlek-2);
 		g.fillRect(x[1], y[1], pixelstorlek-2, pixelstorlek-2);
-		g.setColor(Color.GREEN);
+		g.setColor(GREEN);
 		g.setFont(Mouse.typsnitt);
 		g.drawString(Integer.toString(snakelängd), x[1], stringy);
 		for (int i = snakelängd+1; i >= 2; i--) {
 			
-			g.setColor(Color.black);
+			g.setColor(black);
 			x[i]=x[i-1];
 			y[i]=y[i-1];
 			g.drawRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
@@ -1389,7 +1407,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 	}
 	private class Scorepanel extends JPanel{
 		public Scorepanel() {
-			setBackground(Color.white);
+			setBackground(white);
 		}
 		public void paintComponent(Graphics g){
 			super.paintComponent(g);
@@ -1397,7 +1415,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 			int pos = 50;
 			
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g2.setColor(Color.red);
+			g2.setColor(red);
 			g2.setFont(new Font(null, 0, 25));
 			g.drawString("Highscore:",10 , pos);
 			
@@ -1423,7 +1441,7 @@ class Studsa extends JPanel implements ActionListener{
 		frame.setIconImage(fönsterIcon);
 		frame.add(this);
 		frame.setUndecorated(true);
-		frame.getContentPane().setBackground(Color.white);
+		frame.getContentPane().setBackground(white);
 		frame.setVisible(true);
 		timer.start();
 		timer2.start();
@@ -1508,7 +1526,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			färg = new JMenuItem("Skapa färg"),
 			avsluta = new JMenuItem("Avsluta"),
 			morse = new JMenuItem("Morse"),
-			Random = new JMenuItem("Random");
+			Random = new JMenuItem("Random"),
+			klocka = new JMenuItem("Klocka");
 	JMenuBar bar = new JMenuBar();
 	
 	Clip clip;
@@ -1554,6 +1573,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		ÖppnaProgram.add(avsluta);
 		ÖppnaProgram.add(morse);
 		ÖppnaProgram.add(Random);
+		ÖppnaProgram.add(klocka);
 		
 		Mouse.addActionListener(this);
 		Pong.addActionListener(this);
@@ -1571,14 +1591,15 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		avsluta.addActionListener(this);
 		morse.addActionListener(this);
 		Random.addActionListener(this);
+		klocka.addActionListener(this);
 		
 		timer.addActionListener(this);
 		timer.start();
 		
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
-		frame.setBackground(Color.gray);
-		frame.setForeground(Color.pink);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setBackground(gray);
+		frame.setForeground(pink);
+		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.setIconImage(fönsterIcon);
 		frame.setSize(1845, 800);
 		frame.addMouseMotionListener(this);
@@ -1765,7 +1786,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 				clip.start();
 			} catch (Exception e) {
 				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-				JOptionPane.showMessageDialog(null, "Filen hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
+				showMessageDialog(null, "Filen hittades inte", "Ljud", ERROR_MESSAGE);
 				
 			}
 		
@@ -1811,12 +1832,12 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 	
 		}
 		
-		if (arg0.getSource() == Mouse){
+		else if (arg0.getSource() == Mouse){
 			frame.dispose();
 			new Mouse();
 		}
 		
-		if (arg0.getSource() == Återställ){
+		else if (arg0.getSource() == Återställ){
 			x = 300;
 			y = 800;
 			frame.revalidate();
@@ -1827,68 +1848,72 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		}
 		
 		
-		if (arg0.getSource() == färg){
+		else if (arg0.getSource() == färg){
 			new SkapaFärg();
 			frame.dispose();
 		}
 		
-		if (arg0.getSource() == impossible){
+		else if (arg0.getSource() == impossible){
 			frame.dispose();
 			new Impossible("HAHA!");
 		}
 		
-		if (arg0.getSource() == Maze){
+		else if (arg0.getSource() == Maze){
 			new Maze();
 			frame.dispose();
 		}
 		
-		if (arg0.getSource() == avsluta){
+		else if (arg0.getSource() == avsluta){
 			new Avsluta();
 			frame.dispose();
 		}
-		if (arg0.getSource() == morse) {
+		else if (arg0.getSource() == morse) {
 			frame.dispose();
 			new Morse();
 		}
 		
-		if (arg0.getSource() == Random){
+		else if (arg0.getSource() == Random){
 			new random();
 			frame.dispose();
 		}
+		else if (arg0.getSource() == klocka){
+			new Klocka();
+			frame.dispose();
+		}
 		
-		if (arg0.getSource() == Pong){
+		else if (arg0.getSource() == Pong){
 			new Pong();
 			frame.dispose();
 			
 		}
 		
-		if (arg0.getSource() == Snake){
+		else if (arg0.getSource() == Snake){
 			new Snake();
 		}
 		
-		if (arg0.getSource() == Minirknare){
+		else if (arg0.getSource() == Minirknare){
 			new Miniräknare();
 		}
 		
-		if (arg0.getSource() == ticTacToe){
+		else if (arg0.getSource() == ticTacToe){
 			new TicTacToe();
 			frame.dispose();
 		}
 		
-		if (arg0.getSource() == lösenord){
+		else if (arg0.getSource() == lösenord){
 			new Pass();
 			frame.dispose();
 		}
 		
-		if (arg0.getSource() == Betyg){
+		else if (arg0.getSource() == Betyg){
 			new Merit();
 		}
 		
-		if (arg0.getSource() == OrginalFönster){
+		else if (arg0.getSource() == OrginalFönster){
 			new RörandeMojäng();
 		}
 		
-		if (arg0.getSource() == item1){
+		else if (arg0.getSource() == item1){
 			try
 			{
 			     Runtime.getRuntime().exec("notepad.exe C:\\Users\\Glenn\\GoJb.java\\SourceKod.txt");
@@ -1906,25 +1931,25 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 	public void paint (Graphics gr) {
 		Graphics2D g2 = (Graphics2D) gr;
 
-		g2.setColor(Color.BLUE);
+		g2.setColor(BLUE);
 		g2.fillRect(0, 425, 150, 1000);
 
-		g2.setColor(Color.GREEN);
+		g2.setColor(GREEN);
 		gr.fill3DRect(1000, 200, 100, 350, false);
 
-		g2.setColor(Color.ORANGE);
+		g2.setColor(ORANGE);
 		gr.fill3DRect(1155, 0, 110, 495, true);
 
-		g2.setColor(Color.MAGENTA);
+		g2.setColor(MAGENTA);
 		gr.fillRect(205, 550, 1000, 100);
 
-		g2.setColor(Color.WHITE);
+		g2.setColor(WHITE);
 		gr.drawRect(700, 650, 90, 90);
 
 		g2.setColor(new Color(233,5,6));
 		g2.fill3DRect(150, 425, 300, 70, true);
 
-		g2.setColor(Color.BLACK);
+		g2.setColor(BLACK);
 		g2.setFont(new Font("", Font.ROMAN_BASELINE,20));
 		g2.drawString("Dra genom labyrinten till den \nfärgglada kvadraten för att vinna.\n Lycka till! :D", 300, 150);
 
@@ -1954,7 +1979,7 @@ class RörandeMojäng3 extends JPanel implements ActionListener {
 
 		}
 
-		g2.setColor(Color.cyan);
+		g2.setColor(cyan);
 		g2.fillRect(x, y, 50,50);
 }
 
@@ -2297,7 +2322,7 @@ class Merit implements MouseMotionListener, WindowListener, KeyListener, ActionL
 			Resultat = new JFrame("Resultat");
 			
 
-	JLabel resultatlabel = new JLabel("",JLabel.CENTER);
+	JLabel resultatlabel = new JLabel("",CENTER);
 	
 	JButton tillbaka = new JButton("Tillbaka"),
 			Börja = new JButton("Börja"),
@@ -2704,7 +2729,7 @@ class Merit implements MouseMotionListener, WindowListener, KeyListener, ActionL
 				Resultat.setLayout(new BorderLayout());
 				resultatlabel.setText(String.valueOf(x));
 				Resultat.add(resultatlabel,BorderLayout.CENTER);
-				resultatlabel.setHorizontalTextPosition(SwingConstants.RIGHT);
+				resultatlabel.setHorizontalTextPosition(RIGHT);
 			
 				Resultat.setSize(Bild.getSize());
 				Resultat.setLocationRelativeTo(null);
@@ -2719,7 +2744,7 @@ class Merit implements MouseMotionListener, WindowListener, KeyListener, ActionL
 						clip.start();
 					} catch (Exception ebn) {
 						((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-						JOptionPane.showMessageDialog(null, "Filen hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
+						showMessageDialog(null, "Filen hittades inte", "Ljud", ERROR_MESSAGE);
 				}}
 				else {
 					try {
@@ -2729,7 +2754,7 @@ class Merit implements MouseMotionListener, WindowListener, KeyListener, ActionL
 						clip.start();
 				} catch (Exception ebn) {
 					((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-					JOptionPane.showMessageDialog(null, "Filen hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
+					showMessageDialog(null, "Filen hittades inte", "Ljud", ERROR_MESSAGE);
 				}
 			
 			}
@@ -2840,7 +2865,7 @@ class Pong extends JPanel implements ActionListener{
 
 	public void paintComponent (Graphics g) {
 	    Graphics2D g2 = (Graphics2D) g;
-	    g2.setColor(Color.BLUE);
+	    g2.setColor(BLUE);
 	    g2.fillRect(x, y, 25, 25);
 	    }
 	
@@ -2881,7 +2906,7 @@ class Pong extends JPanel implements ActionListener{
 
 
 @SuppressWarnings("serial")
-class Maze extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener{
+class Maze extends JPanel implements ActionListener, MouseMotionListener{
 
 	JFrame  level1 = new JFrame("Level 1");
 
@@ -2904,7 +2929,7 @@ class Maze extends JPanel implements ActionListener, KeyListener, MouseListener,
 
 		börja.addActionListener(this);
 
-		level1.setBackground(Color.BLACK);
+		level1.setBackground(BLACK);
 		level1.setSize(418, 430);
 		level1.setLocationRelativeTo(null);
 		level1.setResizable(false);
@@ -2921,7 +2946,7 @@ class Maze extends JPanel implements ActionListener, KeyListener, MouseListener,
 	public void paintComponent (Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 
-		g2.setColor(Color.white);
+		g2.setColor(white);
 		g2.fillRect(0, 350, 350, 50);
 
 		g2.fillRect(0, 0, 200, 40);
@@ -2934,43 +2959,11 @@ class Maze extends JPanel implements ActionListener, KeyListener, MouseListener,
 
 		g2.fillRect(140, 50, 50, 190);
 
-		g2.setColor(Color.CYAN);
+		g2.setColor(CYAN);
 		g2.fillRect(150, 200, 30, 30);   
 
-		g2.setColor(Color.RED);
+		g2.setColor(RED);
 		g2.fillRect(x, y, 25, 25);
-
-	}
-
-	public void mouseClicked(MouseEvent arg0) {
-
-	}
-
-	public void mouseEntered(MouseEvent arg0) {
-
-	}
-
-	public void mouseExited(MouseEvent arg0) {
-
-	}
-
-	public void mousePressed(MouseEvent arg0) {
-
-	}
-
-	public void mouseReleased(MouseEvent arg0) {
-
-	}
-
-	public void keyPressed(KeyEvent arg0) {
-
-	}
-
-	public void keyReleased(KeyEvent arg0) {
-
-	}
-
-	public void keyTyped(KeyEvent arg0) {
 
 	}
 
@@ -3038,7 +3031,7 @@ class Maze extends JPanel implements ActionListener, KeyListener, MouseListener,
 
 
 
-			level2.setBackground(Color.BLACK);
+			level2.setBackground(BLACK);
 			level2.setSize(418, 430);
 			level2.setLocationRelativeTo(null);
 			level2.setResizable(false);
@@ -3057,7 +3050,7 @@ class Maze extends JPanel implements ActionListener, KeyListener, MouseListener,
 		public void paintComponent (Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;
 
-			g2.setColor(Color.white);
+			g2.setColor(white);
 			g2.fillRect(140, 190, 45, 45);
 
 			g2.fillRect(145, 195, 35, 180);
@@ -3074,10 +3067,10 @@ class Maze extends JPanel implements ActionListener, KeyListener, MouseListener,
 
 			g2.fillRect(364, 10, 35, 105);
 
-			g2.setColor(Color.CYAN);
+			g2.setColor(CYAN);
 			g2.fillRect(369, 17, 25, 25);   
 
-			g2.setColor(Color.RED);
+			g2.setColor(RED);
 			g2.fillRect(x, y, 20, 20);
 
 
@@ -3120,7 +3113,7 @@ class Maze extends JPanel implements ActionListener, KeyListener, MouseListener,
 
 		public level3(){
 
-			level3.setBackground(Color.BLACK);
+			level3.setBackground(BLACK);
 			level3.setSize(418, 430);
 			level3.setLocationRelativeTo(null);
 			level3.setResizable(false);
@@ -3138,7 +3131,7 @@ class Maze extends JPanel implements ActionListener, KeyListener, MouseListener,
 		public void paintComponent (Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;
 
-			g2.setColor(Color.white);
+			g2.setColor(white);
 			g2.fillRect(270, 5, 137, 37);
 
 			g2.fillRect(270, 5, 32, 130);
@@ -3157,10 +3150,10 @@ class Maze extends JPanel implements ActionListener, KeyListener, MouseListener,
 
 			g2.fillRect(170, 283, 17, 150);
 
-			g2.setColor(Color.CYAN);
+			g2.setColor(CYAN);
 			g2.fillRect(170, 375, 17, 17);   
 
-			g2.setColor(Color.RED);
+			g2.setColor(RED);
 			g2.fillRect(x, y, 12, 12);
 
 
@@ -3212,7 +3205,7 @@ class Maze extends JPanel implements ActionListener, KeyListener, MouseListener,
 				clips.start();
 			} catch (Exception ex) {
 				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-				JOptionPane.showMessageDialog(null, "Filen hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
+				showMessageDialog(null, "Filen hittades inte", "Ljud", ERROR_MESSAGE);
 			}
 
 		}
@@ -3229,7 +3222,7 @@ class Snake extends JPanel implements KeyListener, ActionListener{
 		
 		frame.setSize(500, 500);
 		frame.setLocationRelativeTo(null);
-		frame.setBackground(Color.BLACK);
+		frame.setBackground(BLACK);
 		frame.setVisible(true);
 		frame.add(this);
 		timer.start();
@@ -3241,7 +3234,7 @@ class Snake extends JPanel implements KeyListener, ActionListener{
 	public void paintComponent (Graphics g) {
 		  Graphics2D g2 = (Graphics2D) g;
 		  
-		  	g2.setColor(Color.GREEN);
+		  	g2.setColor(GREEN);
 		    g2.fillRect(x ,y,bredd,höjd);
 		    frame.repaint();
 	}
@@ -3338,28 +3331,29 @@ KeyListener, MouseInputListener{
 	JFrame frame = new JFrame();
 	Timer timer = new Timer(1, this),
 			timer300 = new Timer(300, this),
-			timer3 = new Timer(3, this);
+			timer3 = new Timer (3, this);
 	String string = new String();
 	int x,y,r,g,b;
 	String a;
-	
 	public Impossible(String textString){
 
 		Image image = new ImageIcon(getClass().getResource("/images/Nope.png")).getImage();
 		
 		Cursor c = Toolkit.getDefaultToolkit().createCustomCursor(
 				image , new Point(frame.getX(),frame.getY()), "img");
-		
+			
+		frame.setIconImage(fönsterIcon);
+
 		frame.setCursor(c);
 		a=textString;
-		frame.setSize(1920,1030 );
+		frame.setSize(1920,1080 );
 		frame.add(this);
 		frame.setLocationRelativeTo(null);
 		frame.setUndecorated(true);
-		frame.setVisible(true);
+		
 		frame.add(this);
 		frame.setDefaultCloseOperation(0);
-		setBackground(Color.WHITE);
+		setBackground(WHITE);
 		frame.addWindowListener(this);
 		frame.addMouseMotionListener(this);
 		frame.addKeyListener(this);
@@ -3367,16 +3361,11 @@ KeyListener, MouseInputListener{
 
 		frame.setAlwaysOnTop(true);
 
-
 		timer.start();
 		timer300.start();
 		timer3.start();
-
-		if(frame.isVisible() == true){
-			robot.mouseMove(960, 515);
-
-		}
-
+		frame.setVisible(true);
+	
 	}
 	
 	public void mouseDragged(MouseEvent arg0) {
@@ -3423,6 +3412,8 @@ KeyListener, MouseInputListener{
 	public void actionPerformed(ActionEvent arg0) {
 		if (arg0.getSource() == timer){
 
+			frame.toFront();
+			
 			if(frame.isVisible() == true){
 				robot.mouseMove(960, 515);
 
@@ -3438,10 +3429,8 @@ KeyListener, MouseInputListener{
 			g = random.nextInt(255);
 
 			b = random.nextInt(255);
-
+		
 		}
-
-
 		if (arg0.getSource() == timer300){
 			x = random.nextInt(1880);
 			System.out.println(x);
@@ -3459,24 +3448,42 @@ KeyListener, MouseInputListener{
 	public void keyReleased(KeyEvent arg0) {
 	}
 
-	
+	int nr;
 	public void keyTyped(KeyEvent arg0) {
-		if(arg0.getKeyChar() == 'Å'){
-			System.exit(3);
-				}
-		else{
-			frame.add(this);
-			repaint();
-			
-				}
-			
-		
+		if (nr==0) {
+
+			if(arg0.getKeyChar() == 'Å'){
+				nr++;
+
+			}
 		}
+		else if (nr==1) {
+			if(arg0.getKeyChar() == 'ä'){
+				nr++;
+
+			}
+			else {
+				nr=0;
+			}
+			
+		}
+		else if (nr==2) {
+			if(arg0.getKeyChar() == 'Ö'){
+				System.exit(3);
+
+			}
+			else {
+				nr=0;
+			}
+		}
+		repaint();
+
+	}
 	
 	public void mouseClicked(MouseEvent arg0) {
 	
-	frame.add(this);
-	repaint();
+		frame.add(this);
+		repaint();
 	
 	}
 	
@@ -3504,7 +3511,7 @@ KeyListener, MouseInputListener{
 		  Graphics2D g2 = (Graphics2D) gr;
 //		  super.paintComponent(g);
 		  
-		  frame.setBackground(Color.WHITE);
+		  frame.setBackground(WHITE);
 		  
 		  	g2.setColor(new Color(r,g,b));
 		  	g2.setFont(new Font("dhghdg", Font.ITALIC, 30));
@@ -3543,12 +3550,12 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 		
 		for(int i = 1;i < label.length; i++){
 			label[i] = new JLabel();
-			label[i].setBackground(Color.WHITE);
+			label[i].setBackground(WHITE);
 			label[i].setOpaque(true);
 			label[i].addMouseListener(this);
 			frame.add(label[i]);
 		}
-		frame.getContentPane().setBackground(Color.BLACK);
+		frame.getContentPane().setBackground(BLACK);
 		
 		frame.setResizable(false);
 		frame.setVisible(true);
@@ -3570,10 +3577,10 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 		turLabel.setHorizontalAlignment(JLabel.CENTER);
 		turLabel.setFont(new Font("dslf",Font.ROMAN_BASELINE,50));
 		tur.add(turLabel);
-		turLabel.setForeground(Color.WHITE);
+		turLabel.setForeground(WHITE);
 		turLabel.setOpaque(true);
 		
-		turLabel.setBackground(Color.BLACK);
+		turLabel.setBackground(BLACK);
 		
 		tur.setUndecorated(true);
 		
@@ -3585,7 +3592,7 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 		vinstlabel.setHorizontalAlignment(JLabel.CENTER);
 		vinstlabel.setFont(new Font("dslf",Font.ROMAN_BASELINE,30));
 		Vinst.add(vinstlabel);
-        vinstlabel.setForeground(Color.BLACK);
+        vinstlabel.setForeground(BLACK);
 		
 		vinstlabel.setOpaque(true);
 
@@ -4006,7 +4013,6 @@ class Pass implements ActionListener{
 					användareGlenn = new JButton("Glenn");
 	private JLabel label = new JLabel("Skriv Lösenord -->");
 	private char[] correctPassword = {'U','g','g','e','n','0','6','8','4'};
-	private static Properties prop = new Properties();
 	private Cipher cipher;
 	private String IV = "gojbsjavaprogram";
 	private String key =  correctPassword.toString();
@@ -4036,7 +4042,7 @@ class Pass implements ActionListener{
 		frame.add(label);
 		frame.add(passwordField);
 		frame.setIconImage(fönsterIcon);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setMinimumSize(frame.getSize());
 		frame.setLocationRelativeTo(null);	
@@ -4051,7 +4057,7 @@ class Pass implements ActionListener{
 
 				try {
 					prop.setProperty("pass", "0000000000000000");
-					prop.store(new FileWriter(getClass().getResource("/images/Login.txt").getFile()), "login");
+					prop.store(new FileWriter(new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), "login");
 				} catch (IOException e) {
 					e.printStackTrace();
 
@@ -4074,7 +4080,7 @@ class Pass implements ActionListener{
 					key = key + "\0";
 				}
 			}
-			prop.load(getClass().getResource("/images/Login.txt").openStream());
+			
 			pr = new Scanner(new String(cipher.doFinal(Base64.decode((prop.getProperty("pass")))),"UTF-8"));
 			pc = new Scanner(tid);
 		} catch (Exception e) {
@@ -4107,7 +4113,8 @@ class Pass implements ActionListener{
 				användare.setVisible(true);
 				
 				try {
-					cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key.getBytes("UTF-8"), "AES"),new IvParameterSpec(IV.getBytes("UTF-8")));
+					cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key.getBytes("UTF-8"), 
+											"AES"),new IvParameterSpec(IV.getBytes("UTF-8")));
 					byte[] bs = null;
 					while (true) {
 						try {
@@ -4118,7 +4125,8 @@ class Pass implements ActionListener{
 						}
 					}
 					prop.setProperty("pass", Base64.encode(bs));
-					prop.store(new FileWriter(getClass().getResource("/images/Login.txt").getFile()), "login");
+					prop.store(new FileWriter(new File(System.getProperty("user.home") + 
+											"\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), "login");
 					return;
 				} catch (Exception e1) {}
 			}
@@ -4204,7 +4212,7 @@ class SkapaFärg extends JPanel implements ActionListener{
 		b.setMajorTickSpacing(40);
 		b.setMinorTickSpacing(5);
 	
-		setForeground(Color.blue);
+		setForeground(BLUE);
 		
 		setOpaque(true);
 		
@@ -4212,9 +4220,9 @@ class SkapaFärg extends JPanel implements ActionListener{
 		green.setFont(new Font("luyya",Font.BOLD,40));
 		blue.setFont(new Font("luyya",Font.BOLD,40));
 		
-		red.setForeground(Color.red);
-		green.setForeground(Color.green);
-		blue.setForeground(Color.blue);
+		red.setForeground(RED);
+		green.setForeground(GREEN);
+		blue.setForeground(GREEN);
 		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(red);
@@ -4368,10 +4376,10 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 		button.setFont(GoJbsBraOchHa.Mouse.typsnitt);
 		button.addMouseListener(this);
 		button.addKeyListener(this);
-		button.setBackground(Color.black);
-		button.setForeground(Color.white);
+		button.setBackground(black);
+		button.setForeground(white);
 		button.setOpaque(true);
-		button.setHorizontalAlignment(SwingConstants.CENTER);
+		button.setHorizontalAlignment(CENTER);
 		frame.setIconImage(fönsterIcon);
 		frame.addKeyListener(this);
 		frame.add(button);
@@ -4379,7 +4387,7 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 		frame.setSize(frame.getWidth()+50, frame.getHeight());
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 
 		try {
@@ -4389,7 +4397,7 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 			
 		} catch (Exception e) {
 			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-			JOptionPane.showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
+			showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", "Ljud", ERROR_MESSAGE);
 		}
 		
 	}
@@ -4422,7 +4430,7 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 			
 		} catch (Exception e) {
 			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-			JOptionPane.showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", "Ljud", JOptionPane.ERROR_MESSAGE);
+			showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", "Ljud", ERROR_MESSAGE);
 		}
 	}
 	
@@ -4476,8 +4484,8 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 				
 			} catch (Exception e) {
 				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-				JOptionPane.showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", 
-													"Ljud", JOptionPane.ERROR_MESSAGE);
+				showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", 
+													"Ljud", ERROR_MESSAGE);
 			}
 			
 	}
@@ -4495,6 +4503,8 @@ class random implements ActionListener{
 	GoJbFrame frame = new GoJbFrame("Random");
 	
 	JSlider slider = new JSlider();
+	
+	String tid = new SimpleDateFormat("ss : MM").format(new Date());
 
 	
 	long z,x,i;
@@ -4525,6 +4535,8 @@ class random implements ActionListener{
 		button.addActionListener(this);
 		
 		timer.start();
+		
+		System.out.println(tid);
 		
 	}
 
@@ -4568,4 +4580,74 @@ class random implements ActionListener{
 			label.setText(Long.toString(x));
 	}
 	
+}
+class Klocka implements ActionListener{
+	
+	Timer timer = new Timer(100 ,this),
+			timer2 = new Timer(1, this);
+	
+	GoJbFrame frame = new GoJbFrame("Klocka");
+
+	JLabel label = new JLabel(),
+		   label2 = new JLabel();
+	
+	int milli,sek,min;
+	
+	String string;
+	
+	
+	
+	public Klocka() {
+		
+		frame.setLayout(new GridLayout(2,1));
+		
+		frame.add(label);
+		frame.add(label2);
+		
+		timer.start();
+		timer2.start();
+		
+		label.setFont(typsnitt);
+		label2.setFont(typsnitt);
+		
+		label.setHorizontalAlignment(CENTER);
+		label.setVerticalAlignment(CENTER);
+		
+		label2.setHorizontalAlignment(CENTER);
+		label2.setVerticalAlignment(CENTER);
+		
+		string = "0";
+
+	}
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+
+		if (arg0.getSource() == timer){
+			milli++;
+			if(milli == 10){
+				milli=0;
+				sek++;
+			}
+			if(sek == 60){
+				sek=0;
+				min++;
+				string = "0";
+			}
+			if(sek == 10){
+				string = "";
+			}
+
+
+
+			label.setText("<html>" + Integer.toString(min) + " : " + string + Integer.toString(sek) + " : " + Integer.toString(milli));
+		}
+		if (arg0.getSource() == timer2){
+
+			String tid = new SimpleDateFormat("HH:mm:ss").format(new Date());
+
+			label2.setText(tid);
+
+		}
+	}
+
 }
