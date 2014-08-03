@@ -7,9 +7,6 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import javafx.scene.control.Slider;
-import javafx.scene.layout.Border;
-
 import javax.crypto.*;
 import javax.crypto.spec.*;
 
