@@ -15,7 +15,7 @@ import javax.swing.Timer;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
-import com.sun.org.apache.xml.internal.security.utils.Base64;
+import org.apache.commons.codec.binary.Base64;
 
 import GoJbFrame.GoJbFrame;
 import static GoJbsBraOchHa.Mouse.*;
@@ -77,7 +77,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 						  				new ImageIcon(getClass().getResource("/images/Nopeliten.png"))),
 						  	studsItem = new JMenuItem("Öppna Studsande Objekt"),
 						  	snakeItem = new JMenuItem("Spela Snake"),
-							loggaUtItem = new JMenuItem("Logga ut");
+							loggaUtItem = new JMenuItem("Logga ut"),
+							debugItem = new JMenuItem("Debug är nu: " +prop.getProperty("debug", "false"));
 		
 	
 	private JButton 		knapp1 = new JButton("Blå"),
@@ -135,7 +136,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		try {
 			prop.load(new FileInputStream(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb"));
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 		
 		class setImageIcon{
@@ -198,6 +199,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		studsItem.addActionListener(this);
 		snakeItem.addActionListener(this);
 		loggaUtItem.addActionListener(this);
+		debugItem.addActionListener(this);
 		
 		knapp1.setEnabled(false);
 		knapp1.addActionListener(this);
@@ -229,6 +231,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		redigeraMeny.add(hastighetItem);
 		redigeraMeny.add(händelseItem);
 		
+		hjälpMeny.add(debugItem);
 		hjälpMeny.add(omItem);
 		
 		färgbyteMeny.add(döljItem);
@@ -498,6 +501,21 @@ public class Mouse extends JPanel implements 	ActionListener,
 			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
 			showMessageDialog(huvudfönster, "Utloggad!");
 			huvudfönster.dispose();
+		}
+		else if (knapp.getSource()==debugItem) {
+			if (new Boolean(prop.getProperty("debug", "false"))==false) {
+				prop.setProperty("debug", "true");
+				debugItem.setText("Debug är nu: " +prop.getProperty("debug"));
+			}
+			else{
+				prop.setProperty("debug", "false");
+				debugItem.setText("Debug är nu: " +prop.getProperty("debug"));
+			}
+			try {
+				prop.store(new FileWriter(new File(System.getProperty("user.home") + 
+						"\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), "debug");
+			} catch (IOException e) {}
+			
 		}
 		
 		huvudfönster.revalidate();
@@ -4018,6 +4036,7 @@ class Pass implements ActionListener{
 	private String key =  correctPassword.toString();
 	private String tid = new SimpleDateFormat("yy MM dd HH").format(new Date());
 	private char[] pass;
+	private static Boolean debugMode = new Boolean(prop.getProperty("debug", "false"));
 	public Pass() {
 		checkLogin();
 		
@@ -4047,6 +4066,7 @@ class Pass implements ActionListener{
 		frame.setMinimumSize(frame.getSize());
 		frame.setLocationRelativeTo(null);	
 		frame.setVisible(true);
+
 		timer.start();
 		
 	}
@@ -4056,7 +4076,7 @@ class Pass implements ActionListener{
 			log() {
 
 				try {
-					prop.setProperty("pass", "0000000000000000");
+					prop.setProperty("pass" + System.getProperty("user.dir"), "0000000000000000");
 					prop.store(new FileWriter(new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), "login");
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -4067,39 +4087,65 @@ class Pass implements ActionListener{
 		new log();
 	}
 	private void checkLogin() {	
-		Scanner pr;
-		Scanner pc;
+		Scanner pr = null;
+		Scanner pc = null;
 		try {
 			cipher = Cipher.getInstance("AES/CBC/NoPadding", "SunJCE");
 			while (true) {
 				try {
-					cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key.getBytes("UTF-8"),"AES"),
-							new IvParameterSpec(IV.getBytes("UTF-8")));
+					cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key.getBytes("ISO-8859-1"),"AES"),
+							new IvParameterSpec(IV.getBytes("ISO-8859-1")));
 					break;
 				} catch (Exception e) {
 					key = key + "\0";
 				}
 			}
+			String p = prop.getProperty("pass"+ System.getProperty("user.dir"));
+			byte[] a = Base64.decodeBase64(p);
 			
-			pr = new Scanner(new String(cipher.doFinal(Base64.decode((prop.getProperty("pass")))),"UTF-8"));
+			String f = new String(cipher.doFinal(a),"ISO-8859-1");
+			pr = new Scanner(f);
 			pc = new Scanner(tid);
-		} catch (Exception e) {
-			System.err.println("Logga in!");
-			return;
-		}
+			if (pr.next().equals(pc.next())&&pr.next().equals(pc.next())&&pr.next().equals(pc.next())) {
+				Double ett = Double.parseDouble(pr.next());
+				Double två = Double.parseDouble(pc.next());
+				pc.close();
+				pr.close();
+				if (debugMode) {
+					System.out.println(ett);
+					System.out.println(två);
+				}
+				
+				if (två>=ett&&två<ett+2) {
+					System.out.println("Inloggad för mindre än två timmar sedan");
+					pass = correctPassword;
+				}
+			}
+			if (debugMode) {
+				System.out.println("prop " + p);
+				System.out.print("byte " + a + " ");
+				for (byte b : a) {
+					System.out.print(b);
+				}
+				System.out.println();
 
-		if (pr.next().equals(pc.next())&&pr.next().equals(pc.next())&&pr.next().equals(pc.next())) {
-			Double ett = Double.parseDouble(pr.next());
-			Double två = Double.parseDouble(pc.next());
-			
-			if (två>=ett&&två<ett+2) {
-				System.out.println("Inloggad för mindre än två timmar sedan");
-				pass = correctPassword;
+				System.out.println("Avkrypterad " + f);
+
+				System.out.println(System.getProperty("user.dir"));
 			}
 
+			
+		} catch (Exception e) {
+			System.err.println("Logga in!");
 		}
-		pc.close();
-		pr.close();
+
+		
+		try {
+			pc.close();
+			pr.close();
+		} catch (Exception e) {
+			 
+		}
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -4113,22 +4159,26 @@ class Pass implements ActionListener{
 				användare.setVisible(true);
 				
 				try {
-					cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key.getBytes("UTF-8"), 
-											"AES"),new IvParameterSpec(IV.getBytes("UTF-8")));
+					cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key.getBytes("ISO-8859-1"),"AES"),
+							new IvParameterSpec(IV.getBytes("ISO-8859-1")));
 					byte[] bs = null;
 					while (true) {
 						try {
-							bs = cipher.doFinal(tid.getBytes("UTF-8"));
+							bs = cipher.doFinal(tid.getBytes("ISO-8859-1"));
 							break;
 						} catch (Exception e1) {
 							tid = tid + "\0";
 						}
 					}
-					prop.setProperty("pass", Base64.encode(bs));
+					
+					String string = new String(Base64.encodeBase64(bs));
+					
+					prop.setProperty("pass"+ System.getProperty("user.dir"), string);
 					try {
 						prop.store(new FileWriter(new File(System.getProperty("user.home") + 
 												"\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), "login");
 					} catch (Exception e1) {
+						System.err.println("ga");
 						try {
 							new File((System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\")).mkdir();
 							new File((System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\")).mkdir();
@@ -4138,6 +4188,15 @@ class Pass implements ActionListener{
 							System.err.println("Problem med åtkomst till disk!");
 							 
 						}
+					}
+					if (debugMode) {
+						System.err.println("Sparar " + tid);
+						System.err.print("byte " +  bs + " ");
+						for (byte b : bs) {
+							System.out.print(b);
+						}
+						System.out.println();
+						System.err.println("Krypterat " +string);
 					}
 					return;
 				} catch (Exception e1) {
