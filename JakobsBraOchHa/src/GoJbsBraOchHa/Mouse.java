@@ -3396,7 +3396,6 @@ KeyListener, MouseInputListener{
 		
 		
 		robot.mouseMove(960, 515);
-//		System.out.println(frame.getX() + ",,,," + frame.getY());
 }
 	
 	
@@ -3451,10 +3450,8 @@ KeyListener, MouseInputListener{
 		}
 		if (arg0.getSource() == timer300){
 			x = random.nextInt(1880);
-			System.out.println(x);
 
 			y = random.nextInt(990);
-			System.out.println(y);
 
 		}
 	}
