@@ -6,10 +6,7 @@ import GoJbsBraOchHa.Mouse;
 
 @SuppressWarnings("serial")
 public class GoJbApplet extends JApplet{
-
-	public void init() {
-		super.init();
+	public static void main(String[] args) {
 		Mouse.main(null);
-		 
 	}
 }
