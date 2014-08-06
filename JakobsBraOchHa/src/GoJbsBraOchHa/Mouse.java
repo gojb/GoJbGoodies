@@ -15,7 +15,8 @@ import javax.swing.Timer;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
-import org.apache.commons.codec.binary.Base64;
+import com.sun.mail.util.BASE64DecoderStream;
+import com.sun.mail.util.BASE64EncoderStream;
 
 import GoJbFrame.GoJbFrame;
 import static GoJbsBraOchHa.Mouse.*;
@@ -4029,8 +4030,7 @@ class Pass implements ActionListener{
 	private JLabel label = new JLabel("Skriv Lösenord -->");
 	private char[] correctPassword = {'U','g','g','e','n','0','6','8','4'};
 	private Cipher cipher;
-	private String IV = "gojbsjavaprogram";
-	private String key =  correctPassword.toString();
+	private String key =  String.valueOf(correctPassword);
 	private String tid = new SimpleDateFormat("yy MM dd HH").format(new Date());
 	private char[] pass;
 	private static Boolean debugMode = new Boolean(prop.getProperty("debug", "false"));
@@ -4073,7 +4073,7 @@ class Pass implements ActionListener{
 			log() {
 
 				try {
-					prop.setProperty("pass" + System.getProperty("user.dir"), "0000000000000000");
+					prop.setProperty("pass", "0000000000000000");
 					prop.store(new FileWriter(new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), "login");
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -4087,18 +4087,18 @@ class Pass implements ActionListener{
 		Scanner pr = null;
 		Scanner pc = null;
 		try {
-			cipher = Cipher.getInstance("AES/CBC/NoPadding", "SunJCE");
 			while (true) {
+				cipher = Cipher.getInstance("AES");
 				try {
-					cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key.getBytes("ISO-8859-1"),"AES"),
-							new IvParameterSpec(IV.getBytes("ISO-8859-1")));
+					cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key.getBytes(), "AES"));
 					break;
 				} catch (Exception e) {
 					key = key + "\0";
 				}
 			}
-			String p = prop.getProperty("pass"+ System.getProperty("user.dir"));
-			byte[] a = Base64.decodeBase64(p);
+			
+			String p = prop.getProperty("pass");
+			byte[] a = BASE64DecoderStream.decode(p.getBytes());
 			
 			String f = new String(cipher.doFinal(a),"ISO-8859-1");
 			pr = new Scanner(f);
@@ -4156,8 +4156,7 @@ class Pass implements ActionListener{
 				användare.setVisible(true);
 				
 				try {
-					cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key.getBytes("ISO-8859-1"),"AES"),
-							new IvParameterSpec(IV.getBytes("ISO-8859-1")));
+					cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key.getBytes(), "AES"));
 					byte[] bs = null;
 					while (true) {
 						try {
@@ -4168,9 +4167,9 @@ class Pass implements ActionListener{
 						}
 					}
 					
-					String string = new String(Base64.encodeBase64(bs));
+					String string = new String(BASE64EncoderStream.encode(bs));
 					
-					prop.setProperty("pass"+ System.getProperty("user.dir"), string);
+					prop.setProperty("pass", string);
 					try {
 						prop.store(new FileWriter(new File(System.getProperty("user.home") + 
 												"\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), "login");
