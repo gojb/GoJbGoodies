@@ -365,9 +365,10 @@ public class Mouse extends JPanel implements 	ActionListener,
 		if (knapp.getSource()== startTimer){
 
 			if(laddstapelStart.getValue()==100){
+				startTimer.stop();
 				laddfönster.dispose();
 				huvudfönster.setVisible(true);
-				startTimer.stop();
+				
 
 				robot.mouseMove(huvudfönster.getX() + huvudfönster.getWidth()/2,
 								huvudfönster.getY() + huvudfönster.getHeight()/2);
@@ -894,7 +895,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 			bredd=20,höjd=30,hastighet,c, d,PoängVänster=0,PoängHöger=0,py=10,px=10;
 	private JFrame frame = new JFrame("Spel");
 	private Timer timer = new Timer(10, this);
-	private Boolean GameOver=false;
+	private Boolean GameOver=false,hupp=false,hner=false,vupp=false,vner=false;
 	private String PoängTill,SpelareVänster,SpelareHöger;
 	
 	public Pongspel() {
@@ -919,20 +920,23 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		setOpaque(true);	
 		setBackground(black.brighter());
 
-		HögerY = getHeight()/2;
-		VänsterY = getHeight()/2;
-		HögerX=getWidth()-bredd-1;
+		
 		
 		frame.addMouseMotionListener(this);
 		frame.setIconImage(fönsterIcon);
 		frame.addWindowListener(this);
 		frame.addKeyListener(this);
-		frame.addKeyListener(kl);
+		frame.addKeyListener(this);
 		frame.add(this);
 		frame.pack();
+		frame.repaint();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		HögerY = getHeight()/2;
+		VänsterY = getHeight()/2;
+		HögerX=getWidth()-bredd-1;
 		StartaOm();
+		
 	}
 	private void StartaOm(){
 		x = getWidth()/2;
@@ -963,48 +967,21 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		frame.repaint();
 	}
 
-	public void keyTyped(KeyEvent e) {
-		
-	}
-	KeyListener kl = new KeyListener() {
-		
-		@Override
-		public void keyTyped(KeyEvent e) {
-		}
-		
-		@Override
-		public void keyReleased(KeyEvent e) {
-		}
-		
-		@Override
-		public void keyPressed(KeyEvent e) {
-			if (e.getKeyCode() == 87 ) {
-				if (VänsterY>0) {
-					VänsterY=VänsterY-20;
-				}
-			}
-			else if (e.getKeyCode() == 83) {
-				if (VänsterY+RektHöjd+60<frame.getHeight()) {
-					VänsterY=VänsterY+20;
-				}
-			}
-			
-		}
-	};
+	public void keyTyped(KeyEvent e) {}
+	
 	public void keyPressed(KeyEvent e) {
 		if(KeyEvent.getKeyText(e.getKeyCode()) == "Upp"){
-			if (HögerY>0) {
-				HögerY=HögerY-20;
-			}
-		
+			hupp = true;
 		}
 		else if(KeyEvent.getKeyText(e.getKeyCode()) == "Nedpil"){
-			if (HögerY+RektHöjd+60<frame.getHeight()) {
-				HögerY=HögerY+20;
-			}
-			
+			hner = true;
 		}
-		
+		else if (e.getKeyCode() == 87 ) {
+			vupp = true;
+		}
+		else if (e.getKeyCode() == 83) {
+			vner = true;
+		}
 		else if (KeyEvent.getKeyText(e.getKeyCode()) == "Mellanslag") {
 			GameOver = false;
 			frame.repaint();
@@ -1017,14 +994,45 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 	}
 
 	public void keyReleased(KeyEvent e) {
-		
+		if(KeyEvent.getKeyText(e.getKeyCode()) == "Upp"){
+			hupp = false;
+		}
+		else if(KeyEvent.getKeyText(e.getKeyCode()) == "Nedpil"){
+			hner = false;
+		}
+		else if (e.getKeyCode() == 87 ) {
+			vupp = false;
+		}
+		else if (e.getKeyCode() == 83) {
+			vner = false;
+		}
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==timer){
+			if (hupp) {
+				if (HögerY>0) {
+					HögerY=HögerY-5;
+				}
+			}
+			if (hner) {
+				if (HögerY+RektHöjd+60<frame.getHeight()) {
+					HögerY=HögerY+5;
+				}
+			}
+			if (vupp) {
+				if (VänsterY>0) {
+					VänsterY=VänsterY-5;
+				}
+			}
+			if (vner) {
+				if (VänsterY+RektHöjd+60<frame.getHeight()) {
+					VänsterY=VänsterY+5;
+				}
+			}
+			frame.repaint();
 			if (x+bredd>=HögerX) {
 				if (y>=HögerY&&y<=HögerY+RektHöjd) {
-					hastighet++;
 					c= -hastighet;
 
 				}
@@ -1057,11 +1065,10 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		}
 	}
 	public void paintComponent(Graphics g){
-	
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		if (GameOver==true) {
+		if (GameOver) {
 			g2.setFont(new Font("", Font.BOLD, 50));
 			g2.setColor(green);
 			g2.drawString("Poäng till " + PoängTill, getWidth()/2-200, getHeight()/2);
@@ -1070,21 +1077,21 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		}
 		else {
 			
-		g2.drawOval(x, y, bredd, höjd);
-		g2.fillOval(x, y, bredd, höjd);
-		
-		g2.drawRect(VänsterX, VänsterY, RektBredd, RektHöjd);
-		g2.fillRect(VänsterX, VänsterY, RektBredd, RektHöjd);
-		
-		g2.drawRect(HögerX, HögerY, RektBredd, RektHöjd);
-		g2.fillRect(HögerX, HögerY, RektBredd, RektHöjd);
-		
-		g2.setColor(green);
-		g2.setFont(new Font("", Font.BOLD, 50));
-		g2.drawString(Integer.toString(PoängVänster) + " - " + Integer.toString(PoängHöger), getWidth()/2-80, 40);
-		
-		g2.drawString(SpelareVänster, 0, 40);
-		g2.drawString(SpelareHöger, getWidth()-250, 40);
+			g2.drawOval(x, y, bredd, höjd);
+			g2.fillOval(x, y, bredd, höjd);
+
+			g2.drawRect(VänsterX, VänsterY, RektBredd, RektHöjd);
+			g2.fillRect(VänsterX, VänsterY, RektBredd, RektHöjd);
+
+			g2.drawRect(HögerX, HögerY, RektBredd, RektHöjd);
+			g2.fillRect(HögerX, HögerY, RektBredd, RektHöjd);
+
+			g2.setColor(green);
+			g2.setFont(new Font("", Font.BOLD, 50));
+			g2.drawString(Integer.toString(PoängVänster) + " - " + Integer.toString(PoängHöger), getWidth()/2-80, 40);
+
+			g2.drawString(SpelareVänster, 0, 40);
+			g2.drawString(SpelareHöger, getWidth()-250, 40);
 		
 		}
 	}
