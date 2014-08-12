@@ -339,24 +339,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 		startTimer.start();
 		
 	}
-
-	public void mouseDragged(MouseEvent e) {
-		skrivHändelsetext("Du drog musen: " + e.getX() + ", " + e.getY());
-		posX = e.getX()-textbredd/2;
-		posY = e.getY();
-		huvudfönster.repaint();
-	
-	}
-
-	public void mouseMoved(MouseEvent e) {
-		
-		skrivHändelsetext("Du rörde musen: " + e.getX() + ", " + e.getY());
-		if(e.getX() == 50 && e.getY() == 50){
-			System.exit(1);
-		
-		}
-	
-	}
 	
 	public void actionPerformed(ActionEvent knapp) {
 //		System.out.println(knapp.getSource());
@@ -524,26 +506,25 @@ public class Mouse extends JPanel implements 	ActionListener,
 		huvudfönster.repaint();
 		
 	}
-	
-	public void mouseClicked(MouseEvent arg0) {
-		
+	public void mouseDragged(MouseEvent e) {
+		skrivHändelsetext("Du drog musen: " + e.getX() + ", " + e.getY());
+		posX = e.getX()-textbredd/2;
+		posY = e.getY();
+		huvudfönster.repaint();
 	}
 
+	public void mouseMoved(MouseEvent e) {
+		skrivHändelsetext("Du rörde musen: " + e.getX() + ", " + e.getY());
+		if(e.getX() == 50 && e.getY() == 50){
+			System.exit(1);
+		}
+	}
 	public void mouseEntered(MouseEvent e) {
 		setBackground(färg);
-		
 	}
 
 	public void mouseExited(MouseEvent e) {
 		setBackground(gray);
-	}
-
-	public void mousePressed(MouseEvent e) {
-
-	}
-
-	public void mouseReleased(MouseEvent arg0) {
-		
 	}
 
 	public void keyPressed(KeyEvent arg0) {
@@ -572,19 +553,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 	public void keyReleased(KeyEvent arg0) {
 		skrivHändelsetext("Du släppte : " + KeyEvent.getKeyText(arg0.getKeyCode()));
 	}
-
-	public void keyTyped(KeyEvent arg0) {
-		
-	}
-	
-	public void windowOpened(WindowEvent e) {
-		
-	}
-
-	public void windowClosing(WindowEvent e) {
-		
-	}
-
 	public void windowClosed(WindowEvent e) {
 		antalFönster--;
 		System.out.println(antalFönster);
@@ -592,27 +560,22 @@ public class Mouse extends JPanel implements 	ActionListener,
 		hastighetsfönster.dispose();
 		om.dispose();
 		if (antalFönster == 0) {
-		
+
 			avslutningsfönster.setVisible(true);
 			slutTimer.start();
 		}
 	}
+	public void keyTyped(KeyEvent arg0) {}
+	public void windowOpened(WindowEvent e) {}
+	public void windowClosing(WindowEvent e) {}
+	public void windowIconified(WindowEvent e) {}
+	public void windowDeiconified(WindowEvent e) {}
+	public void windowActivated(WindowEvent e) {}
+	public void windowDeactivated(WindowEvent e) {}
+	public void mousePressed(MouseEvent e) {}
+	public void mouseClicked(MouseEvent arg0) {}
+	public void mouseReleased(MouseEvent arg0) {}
 
-	public void windowIconified(WindowEvent e) {
-		
-	}
-
-	public void windowDeiconified(WindowEvent e) {
-		
-	}
-
-	public void windowActivated(WindowEvent e) {
-		
-	}
-
-	public void windowDeactivated(WindowEvent e) {
-		
-	}
 	public void spelaLjud(String Filnamn){
 		try {
 			Clip clip = AudioSystem.getClip();
@@ -1095,34 +1058,6 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		
 		}
 	}
-	
-	public void windowOpened(WindowEvent e) {
-		
-	}
-
-	public void windowClosing(WindowEvent e) {
-		timer.stop();
-	}
-
-	public void windowClosed(WindowEvent e) {
-	}
-
-	public void windowIconified(WindowEvent e) {
-		
-	}
-
-	public void windowDeiconified(WindowEvent e) {
-		
-	}
-	
-	public void windowActivated(WindowEvent e) {
-		
-	}
-
-	public void windowDeactivated(WindowEvent e) {
-		
-	}
-	
 	public void mouseDragged(MouseEvent e) {
 		px=e.getX();
 		py=e.getY();
@@ -1130,8 +1065,16 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		frame.repaint();
 		
 	}
-	public void mouseMoved(MouseEvent e) {
+	public void windowClosing(WindowEvent e) {
+		timer.stop();
 	}
+	public void windowOpened(WindowEvent e) {}
+	public void windowClosed(WindowEvent e) {}
+	public void windowIconified(WindowEvent e) {}
+	public void windowDeiconified(WindowEvent e) {}
+	public void windowActivated(WindowEvent e) {}
+	public void windowDeactivated(WindowEvent e) {}
+	public void mouseMoved(MouseEvent e) {}
 }
 @SuppressWarnings("serial")
 class Snakespel extends JPanel implements KeyListener, ActionListener,WindowListener,ComponentListener{
