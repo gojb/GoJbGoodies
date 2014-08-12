@@ -15,8 +15,7 @@ import javax.swing.Timer;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
-import com.sun.mail.util.BASE64DecoderStream;
-import com.sun.mail.util.BASE64EncoderStream;
+import com.sun.mail.util.*;
 
 import GoJbFrame.GoJbFrame;
 import static GoJbsBraOchHa.Mouse.*;
@@ -751,7 +750,6 @@ class Räknare implements ActionListener{
 		Räknartext.setFont(typsnitt);
 		Summa.setFont(typsnitt);
 		Räknesätt.setFont(typsnitt);
-		
 
 		Räknare.setLayout(new BorderLayout());
 		Räknare.add(RäknarPanel,BorderLayout.NORTH);
@@ -871,7 +869,6 @@ class Räknare implements ActionListener{
 		else if (Räknesätt.getText() == "-") {
 			Summa.setText(Double.toString(a-b));
 		}
-		
 		else if (Räknesätt.getText() == "*") {
 			Summa.setText(Double.toString(a*b));
 		}
@@ -888,8 +885,6 @@ class Räknare implements ActionListener{
 		Räknartext.setText(null);
 		
 	}
-	
-	
 	
 }
 @SuppressWarnings("serial")
@@ -1187,8 +1182,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		hs= scanner.nextInt();
 		scanner.close();
 		if (snakelängd>hs) {
-			String string = showInputDialog("Skriv ditt namn");
-			highscore[5]=Integer.toString(snakelängd) + " " + string;
+			highscore[5]=Integer.toString(snakelängd) + " " + showInputDialog("Skriv ditt namn");
 			if (snakelängd<10) {
 				highscore[5]="0"+highscore[5];
 			}
@@ -1295,13 +1289,10 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 			s=1;
 		}
 		
-		
 	}
 
 	public void keyTyped(KeyEvent e) {
-		
 	}
-	
 	public void keyPressed(KeyEvent e) {
 		if (s==1) {
 			if(KeyEvent.getKeyText(e.getKeyCode()) == "Vänsterpil"){
@@ -1337,7 +1328,6 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 	}
 
 	public void keyReleased(KeyEvent e) {
-		
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -1371,7 +1361,6 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 					System.out.println("GameOver");
 					GameOver();
 				}
-			
 			}
 			if (x[1]<0) {
 				GameOver();
@@ -1389,40 +1378,36 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 			frame.repaint();
 		}
 	}
-	@Override
 	public void windowOpened(WindowEvent e) {
 	}
-	@Override
 	public void windowClosing(WindowEvent e) {
 		timer.stop();
 		highFrame.dispose();
 	}
-	@Override
 	public void windowClosed(WindowEvent e) {		
 	}
-	@Override
+	
 	public void windowIconified(WindowEvent e) {
 	}
-	@Override
+	
 	public void windowDeiconified(WindowEvent e) {
 	}
-	@Override
+	
 	public void windowActivated(WindowEvent e) {
 	}
-	@Override
+	
 	public void windowDeactivated(WindowEvent e) {
 	}
-	@Override
+	
 	public void componentResized(ComponentEvent e) {
 	}
-	@Override
+	
 	public void componentMoved(ComponentEvent e) {
 		highFrame.setLocation(frame.getX()-frame.getWidth(),frame.getY());
 	}
-	@Override
+	
 	public void componentShown(ComponentEvent e) {
 	}
-	@Override
 	public void componentHidden(ComponentEvent e) {
 	}
 	private class Scorepanel extends JPanel{
@@ -1445,8 +1430,6 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 			}
 		}
 	}
-	
-	
 }
 @SuppressWarnings("serial")
 class Studsa extends JPanel implements ActionListener{
@@ -1516,8 +1499,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 	
 	JFrame frame = new JFrame("Det här är försök  " + qq),
 		 Vinst = new JFrame("Grattis!");
- 	
- 	Timer timer = new Timer(1, this);
  
  	JLabel textlabel = new JLabel();
  
@@ -1559,7 +1540,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 	static int ii = 0;
 	
 	public RörandeMojäng(){
-		GoJbsBraOchHa.Mouse.antalFönster++;
+		antalFönster++;
 		
 		Vinst.setLocationRelativeTo(null);
 		Vinst.setSize(190, 100);
@@ -1613,9 +1594,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		Random.addActionListener(this);
 		klocka.addActionListener(this);
 		
-		timer.addActionListener(this);
-		timer.start();
-		
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 		frame.setBackground(gray);
 		frame.setForeground(pink);
@@ -1660,17 +1638,15 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			new GameOver();
 			frame.dispose();
 		}
-		
+
 		if (y < -500){if (ii == 0){
 			new GameOver();frame.dispose();
 		}}
 		if (y > 697){ if (ii == 0){
 			new GameOver();
 			frame.dispose();
-			}
-		
-	}
-		
+		}}
+
 		if (x > 1200 && y < 5){
 			new GameOver();
 			frame.dispose();
@@ -1700,13 +1676,12 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 //		
 
 		if ( x == 50) {
-						if (y == 50){
-							
-						System.exit(0);	
-						}
+			if (y == 50){
+
+				System.exit(0);	
 			}
-		
 		}
+	}
 	
 	public void keyTyped(KeyEvent e){
 
@@ -1745,8 +1720,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		}}
 		if (y > 700){ if (ii == 0){
 			new GameOver();frame.dispose();
-}
 		}}
+	}
 
 	public void keyReleased(KeyEvent arg0) {
 		
@@ -1757,8 +1732,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 	}
 	
 	public void windowClosed(WindowEvent arg0) {
-		GoJbsBraOchHa.Mouse.antalFönster--;
-		
+		antalFönster--;
 		
 	}
 	
@@ -1786,8 +1760,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		
 		x = arg0.getX() -18;
 		y = arg0.getY() -72;
-		
-		
 		
 		System.out.println("Musen drar på:" + x + " , " + y);
 		
@@ -1840,17 +1812,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 	public void actionPerformed(ActionEvent arg0) {
 		 
 	
-		if (arg0.getSource() == timer){
-			 Container contentPane = frame.getContentPane();
-			    contentPane.add(new RörandeMojäng3());
-			   
-			if (frame.isVisible() == false){
-				timer.stop();
-			}
-	
-		}
-		
-		else if (arg0.getSource() == Mouse){
+		if (arg0.getSource() == Mouse){
 			frame.dispose();
 			new Mouse();
 		}
@@ -1947,7 +1909,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 
 	class RörandeMojäng3 extends JPanel implements ActionListener {
 		int[] röd=new int[91],grön=new int[91],blå=new int[91];
-		public void paint (Graphics gr) {
+		public void paintComponent (Graphics gr) {
 			Graphics2D g2 = (Graphics2D) gr;
 
 			g2.setColor(BLUE);
@@ -4405,7 +4367,7 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 	int x,y;
 	public Morse(){
 		
-		button.setFont(GoJbsBraOchHa.Mouse.typsnitt);
+		button.setFont(typsnitt);
 		button.addMouseListener(this);
 		button.addKeyListener(this);
 		button.setBackground(black);
