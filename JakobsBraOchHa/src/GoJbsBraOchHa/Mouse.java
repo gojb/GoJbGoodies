@@ -35,6 +35,7 @@ import static javax.swing.JOptionPane.*;
  * @author GoJb - Glenn Olsson & Jakob Björns
  * 
  * @see <a href="http://gojb.bl.ee/">http://gojb.bl.ee/</a>
+ * @version 1.0
  */
 
 @SuppressWarnings("serial")
@@ -1821,22 +1822,20 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			new GameOver();
 			frame.dispose();
 		}
-		
+
 		if (y < -500){if (ii == 0){
 			new GameOver();frame.dispose();
 		}}
 		if (y > 697){ if (ii == 0){
 			new GameOver();
 			frame.dispose();
-			}
-		
-	}
-		
+		}}
+
 		if (x < 450 && y > 375 && y < 495 ){
 			new GameOver();
 			frame.dispose();
 		}
-		}
+	}
 
 	public void actionPerformed(ActionEvent arg0) {
 		 
@@ -1940,139 +1939,139 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			{
 			     ex.printStackTrace();
 		
-	}}
-
-}
-
-
-class RörandeMojäng3 extends JPanel implements ActionListener {
-	int[] röd=new int[91],grön=new int[91],blå=new int[91];
-	public void paint (Graphics gr) {
-		Graphics2D g2 = (Graphics2D) gr;
-
-		g2.setColor(BLUE);
-		g2.fillRect(0, 425, 150, 1000);
-
-		g2.setColor(GREEN);
-		gr.fill3DRect(1000, 200, 100, 350, false);
-
-		g2.setColor(ORANGE);
-		gr.fill3DRect(1155, 0, 110, 495, true);
-
-		g2.setColor(MAGENTA);
-		gr.fillRect(205, 550, 1000, 100);
-
-		g2.setColor(WHITE);
-		gr.drawRect(700, 650, 90, 90);
-
-		g2.setColor(new Color(233,5,6));
-		g2.fill3DRect(150, 425, 300, 70, true);
-
-		g2.setColor(BLACK);
-		g2.setFont(new Font("", Font.ROMAN_BASELINE,20));
-		g2.drawString("Dra genom labyrinten till den \nfärgglada kvadraten för att vinna.\n Lycka till! :D", 300, 150);
-
-		röd[röd.length-1] = random.nextInt(255);
-		grön[röd.length-1] = random.nextInt(255);
-		blå[röd.length-1] = random.nextInt(255);
-
-		for (int i = 1; i <= röd.length-2; i++) {
-			röd[i] = röd[i+1];
-			grön[i] = grön[i+1];
-			blå[i] = blå[i+1];
-
-		}
-		boolean h = true;
-		int e=700,s=650;
-		for (int i = röd.length-2; i >= 1; i--) {
-
-			if (h) {
-				h=false;
-
-				g2.setColor(new Color(röd[i],grön[i],blå[i]));
-				g2.drawRect(e, s, i, i);
-				e++;
-				s++;
 			}
-			else h=true;
+		}
+
+	}
+
+
+	class RörandeMojäng3 extends JPanel implements ActionListener {
+		int[] röd=new int[91],grön=new int[91],blå=new int[91];
+		public void paint (Graphics gr) {
+			Graphics2D g2 = (Graphics2D) gr;
+
+			g2.setColor(BLUE);
+			g2.fillRect(0, 425, 150, 1000);
+
+			g2.setColor(GREEN);
+			gr.fill3DRect(1000, 200, 100, 350, false);
+
+			g2.setColor(ORANGE);
+			gr.fill3DRect(1155, 0, 110, 495, true);
+
+			g2.setColor(MAGENTA);
+			gr.fillRect(205, 550, 1000, 100);
+
+			g2.setColor(WHITE);
+			gr.drawRect(700, 650, 90, 90);
+
+			g2.setColor(new Color(233,5,6));
+			g2.fill3DRect(150, 425, 300, 70, true);
+
+			g2.setColor(BLACK);
+			g2.setFont(new Font("", Font.ROMAN_BASELINE,20));
+			g2.drawString("Dra genom labyrinten till den \nfärgglada kvadraten för att vinna.\n Lycka till! :D", 300, 150);
+
+			röd[röd.length-1] = random.nextInt(255);
+			grön[röd.length-1] = random.nextInt(255);
+			blå[röd.length-1] = random.nextInt(255);
+
+			for (int i = 1; i <= röd.length-2; i++) {
+				röd[i] = röd[i+1];
+				grön[i] = grön[i+1];
+				blå[i] = blå[i+1];
+
+			}
+			boolean h = true;
+			int e=700,s=650;
+			for (int i = röd.length-2; i >= 1; i--) {
+
+				if (h) {
+					h=false;
+
+					g2.setColor(new Color(röd[i],grön[i],blå[i]));
+					g2.drawRect(e, s, i, i);
+					e++;
+					s++;
+				}
+				else h=true;
+
+			}
+
+			g2.setColor(cyan);
+			g2.fillRect(x, y, 50,50);
+		}
+
+		public void actionPerformed(ActionEvent arg0) {
 
 		}
 
-		g2.setColor(cyan);
-		g2.fillRect(x, y, 50,50);
-}
+	}
+	static class GameOver implements ActionListener, WindowListener{
+		JButton b1 = new JButton("Spela igen");
+		JButton b2 = new JButton("Avsluta");
+		JFrame ram = new JFrame("GAME OVER");
+		public GameOver(){
 
-	public void actionPerformed(ActionEvent arg0) {
-	
-	}
-	
-}
-static class GameOver implements ActionListener, WindowListener{
-	JButton b1 = new JButton("Spela igen");
-	JButton b2 = new JButton("Avsluta");
-	JFrame ram = new JFrame("GAME OVER");
-	public GameOver(){
-	
-		ram.setIconImage(fönsterIcon);
-		ram.add(b1);
-		ram.add(b2);
-		ram.setVisible(true);
-		ram.setSize(500, 500);
-		ram.setLayout(new GridLayout(2, 1));
-		
-		RörandeMojäng.ii = 1;
-		
-		b1.addActionListener(this);
-		b2.addActionListener(this);
-		ram.addWindowListener(this);
-		ram.setDefaultCloseOperation(3);
-	}
-	
-	public void actionPerformed(ActionEvent arg0) {
-		
-		if (arg0.getSource() == b1){
-			RörandeMojäng.qq = RörandeMojäng.qq + 1;
-			RörandeMojäng.ii = 0;
-			new RörandeMojäng();
-			ram.dispose();
-			RörandeMojäng.x = 800;
-			RörandeMojäng.y = 300;
-			
-		}
-		if (arg0.getSource() == b2) {
-			System.exit(3);
-		}
-	}
+			ram.setIconImage(fönsterIcon);
+			ram.add(b1);
+			ram.add(b2);
+			ram.setVisible(true);
+			ram.setSize(500, 500);
+			ram.setLayout(new GridLayout(2, 1));
 
-	public void windowOpened(WindowEvent e) {
-		
-	}
-	
-	public void windowClosing(WindowEvent e) {
-		
-	}
-	
-	public void windowIconified(WindowEvent e) {
-		
-	}
-	
-	
-	public void windowDeiconified(WindowEvent e) {  
-		
-	}
-	
-	
-	public void windowActivated(WindowEvent e) {
-		
-	}
-	
-	
-	public void windowDeactivated(WindowEvent e) {
-	
-	}
-	
-	public void windowClosed(WindowEvent e) {
-	}
+			RörandeMojäng.ii = 1;
+
+			b1.addActionListener(this);
+			b2.addActionListener(this);
+			ram.addWindowListener(this);
+			ram.setDefaultCloseOperation(3);
+		}
+
+		public void actionPerformed(ActionEvent arg0) {
+
+			if (arg0.getSource() == b1){
+				RörandeMojäng.qq = RörandeMojäng.qq + 1;
+				RörandeMojäng.ii = 0;
+				new RörandeMojäng();
+				ram.dispose();
+				RörandeMojäng.x = 800;
+				RörandeMojäng.y = 300;
+
+			}
+			if (arg0.getSource() == b2) {
+				System.exit(3);
+			}
+		}
+
+		public void windowOpened(WindowEvent e) {
+
+		}
+
+		public void windowClosing(WindowEvent e) {
+
+		}
+
+		public void windowIconified(WindowEvent e) {
+
+		}
+
+		public void windowDeiconified(WindowEvent e) {  
+
+		}
+
+
+		public void windowActivated(WindowEvent e) {
+
+		}
+
+
+		public void windowDeactivated(WindowEvent e) {
+
+		}
+
+		public void windowClosed(WindowEvent e) {
+		}
 	}
 }
 
@@ -2159,8 +2158,8 @@ class Miniräknare implements ActionListener, KeyListener{
 		
 	}
 	public void actionPerformed(ActionEvent e) {
-	
-		
+
+
 		if (e.getSource()==b0){textruta.append("0");}
 		if (e.getSource()==b1){textruta.append("1");}
 		if (e.getSource()==b2){textruta.append("2");}
@@ -2172,51 +2171,45 @@ class Miniräknare implements ActionListener, KeyListener{
 		if (e.getSource()==b8){textruta.append("8");}
 		if (e.getSource()==b9){textruta.append("9");}
 		if (e.getSource()==b10){
-			
 			RäknaUt();
 			räknesätt.setText("+");
-				
 		}
 		if (e.getSource()==b11){textruta.append("-");}
 		if (e.getSource()==b12){textruta.append("*");}
 		if (e.getSource()==b13){textruta.append("/");}
 		if (e.getSource()==b14){textruta.append("=");}
 
-	int a = 0;System.out.println(a);
-			try {
-			 a = Integer.parseInt(textruta.getText());
-		} catch (Exception sda) {
-			
+		int a = 0;System.out.println(a);
+		try {
+			a = Integer.parseInt(textruta.getText());
+		} catch (Exception e1) {
 			a = 0;
 		}
-		
-		}
-	
+
+	}
 
 	private void RäknaUt() {
 		int a,b;
 		try {
-			 a = Integer.parseInt(summa.getText());
+			a = Integer.parseInt(summa.getText());
 		} catch (Exception e) {
-			// 
 			a = 0;
 		}
-		
+
 		try {
 			b = Integer.parseInt(textruta.getText());
 		} catch (Exception e) {
-			// 
 
 			b = 0;
 		}
-		
+
 		if (räknesätt.getText() == "+"){
 			summa.setText(Integer.toString(a+b));
 		}
 		else if (räknesätt.getText() == "-") {
 			summa.setText(Integer.toString(a-b));
 		}
-		
+
 		else if (räknesätt.getText() == "*") {
 			summa.setText(Integer.toString(a*b));
 		}
@@ -2227,45 +2220,44 @@ class Miniräknare implements ActionListener, KeyListener{
 			summa.setText(Double.toString(a+b));
 		}
 		textruta.setText(null);
-		
+
 	}
 
 	public void keyPressed(KeyEvent  e) {
 			
 		System.out.println(e.getKeyCode());
-		char c = e.getKeyChar();
-		String fj = String.valueOf(c);
+		String fj = String.valueOf(e.getKeyChar());
 		System.out.println(fj);
 		if (e.getKeyCode() == 49||
-		e.getKeyCode() == 50||
-		e.getKeyCode() == 48||
-		e.getKeyCode() == 49||
-		e.getKeyCode() == 51||
-		e.getKeyCode() == 52||
-		e.getKeyCode() == 53||
-		e.getKeyCode() == 54||
-		e.getKeyCode() == 55||
-		e.getKeyCode() == 56||
-		e.getKeyCode() == 57||
-		e.getKeyCode() == 58||
-		e.getKeyCode() == 59||
-		e.getKeyCode() == 521||
-		e.getKeyCode() == 45||
-		e.getKeyCode() == 222||
-		e.getKeyCode() ==97||
-		e.getKeyCode() ==98||
-		e.getKeyCode() ==99||
-		e.getKeyCode() ==100|
-		e.getKeyCode() ==101||
-		e.getKeyCode() ==102||
-		e.getKeyCode() ==103||
-		e.getKeyCode() ==104||
-		e.getKeyCode() ==105||
-		e.getKeyCode() == 107||
-		e.getKeyCode() == 111||
-		e.getKeyCode() == 106||
-		e.getKeyCode() == 109){
-			textruta.append(fj);
+			e.getKeyCode() == 50||
+			e.getKeyCode() == 48||
+			e.getKeyCode() == 49||
+			e.getKeyCode() == 51||
+			e.getKeyCode() == 52||
+			e.getKeyCode() == 53||
+			e.getKeyCode() == 54||
+			e.getKeyCode() == 55||
+			e.getKeyCode() == 56||
+			e.getKeyCode() == 57||
+			e.getKeyCode() == 58||
+			e.getKeyCode() == 59||
+			e.getKeyCode() == 521||
+			e.getKeyCode() == 45||
+			e.getKeyCode() == 222||
+			e.getKeyCode() == 97||
+			e.getKeyCode() == 98||
+			e.getKeyCode() == 99||
+			e.getKeyCode() == 100|
+			e.getKeyCode() == 101||
+			e.getKeyCode() == 102||
+			e.getKeyCode() == 103||
+			e.getKeyCode() == 104||
+			e.getKeyCode() == 105||
+			e.getKeyCode() == 107||
+			e.getKeyCode() == 111||
+			e.getKeyCode() == 106||
+			e.getKeyCode() == 109){
+				textruta.append(fj);
 			}
 		if (e.getKeyCode() == 8){
 			String text = textruta.getText();
@@ -2274,47 +2266,18 @@ class Miniräknare implements ActionListener, KeyListener{
 		if (e.getKeyCode() == 10){
 			textruta.append("=");
 		}
-//		if (e.getKeyCode()== 49){
-//			textruta.append("1");
-//			}
-//		if (e.getKeyCode()== 50){
-//			textruta.append("2");
-//			}
-//		if (e.getKeyCode()== 51){
-//			textruta.append("3");
-//			}
-//		if (e.getKeyCode()== 52){
-//			textruta.append("4");
-//			}
-//		if (e.getKeyCode()== 53){
-//			textruta.append("5");
-//			}
-//		if (e.getKeyCode()== 54){
-//			textruta.append("6");
-//			}
-//		if (e.getKeyCode()== 55){
-//			textruta.append("7");
-//			}
-//		if (e.getKeyCode()== 56){
-//			textruta.append("8");
-//			}
-//		if (e.getKeyCode()== 57){
-//			textruta.append("9");
-//			}
-//		if (e.getKeyCode()== 58){
-//			textruta.append("1");
-//			}
+
 	}
 
 	public void keyReleased(KeyEvent arg0) {
-		
+
 	}
 
 	public void keyTyped(KeyEvent e) {
-		
-		}
-	
-			}
+
+	}
+
+}
 
 class Merit implements MouseMotionListener, WindowListener, KeyListener, ActionListener{
 
