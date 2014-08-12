@@ -847,9 +847,7 @@ class Räknare implements ActionListener{
 			Summa.setText(Double.toString(a+b));
 		}
 		Räknartext.setText(null);
-		
-	}
-	
+	}	
 }
 @SuppressWarnings("serial")
 class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListener,MouseMotionListener{
@@ -883,8 +881,6 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		setOpaque(true);	
 		setBackground(black.brighter());
 
-		
-		
 		frame.addMouseMotionListener(this);
 		frame.setIconImage(fönsterIcon);
 		frame.addWindowListener(this);
@@ -929,9 +925,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		
 		frame.repaint();
 	}
-
 	public void keyTyped(KeyEvent e) {}
-	
 	public void keyPressed(KeyEvent e) {
 		if(KeyEvent.getKeyText(e.getKeyCode()) == "Upp"){
 			hupp = true;
@@ -1238,48 +1232,8 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 			g.fillRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
 			s=1;
 		}
-		
 	}
-
-	public void keyTyped(KeyEvent e) {
-	}
-	public void keyPressed(KeyEvent e) {
-		if (s==1) {
-			if(KeyEvent.getKeyText(e.getKeyCode()) == "Vänsterpil"){
-				if (riktning!="höger"){
-					riktning="vänster";
-					s=0;
-				}
-			}
-			else if(KeyEvent.getKeyText(e.getKeyCode()) == "Högerpil"){
-				if (riktning!="vänster"){
-					riktning="höger";
-					s=0;
-				}
-			}
-			else if(KeyEvent.getKeyText(e.getKeyCode()) == "Upp"){
-				if (riktning!="ner"){
-					riktning="upp";
-					s=0;
-				}
-			}
-			else if(KeyEvent.getKeyText(e.getKeyCode()) == "Nedpil"){
-				if (riktning!="upp"){
-					riktning="ner";
-					s=0;
-				}
-			}
-		}
-		if(KeyEvent.getKeyText(e.getKeyCode()) == "F2"){
-			if (timer.isRunning()==false) {
-				Restart();
-			}
-		}
-	}
-
-	public void keyReleased(KeyEvent e) {
-	}
-
+	
 	public void actionPerformed(ActionEvent e) {
 	
 		if (e.getSource()==timer){
@@ -1328,37 +1282,60 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 			frame.repaint();
 		}
 	}
-	public void windowOpened(WindowEvent e) {
+	public void keyTyped(KeyEvent e) {}
+	public void keyReleased(KeyEvent e) {}
+	public void windowOpened(WindowEvent e) {}
+	public void windowClosed(WindowEvent e) {}
+	public void windowIconified(WindowEvent e) {}
+	public void windowDeiconified(WindowEvent e) {}
+	public void windowActivated(WindowEvent e) {}
+	public void windowDeactivated(WindowEvent e) {}
+	public void componentResized(ComponentEvent e) {}
+	public void componentShown(ComponentEvent e) {}
+	public void componentHidden(ComponentEvent e) {}
+	
+	public void keyPressed(KeyEvent e) {
+		if (s==1) {
+			if(KeyEvent.getKeyText(e.getKeyCode()) == "Vänsterpil"){
+				if (riktning!="höger"){
+					riktning="vänster";
+					s=0;
+				}
+			}
+			else if(KeyEvent.getKeyText(e.getKeyCode()) == "Högerpil"){
+				if (riktning!="vänster"){
+					riktning="höger";
+					s=0;
+				}
+			}
+			else if(KeyEvent.getKeyText(e.getKeyCode()) == "Upp"){
+				if (riktning!="ner"){
+					riktning="upp";
+					s=0;
+				}
+			}
+			else if(KeyEvent.getKeyText(e.getKeyCode()) == "Nedpil"){
+				if (riktning!="upp"){
+					riktning="ner";
+					s=0;
+				}
+			}
+		}
+		if(KeyEvent.getKeyText(e.getKeyCode()) == "F2"){
+			if (timer.isRunning()==false) {
+				Restart();
+			}
+		}
 	}
+	
 	public void windowClosing(WindowEvent e) {
 		timer.stop();
 		highFrame.dispose();
 	}
-	public void windowClosed(WindowEvent e) {		
-	}
 	
-	public void windowIconified(WindowEvent e) {
-	}
-	
-	public void windowDeiconified(WindowEvent e) {
-	}
-	
-	public void windowActivated(WindowEvent e) {
-	}
-	
-	public void windowDeactivated(WindowEvent e) {
-	}
-	
-	public void componentResized(ComponentEvent e) {
-	}
 	
 	public void componentMoved(ComponentEvent e) {
 		highFrame.setLocation(frame.getX()-frame.getWidth(),frame.getY());
-	}
-	
-	public void componentShown(ComponentEvent e) {
-	}
-	public void componentHidden(ComponentEvent e) {
 	}
 	private class Scorepanel extends JPanel{
 		public Scorepanel() {
@@ -1438,9 +1415,7 @@ class Studsa extends JPanel implements ActionListener{
 			y=y+d;
 			repaint();
 		}
-		
 	}
-	
 }
 
 @SuppressWarnings("serial")
