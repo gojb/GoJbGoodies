@@ -4461,12 +4461,12 @@ class random implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-	if (arg0.getSource() == button){
-		ranidom();
-	}
-	if (arg0.getSource() == timer){
-		System.err.println(System.currentTimeMillis());
-	}
+		if (arg0.getSource() == button){
+			ranidom();
+		}
+		if (arg0.getSource() == timer){
+			System.err.println(System.currentTimeMillis());
+		}
 	}
 	
 	public void ranidom() {
@@ -4555,9 +4555,7 @@ class Klocka implements ActionListener{
 			if(sek == 10){
 				string = "";
 			}
-
-
-
+			
 			label.setText("<html>" + Integer.toString(min) + " : " + string + Integer.toString(sek) + " : " + Integer.toString(milli));
 		}
 		if (arg0.getSource() == timer2){
@@ -4568,5 +4566,4 @@ class Klocka implements ActionListener{
 
 		}
 	}
-
 }

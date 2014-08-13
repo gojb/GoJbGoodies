@@ -2,10 +2,26 @@ package GoJbFrame;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
+/**
+ * GoJbFrame är en vanlig JFrame fast med några inställningar förkonfigurerade 
+ * bl.a. 
+ * {@code
+ * setSize,
+ * setLocationRelativeTo,
+ * setDefaultCloseOperation,
+ * setVisible,
+ * setIconImage.
+ * }
+ * @author GoJb - Glenn Olsson & Jakob Björns
+ * 
+ * @see <a href="http://gojb.bl.ee/">http://gojb.bl.ee/</a>
+ * @version 1.0
+ */
 
-@SuppressWarnings("serial")
 public class GoJbFrame extends JFrame{
-
+private static final long serialVersionUID = 1L;
+	
+	
 	public GoJbFrame() {
 		setSize(500, 500);
 		setLocationRelativeTo(null);
