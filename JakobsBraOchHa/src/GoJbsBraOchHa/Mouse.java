@@ -635,12 +635,12 @@ public class Mouse extends JPanel implements 	ActionListener,
 	  }
 }
 class Räknare implements ActionListener{
-	
-	JFrame 	Räknare = new JFrame("Miniräknare");
-	
+
+	JFrame 	frame = new JFrame("Miniräknare");
+
 	JPanel 	RäknarKnappar = new JPanel(),
 			RäknarPanel = new JPanel();
-	
+
 	JButton Miniränkarknapp0 = new JButton("0"),
 			Miniränkarknapp1 = new JButton("1"),
 			Miniränkarknapp2 = new JButton("2"),
@@ -720,17 +720,17 @@ class Räknare implements ActionListener{
 		Summa.setFont(typsnitt);
 		Räknesätt.setFont(typsnitt);
 
-		Räknare.setLayout(new BorderLayout());
-		Räknare.add(RäknarPanel,BorderLayout.NORTH);
-		Räknare.add(RäknarKnappar,BorderLayout.CENTER);
-		Räknare.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.WEST);
-		Räknare.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.EAST);
-		Räknare.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.SOUTH);
-		Räknare.setBackground(WHITE);
-		Räknare.pack();
-		Räknare.setIconImage(fönsterIcon);
-		Räknare.getContentPane().setBackground(white);
-		Räknare.setVisible(true);
+		frame.setLayout(new BorderLayout());
+		frame.add(RäknarPanel,BorderLayout.NORTH);
+		frame.add(RäknarKnappar,BorderLayout.CENTER);
+		frame.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.WEST);
+		frame.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.EAST);
+		frame.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.SOUTH);
+		frame.setBackground(WHITE);
+		frame.pack();
+		frame.setIconImage(fönsterIcon);
+		frame.getContentPane().setBackground(white);
+		frame.setVisible(true);
 	}
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == MiniränkarknappDelat){ 
@@ -1346,6 +1346,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		public Scorepanel() {
 			setBackground(white);
 		}
+		
 		public void paintComponent(Graphics g){
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D)g;
@@ -2711,6 +2712,8 @@ class Pong extends JPanel implements ActionListener{
 		frame.setLocationRelativeTo(null);
 		frame.setSize(200, 200);
 		frame.add(this);
+		frame.setIconImage(fönsterIcon);
+		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		timer.start();
 		
 	}
@@ -2931,7 +2934,6 @@ class Maze extends JPanel implements ActionListener, MouseMotionListener{
 
 
 		public void mouseDragged(MouseEvent arg0) {
-
 
 		}
 
@@ -3840,8 +3842,7 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 		
 	}
 	
-	public void keyReleased(KeyEvent e) {
-	}
+	public void keyReleased(KeyEvent e) {}
 }
 
 class Pass implements ActionListener{
@@ -3966,9 +3967,7 @@ class Pass implements ActionListener{
 		try {
 			pc.close();
 			pr.close();
-		} catch (Exception e) {
-			 
-		}
+		} catch (Exception e) {}
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -4117,7 +4116,7 @@ class SkapaFärg extends JPanel implements ActionListener{
 		
 		red.setForeground(RED);
 		green.setForeground(GREEN);
-		blue.setForeground(GREEN);
+		blue.setForeground(BLUE);
 		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(red);
@@ -4151,8 +4150,6 @@ class SkapaFärg extends JPanel implements ActionListener{
 		timer.start();
 	
 	}
-	
-	
 	
 	public void actionPerformed(ActionEvent e) {
 
@@ -4446,35 +4443,35 @@ class random implements ActionListener{
 	}
 	
 	public void ranidom() {
-			long y = System.currentTimeMillis();
-			
-			if (i == 0){
-				z = System.currentTimeMillis();
-			}
-			else if (i == 1) {
-				z = 14065;
-			}
-			else if (i == 2) {
-				z = 465656;
-			}
-			else if (i == 3) {
-				z = 856746;
-			}
-			else if (i == 4) {
-				z = 12876575;
-			}
-			else if (i == 5) {
-				z = 177657690;
-				i = 0;
-			}
-			
-			x = y-z;
-			i++;
-			
-			
-			label.setText(Long.toString(x));
+		long y = System.currentTimeMillis();
+
+		if (i == 0){
+			z = System.currentTimeMillis();
+		}
+		else if (i == 1) {
+			z = 14065;
+		}
+		else if (i == 2) {
+			z = 465656;
+		}
+		else if (i == 3) {
+			z = 856746;
+		}
+		else if (i == 4) {
+			z = 12876575;
+		}
+		else if (i == 5) {
+			z = 177657690;
+			i = 0;
+		}
+
+		x = y-z;
+		i++;
+
+
+		label.setText(Long.toString(x));
 	}
-	
+
 }
 class Klocka implements ActionListener{
 	
@@ -4489,8 +4486,6 @@ class Klocka implements ActionListener{
 	int milli,sek,min;
 	
 	String string;
-	
-	
 	
 	public Klocka() {
 		
