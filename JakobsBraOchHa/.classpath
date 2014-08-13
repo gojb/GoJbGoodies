@@ -3,5 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="javax.mail.jar"/>
+	<classpathentry kind="lib" path="commons-net-3.3.jar" sourcepath="C:/Users/Jakob/Downloads/commons-net-3.3-bin/commons-net-3.3/commons-net-3.3-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
