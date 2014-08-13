@@ -904,11 +904,10 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 	}
 	private void StartaOm(){
 		x = getWidth()/2;
-		y = 5;
+		y = random.nextInt(getHeight());
 		hastighet = 2;
 		c = hastighet;
 		d = hastighet;
-		vänta(100);
 		timer.start();
 		
 	}
@@ -972,25 +971,17 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==timer){
-			if (hupp) {
-				if (HögerY>0) {
-					HögerY=HögerY-5;
-				}
+			if (hupp && HögerY>0) {
+				HögerY=HögerY-5;
 			}
-			if (hner) {
-				if (HögerY+RektHöjd+60<frame.getHeight()) {
-					HögerY=HögerY+5;
-				}
+			if (hner && HögerY+RektHöjd<getHeight()){
+				HögerY=HögerY+5;
 			}
-			if (vupp) {
-				if (VänsterY>0) {
-					VänsterY=VänsterY-5;
-				}
+			if (vupp && VänsterY>0){
+				VänsterY=VänsterY-5;
 			}
-			if (vner) {
-				if (VänsterY+RektHöjd+60<frame.getHeight()) {
-					VänsterY=VänsterY+5;
-				}
+			if (vner && VänsterY+RektHöjd<getHeight()){
+				VänsterY=VänsterY+5;
 			}
 			frame.repaint();
 			if (x+bredd>=HögerX) {
@@ -1113,6 +1104,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		
 		highFrame.add(new Scorepanel());
 		highFrame.setSize(frame.getSize());
+		highFrame.setIconImage(fönsterIcon);
 		highFrame.setUndecorated(true);
 		highFrame.setLocation(frame.getX()-frame.getWidth(),frame.getY());
 		highFrame.setVisible(true);
