@@ -137,7 +137,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		try {
 			prop.load(new FileInputStream(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb"));
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.err.println("Properties saknas");
 		}
 		
 		class setImageIcon{
@@ -576,18 +576,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 	public void mouseClicked(MouseEvent arg0) {}
 	public void mouseReleased(MouseEvent arg0) {}
 
-	public void spelaLjud(String Filnamn){
-		try {
-			Clip clip = AudioSystem.getClip();
-			clip.open(AudioSystem.getAudioInputStream(getClass().getResource(Filnamn)));
-			clip.start();
-			
-		} catch (Exception e) {
-			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-			showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", "Ljud", ERROR_MESSAGE);
-		}
-		
-	}
 	public static void skrivHändelsetext(String Händlsetext){
 		text.append(Händlsetext + "\n");
 		((DefaultCaret) text.getCaret()).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
@@ -626,8 +614,25 @@ public class Mouse extends JPanel implements 	ActionListener,
 		  texten = Text;
 		  System.out.println("Texten ändrad till: " + texten);
 	  
-	}
-	
+	  }
+	  public static void spelaLjud(String filnamn){
+
+		  class SpelaLjud{
+			  SpelaLjud(String filnamn){
+				  try {
+					  Clip clip = AudioSystem.getClip();
+					  clip.open(AudioSystem.getAudioInputStream(getClass().getResource(filnamn)));
+					  clip.start();
+
+				  } catch (Exception e) {
+					  ((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+					  showMessageDialog(null, "Filen: \"" + filnamn + "\" hittades inte", "Ljud", ERROR_MESSAGE);
+				  }
+
+			  }
+		  }
+		  new SpelaLjud(filnamn);
+	  }
 }
 class Räknare implements ActionListener{
 	
@@ -655,18 +660,18 @@ class Räknare implements ActionListener{
 	JLabel	Summa = new JLabel(""),
 			Räknesätt = new JLabel();
 	
-	JTextArea 		Räknartext = new JTextArea();
+	JTextArea Räknartext = new JTextArea();
 
-	boolean 		nyräkning = false;
+	boolean nyräkning = false;
 	
 	JButton C = new JButton("C"),
 			Punkt = new JButton(".");
 	
-	double 			a = 0,
-					b = 0;
+	double 	a = 0,
+			b = 0;
 	
 	public Räknare() {
-		
+
 		RäknarKnappar.setLayout(new GridLayout(5,5,5,5));
 		RäknarKnappar.add(Miniränkarknapp1);
 		RäknarKnappar.add(Miniränkarknapp2);
@@ -1697,16 +1702,9 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			new GameOver();frame.dispose();
 		}}
 		if (x > 650 && x < 790 && y > 550){
-			try {
-				Clip clip = AudioSystem.getClip();
-				clip.open(AudioSystem.getAudioInputStream(getClass().getResource("/images/tada.wav")));
-				clip.start();
-			} catch (Exception e) {
-				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-				showMessageDialog(null, "Filen hittades inte", "Ljud", ERROR_MESSAGE);
-				
-			}
-		
+			
+			spelaLjud("/images/tada.wav");
+			
 			Vinst.setVisible(true);
 			frame.dispose();
 		}
@@ -2355,28 +2353,28 @@ class Merit implements MouseMotionListener, WindowListener, KeyListener, ActionL
 			
 			if (e.getSource() == A){
 				x = x + 20;
-				
+
 			}
 			else if (e.getSource() == B){
 				x = x + 17.5;
-							}
+			}
 			else if (e.getSource() == C){
 				x = x + 15;
-			
+
 			}
 			else if (e.getSource() == D){
 				x = x + 12.5;
-		
+
 			}
 			else if (e.getSource() == E){
 				x = x + 10;
-		
+
 			}
 			else if (e.getSource() == F){
 				x = x + 0;
-			
+
 			}
-			
+
 			if (Svenska.isVisible() == true){
 
 				Svenska.setVisible(false);
@@ -2389,21 +2387,21 @@ class Merit implements MouseMotionListener, WindowListener, KeyListener, ActionL
 				Engelska.add(E);
 				Engelska.add(F);
 				System.out.println(x);
-			
+
 			}
-			
+
 			else if (Engelska.isVisible() == true){
-				
+
 				Engelska.setVisible(false);
 				Matte.setVisible(true);
 
-			Matte.add(A);
-			Matte.add(B);
-			Matte.add(C);
-			Matte.add(D);
-			Matte.add(E);
-			Matte.add(F);
-			System.out.println(x);
+				Matte.add(A);
+				Matte.add(B);
+				Matte.add(C);
+				Matte.add(D);
+				Matte.add(E);
+				Matte.add(F);
+				System.out.println(x);
 			}
 			else if (Matte.isVisible() == true){
 				Matte.setVisible(false);
@@ -2415,7 +2413,7 @@ class Merit implements MouseMotionListener, WindowListener, KeyListener, ActionL
 				Biologi.add(D);
 				Biologi.add(E);
 				Biologi.add(F);
-			System.out.println(x);
+				System.out.println(x);
 			}
 			else if (Biologi.isVisible() == true){
 
@@ -2429,9 +2427,9 @@ class Merit implements MouseMotionListener, WindowListener, KeyListener, ActionL
 				Fysik.add(E);
 				Fysik.add(F);
 				System.out.println(x);
-				
+
 			}
-			
+
 			else if (Fysik.isVisible() == true){
 
 				Fysik.setVisible(false);
@@ -2447,188 +2445,173 @@ class Merit implements MouseMotionListener, WindowListener, KeyListener, ActionL
 
 			}
 			else if (Kemi.isVisible() == true){
-			Kemi.setVisible(false);
-			Teknik.setVisible(true);
-			
-			Teknik.add(A);
-			Teknik.add(B);
-			Teknik.add(C);
-			Teknik.add(D);
-			Teknik.add(E);
-			Teknik.add(F);
-			System.out.println(x);
+				Kemi.setVisible(false);
+				Teknik.setVisible(true);
+
+				Teknik.add(A);
+				Teknik.add(B);
+				Teknik.add(C);
+				Teknik.add(D);
+				Teknik.add(E);
+				Teknik.add(F);
+				System.out.println(x);
 			}
 			else if (Teknik.isVisible() == true){
-			
-			Teknik.setVisible(false);
-			Historia.setVisible(true);
-			
-			Historia.add(A);
-			Historia.add(B);
-			Historia.add(C);
-			Historia.add(D);
-			Historia.add(E);
-			Historia.add(F);
-			System.out.println(x);
+
+				Teknik.setVisible(false);
+				Historia.setVisible(true);
+
+				Historia.add(A);
+				Historia.add(B);
+				Historia.add(C);
+				Historia.add(D);
+				Historia.add(E);
+				Historia.add(F);
+				System.out.println(x);
 			}
 			else if (Historia.isVisible() == true){
-			
-			Historia.setVisible(false);
-			Geografi.setVisible(true);
-			
-			Geografi.add(A);
-			Geografi.add(B);
-			Geografi.add(C);
-			Geografi.add(D);
-			Geografi.add(E);
-			Geografi.add(F);
-			System.out.println(x);
+
+				Historia.setVisible(false);
+				Geografi.setVisible(true);
+
+				Geografi.add(A);
+				Geografi.add(B);
+				Geografi.add(C);
+				Geografi.add(D);
+				Geografi.add(E);
+				Geografi.add(F);
+				System.out.println(x);
 			}
 			else if (Geografi.isVisible() == true){
-			
-			Geografi.setVisible(false);
-			Samhällskunskap.setVisible(true);
-			
-			Samhällskunskap.add(A);
-			Samhällskunskap.add(B);
-			Samhällskunskap.add(C);
-			Samhällskunskap.add(D);
-			Samhällskunskap.add(E);
-			Samhällskunskap.add(F);
-			System.out.println(x);
+
+				Geografi.setVisible(false);
+				Samhällskunskap.setVisible(true);
+
+				Samhällskunskap.add(A);
+				Samhällskunskap.add(B);
+				Samhällskunskap.add(C);
+				Samhällskunskap.add(D);
+				Samhällskunskap.add(E);
+				Samhällskunskap.add(F);
+				System.out.println(x);
 			}
 			else if (Samhällskunskap.isVisible() == true){
-			
-			Samhällskunskap.setVisible(false);
-			Religon.setVisible(true);
-			
-			Religon.add(A);
-			Religon.add(B);
-			Religon.add(C);
-			Religon.add(D);
-			Religon.add(E);
-			Religon.add(F);
-			System.out.println(x);
+
+				Samhällskunskap.setVisible(false);
+				Religon.setVisible(true);
+
+				Religon.add(A);
+				Religon.add(B);
+				Religon.add(C);
+				Religon.add(D);
+				Religon.add(E);
+				Religon.add(F);
+				System.out.println(x);
 			}
 			else if (Religon.isVisible() == true){
-				
-			
-			Religon.setVisible(false);
-			Slöjd.setVisible(true);
-			
-			Slöjd.add(A);
-			Slöjd.add(B);
-			Slöjd.add(C);
-			Slöjd.add(D);
-			Slöjd.add(E);
-			Slöjd.add(F);
-			System.out.println(x);
+
+
+				Religon.setVisible(false);
+				Slöjd.setVisible(true);
+
+				Slöjd.add(A);
+				Slöjd.add(B);
+				Slöjd.add(C);
+				Slöjd.add(D);
+				Slöjd.add(E);
+				Slöjd.add(F);
+				System.out.println(x);
 			}
 			else if (Slöjd.isVisible() == true){
-			
-			Slöjd.setVisible(false);
-			ModernaSpråk.setVisible(true);
-			
-			ModernaSpråk.add(A);
-			ModernaSpråk.add(B);
-			ModernaSpråk.add(C);
-			ModernaSpråk.add(D);
-			ModernaSpråk.add(E);
-			ModernaSpråk.add(F);
-			System.out.println(x);
+
+				Slöjd.setVisible(false);
+				ModernaSpråk.setVisible(true);
+
+				ModernaSpråk.add(A);
+				ModernaSpråk.add(B);
+				ModernaSpråk.add(C);
+				ModernaSpråk.add(D);
+				ModernaSpråk.add(E);
+				ModernaSpråk.add(F);
+				System.out.println(x);
 			}
 			else if (ModernaSpråk.isVisible() == true){
-			
-			ModernaSpråk.setVisible(false);
-			Idrott.setVisible(true);
-			
-			Idrott.add(A);
-			Idrott.add(B);
-			Idrott.add(C);
-			Idrott.add(D);
-			Idrott.add(E);
-			Idrott.add(F);
-			System.out.println(x);
+
+				ModernaSpråk.setVisible(false);
+				Idrott.setVisible(true);
+
+				Idrott.add(A);
+				Idrott.add(B);
+				Idrott.add(C);
+				Idrott.add(D);
+				Idrott.add(E);
+				Idrott.add(F);
+				System.out.println(x);
 			}
 			else if (Idrott.isVisible() == true){
-			
-			Idrott.setVisible(false);
-			HemOchKonsumentkunskap.setVisible(true);
-			
-			HemOchKonsumentkunskap.add(A);
-			HemOchKonsumentkunskap.add(B);
-			HemOchKonsumentkunskap.add(C);
-			HemOchKonsumentkunskap.add(D);
-			HemOchKonsumentkunskap.add(E);
-			HemOchKonsumentkunskap.add(F);
-			System.out.println(x);
+
+				Idrott.setVisible(false);
+				HemOchKonsumentkunskap.setVisible(true);
+
+				HemOchKonsumentkunskap.add(A);
+				HemOchKonsumentkunskap.add(B);
+				HemOchKonsumentkunskap.add(C);
+				HemOchKonsumentkunskap.add(D);
+				HemOchKonsumentkunskap.add(E);
+				HemOchKonsumentkunskap.add(F);
+				System.out.println(x);
 			}
 			else if (HemOchKonsumentkunskap.isVisible() == true){
-			
-			HemOchKonsumentkunskap.setVisible(false);
-			Musik.setVisible(true);
-			
-			Musik.add(A);
-			Musik.add(B);
-			Musik.add(C);
-			Musik.add(D);
-			Musik.add(E);
-			Musik.add(F);
-			System.out.println(x);
+
+				HemOchKonsumentkunskap.setVisible(false);
+				Musik.setVisible(true);
+
+				Musik.add(A);
+				Musik.add(B);
+				Musik.add(C);
+				Musik.add(D);
+				Musik.add(E);
+				Musik.add(F);
+				System.out.println(x);
 			}
 			else if (Musik.isVisible() == true){
-			
-			Musik.setVisible(false);
-			Bild.setVisible(true);
-			
-			Bild.add(A);
-			Bild.add(B);
-			Bild.add(C);
-			Bild.add(D);
-			Bild.add(E);
-			Bild.add(F);
-			System.out.println(x);
-		
+
+				Musik.setVisible(false);
+				Bild.setVisible(true);
+
+				Bild.add(A);
+				Bild.add(B);
+				Bild.add(C);
+				Bild.add(D);
+				Bild.add(E);
+				Bild.add(F);
+				System.out.println(x);
+
 			}
-			
+
 			else if (Bild.isVisible() == true){
-				
+
 				Bild.setVisible(false);
 				Resultat.setVisible(true);
 				Resultat.setLayout(new BorderLayout());
 				resultatlabel.setText(String.valueOf(x));
 				Resultat.add(resultatlabel,BorderLayout.CENTER);
 				resultatlabel.setHorizontalTextPosition(RIGHT);
-			
+
 				Resultat.setSize(Bild.getSize());
 				Resultat.setLocationRelativeTo(null);
 				resultatlabel.setFont(new Font("fsgadh",Font.BOLD,45));
-				
-				if (x < 100){
-					
-					try {
-						
-						Clip clip = AudioSystem.getClip();
-						clip.open(AudioSystem.getAudioInputStream(getClass().getResource("/images/dusuger.wav")));
-						clip.start();
-					} catch (Exception ebn) {
-						((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-						showMessageDialog(null, "Filen hittades inte", "Ljud", ERROR_MESSAGE);
-				}}
+
+				if (x < 100){	
+
+					spelaLjud("/images/dusuger.wav");
+
+				}
 				else {
-					try {
-				
-						Clip clip = AudioSystem.getClip();
-						clip.open(AudioSystem.getAudioInputStream(getClass().getResource("/images/tada.wav")));
-						clip.start();
-				} catch (Exception ebn) {
-					((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-					showMessageDialog(null, "Filen hittades inte", "Ljud", ERROR_MESSAGE);
+					spelaLjud("/images/tada.wav");
 				}
-			
 			}
-				}
-			
+
 			else if (e.getSource() == Börja){
 				huvudframe.setVisible(false);
 				Svenska.setVisible(true);
@@ -2636,32 +2619,32 @@ class Merit implements MouseMotionListener, WindowListener, KeyListener, ActionL
 		
 		
 		public void keyPressed(KeyEvent e) {
-			
+
 			if (Svenska.isVisible() == true){
 				if (e.getSource() == A){
 					x = x + 20;
-				Svenska.setVisible(false);
-				Engelska.setVisible(true);
-		}
+					Svenska.setVisible(false);
+					Engelska.setVisible(true);
+				}
 				if (e.getSource() == B){
 					x = x + 20;
-				Svenska.setVisible(false);
-				Engelska.setVisible(true);
-		}
-				if (e.getSource() == A){
-					x = x + 20;
-				Svenska.setVisible(false);
-				Engelska.setVisible(true);
-		}
-				if (e.getSource() == A){
-					x = x + 20;
-				Svenska.setVisible(false);
-				Engelska.setVisible(true);
-		}
+					Svenska.setVisible(false);
+					Engelska.setVisible(true);
 				}
-			
+				if (e.getSource() == A){
+					x = x + 20;
+					Svenska.setVisible(false);
+					Engelska.setVisible(true);
+				}
+				if (e.getSource() == A){
+					x = x + 20;
+					Svenska.setVisible(false);
+					Engelska.setVisible(true);
+				}
+			}
+
 		}
-		
+
 		public void keyReleased(KeyEvent arg0) { 
 			
 		}
@@ -3068,14 +3051,7 @@ class Maze extends JPanel implements ActionListener, MouseMotionListener{
 			frame.setDefaultCloseOperation(3);
 			frame.setIconImage(fönsterIcon);
 
-			try {
-				Clip clips = AudioSystem.getClip();
-				clips.open(AudioSystem.getAudioInputStream(getClass().getResource("/images/Ljud.wav")));
-				clips.start();
-			} catch (Exception ex) {
-				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-				showMessageDialog(null, "Filen hittades inte", "Ljud", ERROR_MESSAGE);
-			}
+			spelaLjud("/images/Ljud.wav");
 
 		}
 	}
