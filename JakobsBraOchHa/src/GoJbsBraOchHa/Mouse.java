@@ -113,13 +113,15 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 	private static JTextArea text = new JTextArea();
 	private static boolean 	autoscroll = true;
-	
 	public static int		antalFönster = 0;
 	public static Font 		typsnitt = new Font("Arial", 0, 40);
 	public static Image 	fönsterIcon;
 	public static Robot		robot;
 	public static Random 	random = new Random();
 	public static Properties prop = new Properties();
+	public static Dimension fönsterSize = new Dimension(
+			(int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2),
+			(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2*1.5));
 	
 	public static void main(String[] arg) {
 
@@ -294,8 +296,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		om.setLocationRelativeTo(huvudfönster);
 		
 		huvudfönster.setJMenuBar(menyBar);
-		huvudfönster.setSize((int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2),
-							(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2*1.5));
+		huvudfönster.setSize(fönsterSize);
 		huvudfönster.setLayout(new BorderLayout());
 		huvudfönster.setMinimumSize(new Dimension(400,400));
 		huvudfönster.addKeyListener(this);
@@ -633,6 +634,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		  }
 		  new SpelaLjud(filnamn);
 	  }
+	  
 }
 class Räknare implements ActionListener{
 
@@ -1069,7 +1071,8 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 @SuppressWarnings("serial")
 class Snakespel extends JPanel implements KeyListener, ActionListener,WindowListener,ComponentListener{
 	private JFrame frame = new JFrame("Snake"),highFrame = new JFrame("Highscore");
-	final int startlängd= 3,pixelstorlek=10;
+	private final int startlängd= 3;
+	private int	pixelstorlek;
 	private int[] x=new int[50],y=new int[50];
 	private String[] highscore= new String[6];
 	private int snakelängd,posx=100,posy=100,pluppX,pluppY, stringy, s = 1;
@@ -1078,6 +1081,8 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 	private boolean förlust;
 	
 	public Snakespel() {
+		
+		pixelstorlek=(int) Math.round(((double)fönsterSize.width)/100);
 
 		highscore[0]= "";
 		highscore[1]= prop.getProperty("Score1","0");
@@ -1097,10 +1102,9 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		frame.addKeyListener(this);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
 		frame.addWindowListener(this);
 		frame.getContentPane().setBackground(black);
-		frame.addComponentListener(this);
+		frame.addComponentListener(this);	
 		
 		highFrame.add(new Scorepanel());
 		highFrame.setSize(frame.getSize());
