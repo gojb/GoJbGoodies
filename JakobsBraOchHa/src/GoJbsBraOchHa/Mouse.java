@@ -124,7 +124,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 			(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2*1.5));
 	
 	public static void main(String[] arg) {
-
+		
 		try {
 		      UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		    } catch (Exception e) {
@@ -3168,7 +3168,7 @@ class Snake extends JPanel implements KeyListener, ActionListener{
 }
 
 @SuppressWarnings("serial")
-class Impossible extends JPanel implements WindowListener, ActionListener,
+class Impossible extends JPanel implements ActionListener,
 KeyListener, MouseInputListener{
 
 	JFrame frame = new JFrame();
@@ -3184,71 +3184,39 @@ KeyListener, MouseInputListener{
 		
 		Cursor c = Toolkit.getDefaultToolkit().createCustomCursor(
 				image , new Point(frame.getX(),frame.getY()), "img");
-			
-		frame.setIconImage(fönsterIcon);
-
-		frame.setCursor(c);
 		a=textString;
-		frame.setSize(1920,1080 );
+		
+		frame.setIconImage(fönsterIcon);
+		frame.setCursor(c);
+		frame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		frame.add(this);
 		frame.setLocationRelativeTo(null);
 		frame.setUndecorated(true);
-		
 		frame.add(this);
 		frame.setDefaultCloseOperation(0);
-		setBackground(WHITE);
-		frame.addWindowListener(this);
 		frame.addMouseMotionListener(this);
 		frame.addKeyListener(this);
 		frame.addMouseListener(this);
-
 		frame.setAlwaysOnTop(true);
-
+		frame.setVisible(true);
+		
 		timer.start();
 		timer300.start();
 		timer3.start();
-		frame.setVisible(true);
+		
 	
 	}
 	
 	public void mouseDragged(MouseEvent arg0) {
 	
-		robot.mouseMove(960, 515);
+		robot.mouseMove(frame.getWidth()/2, frame.getHeight()/2);
 	}
 
 	
 	public void mouseMoved(MouseEvent e) {
 		
 		
-		robot.mouseMove(960, 515);
-}
-	
-	
-	public void windowActivated(WindowEvent arg0) {
-	}
-
-	
-	public void windowClosed(WindowEvent arg0) {
-	}
-
-	
-	public void windowClosing(WindowEvent arg0) {
-	}
-
-	
-	public void windowDeactivated(WindowEvent arg0) {
-	}
-
-	
-	public void windowDeiconified(WindowEvent arg0) {
-	}
-
-	
-	public void windowIconified(WindowEvent arg0) {
-	}
-
-	
-	public void windowOpened(WindowEvent arg0) {
+		robot.mouseMove(frame.getWidth()/2, frame.getHeight()/2);
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {
@@ -3256,9 +3224,8 @@ KeyListener, MouseInputListener{
 
 			frame.toFront();
 			
-			if(frame.isVisible() == true){
-				robot.mouseMove(960, 515);
-
+			if(frame.isVisible()){
+				robot.mouseMove(frame.getWidth()/2, frame.getHeight()/2);
 
 			}
 
@@ -3348,19 +3315,18 @@ KeyListener, MouseInputListener{
 		
 	}
 	public void paintComponent (Graphics gr) {
-		  Graphics2D g2 = (Graphics2D) gr;
-//		  super.paintComponent(g);
-		  
-		  frame.setBackground(WHITE);
-		  
-		  	g2.setColor(new Color(r,g,b));
-		  	g2.setFont(new Font("dhghdg", Font.ITALIC, 30));
-		  	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		    g2.drawString(a, x, y);
-		    
-	}
+		Graphics2D g2 = (Graphics2D) gr;
+
+		frame.setBackground(WHITE);
+
+		g2.setColor(new Color(r,g,b));
+		g2.setFont(new Font("dhghdg", Font.ITALIC, 30));
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.drawString(a, x, y);
 
 	}
+
+}
 
 class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 
