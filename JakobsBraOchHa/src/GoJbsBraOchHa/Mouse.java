@@ -123,13 +123,12 @@ public class Mouse extends JPanel implements 	ActionListener,
 			(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2*1.5));
 	
 	public static void main(String[] arg) {
-		
 		try {
-		      UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		    } catch (Exception e) {
-		    	((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-		    	showMessageDialog(null, "Den angivna LookAndFeel hittades inte!","Error",ERROR_MESSAGE);
-		    }
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (Exception e) {
+			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+			showMessageDialog(null, "Den angivna LookAndFeel hittades inte!","Error",ERROR_MESSAGE);
+		}
 		try {
 			robot = new Robot();
 		} catch (Exception e) {
@@ -156,7 +155,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 		}
 		new setImageIcon();
 		new Pass();
-		
 	}
 
 	public Mouse(){
@@ -632,6 +630,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 			  }
 		  }
 		  new SpelaLjud(filnamn);
+		  new String();
 	  }
 	  
 }
@@ -930,7 +929,6 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		
 		frame.repaint();
 	}
-	public void keyTyped(KeyEvent e) {}
 	public void keyPressed(KeyEvent e) {
 		if(KeyEvent.getKeyText(e.getKeyCode()) == "Upp"){
 			hupp = true;
@@ -1059,6 +1057,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 	public void windowClosing(WindowEvent e) {
 		timer.stop();
 	}
+	public void keyTyped(KeyEvent e) {}
 	public void windowOpened(WindowEvent e) {}
 	public void windowClosed(WindowEvent e) {}
 	public void windowIconified(WindowEvent e) {}
@@ -1338,7 +1337,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		highFrame.setLocation(frame.getX()-frame.getWidth(),frame.getY());
 	}
 	private class Scorepanel extends JPanel{
-		public Scorepanel() {
+		private Scorepanel() {
 			setBackground(white);
 		}
 		
