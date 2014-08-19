@@ -45,7 +45,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 
 	private JFrame			huvudfönster = new JFrame("Hej Hej :D"), 
 							händelsefönster = new JFrame("Händelser"),
-							hastighetsfönster =  new JFrame(),
+							hastighetsfönster =  new JFrame("Ändra hastighet"),
 							om = new JFrame("Om"),
 							laddfönster = new JFrame("Startar..."),
 							avslutningsfönster = new JFrame("Avslutar...");
@@ -87,8 +87,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 							knapp3 = new JButton("Röd"),
 							knapp4 = new JButton("Gul"),
 							ok = new JButton("Klar"),
-							Autoscrollknapp = new JButton("Stäng av autoscroll"),
-							RensKnapp = new JButton("Rensa");
+							autoscrollknapp = new JButton("Stäng av autoscroll"),
+							rensKnapp = new JButton("Rensa");
 	
 	private JScrollPane 	jahaPane = new JScrollPane(text,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 											JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -101,18 +101,17 @@ public class Mouse extends JPanel implements 	ActionListener,
 							avslutningstext = new JLabel("Avslutar program...");
 	
 	private JSlider 		slider = new JSlider(HORIZONTAL,0,100,10);
- 	
-	private int				flyttHastighet = 10,posX = 125, posY = 75, textbredd;
 	
 	private Timer 			startTimer = new Timer(2, this),
 							slutTimer = new Timer(2, this);
 	
+	private int				flyttHastighet = 10,posX = 125, posY = 75, textbredd;
 	private Color			färg = new Color(0, 0, 255);
-	
 	private String 			texten = "Dra eller använd piltangenterna";
 	
 	private static JTextArea text = new JTextArea();
 	private static boolean 	autoscroll = true;
+	
 	public static int		antalFönster = 0;
 	public static Font 		typsnitt = new Font("Arial", 0, 40);
 	public static Image 	fönsterIcon;
@@ -194,8 +193,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 		händelseItem.addActionListener(this);
 		ok.addActionListener(this);
 		räknaItem.addActionListener(this);
-		Autoscrollknapp.addActionListener(this);
-		RensKnapp.addActionListener(this);
+		autoscrollknapp.addActionListener(this);
+		rensKnapp.addActionListener(this);
 		knappPanel.addMouseListener(this);
 		pongItem.addActionListener(this);
 		rörandeItem.addActionListener(this);
@@ -257,9 +256,9 @@ public class Mouse extends JPanel implements 	ActionListener,
 		
 		händelsefönster.setSize(500,500);
 		händelsefönster.setLayout(new BorderLayout());
-		händelsefönster.add(Autoscrollknapp,BorderLayout.NORTH);
+		händelsefönster.add(autoscrollknapp,BorderLayout.NORTH);
 		händelsefönster.add(jahaPane,BorderLayout.CENTER);
-		händelsefönster.add(RensKnapp,BorderLayout.SOUTH);
+		händelsefönster.add(rensKnapp,BorderLayout.SOUTH);
 		händelsefönster.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		händelsefönster.setAlwaysOnTop(true);
 		händelsefönster.setResizable(false);
@@ -453,19 +452,19 @@ public class Mouse extends JPanel implements 	ActionListener,
 		else if (knapp.getSource() == räknaItem){
 			new Räknare();
 		}
-		else if (knapp.getSource() == Autoscrollknapp){
+		else if (knapp.getSource() == autoscrollknapp){
 			if (autoscroll == true) {
 				autoscroll = false;
-				Autoscrollknapp.setText("Slå på autoscroll");
+				autoscrollknapp.setText("Slå på autoscroll");
 				skrivHändelsetext("Autoscroll avstängt");
 			}
 			else{
 				autoscroll = true;
-				Autoscrollknapp.setText("Stäng av autoscroll");
+				autoscrollknapp.setText("Stäng av autoscroll");
 				skrivHändelsetext("Autoscroll påslaget");
 			}			
 		}
-		else if (knapp.getSource()==RensKnapp){
+		else if (knapp.getSource()==rensKnapp){
 			text.setText(null);
 		}
 		else if (knapp.getSource()==pongItem) {
@@ -2929,9 +2928,7 @@ class Maze extends JPanel implements ActionListener, MouseMotionListener{
 		}
 
 
-		public void mouseDragged(MouseEvent arg0) {
-
-		}
+		public void mouseDragged(MouseEvent arg0) {}
 
 		public void mouseMoved(MouseEvent e) {
 
@@ -3168,15 +3165,13 @@ class Snake extends JPanel implements KeyListener, ActionListener{
 }
 
 @SuppressWarnings("serial")
-class Impossible extends JPanel implements ActionListener,
-KeyListener, MouseInputListener{
+class Impossible extends JPanel implements ActionListener,KeyListener, MouseInputListener,MouseWheelListener{
 
 	JFrame frame = new JFrame();
 	Timer timer = new Timer(1, this),
-			timer300 = new Timer(300, this),
-			timer3 = new Timer (3, this);
+			timer200 = new Timer(200, this);
 	String string = new String();
-	int x,y,r,g,b;
+	int x,y,r,g,b,textbredd=100,texthöjd=50;
 	String a;
 	public Impossible(String textString){
 
@@ -3197,13 +3192,12 @@ KeyListener, MouseInputListener{
 		frame.addMouseMotionListener(this);
 		frame.addKeyListener(this);
 		frame.addMouseListener(this);
+		frame.addMouseWheelListener(this);
 		frame.setAlwaysOnTop(true);
 		frame.setVisible(true);
 		
 		timer.start();
-		timer300.start();
-		timer3.start();
-		
+		timer200.start();
 	
 	}
 	
@@ -3224,36 +3218,25 @@ KeyListener, MouseInputListener{
 
 			frame.toFront();
 			
-			if(frame.isVisible()){
-				robot.mouseMove(frame.getWidth()/2, frame.getHeight()/2);
-
-			}
+//			if(frame.isVisible()){
+//				robot.mouseMove(frame.getWidth()/2, frame.getHeight()/2);
+//			}
 
 		}
 		
-		if (timer3 == arg0.getSource()){
+		if (arg0.getSource() == timer200){
 			
+			x = random.nextInt(frame.getWidth()-textbredd);
+			y = random.nextInt(frame.getHeight()-texthöjd);
 			r = random.nextInt(255);
-
 			g = random.nextInt(255);
-
 			b = random.nextInt(255);
-		
-		}
-		if (arg0.getSource() == timer300){
-			x = random.nextInt(1880);
-
-			y = random.nextInt(990);
-
 		}
 	}
 
 
-	public void keyPressed(KeyEvent arg0) {
-	}
-	
-	public void keyReleased(KeyEvent arg0) {
-	}
+	public void keyPressed(KeyEvent arg0) {}
+	public void keyReleased(KeyEvent arg0) {}
 
 	int nr;
 	public void keyTyped(KeyEvent arg0) {
@@ -3289,28 +3272,22 @@ KeyListener, MouseInputListener{
 	
 	public void mouseClicked(MouseEvent arg0) {
 	
-		frame.add(this);
 		repaint();
 	
 	}
 	
 	
-	public void mouseEntered(MouseEvent arg0) {
-	}
-	
-	public void mouseExited(MouseEvent arg0) {
-	}
+	public void mouseEntered(MouseEvent arg0) {}
+	public void mouseExited(MouseEvent arg0) {}
 	
 	public void mousePressed(MouseEvent arg0) {
-		
-		frame.add(this);
+
 		repaint();
 		
 	}
 	
 	public void mouseReleased(MouseEvent arg0) {
-		
-		frame.add(this);
+
 		repaint();
 		
 	}
@@ -3323,7 +3300,13 @@ KeyListener, MouseInputListener{
 		g2.setFont(new Font("dhghdg", Font.ITALIC, 30));
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.drawString(a, x, y);
+		textbredd = g2.getFontMetrics().stringWidth(a);
+		texthöjd = g2.getFontMetrics().getHeight();
 
+	}
+
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		repaint();
 	}
 
 }
