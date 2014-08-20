@@ -10,7 +10,7 @@
 		<all-permissions/>
 	</security>
 	<resources>
-		<j2se version="1.7+" />
+		<j2se version="1.8+" />
 		<jar href="GoJb.jar" main="true" />
 	</resources>
 	<application-desc main-class="applet.GoJbApplet.class" />

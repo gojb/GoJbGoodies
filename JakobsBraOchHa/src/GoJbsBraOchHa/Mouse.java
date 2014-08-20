@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.io.*;
-import java.text.SimpleDateFormat;
+import java.text.*;
 import java.util.*;
 
 import javax.crypto.*;
@@ -140,11 +140,10 @@ public class Mouse extends JPanel implements 	ActionListener,
 			System.err.println("Properties saknas");
 		}
 		
-		class setImageIcon{
-			public setImageIcon() {
+		class SetImageIcon{
+			public SetImageIcon() {
 				
 				try {
-					
 					fönsterIcon = new ImageIcon(getClass().getResource("/images/Java-icon.png")).getImage();
 				} 
 				catch (Exception e) {
@@ -153,7 +152,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 				}
 			}
 		}
-		new setImageIcon();
+		new SetImageIcon();
 		new Pass();
 	}
 
@@ -821,11 +820,11 @@ class Räknare implements ActionListener{
 	public void RäknaUt() {
 
 		try {
-			 a = Double.parseDouble(Summa.getText());
+			a = Double.parseDouble(Summa.getText());
 		} catch (Exception e) {
 			a = 0;
 		}
-		
+
 		try {
 			b = Double.parseDouble(Räknartext.getText());
 		} catch (Exception e) {
