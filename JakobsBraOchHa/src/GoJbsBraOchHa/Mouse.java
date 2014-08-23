@@ -156,7 +156,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		new Pass();
 	}
 
-	public Mouse(){
+	Mouse(){
 		
 		laddtext.setFont(typsnitt);
 		laddtext.setHorizontalAlignment(CENTER);
@@ -347,8 +347,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 				startTimer.stop();
 				laddfönster.dispose();
 				huvudfönster.setVisible(true);
-				
-
 				robot.mouseMove(huvudfönster.getX() + huvudfönster.getWidth()/2,
 								huvudfönster.getY() + huvudfönster.getHeight()/2);
 				spelaLjud("/images/tada.wav");
@@ -366,13 +364,10 @@ public class Mouse extends JPanel implements 	ActionListener,
 		}
 		else if (knapp.getSource() == avslutaItem){	
 			avslutningsfönster.setVisible(true);
-			
 			slutTimer.start();
-			
 		}
 		else if(knapp.getSource() == omItem){
 			om.setVisible(true);
-			
 		}
 		else if(knapp.getSource() == knapp1){
 			färg = blue;
@@ -389,7 +384,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 			knapp2.setEnabled(false);
 			knapp3.setEnabled(true);
 			knapp4.setEnabled(true);
-			
 		}
 		else if(knapp.getSource() == knapp3){
 			färg = red;
@@ -398,7 +392,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 			knapp2.setEnabled(true);
 			knapp3.setEnabled(false);
 			knapp4.setEnabled(true);
-	
 		}	
 		else if(knapp.getSource() == knapp4){
 			färg = yellow;
@@ -492,10 +485,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 				prop.setProperty("debug", "false");
 				debugItem.setText("Debug är nu: " +prop.getProperty("debug"));
 			}
-			try {
-				prop.store(new FileWriter(new File(System.getProperty("user.home") + 
-						"\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), "debug");
-			} catch (IOException e) {}
+			sparaProp("debug");
 			
 		}
 		
@@ -589,49 +579,64 @@ public class Mouse extends JPanel implements 	ActionListener,
 	}
 	
 	public void paintComponent(Graphics g){
-		  
+
 		super.paintComponent(g);
-	    Graphics2D g2 = (Graphics2D)g;
-	    
-	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	    g2.setFont(new Font("Serif", Font.ROMAN_BASELINE, 35));
+		Graphics2D g2 = (Graphics2D)g;
+
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setFont(new Font("Serif", Font.ROMAN_BASELINE, 35));
 		g2.drawString(texten,posX, posY); 
-		
+
 		textbredd = g2.getFontMetrics().stringWidth(texten);
-	  }
-	  public void setTexten(){
-		  String Text = showInputDialog("Ändra text på dragbar remsa");
-		  setTexten(Text);
-		  
-	  }
-	  public void setTexten(String Text){
-		  if(Text == null){
-			  Text = "Dra eller använd piltangenterna";
-		  }
-		  texten = Text;
-		  System.out.println("Texten ändrad till: " + texten);
-	  
-	  }
-	  public static void spelaLjud(String filnamn){
+	}
+	public void setTexten(){
+		String Text = showInputDialog("Ändra text på dragbar remsa");
+		setTexten(Text);
 
-		  class SpelaLjud{
-			  SpelaLjud(String filnamn){
-				  try {
-					  Clip clip = AudioSystem.getClip();
-					  clip.open(AudioSystem.getAudioInputStream(getClass().getResource(filnamn)));
-					  clip.start();
+	}
+	public void setTexten(String Text){
+		if(Text == null){
+			Text = "Dra eller använd piltangenterna";
+		}
+		texten = Text;
+		System.out.println("Texten ändrad till: " + texten);
 
-				  } catch (Exception e) {
-					  ((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-					  showMessageDialog(null, "Filen: \"" + filnamn + "\" hittades inte", "Ljud", ERROR_MESSAGE);
-				  }
+	}
+	public static void spelaLjud(String filnamn){
 
-			  }
-		  }
-		  new SpelaLjud(filnamn);
-		  new String();
-	  }
-	  
+		class SpelaLjud{
+			SpelaLjud(String filnamn){
+				try {
+					Clip clip = AudioSystem.getClip();
+					clip.open(AudioSystem.getAudioInputStream(getClass().getResource(filnamn)));
+					clip.start();
+
+				} catch (Exception e) {
+					((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+					showMessageDialog(null, "Filen: \"" + filnamn + "\" hittades inte", "Ljud", ERROR_MESSAGE);
+				}
+
+			}
+		}
+		new SpelaLjud(filnamn);
+		new String();
+	}
+	public static void sparaProp(String kommentar) {
+		try {
+			prop.store(new FileWriter(new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")),kommentar);
+		} catch (Exception e) {
+			System.err.println("ga");
+			try {
+				new File((System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\")).mkdir();
+				new File((System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\")).mkdir();
+				prop.store(new FileWriter(new File(System.getProperty("user.home") + 
+						"\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), kommentar);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+				System.err.println("Problem med åtkomst till disk!");
+			}
+		}  
+	} 
 }
 class Räknare implements ActionListener{
 
@@ -1150,11 +1155,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 			prop.setProperty("Score5", (highscore[5]));
 			highFrame.repaint();;
 		}
-		
-		try {
-			prop.store(new FileWriter(new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")),"Highscore i Snakespel");
-		} catch (Exception e) {}
-		
+		sparaProp("Highscore i Snakespel");
 		skrivHändelsetext(highscore[1]);
 		skrivHändelsetext(highscore[2]);
 		skrivHändelsetext(highscore[3]);
@@ -1415,6 +1416,31 @@ class Studsa extends JPanel implements ActionListener{
 			repaint();
 		}
 	}
+}
+class Ping{
+	
+    public Ping(String string){
+    	GoJbFrame frame = new GoJbFrame();
+    	JTextArea textArea = new JTextArea();
+    	JScrollPane scrollPane = new JScrollPane(textArea);
+    	
+    	frame.add(scrollPane);
+    	
+		try {
+			
+			BufferedReader inputStream = new BufferedReader(
+					new InputStreamReader(Runtime.getRuntime().exec("ping " + string).getInputStream()));
+ 
+			String s;
+			// reading output stream of the command
+			while ((s = inputStream.readLine()) != null) {
+				System.out.println(s);
+			}
+ 
+		} catch (Exception e) {e.printStackTrace();}
+		
+
+    }
 }
 
 @SuppressWarnings("serial")
@@ -3839,19 +3865,9 @@ class Pass implements ActionListener{
 	}
 	public static void logout() {
 
-		class log{
-			log() {
+		prop.setProperty("pass", "0000000000000000");
+		sparaProp("loguot");
 
-				try {
-					prop.setProperty("pass", "0000000000000000");
-					prop.store(new FileWriter(new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), "login");
-				} catch (IOException e) {
-					e.printStackTrace();
-
-				}
-			}
-		}
-		new log();
 	}
 	private void checkLogin() {	
 		Scanner pr = null;
@@ -3934,25 +3950,11 @@ class Pass implements ActionListener{
 							tid = tid + "\0";
 						}
 					}
-					
+
 					String string = new String(BASE64EncoderStream.encode(bs));
-					
+
 					prop.setProperty("pass", string);
-					try {
-						prop.store(new FileWriter(new File(System.getProperty("user.home") + 
-												"\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), "login");
-					} catch (Exception e1) {
-						System.err.println("ga");
-						try {
-							new File((System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\")).mkdir();
-							new File((System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\")).mkdir();
-							prop.store(new FileWriter(new File(System.getProperty("user.home") + 
-									"\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), "login");
-						} catch (Exception e2) {
-							System.err.println("Problem med åtkomst till disk!");
-							 
-						}
-					}
+					sparaProp("login");
 					if (debugMode) {
 						System.err.println("Sparar " + tid);
 						System.err.print("byte " +  bs + " ");
