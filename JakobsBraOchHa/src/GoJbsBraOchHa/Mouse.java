@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.text.*;
 import java.util.*;
+import java.util.List;
 
 import javax.crypto.*;
 import javax.crypto.spec.*;
@@ -23,7 +24,6 @@ import static javax.swing.SwingConstants.*;
 import static java.awt.Color.*;
 import static javax.swing.JFrame.*;
 import static javax.swing.JOptionPane.*;
-
 
 /**
  * Det här programmet innehåller lite
@@ -79,9 +79,9 @@ public class Mouse extends JPanel implements 	ActionListener,
 						  	studsItem = new JMenuItem("Öppna Studsande Objekt"),
 						  	snakeItem = new JMenuItem("Spela Snake"),
 							loggaUtItem = new JMenuItem("Logga ut"),
-							debugItem = new JMenuItem("Debug är nu: " +prop.getProperty("debug", "false"));
-		
-	
+							debugItem = new JMenuItem("Debug är nu: " +prop.getProperty("debug", "false")),
+							mandatItem = new JMenuItem("Simulator till riksdagsmandat");
+
 	private JButton 		knapp1 = new JButton("Blå"),
 							knapp2 = new JButton("Grön"),
 							knapp3 = new JButton("Röd"),
@@ -199,6 +199,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		snakeItem.addActionListener(this);
 		loggaUtItem.addActionListener(this);
 		debugItem.addActionListener(this);
+		mandatItem.addActionListener(e -> new Mandat());
 		
 		knapp1.setEnabled(false);
 		knapp1.addActionListener(this);
@@ -220,6 +221,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		arkivMeny.add(räknaItem);
 		arkivMeny.add(pongItem);
 		arkivMeny.add(snakeItem);
+		arkivMeny.add(mandatItem);
 		arkivMeny.addSeparator();
 		arkivMeny.add(loggaUtItem);
 		arkivMeny.add(avslutaItem);
@@ -636,7 +638,128 @@ public class Mouse extends JPanel implements 	ActionListener,
 				System.err.println("Problem med åtkomst till disk!");
 			}
 		}  
-	} 
+	}
+	void startamandat() {
+		new Mandat();
+	}
+	static class Mandat{
+		JFrame frame = new JFrame("Mandatsimulator för riksdagen");
+		final int i = 10;
+		JTextField[] värden = new JTextField[i];
+		JLabel[] mandat = new JLabel[i],
+				 parti = new JLabel[i];
+		JLabel summaLabel = new JLabel();
+		JLabel mellanrum = new JLabel();
+		JLabel mellanrum2 = new JLabel();
+		double[] tal = new double[i],
+				uddatal = new double[i];
+		int[] antalmandat = new int[i];
+		
+		JButton button = new JButton("Beräkna");
+		String[] partiNamn = {	"",
+								"Socialdemokraterna",
+								"Vänsterpartiet",
+								"Miljöpartiet",
+								"Moderaterna",
+								"Centerpartiet",
+								"Folkpartiet",
+								"Kristdemokraterna",
+								"Sverigedemokraterna",
+								"Övriga"};
+		public Mandat() {
+			
+			JLabel label = new JLabel("Parti:");
+			frame.add(label);
+			JLabel label2 = new JLabel("Röster:");
+			frame.add(label2);
+			JLabel label3 = new JLabel("Mandat i riksdagen:");
+			frame.add(label3);
+			label.setOpaque(true);
+			label2.setOpaque(true);
+			label3.setOpaque(true);
+			label.setBackground(white);
+			label2.setBackground(white);
+			label3.setBackground(white);
+			summaLabel.setOpaque(true);
+			summaLabel.setBackground(white);
+			for (int i = 1; i < mandat.length; i++) {
+				parti[i]=new JLabel(partiNamn[i]);
+				parti[i].setIcon(new ImageIcon(getClass().getResource("/images/Partier/" + partiNamn[i] + ".png")));
+				parti[i].setBackground(white);
+				parti[i].setOpaque(true);
+				värden[i]=new JTextField();
+				värden[i].addCaretListener(e -> {uppdaterasumma();});
+				mandat[i]=new JLabel();
+				mandat[i].setOpaque(true);
+				mandat[i].setBackground(white);
+				frame.add(parti[i]);
+				frame.add(värden[i]);
+				frame.add(mandat[i]);
+				uddatal[i]=1.4;
+			}
+			mellanrum.setOpaque(true);
+			mellanrum.setBackground(white);
+			mellanrum2.setOpaque(true);
+			mellanrum2.setBackground(white);
+			button.addActionListener(e -> {beräkna();});
+			frame.add(mellanrum);
+			frame.add(summaLabel);
+			frame.add(button);
+			frame.setLayout(new GridLayout(i+1,2,1,2));
+			frame.setIconImage(fönsterIcon);
+			frame.getContentPane().setBackground(black);
+			frame.setDefaultCloseOperation(3);
+			frame.pack();
+			frame.setLocationRelativeTo(null);
+			frame.setVisible(true);
+		}
+		private void uppdaterasumma() {
+			long s = 0;
+			for (int i = 1; i < mandat.length; i++) {
+				
+				try {
+					s = s + Long.parseLong(värden[i].getText());
+				} catch (NumberFormatException e) {}
+				
+			}
+			summaLabel.setText("Totalt: " + Long.toString(s));
+		}
+		private void beräkna(){
+			for (int i1 = 1; i1 < 350; i1++) {
+				List<Double> list = new ArrayList<Double>(i);
+				for (int i = 1; i < mandat.length; i++) {
+					try {
+						tal[i] = Double.parseDouble(värden[i].getText())/uddatal[i];
+					} catch (Exception e) {
+						tal[i]=0;
+					}
+					try {
+						list.add(tal[i]);
+					} catch (NumberFormatException e) {
+						list.add(0.0);
+					}
+				}
+				for (int i = 1; i < mandat.length; i++) {
+					if (Collections.max(list)==tal[i]) {
+						System.err.println(partiNamn[i]);
+						antalmandat[i]++;
+						if (uddatal[i]==1.4) {
+							uddatal[i]=3;
+						}
+						else {
+							uddatal[i]=uddatal[i]+2;
+						}
+						break;
+					}
+				}
+			}
+			for (int i = 1; i < mandat.length; i++) {
+				mandat[i].setText(Integer.toString(antalmandat[i]));
+				antalmandat[i]=0;
+				uddatal[i]=1.4;
+			}
+		}
+	}
 }
 class Räknare implements ActionListener{
 
