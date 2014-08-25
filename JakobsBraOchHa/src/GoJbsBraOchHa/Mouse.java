@@ -643,43 +643,51 @@ public class Mouse extends JPanel implements 	ActionListener,
 		new Mandat();
 	}
 	static class Mandat{
-		JFrame frame = new JFrame("Mandatsimulator för riksdagen");
-		final int i = 10;
-		JTextField[] värden = new JTextField[i];
-		JLabel[] mandat = new JLabel[i],
-				 parti = new JLabel[i];
-		JLabel summaLabel = new JLabel();
-		JLabel mellanrum = new JLabel();
-		JLabel mellanrum2 = new JLabel();
-		double[] tal = new double[i],
-				uddatal = new double[i];
-		int[] antalmandat = new int[i];
-		
-		JButton button = new JButton("Beräkna");
-		String[] partiNamn = {	"",
-								"Socialdemokraterna",
-								"Vänsterpartiet",
-								"Miljöpartiet",
-								"Moderaterna",
-								"Centerpartiet",
-								"Folkpartiet",
-								"Kristdemokraterna",
-								"Sverigedemokraterna",
-								"Övriga"};
+		private JFrame frame = new JFrame("Mandatsimulator för riksdagen");
+		private final int i = 11;
+		private JTextField[] värden = new JTextField[i];
+		private JLabel[] mandat = new JLabel[i],
+				 		 parti = new JLabel[i],
+				 		 procentLabels = new JLabel[i];
+		private JLabel summaLabel = new JLabel(),
+					   mellanrum = new JLabel(),
+					   mellanrum2 = new JLabel();
+		private double[] tal = new double[i],
+						 uddatal = new double[i],
+						 procent = new double[i];
+		private int[] antalmandat = new int[i];
+		private JButton button = new JButton("Öppna jämförelser");
+		private String[] partiNamn = {	"",
+										"Socialdemokraterna",
+										"Vänsterpartiet",
+										"Miljöpartiet",
+										"Moderaterna",
+										"Centerpartiet",
+										"Folkpartiet",
+										"Kristdemokraterna",
+										"Sverigedemokraterna",
+										"Feministiskt initiativ",
+										"Övriga"};
 		public Mandat() {
 			
 			JLabel label = new JLabel("Parti:");
-			frame.add(label);
 			JLabel label2 = new JLabel("Röster:");
-			frame.add(label2);
 			JLabel label3 = new JLabel("Mandat i riksdagen:");
+			JLabel label4 = new JLabel("Procent av röster");
+			
+			frame.add(label);
+			frame.add(label2);
+			frame.add(label4);
 			frame.add(label3);
+			
 			label.setOpaque(true);
 			label2.setOpaque(true);
 			label3.setOpaque(true);
+			label4.setOpaque(true);
 			label.setBackground(white);
 			label2.setBackground(white);
 			label3.setBackground(white);
+			label4.setBackground(white);
 			summaLabel.setOpaque(true);
 			summaLabel.setBackground(white);
 			for (int i = 1; i < mandat.length; i++) {
@@ -692,8 +700,12 @@ public class Mouse extends JPanel implements 	ActionListener,
 				mandat[i]=new JLabel();
 				mandat[i].setOpaque(true);
 				mandat[i].setBackground(white);
+				procentLabels[i]=new JLabel();
+				procentLabels[i].setOpaque(true);
+				procentLabels[i].setBackground(white);
 				frame.add(parti[i]);
 				frame.add(värden[i]);
+				frame.add(procentLabels[i]);
 				frame.add(mandat[i]);
 				uddatal[i]=1.4;
 			}
@@ -701,11 +713,11 @@ public class Mouse extends JPanel implements 	ActionListener,
 			mellanrum.setBackground(white);
 			mellanrum2.setOpaque(true);
 			mellanrum2.setBackground(white);
-			button.addActionListener(e -> {beräkna();});
+			button.addActionListener(e -> {jämför();});
 			frame.add(mellanrum);
 			frame.add(summaLabel);
 			frame.add(button);
-			frame.setLayout(new GridLayout(i+1,2,1,2));
+			frame.setLayout(new GridLayout(i+1,4,1,2));
 			frame.setIconImage(fönsterIcon);
 			frame.getContentPane().setBackground(black);
 			frame.setDefaultCloseOperation(3);
@@ -713,35 +725,49 @@ public class Mouse extends JPanel implements 	ActionListener,
 			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
 		}
+		long s = 0;
 		private void uppdaterasumma() {
-			long s = 0;
+			s=0;
 			for (int i = 1; i < mandat.length; i++) {
-				
 				try {
 					s = s + Long.parseLong(värden[i].getText());
 				} catch (NumberFormatException e) {}
-				
+			}
+			for (int i = 1; i < mandat.length; i++) {
+				try {
+					procentLabels[i].setText(Double.toString(procent[i]=(double) Math.round(((double)Long.parseLong(värden[i].getText()))/((double)s)*10000)/100)+"%");
+				} catch (Exception e) {
+					procentLabels[i].setText("0%");
+				}
 			}
 			summaLabel.setText("Totalt: " + Long.toString(s));
+			beräkna();
+
 		}
 		private void beräkna(){
+			for (int i = 1; i < antalmandat.length; i++) {
+					antalmandat[i]=0;
+					uddatal[i]=1.4;
+				}
 			for (int i1 = 1; i1 < 350; i1++) {
 				List<Double> list = new ArrayList<Double>(i);
+				
 				for (int i = 1; i < mandat.length; i++) {
-					try {
-						tal[i] = Double.parseDouble(värden[i].getText())/uddatal[i];
-					} catch (Exception e) {
+					
+					if (procent[i]>=4.0) {
+						try {
+							tal[i] = Double.parseDouble(värden[i].getText())/uddatal[i];
+						} catch (NumberFormatException e) {
+							tal[i]=0;
+						}
+					}
+					else{
 						tal[i]=0;
 					}
-					try {
-						list.add(tal[i]);
-					} catch (NumberFormatException e) {
-						list.add(0.0);
-					}
+					list.add(tal[i]);
 				}
 				for (int i = 1; i < mandat.length; i++) {
 					if (Collections.max(list)==tal[i]) {
-						System.err.println(partiNamn[i]);
 						antalmandat[i]++;
 						if (uddatal[i]==1.4) {
 							uddatal[i]=3;
@@ -755,8 +781,30 @@ public class Mouse extends JPanel implements 	ActionListener,
 			}
 			for (int i = 1; i < mandat.length; i++) {
 				mandat[i].setText(Integer.toString(antalmandat[i]));
-				antalmandat[i]=0;
-				uddatal[i]=1.4;
+			}
+		}
+		void jämför(){
+			JFrame frame = new JFrame();
+			JCheckBox[] checkBoxes = new JCheckBox[i];
+			JLabel summa = new JLabel();
+			for (int i = 1; i < checkBoxes.length; i++) {
+				checkBoxes[i]=new JCheckBox(partiNamn[i]);
+				frame.add(checkBoxes[i]);
+				checkBoxes[i].addActionListener(e -> {
+					int summan=0;
+					for (int i1 = 1; i1 < checkBoxes.length; i1++) {
+						System.err.println(antalmandat[i1]);
+						if (checkBoxes[i1].isSelected()) {
+							summan=summan+antalmandat[i1];
+						}
+					}
+					summa.setText(Integer.toString(summan));
+				});
+				frame.setLayout(new GridLayout(i+1, 1));
+				frame.add(summa);
+				frame.setVisible(true);
+				frame.pack();
+				frame.setLocationRelativeTo(null);
 			}
 		}
 	}
