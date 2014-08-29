@@ -23,20 +23,33 @@ private static final long serialVersionUID = 1L;
 	
 	
 	public GoJbFrame() {
+		this("", true);
+	}
+	public GoJbFrame(String title){
+		this(title,true);
+	}
+	public GoJbFrame(String title,Boolean boolean1){
 		setSize(500, 500);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(3);
-		setVisible(true);
-		
+		setVisible(boolean1);
+		setTitle(title);
 		try {
 			setIconImage(new ImageIcon(getClass().getResource("/images/Java-icon.png")).getImage());
 		} catch (Exception e) {
 			System.err.println("Ikon saknas");
 		}
 	}
-	public GoJbFrame(String title){
-		this();
-		setTitle(title);
+}
+class Standard{
+	public Standard(JFrame frame) {
+		frame.setSize(500, 500);
+		frame.setLocationRelativeTo(null);
 		
+		try {
+			frame.setIconImage(new ImageIcon(getClass().getResource("/images/Java-icon.png")).getImage());
+		} catch (Exception e) {
+			System.err.println("Ikon saknas");
+		}
 	}
 }

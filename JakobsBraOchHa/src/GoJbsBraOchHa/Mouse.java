@@ -80,7 +80,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 						  	snakeItem = new JMenuItem("Spela Snake"),
 							loggaUtItem = new JMenuItem("Logga ut"),
 							debugItem = new JMenuItem("Debug är nu: " +prop.getProperty("debug", "false")),
-							mandatItem = new JMenuItem("Simulator till riksdagsmandat");
+							mandatItem = new JMenuItem("Simulator till riksdagsmandat"),
+							glosItem = new JMenuItem("Träna på glosor");
 
 	private JButton 		knapp1 = new JButton("Blå"),
 							knapp2 = new JButton("Grön"),
@@ -153,7 +154,13 @@ public class Mouse extends JPanel implements 	ActionListener,
 			}
 		}
 		new SetImageIcon();
+
+		if (arg.length!=0 && arg[0]=="Glosor") {
+			new Glosor();
+			return;
+		}
 		new Pass();
+		
 	}
 
 	Mouse(){
@@ -200,6 +207,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		loggaUtItem.addActionListener(this);
 		debugItem.addActionListener(this);
 		mandatItem.addActionListener(e -> new Mandat());
+		glosItem.addActionListener(e -> new Glosor());
 		
 		knapp1.setEnabled(false);
 		knapp1.addActionListener(this);
@@ -222,6 +230,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		arkivMeny.add(pongItem);
 		arkivMeny.add(snakeItem);
 		arkivMeny.add(mandatItem);
+		arkivMeny.add(glosItem);
 		arkivMeny.addSeparator();
 		arkivMeny.add(loggaUtItem);
 		arkivMeny.add(avslutaItem);
@@ -784,7 +793,14 @@ public class Mouse extends JPanel implements 	ActionListener,
 			}
 		}
 		void jämför(){
-			JFrame frame = new JFrame();
+			class Diagram extends JPanel{
+				protected void paintComponent(Graphics g) {
+//					Graphics2D g2 = (Graphics2D) g;
+					
+				}
+			}
+			JFrame frame = new JFrame(),
+					frame2 = new JFrame();
 			JCheckBox[] checkBoxes = new JCheckBox[i];
 			JLabel summa = new JLabel();
 			for (int i = 1; i < checkBoxes.length; i++) {
@@ -800,13 +816,18 @@ public class Mouse extends JPanel implements 	ActionListener,
 					}
 					summa.setText(Integer.toString(summan));
 				});
-				frame.setLayout(new GridLayout(i+1, 1));
-				frame.add(summa);
-				frame.setVisible(true);
-				frame.pack();
-				frame.setLocationRelativeTo(null);
+
 			}
+			frame.setLayout(new GridLayout(i+1, 1));
+			frame.add(summa);
+			frame.setIconImage(fönsterIcon);
+			frame.pack();
+			frame.setLocationRelativeTo(null);
+			frame.setVisible(true);
+			frame2.add(new Diagram());
+
 		}
+		
 	}
 }
 class Räknare implements ActionListener{
@@ -1612,6 +1633,124 @@ class Ping{
 		
 
     }
+}
+class Glosor{
+	private GoJbFrame frame = new GoJbFrame("Glosor");
+	private GoJbFrame frame2 = new GoJbFrame("Ställ in",false);
+	private JLabel label = new JLabel();
+	private JTextField textField = new JTextField();
+	private JMenuBar bar = new JMenuBar();
+	private JMenu instMenu = new JMenu("Inställningar");
+	private JMenuItem instItem = new JMenuItem("Ställ in glosor");
+	private JButton button = new JButton("Spara"),button2 = new JButton("Byt plats");
+	private String[] språk1 = new String[30],
+					språk2 = new String[språk1.length];
+	private JTextField[] ettFields = new JTextField[språk1.length],
+						tvåFields = new JTextField[språk1.length];
+	private int index,fel,rätt;
+	private ArrayList<String> ettList;
+	private ArrayList<String> tvåList;
+	
+	Glosor() {
+		frame2.add(new JLabel("Språk1:"));
+		frame2.add(new JLabel("Språk2:"));
+		for (int i = 0; i < språk1.length; i++) {
+			språk1[i]=prop.getProperty("språk1[" + i + "]");
+			språk2[i]=prop.getProperty("språk2[" + i + "]");
+			ettFields[i]=new JTextField();
+			tvåFields[i]=new JTextField();
+			frame2.add(ettFields[i]);
+			frame2.add(tvåFields[i]);
+			ettFields[i].setText(språk1[i]);
+			tvåFields[i].setText(språk2[i]);
+		}
+		frame.setJMenuBar(bar);
+		frame.setLayout(new BorderLayout());
+		frame.add(label,BorderLayout.CENTER);
+		frame.add(textField,BorderLayout.SOUTH);	
+		frame2.setLocation(frame2.getX(), 5);
+		frame2.setUndecorated(true);
+		frame2.add(button2);
+		frame2.add(button);
+		frame2.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		frame2.setLayout(new GridLayout(språk1.length+2, 2));
+		frame2.pack();
+		label.setFont(typsnitt);
+		label.setVerticalAlignment(BOTTOM);
+		label.setHorizontalAlignment(CENTER);
+		textField.setFont(typsnitt);
+		bar.add(instMenu);
+		instMenu.add(instItem);
+		instItem.addActionListener(e -> {frame2.setVisible(true);frame.setEnabled(false);});
+		button.addActionListener(e -> spara());
+		button2.addActionListener(e -> byt());
+		textField.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent e) {}public void keyReleased(KeyEvent e) {}
+			public void keyPressed(KeyEvent e) {if (e.getKeyCode()==10) {kolla();}}}
+		);
+		blanda();
+		sätt();
+	}
+	private void byt() {
+		String[] strings = new String[ettFields.length];
+		for (int i = 0; i < ettFields.length; i++) {
+			strings[i]=ettFields[i].getText();
+			ettFields[i].setText(tvåFields[i].getText());
+			tvåFields[i].setText(strings[i]);
+		}
+		sätt();
+	}
+	private void spara() {
+		for (int i = 0; i < ettFields.length; i++) {
+			språk1[i]=ettFields[i].getText();
+			språk2[i]=tvåFields[i].getText();
+			prop.setProperty("språk1[" + i + "]", språk1[i]);
+			prop.setProperty("språk2[" + i + "]", språk2[i]);
+		}
+		sparaProp("Glosor");
+		frame2.dispose();
+		frame.setEnabled(true);
+		frame.toFront();
+		blanda();
+		sätt();
+	}
+	private void kolla() {
+		if (textField.getText().equals(tvåList.get(index))){
+			rätt++;
+			System.out.println("Rätt");
+		}
+		else {
+			fel++;
+			System.err.println("Fel");
+		}
+		index++;
+		textField.setText("");
+		sätt();
+	}
+	private void sätt() {
+		if (index==språk1.length) {
+			showMessageDialog(frame, "Rätt: " + rätt + "\nFel: " + fel, "Resultat", INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/images/Done.jpg")));
+			index=0;
+			rätt=0;
+			fel=0;
+		}
+		if (ettList.get(index).equals("")==false&&ettList.get(index).equals(null)==false) {
+			label.setText(ettList.get(index));
+			frame.repaint();
+		}
+		else {
+			index++;
+			sätt();
+		}
+	}
+	private void blanda(){
+		index=0;
+		ettList = new ArrayList<String>(Arrays.asList(språk1)); 
+		tvåList = new ArrayList<String>(Arrays.asList(språk2)); 
+		Long seed = System.currentTimeMillis();
+		Collections.shuffle(ettList,new Random(seed));
+		Collections.shuffle(tvåList,new Random(seed));
+	}
 }
 
 @SuppressWarnings("serial")
