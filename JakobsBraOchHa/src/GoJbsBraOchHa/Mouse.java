@@ -155,7 +155,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		}
 		new SetImageIcon();
 
-		if (arg.length!=0 && arg[0]=="Glosor") {
+		if (arg.length!=0 && arg[0].equals("Glosor")) {
 			new Glosor();
 			return;
 		}
@@ -1773,6 +1773,11 @@ class Glosor{
 		frame2.dispose();
 		frame.setEnabled(true);
 		frame.toFront();
+		index=0;
+		rätt=0;
+		fel=0;
+		rättLabel.setText("Rätt: 0");
+		felLabel.setText("Fel: 0");
 		blanda();
 		sätt();
 	}
