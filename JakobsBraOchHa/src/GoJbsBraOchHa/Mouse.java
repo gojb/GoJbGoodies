@@ -648,9 +648,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 			}
 		}  
 	}
-	void startamandat() {
-		new Mandat();
-	}
 	static class Mandat{
 		private JFrame frame = new JFrame("Mandatsimulator för riksdagen");
 		private final int i = 11;
@@ -677,6 +674,9 @@ public class Mouse extends JPanel implements 	ActionListener,
 										"Sverigedemokraterna",
 										"Feministiskt initiativ",
 										"Övriga"};
+		private Color[] färger = {white,red,red.darker(),green,blue,green.brighter(),blue,blue.darker(),yellow,magenta,gray};
+		private JFrame[] jämförelseFrames = new JFrame[20];
+		int nr;
 		public Mandat() {
 			
 			JLabel label = new JLabel("Parti:");
@@ -723,9 +723,10 @@ public class Mouse extends JPanel implements 	ActionListener,
 			mellanrum2.setOpaque(true);
 			mellanrum2.setBackground(white);
 			button.addActionListener(e -> {jämför();});
-			frame.add(mellanrum);
-			frame.add(summaLabel);
 			frame.add(button);
+			frame.add(summaLabel);
+			frame.add(mellanrum);
+			frame.add(mellanrum2);
 			frame.setLayout(new GridLayout(i+1,4,1,2));
 			frame.setIconImage(fönsterIcon);
 			frame.getContentPane().setBackground(black);
@@ -754,59 +755,94 @@ public class Mouse extends JPanel implements 	ActionListener,
 
 		}
 		private void beräkna(){
+
 			for (int i = 1; i < antalmandat.length; i++) {
-					antalmandat[i]=0;
-					uddatal[i]=1.4;
-				}
-			for (int i1 = 1; i1 < 350; i1++) {
-				List<Double> list = new ArrayList<Double>(i);
-				
-				for (int i = 1; i < mandat.length; i++) {
-					
-					if (procent[i]>=4.0) {
-						try {
-							tal[i] = Double.parseDouble(värden[i].getText())/uddatal[i];
-						} catch (NumberFormatException e) {
-							tal[i]=0;
+				antalmandat[i] = 0;
+				uddatal[i] = 1.4;
+			}
+			if (s!=0) {
+				for (int i1 = 1; i1 < 350; i1++) {
+					List<Double> list = new ArrayList<Double>(i);
+
+					for (int i = 1; i < mandat.length; i++) {
+
+						if (procent[i] >= 4.0) {
+							try {
+								tal[i] = Double
+										.parseDouble(värden[i].getText())
+										/ uddatal[i];
+							} catch (NumberFormatException e) {
+								tal[i] = 0;
+							}
+						} else {
+							tal[i] = 0;
 						}
+						list.add(tal[i]);
 					}
-					else{
-						tal[i]=0;
-					}
-					list.add(tal[i]);
-				}
-				for (int i = 1; i < mandat.length; i++) {
-					if (Collections.max(list)==tal[i]) {
-						antalmandat[i]++;
-						if (uddatal[i]==1.4) {
-							uddatal[i]=3;
+					for (int i = 1; i < mandat.length; i++) {
+						if (Collections.max(list) == tal[i]) {
+							antalmandat[i]++;
+							if (uddatal[i] == 1.4) {
+								uddatal[i] = 3;
+							} else {
+								uddatal[i] = uddatal[i] + 2;
+							}
+							break;
 						}
-						else {
-							uddatal[i]=uddatal[i]+2;
-						}
-						break;
 					}
 				}
 			}
+			Integer a = 0;
 			for (int i = 1; i < mandat.length; i++) {
 				mandat[i].setText(Integer.toString(antalmandat[i]));
+				a = a + antalmandat[i];
+			}
+			mellanrum2.setText(a.toString());
+			for (int i = 1; i < nr+1; i++) {
+				try {
+					jämförelseFrames[i].repaint();
+				} catch (Exception e) {}
 			}
 		}
 		void jämför(){
-			class Diagram extends JPanel{
-				protected void paintComponent(Graphics g) {
-//					Graphics2D g2 = (Graphics2D) g;
-					
-				}
-			}
-			JFrame frame = new JFrame(),
-					frame2 = new JFrame();
+			nr++;
 			JCheckBox[] checkBoxes = new JCheckBox[i];
-			JLabel summa = new JLabel();
-			for (int i = 1; i < checkBoxes.length; i++) {
-				checkBoxes[i]=new JCheckBox(partiNamn[i]);
-				frame.add(checkBoxes[i]);
-				checkBoxes[i].addActionListener(e -> {
+			JFrame frame = jämförelseFrames[nr] = new JFrame();
+			JLabel summa = new JLabel(),summa2 = new JLabel();
+			JPanel panel = new JPanel();
+			class Diagram extends JPanel{
+				public void paintComponent(Graphics g1) { 
+					Graphics2D g = (Graphics2D) g1;
+					setBackground(white);
+					Insets i = getInsets();     // omgivande rams utbredning 
+					g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+					int w = getWidth()-i.left-i.right,  // tillgänglig bredd
+					h = getHeight()-i.top-i.bottom, // tillgänglig höjd 
+					diam = Math.min(h,w),   // cirkelns diameter 
+					x = i.left + (w-diam)/2,  
+					y = i.top  + (h-diam)/2,  a = 90,alla = 0,allaandra = 0;
+					boolean ja = false;
+					for (int j = 1; j < antalmandat.length; j++) {
+						if (antalmandat[j]!=0) {
+							ja=true;
+							if (checkBoxes[j].isSelected()) {
+								g.setColor(färger[j]);
+								int partFilled  = (int) (Math.round(antalmandat[j]*1.0315186246418338108882521489971));    
+								g.fillArc(x, y, diam, diam, a, partFilled); //rita medurs 
+								g.drawArc(x, y, diam, diam, a, partFilled); //rita medurs 
+								a=a+partFilled;
+								allaandra++;
+							}
+							alla++;
+						}
+					}
+					if (alla==allaandra&&ja) {
+						while (a-90<=360) {
+							g.fillArc(x, y, diam, diam, a, 1); //rita medurs 
+							g.drawArc(x, y, diam, diam, a, 1); //rita medurs 
+							a++;
+						}
+					}
 					int summan=0;
 					for (int i1 = 1; i1 < checkBoxes.length; i1++) {
 						System.err.println(antalmandat[i1]);
@@ -814,20 +850,28 @@ public class Mouse extends JPanel implements 	ActionListener,
 							summan=summan+antalmandat[i1];
 						}
 					}
-					summa.setText(Integer.toString(summan));
-				});
-
+					summa.setText("Mandat: " + Integer.toString(summan));
+					summa2.setText("Procent: " + Double.toString((double)Math.round(summan/0.349)/10) + "%");
+				}
 			}
-			frame.setLayout(new GridLayout(i+1, 1));
-			frame.add(summa);
+			for (int i = 1; i < checkBoxes.length; i++) {
+				checkBoxes[i]=new JCheckBox(partiNamn[i]);
+				panel.add(checkBoxes[i]);
+				checkBoxes[i].addActionListener(e -> {
+					frame.repaint();
+				});
+			}
+			panel.setLayout(new GridLayout(i+1, 1));
+			panel.add(summa);
+			panel.add(summa2);
+			frame.setLayout(new GridLayout(1,2,0,1));
+			frame.add(panel);
+			frame.add(new Diagram());
 			frame.setIconImage(fönsterIcon);
 			frame.pack();
 			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
-			frame2.add(new Diagram());
-
 		}
-		
 	}
 }
 class Räknare implements ActionListener{
@@ -1635,23 +1679,32 @@ class Ping{
     }
 }
 class Glosor{
-	private GoJbFrame frame = new GoJbFrame("Glosor");
-	private GoJbFrame frame2 = new GoJbFrame("Ställ in",false);
-	private JLabel label = new JLabel();
+	private GoJbFrame frame = new GoJbFrame("Glosor"),frame2 = new GoJbFrame("Ställ in",false);
+	private JLabel label = new JLabel(),rättLabel = new JLabel(),felLabel = new JLabel(),label2 = new JLabel();
 	private JTextField textField = new JTextField();
 	private JMenuBar bar = new JMenuBar();
 	private JMenu instMenu = new JMenu("Inställningar");
 	private JMenuItem instItem = new JMenuItem("Ställ in glosor");
 	private JButton button = new JButton("Spara"),button2 = new JButton("Byt plats");
-	private String[] språk1 = new String[30],
+	private String[] språk1 = new String[28],
 					språk2 = new String[språk1.length];
 	private JTextField[] ettFields = new JTextField[språk1.length],
 						tvåFields = new JTextField[språk1.length];
 	private int index,fel,rätt;
-	private ArrayList<String> ettList;
-	private ArrayList<String> tvåList;
+	private ArrayList<String> ettList,tvåList;
+	private JPanel panel = new JPanel(); 
+	private Timer timer = new Timer(2000, e -> {stoppatimer();label2.setText("");});void stoppatimer(){timer.stop();}
+	
+	
 	
 	Glosor() {
+		frame.setSize(frame.getWidth(), 300);
+		frame.setJMenuBar(bar);
+		frame.setLayout(new BorderLayout());
+		frame.add(panel,BorderLayout.NORTH);
+		frame.add(label,BorderLayout.CENTER);
+		frame.add(textField,BorderLayout.SOUTH);
+		
 		frame2.add(new JLabel("Språk1:"));
 		frame2.add(new JLabel("Språk2:"));
 		for (int i = 0; i < språk1.length; i++) {
@@ -1663,11 +1716,7 @@ class Glosor{
 			frame2.add(tvåFields[i]);
 			ettFields[i].setText(språk1[i]);
 			tvåFields[i].setText(språk2[i]);
-		}
-		frame.setJMenuBar(bar);
-		frame.setLayout(new BorderLayout());
-		frame.add(label,BorderLayout.CENTER);
-		frame.add(textField,BorderLayout.SOUTH);	
+		}	
 		frame2.setLocation(frame2.getX(), 5);
 		frame2.setUndecorated(true);
 		frame2.add(button2);
@@ -1675,6 +1724,19 @@ class Glosor{
 		frame2.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		frame2.setLayout(new GridLayout(språk1.length+2, 2));
 		frame2.pack();
+		
+		panel.setLayout(new BorderLayout());
+		panel.add(rättLabel,BorderLayout.WEST);
+		panel.add(felLabel,BorderLayout.EAST);
+		panel.add(label2,BorderLayout.SOUTH);
+		label2.setVerticalAlignment(BOTTOM);
+		label2.setHorizontalAlignment(CENTER);
+		label2.setFont(typsnitt);
+		label2.setForeground(RED);
+		rättLabel.setFont(typsnitt);
+		felLabel.setFont(typsnitt);
+		rättLabel.setText("Rätt: 0");
+		felLabel.setText("Fel: 0");
 		label.setFont(typsnitt);
 		label.setVerticalAlignment(BOTTOM);
 		label.setHorizontalAlignment(CENTER);
@@ -1717,11 +1779,16 @@ class Glosor{
 	private void kolla() {
 		if (textField.getText().equals(tvåList.get(index))){
 			rätt++;
-			System.out.println("Rätt");
+			rättLabel.setText("Rätt: " + rätt);
+			spelaLjud("/images/tada.wav");
 		}
 		else {
+			spelaLjud("/images/explosion.aiff");
 			fel++;
-			System.err.println("Fel");
+			felLabel.setText("Fel: " + fel);
+			label2.setText(tvåList.get(index));
+			timer.start();
+			
 		}
 		index++;
 		textField.setText("");
@@ -1733,6 +1800,9 @@ class Glosor{
 			index=0;
 			rätt=0;
 			fel=0;
+			rättLabel.setText("Rätt: 0");
+			felLabel.setText("Fel: 0");
+			blanda();
 		}
 		if (ettList.get(index).equals("")==false&&ettList.get(index).equals(null)==false) {
 			label.setText(ettList.get(index));
