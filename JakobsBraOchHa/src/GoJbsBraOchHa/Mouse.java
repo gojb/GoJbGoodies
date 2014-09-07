@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.io.*;
+import java.net.URL;
 import java.text.*;
 import java.util.*;
 import java.util.List;
@@ -154,12 +155,14 @@ public class Mouse extends JPanel implements 	ActionListener,
 			}
 		}
 		new SetImageIcon();
-
+		new Thread(new Update()).start();
 		if (arg.length!=0 && arg[0].equals("Glosor")) {
 			new Glosor();
 			return;
 		}
 		new Pass();
+		
+		
 		
 	}
 
@@ -674,7 +677,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 										"Sverigedemokraterna",
 										"Feministiskt initiativ",
 										"Övriga"};
-		private Color[] färger = {white,red,red.darker(),green,blue,green.brighter(),blue,blue.darker(),yellow,magenta,gray};
+		private Color[] färger = {white,red,red.darker(),green,blue.brighter(),green.brighter(),blue,blue.darker(),yellow,magenta,gray};
 		private JFrame[] jämförelseFrames = new JFrame[20];
 		int nr;
 		public Mandat() {
@@ -4865,6 +4868,18 @@ class Klocka implements ActionListener{
 
 			label2.setText(tid);
 
+		}
+	}
+}
+class Update implements Runnable{
+	public void run() {
+		URL u;
+		try {
+			u = new URL("http://gojb.bl.ee/GoJb.jar");
+			System.out.println("Online: " + new SimpleDateFormat("yyMMdd HH:mm").format(u.openConnection().getLastModified()));
+			System.out.println("Lokal: "+ new SimpleDateFormat("yyMMdd HH:mm").format(new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).lastModified()));
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
