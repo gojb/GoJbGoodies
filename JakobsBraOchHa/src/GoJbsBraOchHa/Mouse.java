@@ -848,7 +848,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 					}
 					int summan=0;
 					for (int i1 = 1; i1 < checkBoxes.length; i1++) {
-						System.err.println(antalmandat[i1]);
 						if (checkBoxes[i1].isSelected()) {
 							summan=summan+antalmandat[i1];
 						}
@@ -1688,7 +1687,7 @@ class Glosor{
 	private JMenuBar bar = new JMenuBar();
 	private JMenu instMenu = new JMenu("Inställningar");
 	private JMenuItem instItem = new JMenuItem("Ställ in glosor");
-	private JButton button = new JButton("Spara"),button2 = new JButton("Byt plats");
+	private JButton button = new JButton("Spara"),button2 = new JButton("Byt plats"),button3 = new JButton("Rensa");
 	private String[] språk1 = new String[28],
 					språk2 = new String[språk1.length];
 	private JTextField[] ettFields = new JTextField[språk1.length],
@@ -1724,8 +1723,9 @@ class Glosor{
 		frame2.setUndecorated(true);
 		frame2.add(button2);
 		frame2.add(button);
+		frame2.add(button3);
 		frame2.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		frame2.setLayout(new GridLayout(språk1.length+2, 2));
+		frame2.setLayout(new GridLayout(språk1.length+3, 2));
 		frame2.pack();
 		
 		panel.setLayout(new BorderLayout());
@@ -1749,6 +1749,7 @@ class Glosor{
 		instItem.addActionListener(e -> {frame2.setVisible(true);frame.setEnabled(false);});
 		button.addActionListener(e -> spara());
 		button2.addActionListener(e -> byt());
+		button3.addActionListener(e -> rens());
 		textField.addKeyListener(new KeyListener() {
 			public void keyTyped(KeyEvent e) {}public void keyReleased(KeyEvent e) {}
 			public void keyPressed(KeyEvent e) {if (e.getKeyCode()==10) {kolla();}}}
@@ -1784,7 +1785,16 @@ class Glosor{
 		blanda();
 		sätt();
 	}
+	private void rens() {
+		if (showConfirmDialog(null, "Är du säker på att du vill rensa allt?","Rensa",YES_NO_OPTION,WARNING_MESSAGE)==YES_OPTION) {
+			for (int i = 0; i < ettFields.length; i++) {
+				ettFields[i].setText("");
+				tvåFields[i].setText("");
+			}
+		}
+	}
 	private void kolla() {
+		
 		if (textField.getText().equals(tvåList.get(index))){
 			rätt++;
 			rättLabel.setText("Rätt: " + rätt);
@@ -1803,14 +1813,18 @@ class Glosor{
 		sätt();
 	}
 	private void sätt() {
+		System.out.println(index);
 		if (index==språk1.length) {
+			if (rätt==0&&fel==0) {
+				return;
+			}
 			showMessageDialog(frame, "Rätt: " + rätt + "\nFel: " + fel, "Resultat", INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/images/Done.jpg")));
+			blanda();
 			index=0;
 			rätt=0;
 			fel=0;
 			rättLabel.setText("Rätt: 0");
 			felLabel.setText("Fel: 0");
-			blanda();
 		}
 		if (ettList.get(index).equals("")==false&&ettList.get(index).equals(null)==false) {
 			label.setText(ettList.get(index));
@@ -4872,14 +4886,36 @@ class Klocka implements ActionListener{
 	}
 }
 class Update implements Runnable{
-	public void run() {
-		URL u;
-		try {
-			u = new URL("http://gojb.bl.ee/GoJb.jar");
-			System.out.println("Online: " + new SimpleDateFormat("yyMMdd HH:mm").format(u.openConnection().getLastModified()));
-			System.out.println("Lokal: "+ new SimpleDateFormat("yyMMdd HH:mm").format(new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).lastModified()));
-		} catch (Exception e) {
-			e.printStackTrace();
+	public void run(){
+		if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")) {
+			try {
+				URL u = new URL("http://gojb.bl.ee/GoJb.jar");
+				System.out.println("Online: " + u.openConnection().getLastModified());
+				System.out.println("Lokal:  "+ new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).lastModified());
+				if (new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).lastModified() + 30000 < u.openConnection().getLastModified()) {
+					if (showConfirmDialog(null, "En nyare version av programmet är tillgängligt.\nVill du uppdatera nu?","Uppdatering",YES_NO_OPTION,WARNING_MESSAGE)==YES_OPTION) {
+						InputStream in = new BufferedInputStream(u.openStream());
+						ByteArrayOutputStream out = new ByteArrayOutputStream();
+						byte[] buf = new byte[1024];
+						int n = 0;
+						while (-1!=(n=in.read(buf))){
+							out.write(buf, 0, n);
+							System.err.println(n);
+						}
+						out.close();
+						in.close();
+						FileOutputStream fos = new FileOutputStream(new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()));
+						fos.write(out.toByteArray());
+						fos.close();
+						System.out.println("Finished");
+						System.out.println("ga");
+						Runtime.getRuntime().exec(getClass().getProtectionDomain().getCodeSource().getLocation().getFile().toString());
+						System.exit(0);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
