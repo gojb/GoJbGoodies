@@ -4889,10 +4889,10 @@ class Klocka implements ActionListener{
 	}
 }
 class Update implements Runnable{
-	
 	public void run(){
-		if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")) {
-			try {
+		try {
+			if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")) {
+
 				URL u = new URL("http://gojb.bl.ee/GoJb.jar");
 				System.out.println("Online: " + u.openConnection().getLastModified());
 				System.out.println("Lokal:  "+ new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).lastModified());
@@ -4932,9 +4932,9 @@ class Update implements Runnable{
 						System.exit(0);
 					}
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
+		} catch(Exception e){
+			e.printStackTrace();
 		}
 	}
 }
