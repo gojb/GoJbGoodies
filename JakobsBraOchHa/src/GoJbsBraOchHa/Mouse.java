@@ -162,8 +162,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 		}
 		new Pass();
 		
-		
-		
 	}
 
 	Mouse(){
@@ -1687,14 +1685,14 @@ class Glosor{
 	private JMenuBar bar = new JMenuBar();
 	private JMenu instMenu = new JMenu("Inställningar");
 	private JMenuItem instItem = new JMenuItem("Ställ in glosor");
-	private JButton button = new JButton("Spara"),button2 = new JButton("Byt plats"),button3 = new JButton("Rensa");
+	private JButton button = new JButton("Spara"),button2 = new JButton("Byt plats"),button3 = new JButton("Rensa"),button4 = new JButton("Starta om");
 	private String[] språk1 = new String[28],
 					språk2 = new String[språk1.length];
 	private JTextField[] ettFields = new JTextField[språk1.length],
 						tvåFields = new JTextField[språk1.length];
 	private int index,fel,rätt;
 	private ArrayList<String> ettList,tvåList;
-	private JPanel panel = new JPanel(); 
+	private JPanel panel = new JPanel(new BorderLayout()),restartPanel = new JPanel(new FlowLayout());
 	private Timer timer = new Timer(2000, e -> {stoppatimer();label2.setText("");});void stoppatimer(){timer.stop();}
 	
 	
@@ -1706,7 +1704,6 @@ class Glosor{
 		frame.add(panel,BorderLayout.NORTH);
 		frame.add(label,BorderLayout.CENTER);
 		frame.add(textField,BorderLayout.SOUTH);
-		
 		frame2.add(new JLabel("Språk1:"));
 		frame2.add(new JLabel("Språk2:"));
 		for (int i = 0; i < språk1.length; i++) {
@@ -1727,9 +1724,8 @@ class Glosor{
 		frame2.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		frame2.setLayout(new GridLayout(språk1.length+3, 2));
 		frame2.pack();
-		
-		panel.setLayout(new BorderLayout());
 		panel.add(rättLabel,BorderLayout.WEST);
+		panel.add(restartPanel,BorderLayout.CENTER);
 		panel.add(felLabel,BorderLayout.EAST);
 		panel.add(label2,BorderLayout.SOUTH);
 		label2.setVerticalAlignment(BOTTOM);
@@ -1744,20 +1740,26 @@ class Glosor{
 		label.setVerticalAlignment(BOTTOM);
 		label.setHorizontalAlignment(CENTER);
 		textField.setFont(typsnitt);
+		restartPanel.add(Box.createHorizontalGlue());
+		restartPanel.add(Box.createHorizontalGlue());
+		restartPanel.add(button4);
 		bar.add(instMenu);
 		instMenu.add(instItem);
 		instItem.addActionListener(e -> {frame2.setVisible(true);frame.setEnabled(false);});
 		button.addActionListener(e -> spara());
 		button2.addActionListener(e -> byt());
 		button3.addActionListener(e -> rens());
+		button4.addActionListener(e -> spara());
 		textField.addKeyListener(new KeyListener() {
 			public void keyTyped(KeyEvent e) {}public void keyReleased(KeyEvent e) {}
-			public void keyPressed(KeyEvent e) {if (e.getKeyCode()==10) {kolla();}}}
+			public void keyPressed(KeyEvent e) {if (e.getKeyCode()==10) {kolla();}
+												if (e.getKeyCode()==82&&e.getModifiersEx()==128) {spara();}}}
 		);
 		blanda();
 		sätt();
 	}
 	private void byt() {
+		
 		String[] strings = new String[ettFields.length];
 		for (int i = 0; i < ettFields.length; i++) {
 			strings[i]=ettFields[i].getText();
@@ -1780,6 +1782,7 @@ class Glosor{
 		index=0;
 		rätt=0;
 		fel=0;
+		textField.setText("");
 		rättLabel.setText("Rätt: 0");
 		felLabel.setText("Fel: 0");
 		blanda();
@@ -1801,7 +1804,7 @@ class Glosor{
 			spelaLjud("/images/tada.wav");
 		}
 		else {
-			spelaLjud("/images/explosion.aiff");
+			spelaLjud("/images/Wrong.wav");
 			fel++;
 			felLabel.setText("Fel: " + fel);
 			label2.setText(tvåList.get(index));
@@ -4886,6 +4889,7 @@ class Klocka implements ActionListener{
 	}
 }
 class Update implements Runnable{
+	
 	public void run(){
 		if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")) {
 			try {
@@ -4893,14 +4897,23 @@ class Update implements Runnable{
 				System.out.println("Online: " + u.openConnection().getLastModified());
 				System.out.println("Lokal:  "+ new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).lastModified());
 				if (new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).lastModified() + 30000 < u.openConnection().getLastModified()) {
+					spelaLjud("/images/tada.wav");
 					if (showConfirmDialog(null, "En nyare version av programmet är tillgängligt.\nVill du uppdatera nu?","Uppdatering",YES_NO_OPTION,WARNING_MESSAGE)==YES_OPTION) {
 						InputStream in = new BufferedInputStream(u.openStream());
 						ByteArrayOutputStream out = new ByteArrayOutputStream();
 						byte[] buf = new byte[1024];
 						int n = 0;
+						JProgressBar bar = new JProgressBar(0, in.available());
+						JFrame frame = new JFrame("Laddar ner...");
+						frame.add(bar);
+						frame.setLocationRelativeTo(null);
+						frame.setVisible(true);
+						frame.setAlwaysOnTop(true);
+						frame.setSize(500,200);
 						while (-1!=(n=in.read(buf))){
 							out.write(buf, 0, n);
 							System.err.println(n);
+							bar.setValue(bar.getValue()+1);
 						}
 						out.close();
 						in.close();
@@ -4908,8 +4921,14 @@ class Update implements Runnable{
 						fos.write(out.toByteArray());
 						fos.close();
 						System.out.println("Finished");
-						System.out.println("ga");
-						Runtime.getRuntime().exec(getClass().getProtectionDomain().getCodeSource().getLocation().getFile().toString());
+						try {
+							Runtime.getRuntime().exec("java -jar " + getClass().getProtectionDomain().getCodeSource().getLocation().getFile().toString());
+						} catch (Exception e) {
+							e.printStackTrace();
+							 
+						}
+						frame.dispose();
+						showMessageDialog(null, "Uppdateringen slutfördes!", "Slutfört", INFORMATION_MESSAGE);
 						System.exit(0);
 					}
 				}
