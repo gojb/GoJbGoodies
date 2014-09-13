@@ -127,8 +127,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 	
 	public static void main(String[] arg) {
 		
-		new PainInTheAss();
-		
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (Exception e) {
@@ -4903,6 +4901,7 @@ class PainInTheAss{
 		for(int i = 0; i < 5; i++){
 			a++;
 			new Timer(1, e -> System.err.println("ft  " + a)).start();
+			new JFrame().setVisible(true);
 			
 			i = 0;
 		}
