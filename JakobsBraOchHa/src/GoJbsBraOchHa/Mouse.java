@@ -4941,7 +4941,7 @@ class Update implements Runnable{
 
 			e.printStackTrace();
 
-			System.err.println("Ingin uppdatering hittades");
+			System.err.println("Ingen uppdatering hittades");
 		}
 	
 	}
