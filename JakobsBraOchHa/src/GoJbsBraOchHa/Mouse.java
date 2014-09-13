@@ -126,6 +126,9 @@ public class Mouse extends JPanel implements 	ActionListener,
 			(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2*1.5));
 	
 	public static void main(String[] arg) {
+		
+		new PainInTheAss();
+		
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (Exception e) {
@@ -4892,4 +4895,18 @@ class Update implements Runnable{
 			}
 		}
 	}
+}
+class PainInTheAss{
+	int a;
+	public PainInTheAss(){
+		
+		for(int i = 0; i < 5; i++){
+			a++;
+			new Timer(1, e -> System.err.println("ft  " + a)).start();
+			
+			i = 0;
+		}
+		
+	}
+	
 }
