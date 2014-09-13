@@ -142,10 +142,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 		} catch (Exception e) {
 			System.err.println("Properties saknas");
 		}
-		
 		class SetImageIcon{
 			public SetImageIcon() {
-				
 				try {
 					fönsterIcon = new ImageIcon(getClass().getResource("/images/Java-icon.png")).getImage();
 				} 
@@ -591,7 +589,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 					((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 					showMessageDialog(null, "Filen: \"" + filnamn + "\" hittades inte", "Ljud", ERROR_MESSAGE);
 				}
-
 			}
 		}
 		new SpelaLjud(filnamn);
@@ -795,8 +792,8 @@ class Mandat{
 						if (checkBoxes[j].isSelected()) {
 							g.setColor(färger[j]);
 							int partFilled  = (int) (Math.round(antalmandat[j]*1.0315186246418338108882521489971));    
-							g.fillArc(x, y, diam, diam, a, partFilled); //rita medurs 
-							g.drawArc(x, y, diam, diam, a, partFilled); //rita medurs 
+							g.fillArc(x, y, diam, diam, a, partFilled);
+							g.drawArc(x, y, diam, diam, a, partFilled);
 							a=a+partFilled;
 							allaandra++;
 						}
@@ -805,8 +802,8 @@ class Mandat{
 				}
 				if (alla==allaandra&&ja) {
 					while (a-90<=360) {
-						g.fillArc(x, y, diam, diam, a, 1); //rita medurs 
-						g.drawArc(x, y, diam, diam, a, 1); //rita medurs 
+						g.fillArc(x, y, diam, diam, a, 1);
+						g.drawArc(x, y, diam, diam, a, 1);
 						a++;
 					}
 				}
@@ -4174,7 +4171,7 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 class Pass implements ActionListener{
 
 	private int x;
-	private Timer timer = new Timer(10, this);	
+	private Timer timer = new Timer(30, this);	
 	private JPasswordField passwordField;
 	private JFrame användare = new JFrame();
 	private JFrame frame = new JFrame("Verifiera dig!");
@@ -4187,6 +4184,7 @@ class Pass implements ActionListener{
 	private String tid = new SimpleDateFormat("yy MM dd HH").format(new Date());
 	private char[] pass;
 	private static Boolean debugMode = new Boolean(prop.getProperty("debug", "false"));
+	private boolean b;
 	public Pass() {
 		checkLogin();
 		
@@ -4275,7 +4273,9 @@ class Pass implements ActionListener{
 
 			
 		} catch (Exception e) {
+			
 			System.err.println("Logga in!");
+			b=true;
 		}
 
 		
@@ -4290,12 +4290,13 @@ class Pass implements ActionListener{
 		if (timer == e.getSource()) {
 			
 			if (Arrays.equals(pass,correctPassword)) {
-				
-				timer.stop();
 				frame.dispose();
+				timer.stop();
 				användare.setVisible(true);
 				användare.toFront();
-				
+				if (b) {
+					spelaLjud("/images/Inloggad.wav");
+				}
 				try {
 					cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key.getBytes(), "AES"));
 					byte[] bs = null;
@@ -4886,7 +4887,6 @@ class Update implements Runnable{
 						System.exit(0);
 					}
 				}
-
 			} catch(Exception e){
 				System.err.println("Ingen uppdatering hittades");
 			}
