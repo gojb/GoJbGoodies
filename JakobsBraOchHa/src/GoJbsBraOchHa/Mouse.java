@@ -4886,11 +4886,10 @@ class Update implements Runnable{
 						System.exit(0);
 					}
 				}
+
+			} catch(Exception e){
+				System.err.println("Ingen uppdatering hittades");
 			}
-		} catch(Exception e){
-			System.err.println("Ingen uppdatering hittades");
 		}
-	
 	}
-}
 }
