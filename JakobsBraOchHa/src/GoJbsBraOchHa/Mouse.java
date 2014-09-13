@@ -156,10 +156,13 @@ public class Mouse extends JPanel implements 	ActionListener,
 		}
 		new SetImageIcon();
 		new Thread(new Update()).start();
-		if (arg.length!=0 && arg[0].equals("Glosor")) {
-			new Glosor();
-			return;
-		}
+		try {
+			if (arg[0].equals("Glosor")) {
+				new Glosor();
+				return;
+			}
+		} catch (Exception e) {}
+		
 		new Pass();
 		
 	}
@@ -675,7 +678,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 										"Sverigedemokraterna",
 										"Feministiskt initiativ",
 										"Övriga"};
-		private Color[] färger = {white,red,red.darker(),green,blue.brighter(),green.brighter(),blue,blue.darker(),yellow,magenta,gray};
+		private Color[] färger = {white,red,red.darker(),green,blue,green.darker(),blue.darker(),blue.darker().darker(),yellow,magenta,gray};
 		private JFrame[] jämförelseFrames = new JFrame[20];
 		int nr;
 		public Mandat() {
@@ -4892,11 +4895,13 @@ class Update implements Runnable{
 	public void run(){
 		try {
 			if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")) {
-
 				URL u = new URL("http://gojb.bl.ee/GoJb.jar");
 				System.out.println("Online: " + u.openConnection().getLastModified());
-				System.out.println("Lokal:  "+ new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).lastModified());
-				if (new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).lastModified() + 30000 < u.openConnection().getLastModified()) {
+				URL loc = getClass().getProtectionDomain().getCodeSource().getLocation();
+				try {
+					System.out.println("Lokal:  "+ new File(loc.toURI()).lastModified());
+				} catch (Exception e1) {}
+				if (new File(loc.toURI()).lastModified() + 30000 < u.openConnection().getLastModified()) {
 					spelaLjud("/images/tada.wav");
 					if (showConfirmDialog(null, "En nyare version av programmet är tillgängligt.\nVill du uppdatera nu?","Uppdatering",YES_NO_OPTION,WARNING_MESSAGE)==YES_OPTION) {
 						InputStream in = new BufferedInputStream(u.openStream());
@@ -4917,15 +4922,14 @@ class Update implements Runnable{
 						}
 						out.close();
 						in.close();
-						FileOutputStream fos = new FileOutputStream(new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()));
+						FileOutputStream fos = new FileOutputStream(new File(loc.toURI()));
 						fos.write(out.toByteArray());
 						fos.close();
 						System.out.println("Finished");
 						try {
-							Runtime.getRuntime().exec("java -jar " + getClass().getProtectionDomain().getCodeSource().getLocation().getFile().toString());
+							Runtime.getRuntime().exec("java -jar " + loc.getFile().toString());
 						} catch (Exception e) {
-							e.printStackTrace();
-							 
+							e.printStackTrace(); 
 						}
 						frame.dispose();
 						showMessageDialog(null, "Uppdateringen slutfördes!", "Slutfört", INFORMATION_MESSAGE);
@@ -4934,7 +4938,7 @@ class Update implements Runnable{
 				}
 			}
 		} catch(Exception e){
-			e.printStackTrace();
+			System.err.println("Ingin uppdatering hittades");
 		}
 	}
 }
