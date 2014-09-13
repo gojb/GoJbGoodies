@@ -1619,7 +1619,6 @@ class Studsa extends JPanel implements ActionListener{
 	}
 }
 class Ping{
-	
     public Ping(String string){
     	GoJbFrame frame = new GoJbFrame();
     	JTextArea textArea = new JTextArea();
@@ -1639,8 +1638,6 @@ class Ping{
 			}
  
 		} catch (Exception e) {e.printStackTrace();}
-		
-
     }
 }
 class Glosor{
@@ -2002,9 +1999,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		}
 	}
 	
-	public void keyTyped(KeyEvent e){
-
-	}
+	public void keyTyped(KeyEvent e){}
 	
 	public void keyPressed(KeyEvent e) { 
 		
@@ -2218,7 +2213,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 	}
 
 
-	class RörandeMojäng3 extends JPanel implements ActionListener {
+	class RörandeMojäng3 extends JPanel{
 		int[] röd=new int[91],grön=new int[91],blå=new int[91];
 		public void paintComponent (Graphics gr) {
 			Graphics2D g2 = (Graphics2D) gr;
@@ -2274,13 +2269,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			g2.setColor(cyan);
 			g2.fillRect(x, y, 50,50);
 		}
-
-		public void actionPerformed(ActionEvent arg0) {
-
-		}
-
 	}
-	static class GameOver implements ActionListener, WindowListener{
+	static class GameOver implements ActionListener{
 		JButton b1 = new JButton("Spela igen");
 		JButton b2 = new JButton("Avsluta");
 		JFrame ram = new JFrame("GAME OVER");
@@ -2297,7 +2287,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 
 			b1.addActionListener(this);
 			b2.addActionListener(this);
-			ram.addWindowListener(this);
 			ram.setDefaultCloseOperation(3);
 		}
 
@@ -2315,35 +2304,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			if (arg0.getSource() == b2) {
 				System.exit(3);
 			}
-		}
-
-		public void windowOpened(WindowEvent e) {
-
-		}
-
-		public void windowClosing(WindowEvent e) {
-
-		}
-
-		public void windowIconified(WindowEvent e) {
-
-		}
-
-		public void windowDeiconified(WindowEvent e) {  
-
-		}
-
-
-		public void windowActivated(WindowEvent e) {
-
-		}
-
-
-		public void windowDeactivated(WindowEvent e) {
-
-		}
-
-		public void windowClosed(WindowEvent e) {
 		}
 	}
 }
@@ -3657,10 +3617,8 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 	
 	}
 	
-	
 	public void mouseEntered(MouseEvent arg0) {}
 	public void mouseExited(MouseEvent arg0) {}
-	
 	public void mousePressed(MouseEvent arg0) {
 
 		repaint();
@@ -3737,9 +3695,7 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 		Vinst.setUndecorated(true);
 		
 		vinstlabel.setSize(500, 100);
-		
-		
-		
+
 		tur.setLocation(frame.getWidth() + 205, frame.getHeight()/2 - 65);
 		tur.setSize(500, 75);
 		tur.setAlwaysOnTop(true);
@@ -3844,9 +3800,6 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 			}
 		}
 	}
-	
-	public void mousePressed(MouseEvent e) {
-	}
 
 	public void X(int intlabel) {
 		label[intlabel].setIcon(x);
@@ -3859,6 +3812,7 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 //		repaint();
 		a = 0;
 	}
+	public void mousePressed(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}	
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
