@@ -82,7 +82,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 							loggaUtItem = new JMenuItem("Logga ut"),
 							debugItem = new JMenuItem("Debug är nu: " +prop.getProperty("debug", "false")),
 							mandatItem = new JMenuItem("Simulator till riksdagsmandat"),
-							glosItem = new JMenuItem("Träna på glosor");
+							glosItem = new JMenuItem("Träna på glosor"),
+							flappyItem = new JMenuItem("Spela FlappyGojb");
 
 	private JButton 		knapp1 = new JButton("Blå"),
 							knapp2 = new JButton("Grön"),
@@ -195,13 +196,15 @@ public class Mouse extends JPanel implements 	ActionListener,
 		blåItem.addActionListener(e -> {setForeground(BLUE); text.append("Textfärg ändrad till Blå");});
 		hastighetItem.addActionListener(e -> hastighetsfönster.setVisible(true));
 		räknaItem.addActionListener(e -> new Räknare());
-		autoscrollknapp.addActionListener(this);
 		rensKnapp.addActionListener(e -> text.setText(null));
 		pongItem.addActionListener(e -> new Pongspel());
 		studsItem.addActionListener(e -> new Studsa());
 		snakeItem.addActionListener(e -> new Snakespel());
 		mandatItem.addActionListener(e -> new Mandat());
 		glosItem.addActionListener(e -> new Glosor());
+		flappyItem.addActionListener(e -> new FlappyGoJb());
+		
+		autoscrollknapp.addActionListener(this);
 		loggaUtItem.addActionListener(this);
 		debugItem.addActionListener(this);
 		rörandeItem.addActionListener(this);
@@ -235,6 +238,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		arkivMeny.add(snakeItem);
 		arkivMeny.add(mandatItem);
 		arkivMeny.add(glosItem);
+		arkivMeny.add(flappyItem);
 		arkivMeny.addSeparator();
 		arkivMeny.add(loggaUtItem);
 		arkivMeny.add(avslutaItem);
@@ -1555,6 +1559,68 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 				g.drawString(highscore[i],10 , pos);
 			}
 		}
+	}
+}
+class FlappyGoJb extends JPanel implements KeyListener{
+	private static final long serialVersionUID = 1L;
+	
+	JFrame frame = new JFrame("FlappyGoJb");
+	int x,y,a;
+	Timer timer = new Timer(20, e -> check());
+	
+	FlappyGoJb(){
+		
+		setBackground(new Color(255, 120, 120));
+		frame.addKeyListener(this);
+		frame.setIconImage(fönsterIcon);
+		frame.add(this);
+		frame.setSize(500, 500);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+		y=getHeight()-64;
+		timer.start();
+		skapaHinder();
+	}
+	void check() {
+		int i =getWidth()/2;
+		if (y<getHeight()-64) {
+			y=y+3;
+		}
+		if (x<=0) {
+			skapaHinder();
+		}
+		if (y+64>a&&y<a+60&&i+64>x) {
+			skapaHinder();
+		}
+		frame.repaint();
+		x=x-6;}
+	void skapaHinder(){
+		a=random.nextInt(getHeight()-60);
+		x=getWidth();
+	}
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D)g;
+		g2.drawImage(fönsterIcon, getWidth()/2,y,null);
+		g2.fillRect(x, a, 35,60);
+		g2.drawRect(x, a, 35,60);
+		 
+	}
+	public void keyTyped(KeyEvent e) {
+	}
+	public void keyPressed(KeyEvent e) {
+		System.err.println("ery");
+		if (e.getKeyCode()==KeyEvent.VK_SPACE) {
+			if (y>64) {
+				y = y - 50;
+			}
+			else {
+				y=0;
+			}
+			frame.repaint();
+		}
+	}
+	public void keyReleased(KeyEvent e) {
 	}
 }
 @SuppressWarnings("serial")
@@ -3610,24 +3676,19 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 	}
 	
 	public void mouseClicked(MouseEvent arg0) {
-	
 		repaint();
+	}
 	
+	public void mousePressed(MouseEvent arg0) {
+		repaint();
+	}
+	
+	public void mouseReleased(MouseEvent arg0) {
+		repaint();
 	}
 	
 	public void mouseEntered(MouseEvent arg0) {}
 	public void mouseExited(MouseEvent arg0) {}
-	public void mousePressed(MouseEvent arg0) {
-
-		repaint();
-		
-	}
-	
-	public void mouseReleased(MouseEvent arg0) {
-
-		repaint();
-		
-	}
 	public void paintComponent (Graphics gr) {
 		Graphics2D g2 = (Graphics2D) gr;
 
@@ -4593,36 +4654,36 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 	
 	public void mousePressed(MouseEvent arg0) {
 
-	
+
 		timer.start();
-		
+
 		clip.loop(9999);
-		
+
 	}
-	
+
 	public void mouseReleased(MouseEvent arg0) {
 
 		if (x == 0){
 			System.err.println(".");
 		}
-			x = 0;
-			
-			timer.stop();
-			vänta(100);
+		x = 0;
 
-			clip.close();
-			try {
+		timer.stop();
+		vänta(100);
 
-				
-				clip = AudioSystem.getClip();
-				clip.open(AudioSystem.getAudioInputStream(getClass().getResource(Filnamn)));
-				
-			} catch (Exception e) {
-				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-				showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", 
-													"Ljud", ERROR_MESSAGE);
-			}
-			
+		clip.close();
+		try {
+
+
+			clip = AudioSystem.getClip();
+			clip.open(AudioSystem.getAudioInputStream(getClass().getResource(Filnamn)));
+
+		} catch (Exception e) {
+			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+			showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", 
+					"Ljud", ERROR_MESSAGE);
+		}
+
 	}
 }
 
@@ -4773,11 +4834,8 @@ class Klocka implements ActionListener{
 			label.setText("<html>" + Integer.toString(min) + " : " + string + Integer.toString(sek) + " : " + Integer.toString(milli));
 		}
 		if (arg0.getSource() == timer2){
-
 			String tid = new SimpleDateFormat("HH:mm:ss").format(new Date());
-
 			label2.setText(tid);
-
 		}
 	}
 }
