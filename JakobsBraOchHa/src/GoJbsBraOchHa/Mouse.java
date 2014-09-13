@@ -115,6 +115,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	private static boolean 	autoscroll = true;
 	
 	public static int		antalFönster = 0;
+	public static String	argString;
 	public static Font 		typsnitt = new Font("Arial", 0, 40);
 	public static Image 	fönsterIcon;
 	public static Robot		robot;
@@ -156,15 +157,15 @@ public class Mouse extends JPanel implements 	ActionListener,
 		}
 		new SetImageIcon();
 		new Thread(new Update()).start();
+		
 		try {
-			if (arg[0].equals("Glosor")) {
+			argString =arg[0];
+			if (argString.equals("Glosor")) {
 				new Glosor();
 				return;
 			}
-		} catch (Exception e) {}
-		
+		} catch (Exception e) {argString ="";}
 		new Pass();
-		
 	}
 
 	Mouse(){
@@ -187,31 +188,31 @@ public class Mouse extends JPanel implements 	ActionListener,
 		laddfönster.setUndecorated(true);
 		laddfönster.setVisible(true);		
 		
-		avslutaItem.addActionListener(this);
-		omItem.addActionListener(this);
-		visaItem.addActionListener(this);
-		döljItem.addActionListener(this);
-		nyttItem.addActionListener(this);
-		textByteItem.addActionListener(this);
-		gulItem.addActionListener(this);
-		rödItem.addActionListener(this);
-		grönItem.addActionListener(this);
-		blåItem.addActionListener(this);
-		hastighetItem.addActionListener(this);
-		händelseItem.addActionListener(this);
-		ok.addActionListener(this);
-		räknaItem.addActionListener(this);
+		omItem.addActionListener(e -> om.setVisible(true));
+		nyttItem.addActionListener(e -> new Mouse());
+		gulItem.addActionListener(e -> setForeground(YELLOW));
+		rödItem.addActionListener(e -> setForeground(RED));
+		grönItem.addActionListener(e -> setForeground(GREEN));
+		blåItem.addActionListener(e -> {setForeground(BLUE); text.append("Textfärg ändrad till Blå");});
+		hastighetItem.addActionListener(e -> hastighetsfönster.setVisible(true));
+		räknaItem.addActionListener(e -> new Räknare());
 		autoscrollknapp.addActionListener(this);
-		rensKnapp.addActionListener(this);
-		knappPanel.addMouseListener(this);
-		pongItem.addActionListener(this);
-		rörandeItem.addActionListener(this);
-		studsItem.addActionListener(this);
-		snakeItem.addActionListener(this);
-		loggaUtItem.addActionListener(this);
-		debugItem.addActionListener(this);
+		rensKnapp.addActionListener(e -> text.setText(null));
+		pongItem.addActionListener(e -> new Pongspel());
+		studsItem.addActionListener(e -> new Studsa());
+		snakeItem.addActionListener(e -> new Snakespel());
 		mandatItem.addActionListener(e -> new Mandat());
 		glosItem.addActionListener(e -> new Glosor());
+		loggaUtItem.addActionListener(this);
+		debugItem.addActionListener(this);
+		rörandeItem.addActionListener(this);
+		ok.addActionListener(this);
+		visaItem.addActionListener(this);
+		döljItem.addActionListener(this);
+		avslutaItem.addActionListener(this);
+		knappPanel.addMouseListener(this);
+		textByteItem.addActionListener(this);
+		händelseItem.addActionListener(this);
 		
 		knapp1.setEnabled(false);
 		knapp1.addActionListener(this);
@@ -355,7 +356,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 	public void actionPerformed(ActionEvent knapp) {
 //		System.out.println(knapp.getSource());
 		skrivHändelsetext(knapp.getSource().toString());
-
 		if (knapp.getSource()== startTimer){
 
 			if(laddstapelStart.getValue()==100){
@@ -380,9 +380,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 		else if (knapp.getSource() == avslutaItem){	
 			avslutningsfönster.setVisible(true);
 			slutTimer.start();
-		}
-		else if(knapp.getSource() == omItem){
-			om.setVisible(true);
 		}
 		else if(knapp.getSource() == knapp1){
 			färg = blue;
@@ -416,35 +413,13 @@ public class Mouse extends JPanel implements 	ActionListener,
 			knapp3.setEnabled(true);
 			knapp4.setEnabled(false);
 		}
-		else if(knapp.getSource() == visaItem){
-			huvudfönster.add(knappPanel,BorderLayout.SOUTH);
-		}
 		else if(knapp.getSource() == döljItem){
 			huvudfönster.remove(knappPanel);
 			huvudfönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.SOUTH);
 		}
-		else if(knapp.getSource() == nyttItem){
-			new Mouse();
-		}
 		else if (knapp.getSource() == textByteItem){
 			setTexten();
 			repaint();
-		}
-		else if (knapp.getSource() == blåItem){
-			setForeground(BLUE);
-			text.append("Textfärg ändrad till Blå");
-		}
-		else if (knapp.getSource() == rödItem){
-			setForeground(RED);
-		}
-		else if (knapp.getSource() == grönItem){
-			setForeground(GREEN);
-		}
-		else if (knapp.getSource() == gulItem){
-			setForeground(YELLOW);
-		}
-		else if (knapp.getSource() == hastighetItem){
-			hastighetsfönster.setVisible(true);
 		}
 		else if (knapp.getSource() == händelseItem){
 			händelsefönster.setVisible(true);
@@ -453,9 +428,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 		else if (knapp.getSource() == ok){
 			flyttHastighet = slider.getValue();
 			hastighetsfönster.dispose();
-		}
-		else if (knapp.getSource() == räknaItem){
-			new Räknare();
 		}
 		else if (knapp.getSource() == autoscrollknapp){
 			if (autoscroll == true) {
@@ -469,21 +441,12 @@ public class Mouse extends JPanel implements 	ActionListener,
 				skrivHändelsetext("Autoscroll påslaget");
 			}			
 		}
-		else if (knapp.getSource()==rensKnapp){
-			text.setText(null);
-		}
-		else if (knapp.getSource()==pongItem) {
-			new Pongspel();
+		else if (knapp.getSource()==visaItem) {
+			huvudfönster.add(knappPanel,BorderLayout.SOUTH);
 		}
 		else if (knapp.getSource()==rörandeItem) {
 			new RörandeMojäng();
 			huvudfönster.dispose();
-		}
-		else if (knapp.getSource()==studsItem) {
-			new Studsa();
-		}
-		else if (knapp.getSource()==snakeItem) {
-			new Snakespel();
 		}
 		else if (knapp.getSource()==loggaUtItem) {
 			Pass.logout();
@@ -501,9 +464,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 				debugItem.setText("Debug är nu: " +prop.getProperty("debug"));
 			}
 			sparaProp("debug");
-			
 		}
-		
 		huvudfönster.revalidate();
 		huvudfönster.repaint();
 		
@@ -652,229 +613,230 @@ public class Mouse extends JPanel implements 	ActionListener,
 			}
 		}  
 	}
-	static class Mandat{
-		private JFrame frame = new JFrame("Mandatsimulator för riksdagen");
-		private final int i = 11;
-		private JTextField[] värden = new JTextField[i];
-		private JLabel[] mandat = new JLabel[i],
-				 		 parti = new JLabel[i],
-				 		 procentLabels = new JLabel[i];
-		private JLabel summaLabel = new JLabel(),
-					   mellanrum = new JLabel(),
-					   mellanrum2 = new JLabel();
-		private double[] tal = new double[i],
-						 uddatal = new double[i],
-						 procent = new double[i];
-		private int[] antalmandat = new int[i];
-		private JButton button = new JButton("Öppna jämförelser");
-		private String[] partiNamn = {	"",
-										"Socialdemokraterna",
-										"Vänsterpartiet",
-										"Miljöpartiet",
-										"Moderaterna",
-										"Centerpartiet",
-										"Folkpartiet",
-										"Kristdemokraterna",
-										"Sverigedemokraterna",
-										"Feministiskt initiativ",
-										"Övriga"};
-		private Color[] färger = {white,red,red.darker(),green,blue,green.darker(),blue.darker(),blue.darker().darker(),yellow,magenta,gray};
-		private JFrame[] jämförelseFrames = new JFrame[20];
-		int nr;
-		public Mandat() {
-			
-			JLabel label = new JLabel("Parti:");
-			JLabel label2 = new JLabel("Röster:");
-			JLabel label3 = new JLabel("Mandat i riksdagen:");
-			JLabel label4 = new JLabel("Procent av röster");
-			
-			frame.add(label);
-			frame.add(label2);
-			frame.add(label4);
-			frame.add(label3);
-			
-			label.setOpaque(true);
-			label2.setOpaque(true);
-			label3.setOpaque(true);
-			label4.setOpaque(true);
-			label.setBackground(white);
-			label2.setBackground(white);
-			label3.setBackground(white);
-			label4.setBackground(white);
-			summaLabel.setOpaque(true);
-			summaLabel.setBackground(white);
-			for (int i = 1; i < mandat.length; i++) {
-				parti[i]=new JLabel(partiNamn[i]);
-				parti[i].setIcon(new ImageIcon(getClass().getResource("/images/Partier/" + partiNamn[i] + ".png")));
-				parti[i].setBackground(white);
-				parti[i].setOpaque(true);
-				värden[i]=new JTextField();
-				värden[i].addCaretListener(e -> {uppdaterasumma();});
-				mandat[i]=new JLabel();
-				mandat[i].setOpaque(true);
-				mandat[i].setBackground(white);
-				procentLabels[i]=new JLabel();
-				procentLabels[i].setOpaque(true);
-				procentLabels[i].setBackground(white);
-				frame.add(parti[i]);
-				frame.add(värden[i]);
-				frame.add(procentLabels[i]);
-				frame.add(mandat[i]);
-				uddatal[i]=1.4;
-			}
-			mellanrum.setOpaque(true);
-			mellanrum.setBackground(white);
-			mellanrum2.setOpaque(true);
-			mellanrum2.setBackground(white);
-			button.addActionListener(e -> {jämför();});
-			frame.add(button);
-			frame.add(summaLabel);
-			frame.add(mellanrum);
-			frame.add(mellanrum2);
-			frame.setLayout(new GridLayout(i+1,4,1,2));
-			frame.setIconImage(fönsterIcon);
-			frame.getContentPane().setBackground(black);
-			frame.setDefaultCloseOperation(3);
-			frame.pack();
-			frame.setLocationRelativeTo(null);
-			frame.setVisible(true);
+}
+class Mandat{
+	private JFrame frame = new JFrame("Mandatsimulator för riksdagen");
+	private final int i = 11;
+	private JTextField[] värden = new JTextField[i];
+	private JLabel[] mandat = new JLabel[i],
+			parti = new JLabel[i],
+			procentLabels = new JLabel[i];
+	private JLabel summaLabel = new JLabel(),
+			mellanrum = new JLabel(),
+			mellanrum2 = new JLabel();
+	private double[] tal = new double[i],
+			uddatal = new double[i],
+			procent = new double[i];
+	private int[] antalmandat = new int[i];
+	private JButton button = new JButton("Öppna jämförelser");
+	private String[] partiNamn = {	"",
+									"Socialdemokraterna",
+									"Vänsterpartiet",
+									"Miljöpartiet",
+									"Moderaterna",
+									"Centerpartiet",
+									"Folkpartiet",
+									"Kristdemokraterna",
+									"Sverigedemokraterna",
+									"Feministiskt initiativ",
+									"Övriga"};
+	private Color[] färger = {white,red,red.darker(),green,blue,green.darker(),blue.darker(),blue.darker().darker(),yellow,magenta,gray};
+	private JFrame[] jämförelseFrames = new JFrame[20];
+	int nr;
+	public Mandat() {
+
+		JLabel label = new JLabel("Parti:");
+		JLabel label2 = new JLabel("Röster:");
+		JLabel label3 = new JLabel("Mandat i riksdagen:");
+		JLabel label4 = new JLabel("Procent av röster");
+
+		frame.add(label);
+		frame.add(label2);
+		frame.add(label4);
+		frame.add(label3);
+
+		label.setOpaque(true);
+		label2.setOpaque(true);
+		label3.setOpaque(true);
+		label4.setOpaque(true);
+		label.setBackground(white);
+		label2.setBackground(white);
+		label3.setBackground(white);
+		label4.setBackground(white);
+		summaLabel.setOpaque(true);
+		summaLabel.setBackground(white);
+		for (int i = 1; i < mandat.length; i++) {
+			parti[i]=new JLabel(partiNamn[i]);
+			parti[i].setIcon(new ImageIcon(getClass().getResource("/images/Partier/" + partiNamn[i] + ".png")));
+			parti[i].setBackground(white);
+			parti[i].setOpaque(true);
+			värden[i]=new JTextField();
+			värden[i].addCaretListener(e -> {uppdaterasumma();});
+			mandat[i]=new JLabel();
+			mandat[i].setOpaque(true);
+			mandat[i].setBackground(white);
+			procentLabels[i]=new JLabel();
+			procentLabels[i].setOpaque(true);
+			procentLabels[i].setBackground(white);
+			frame.add(parti[i]);
+			frame.add(värden[i]);
+			frame.add(procentLabels[i]);
+			frame.add(mandat[i]);
+			uddatal[i]=1.4;
 		}
-		long s = 0;
-		private void uppdaterasumma() {
-			s=0;
-			for (int i = 1; i < mandat.length; i++) {
-				try {
-					s = s + Long.parseLong(värden[i].getText());
-				} catch (NumberFormatException e) {}
-			}
-			for (int i = 1; i < mandat.length; i++) {
-				try {
-					procentLabels[i].setText(Double.toString(procent[i]=(double) Math.round(((double)Long.parseLong(värden[i].getText()))/((double)s)*10000)/100)+"%");
-				} catch (Exception e) {
-					procentLabels[i].setText("0%");
-				}
-			}
-			summaLabel.setText("Totalt: " + Long.toString(s));
-			beräkna();
-
+		mellanrum.setOpaque(true);
+		mellanrum.setBackground(white);
+		mellanrum2.setOpaque(true);
+		mellanrum2.setBackground(white);
+		button.addActionListener(e -> {jämför();});
+		frame.add(button);
+		frame.add(summaLabel);
+		frame.add(mellanrum);
+		frame.add(mellanrum2);
+		frame.setLayout(new GridLayout(i+1,4,1,2));
+		frame.setIconImage(fönsterIcon);
+		frame.getContentPane().setBackground(black);
+		frame.setDefaultCloseOperation(3);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+	}
+	long s = 0;
+	private void uppdaterasumma() {
+		s=0;
+		for (int i = 1; i < mandat.length; i++) {
+			try {
+				s = s + Long.parseLong(värden[i].getText());
+			} catch (NumberFormatException e) {}
 		}
-		private void beräkna(){
-
-			for (int i = 1; i < antalmandat.length; i++) {
-				antalmandat[i] = 0;
-				uddatal[i] = 1.4;
+		for (int i = 1; i < mandat.length; i++) {
+			try {
+				procentLabels[i].setText(Double.toString(procent[i]=(double) Math.round(((double)Long.parseLong(värden[i].getText()))/((double)s)*10000)/100)+"%");
+			} catch (Exception e) {
+				procentLabels[i].setText("0%");
 			}
-			if (s!=0) {
-				for (int i1 = 1; i1 < 350; i1++) {
-					List<Double> list = new ArrayList<Double>(i);
+		}
+		summaLabel.setText("Totalt: " + Long.toString(s));
+		beräkna();
 
-					for (int i = 1; i < mandat.length; i++) {
+	}
+	private void beräkna(){
 
-						if (procent[i] >= 4.0) {
-							try {
-								tal[i] = Double
-										.parseDouble(värden[i].getText())
-										/ uddatal[i];
-							} catch (NumberFormatException e) {
-								tal[i] = 0;
-							}
-						} else {
+		for (int i = 1; i < antalmandat.length; i++) {
+			antalmandat[i] = 0;
+			uddatal[i] = 1.4;
+		}
+		if (s!=0) {
+			for (int i1 = 1; i1 < 350; i1++) {
+				List<Double> list = new ArrayList<Double>(i);
+
+				for (int i = 1; i < mandat.length; i++) {
+
+					if (procent[i] >= 4.0) {
+						try {
+							tal[i] = Double
+									.parseDouble(värden[i].getText())
+									/ uddatal[i];
+						} catch (NumberFormatException e) {
 							tal[i] = 0;
 						}
-						list.add(tal[i]);
+					} else {
+						tal[i] = 0;
 					}
-					for (int i = 1; i < mandat.length; i++) {
-						if (Collections.max(list) == tal[i]) {
-							antalmandat[i]++;
-							if (uddatal[i] == 1.4) {
-								uddatal[i] = 3;
-							} else {
-								uddatal[i] = uddatal[i] + 2;
-							}
-							break;
+					list.add(tal[i]);
+				}
+				for (int i = 1; i < mandat.length; i++) {
+					if (Collections.max(list) == tal[i]) {
+						antalmandat[i]++;
+						if (uddatal[i] == 1.4) {
+							uddatal[i] = 3;
+						} else {
+							uddatal[i] = uddatal[i] + 2;
 						}
+						break;
 					}
 				}
 			}
-			Integer a = 0;
-			for (int i = 1; i < mandat.length; i++) {
-				mandat[i].setText(Integer.toString(antalmandat[i]));
-				a = a + antalmandat[i];
-			}
-			mellanrum2.setText(a.toString());
-			for (int i = 1; i < nr+1; i++) {
-				try {
-					jämförelseFrames[i].repaint();
-				} catch (Exception e) {}
-			}
 		}
-		void jämför(){
-			nr++;
-			JCheckBox[] checkBoxes = new JCheckBox[i];
-			JFrame frame = jämförelseFrames[nr] = new JFrame();
-			JLabel summa = new JLabel(),summa2 = new JLabel();
-			JPanel panel = new JPanel();
-			class Diagram extends JPanel{
-				public void paintComponent(Graphics g1) { 
-					Graphics2D g = (Graphics2D) g1;
-					setBackground(white);
-					Insets i = getInsets();     // omgivande rams utbredning 
-					g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-					int w = getWidth()-i.left-i.right,  // tillgänglig bredd
-					h = getHeight()-i.top-i.bottom, // tillgänglig höjd 
-					diam = Math.min(h,w),   // cirkelns diameter 
-					x = i.left + (w-diam)/2,  
-					y = i.top  + (h-diam)/2,  a = 90,alla = 0,allaandra = 0;
-					boolean ja = false;
-					for (int j = 1; j < antalmandat.length; j++) {
-						if (antalmandat[j]!=0) {
-							ja=true;
-							if (checkBoxes[j].isSelected()) {
-								g.setColor(färger[j]);
-								int partFilled  = (int) (Math.round(antalmandat[j]*1.0315186246418338108882521489971));    
-								g.fillArc(x, y, diam, diam, a, partFilled); //rita medurs 
-								g.drawArc(x, y, diam, diam, a, partFilled); //rita medurs 
-								a=a+partFilled;
-								allaandra++;
-							}
-							alla++;
+		Integer a = 0;
+		for (int i = 1; i < mandat.length; i++) {
+			mandat[i].setText(Integer.toString(antalmandat[i]));
+			a = a + antalmandat[i];
+		}
+		mellanrum2.setText(a.toString());
+		for (int i = 1; i < nr+1; i++) {
+			try {
+				jämförelseFrames[i].repaint();
+			} catch (Exception e) {}
+		}
+	}
+	void jämför(){
+		nr++;
+		JCheckBox[] checkBoxes = new JCheckBox[i];
+		JFrame frame = jämförelseFrames[nr] = new JFrame();
+		JLabel summa = new JLabel(),summa2 = new JLabel();
+		JPanel panel = new JPanel();
+		@SuppressWarnings("serial")
+		class Diagram extends JPanel{
+			public void paintComponent(Graphics g1) { 
+				Graphics2D g = (Graphics2D) g1;
+				setBackground(white);
+				Insets i = getInsets();
+				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				int w = getWidth()-i.left-i.right,
+						h = getHeight()-i.top-i.bottom,
+						diam = Math.min(h,w),
+						x = i.left + (w-diam)/2,  
+						y = i.top  + (h-diam)/2,  a = 90,alla = 0,allaandra = 0;
+				boolean ja = false;
+				for (int j = 1; j < antalmandat.length; j++) {
+					if (antalmandat[j]!=0) {
+						ja=true;
+						if (checkBoxes[j].isSelected()) {
+							g.setColor(färger[j]);
+							int partFilled  = (int) (Math.round(antalmandat[j]*1.0315186246418338108882521489971));    
+							g.fillArc(x, y, diam, diam, a, partFilled); //rita medurs 
+							g.drawArc(x, y, diam, diam, a, partFilled); //rita medurs 
+							a=a+partFilled;
+							allaandra++;
 						}
+						alla++;
 					}
-					if (alla==allaandra&&ja) {
-						while (a-90<=360) {
-							g.fillArc(x, y, diam, diam, a, 1); //rita medurs 
-							g.drawArc(x, y, diam, diam, a, 1); //rita medurs 
-							a++;
-						}
-					}
-					int summan=0;
-					for (int i1 = 1; i1 < checkBoxes.length; i1++) {
-						if (checkBoxes[i1].isSelected()) {
-							summan=summan+antalmandat[i1];
-						}
-					}
-					summa.setText("Mandat: " + Integer.toString(summan));
-					summa2.setText("Procent: " + Double.toString((double)Math.round(summan/0.349)/10) + "%");
 				}
+				if (alla==allaandra&&ja) {
+					while (a-90<=360) {
+						g.fillArc(x, y, diam, diam, a, 1); //rita medurs 
+						g.drawArc(x, y, diam, diam, a, 1); //rita medurs 
+						a++;
+					}
+				}
+				int summan=0;
+				for (int i1 = 1; i1 < checkBoxes.length; i1++) {
+					if (checkBoxes[i1].isSelected()) {
+						summan=summan+antalmandat[i1];
+					}
+				}
+				summa.setText("Mandat: " + Integer.toString(summan));
+				summa2.setText("Procent: " + Double.toString((double)Math.round(summan/0.349)/10) + "%");
 			}
-			for (int i = 1; i < checkBoxes.length; i++) {
-				checkBoxes[i]=new JCheckBox(partiNamn[i]);
-				panel.add(checkBoxes[i]);
-				checkBoxes[i].addActionListener(e -> {
-					frame.repaint();
-				});
-			}
-			panel.setLayout(new GridLayout(i+1, 1));
-			panel.add(summa);
-			panel.add(summa2);
-			frame.setLayout(new GridLayout(1,2,0,1));
-			frame.add(panel);
-			frame.add(new Diagram());
-			frame.setIconImage(fönsterIcon);
-			frame.pack();
-			frame.setLocationRelativeTo(null);
-			frame.setVisible(true);
 		}
+		for (int i = 1; i < checkBoxes.length; i++) {
+			checkBoxes[i]=new JCheckBox(partiNamn[i]);
+			panel.add(checkBoxes[i]);
+			checkBoxes[i].addActionListener(e -> {
+				frame.repaint();
+			});
+		}
+		panel.setLayout(new GridLayout(i+1, 1));
+		panel.add(summa);
+		panel.add(summa2);
+		frame.setLayout(new GridLayout(1,2,0,1));
+		frame.add(panel);
+		frame.add(new Diagram());
+		frame.setIconImage(fönsterIcon);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 	}
 }
 class Räknare implements ActionListener{
@@ -1754,9 +1716,8 @@ class Glosor{
 		button3.addActionListener(e -> rens());
 		button4.addActionListener(e -> spara());
 		textField.addKeyListener(new KeyListener() {
-			public void keyTyped(KeyEvent e) {}public void keyReleased(KeyEvent e) {}
-			public void keyPressed(KeyEvent e) {if (e.getKeyCode()==10) {kolla();}
-												if (e.getKeyCode()==82&&e.getModifiersEx()==128) {spara();}}}
+			public void keyTyped(KeyEvent e){}public void keyReleased(KeyEvent e){}public void keyPressed(KeyEvent e){
+				if (e.getKeyCode()==10){kolla();}if (e.getKeyCode()==82&&e.getModifiersEx()==128){spara();}}}
 		);
 		blanda();
 		sätt();
@@ -2217,7 +2178,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			frame.dispose();
 			
 		}
-		
 		else if (arg0.getSource() == Snake){
 			new Snake();
 		}
@@ -2592,7 +2552,7 @@ class Miniräknare implements ActionListener, KeyListener{
 
 }
 
-class Merit implements MouseMotionListener, WindowListener, KeyListener, ActionListener{
+class Merit implements WindowListener, KeyListener, ActionListener{
 
 
 	
@@ -2647,7 +2607,6 @@ class Merit implements MouseMotionListener, WindowListener, KeyListener, ActionL
 		E.setSize(30,30);
 		F.setSize(30,30);
 		
-		huvudframe.addMouseMotionListener(this);
 		Svenska.addKeyListener(null);
 		huvudframe.addKeyListener(this);
 		Börja.setPreferredSize(new Dimension(30, 30));
@@ -2766,16 +2725,6 @@ class Merit implements MouseMotionListener, WindowListener, KeyListener, ActionL
 			Bild 
 			*/
 		}
-		
-
-		public void mouseDragged(MouseEvent arg0) { 
-			
-		}
-		
-		public void mouseMoved(MouseEvent arg0) {
-			
-		}
-		
 		public void actionPerformed(ActionEvent e) { 
 			
 			
@@ -4250,7 +4199,6 @@ class Pass implements ActionListener{
 		användare.setLayout(new FlowLayout());
 		användare.setDefaultCloseOperation(3);
 		användare.setResizable(false);
-		användare.setAlwaysOnTop(true);
 		användare.pack();
 		användare.setLocationRelativeTo(null);
 		användareGlenn.addActionListener(this);
@@ -4346,6 +4294,7 @@ class Pass implements ActionListener{
 				timer.stop();
 				frame.dispose();
 				användare.setVisible(true);
+				användare.toFront();
 				
 				try {
 					cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key.getBytes(), "AES"));
@@ -4908,16 +4857,16 @@ class Update implements Runnable{
 						ByteArrayOutputStream out = new ByteArrayOutputStream();
 						byte[] buf = new byte[1024];
 						int n = 0;
-						JProgressBar bar = new JProgressBar(0, in.available());
+						JProgressBar bar = new JProgressBar(0, in.available()/2);
 						JFrame frame = new JFrame("Laddar ner...");
 						frame.add(bar);
+						frame.setIconImage(fönsterIcon);
 						frame.setLocationRelativeTo(null);
 						frame.setVisible(true);
 						frame.setAlwaysOnTop(true);
 						frame.setSize(500,200);
 						while (-1!=(n=in.read(buf))){
 							out.write(buf, 0, n);
-							System.err.println(n);
 							bar.setValue(bar.getValue()+1);
 						}
 						out.close();
@@ -4926,19 +4875,20 @@ class Update implements Runnable{
 						fos.write(out.toByteArray());
 						fos.close();
 						System.out.println("Finished");
+						frame.dispose();
+						showMessageDialog(null, "Uppdateringen slutfördes! Programmet startas om...", "Slutfört", INFORMATION_MESSAGE);
 						try {
-							Runtime.getRuntime().exec("java -jar " + loc.getFile().toString());
+							Runtime.getRuntime().exec("java -jar " + loc.getFile().toString().substring(1) + " " + argString);
+							System.err.println("java -jar " + loc.getFile().toString().substring(1) + " " + argString);
 						} catch (Exception e) {
 							e.printStackTrace(); 
 						}
-						frame.dispose();
-						showMessageDialog(null, "Uppdateringen slutfördes!", "Slutfört", INFORMATION_MESSAGE);
 						System.exit(0);
 					}
 				}
 			}
 		} catch(Exception e){
-			System.err.println("Ingin uppdatering hittades");
+			System.err.println("Ingen uppdatering hittades");
 		}
 	}
 }
