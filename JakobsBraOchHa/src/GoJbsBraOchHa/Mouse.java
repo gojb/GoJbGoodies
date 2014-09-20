@@ -1967,7 +1967,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			morse = new JMenuItem("Morse"),
 			Random = new JMenuItem("Random"),
 			klocka = new JMenuItem("Klocka"),
-			binära = new JMenuItem("Binär omvandlare");
+			binära = new JMenuItem("Binär omvandlare"),
+			draOchSläpp = new JMenuItem("Dra & Släpp");
 	JMenuBar bar = new JMenuBar();
 	
 	Clip clip;
@@ -2015,6 +2016,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		ÖppnaProgram.add(Random);
 		ÖppnaProgram.add(klocka);
 		ÖppnaProgram.add(binära);
+		ÖppnaProgram.add(draOchSläpp);
 		
 		Mouse.addActionListener(this);
 		Pong.addActionListener(this);
@@ -2033,8 +2035,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		morse.addActionListener(this);
 		Random.addActionListener(this);
 		klocka.addActionListener(this);
-		binära.addActionListener(e -> new ToBinary());
-		binära.addActionListener(e -> frame.setVisible(false));
+		binära.addActionListener(e -> {new ToBinary();frame.setVisible(false);});
+		draOchSläpp.addActionListener(e -> {new DraOchSläpp();frame.dispose();});		
 		
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 		frame.setBackground(gray);
@@ -5001,8 +5003,8 @@ class ToBinary implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-
-
+			
+		
 		
 		try {
 			Integer.parseInt(text.getText());
@@ -5023,3 +5025,79 @@ class ToBinary implements ActionListener{
 	}
 }
 
+class DraOchSläpp implements MouseInputListener{
+	
+	GoJbFrame frame = new GoJbFrame();
+	
+	JLabel label1 = new JLabel("gykg"),
+			label2 = new JLabel("tytri");
+	
+	public DraOchSläpp(){
+		
+		frame.add(label1);
+		frame.add(label2);
+		
+		frame.setLayout(new FlowLayout());
+		
+		label1.setOpaque(true);
+		label1.setBackground(blue);
+		label1.setSize(70,70);
+		label1.setLocation(50,50);
+		
+		label2.setOpaque(true);
+		label2.setBackground(red);
+		label2.setSize(70,70);
+		label2.setLocation(100,190);
+		frame.addMouseMotionListener(this);
+		
+		System.out.println(label1.getWidth() + "   " + (label1.getX() + label1.getWidth()));
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+			
+		if (arg0.getX() < label1.getX()+label1.getWidth() && arg0.getX() > label1.getX() && arg0.getY() > label1.getY()
+				&& arg0.getY() < label1.getY()+label1.getHeight()){
+		label1.setLocation(arg0.getX() - 25, arg0.getY() - 50);
+		System.err.println("ssd");
+		}
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+}
