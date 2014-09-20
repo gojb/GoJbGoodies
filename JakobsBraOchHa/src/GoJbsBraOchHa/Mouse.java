@@ -169,7 +169,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	}
 
 	Mouse(){
-		
+//		notify();
 		laddtext.setFont(typsnitt);
 		laddtext.setHorizontalAlignment(CENTER);
 		laddfönster.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -1087,6 +1087,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 			SpelareHöger = "Spelare 2";
 		}
 		
+		
 		addMouseMotionListener(this);
 		setForeground(red);
 		setPreferredSize(new Dimension(700, 500));
@@ -1579,29 +1580,35 @@ class FlappyGoJb extends JPanel implements KeyListener{
 		frame.setSize(500, 500);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		y=getHeight()-64;
+		
 		timer.start();
 		skapaHinder();
 	}
+	void gameover(){
+		skapaHinder();
+		y=getHeight()/2;
+			System.out.println("Game over");
+	}
 	void check() {
 		int i =10;
-		if (y<getHeight()-64) {
-			y=y+3;
+		if (y+64<getHeight()) {
+			y=y+5;
 		}
+		else 
+			gameover();
 		if (x+bredd<=0) {
 			skapaHinder();
 		}
 		if (y+64>a&&y<a+höjd&&i+64>x&&i<x+bredd) {
-			skapaHinder();
-			System.out.println("Game over");
+			gameover();
 		}
 		frame.repaint();
 		if (mellanslag) {
-			if (y>64) {
-				y = y - 30;
+			if (y>0) {
+				y=y-15;
 			}
 			else {
-				y=0;
+				gameover();
 			}
 		}
 		
@@ -1733,8 +1740,7 @@ class Glosor{
 	private JPanel panel = new JPanel(new BorderLayout()),restartPanel = new JPanel(new FlowLayout());
 	private Timer timer = new Timer(2000, e -> {stoppatimer();label2.setText("");});void stoppatimer(){timer.stop();}
 	private Boolean barafel = false;
-	
-	
+
 	Glosor() {
 		frame.setSize(frame.getWidth(), 300);
 		frame.setJMenuBar(bar);
@@ -1792,8 +1798,8 @@ class Glosor{
 		button4.addActionListener(e -> spara());
 		textField.addKeyListener(new KeyListener() {
 			public void keyTyped(KeyEvent e){}public void keyReleased(KeyEvent e){}public void keyPressed(KeyEvent e){
-				if (e.getKeyCode()==10){kolla();}if (e.getKeyCode()==82&&e.getModifiersEx()==128){spara();}}}
-		);
+				if (e.getKeyCode()==10){kolla();}if (e.getKeyCode()==82&&e.getModifiersEx()==128){spara();
+		}}});
 		blanda();
 		sätt();
 	}
@@ -4257,7 +4263,7 @@ class Pass implements ActionListener{
 		användareJakob.addActionListener(this);
 
 		frame.setUndecorated(true);
-		frame.setAlwaysOnTop(true);
+		
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 		frame.add(label);
 		frame.add(passwordField);
@@ -4267,7 +4273,7 @@ class Pass implements ActionListener{
 		frame.setMinimumSize(frame.getSize());
 		frame.setLocationRelativeTo(null);	
 		frame.setVisible(true);
-
+		frame.toFront();
 		timer.start();
 		
 	}
@@ -4893,7 +4899,11 @@ class Klocka implements ActionListener{
 	}
 }
 class Update implements Runnable{
-	public void run(){
+	public synchronized void run(){
+//		try {
+//			wait();
+//		} catch (InterruptedException e2) {System.err.println(",uglf");}
+		vänta(10000);
 		if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")) {
 			try {
 				URL u = new URL("http://gojb.bl.ee/GoJb.jar");
