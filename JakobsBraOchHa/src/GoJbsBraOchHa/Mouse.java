@@ -1570,8 +1570,10 @@ class FlappyGoJb extends JPanel implements KeyListener{
 	private static final long serialVersionUID = 1L;
 	
 	JFrame frame = new JFrame("FlappyGoJb");
-	int x,y,a;
+	int x,y,a,x2,a2;
+	final int bredd=35,höjd=60;
 	Timer timer = new Timer(20, e -> check());
+	boolean mellanslag;
 	
 	FlappyGoJb(){
 		
@@ -1587,45 +1589,54 @@ class FlappyGoJb extends JPanel implements KeyListener{
 		skapaHinder();
 	}
 	void check() {
-		int i =getWidth()/2;
+		int i =10;
 		if (y<getHeight()-64) {
 			y=y+3;
 		}
-		if (x<=0) {
+		if (x+bredd<=0) {
 			skapaHinder();
 		}
-		if (y+64>a&&y<a+60&&i+64>x) {
+		if (y+64>a&&y<a+höjd&&i+64>x&&i<x+bredd) {
 			skapaHinder();
+			System.out.println("Game over");
 		}
 		frame.repaint();
-		x=x-6;}
+		if (mellanslag) {
+			if (y>64) {
+				y = y - 30;
+			}
+			else {
+				y=0;
+			}
+		}
+		
+		x=x-8;
+		frame.repaint();
+	}
 	void skapaHinder(){
-		a=random.nextInt(getHeight()-60);
+		a=random.nextInt(getHeight()-höjd);
 		x=getWidth();
 	}
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
-		g2.drawImage(fönsterIcon, getWidth()/2,y,null);
-		g2.fillRect(x, a, 35,60);
-		g2.drawRect(x, a, 35,60);
+		g2.drawImage(fönsterIcon, 10,y,null);
+		g2.fillRect(x, a, bredd,höjd);
+		g2.drawRect(x, a, bredd,höjd);
+		g2.fillRect(x2, a2, bredd,höjd);
+		g2.drawRect(x2, a2, bredd,höjd);
 		 
 	}
 	public void keyTyped(KeyEvent e) {
 	}
+	
 	public void keyPressed(KeyEvent e) {
-		System.err.println("ery");
 		if (e.getKeyCode()==KeyEvent.VK_SPACE) {
-			if (y>64) {
-				y = y - 50;
-			}
-			else {
-				y=0;
-			}
-			frame.repaint();
+			mellanslag=true;
 		}
 	}
 	public void keyReleased(KeyEvent e) {
+		mellanslag=false;
 	}
 }
 @SuppressWarnings("serial")
@@ -1722,10 +1733,11 @@ class Glosor{
 	private JTextField[] ettFields = new JTextField[språk1.length],
 						tvåFields = new JTextField[språk1.length];
 	private int index,fel,rätt;
+	private int[] felaktiga = new int[språk1.length],felaktiga2 = new int[språk1.length];
 	private ArrayList<String> ettList,tvåList;
 	private JPanel panel = new JPanel(new BorderLayout()),restartPanel = new JPanel(new FlowLayout());
 	private Timer timer = new Timer(2000, e -> {stoppatimer();label2.setText("");});void stoppatimer(){timer.stop();}
-	
+	private Boolean barafel = false;
 	
 	
 	Glosor() {
@@ -1746,6 +1758,8 @@ class Glosor{
 			frame2.add(tvåFields[i]);
 			ettFields[i].setText(språk1[i]);
 			tvåFields[i].setText(språk2[i]);
+			ettFields[i].addFocusListener(f); 
+			tvåFields[i].addFocusListener(f);
 		}	
 		frame2.setLocation(frame2.getX(), 5);
 		frame2.setUndecorated(true);
@@ -1788,6 +1802,12 @@ class Glosor{
 		blanda();
 		sätt();
 	}
+	FocusListener f = new FocusListener() {
+		public void focusLost(FocusEvent e) {}
+		public void focusGained(FocusEvent e) {
+			((JTextComponent) e.getSource()).selectAll();
+		}
+	};
 	private void byt() {
 		
 		String[] strings = new String[ettFields.length];
@@ -1804,17 +1824,13 @@ class Glosor{
 			språk2[i]=tvåFields[i].getText();
 			prop.setProperty("språk1[" + i + "]", språk1[i]);
 			prop.setProperty("språk2[" + i + "]", språk2[i]);
+			felaktiga[i]=255;
 		}
 		sparaProp("Glosor");
 		frame2.dispose();
 		frame.setEnabled(true);
 		frame.toFront();
-		index=0;
-		rätt=0;
-		fel=0;
 		textField.setText("");
-		rättLabel.setText("Rätt: 0");
-		felLabel.setText("Fel: 0");
 		blanda();
 		sätt();
 	}
@@ -1835,11 +1851,11 @@ class Glosor{
 		}
 		else {
 			spelaLjud("/images/Wrong.wav");
+			felaktiga[fel]=index;
 			fel++;
 			felLabel.setText("Fel: " + fel);
 			label2.setText(tvåList.get(index));
 			timer.start();
-			
 		}
 		index++;
 		textField.setText("");
@@ -1851,15 +1867,48 @@ class Glosor{
 			if (rätt==0&&fel==0) {
 				return;
 			}
-			showMessageDialog(frame, "Rätt: " + rätt + "\nFel: " + fel, "Resultat", INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/images/Done.jpg")));
-			blanda();
-			index=0;
-			rätt=0;
-			fel=0;
-			rättLabel.setText("Rätt: 0");
-			felLabel.setText("Fel: 0");
+			if (fel!=0) {
+				felaktiga2 = felaktiga.clone();
+				for (int i = 0; i < felaktiga.length; i++) {
+					felaktiga[i]=255;
+				}
+				String[] strings = {"Starta om","Öva på felaktiga"};
+				if (showOptionDialog(frame, "Rätt: " + rätt + "\nFel: " + fel, "Resultat", DEFAULT_OPTION, INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/images/Java-icon.png")), strings, strings[1])==1) {
+					System.err.println("poj");
+					barafel=true;
+					index=0;
+					fel=0;
+				}
+				else {
+					barafel=false;
+					System.err.println("doj");
+					
+					blanda();
+				}
+			}
+			else {
+				barafel=false;
+				showMessageDialog(frame, "Alla rätt!","Resultat", INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/images/Done.jpg")));
+				blanda();
+			}
+			
+			
 		}
+		
 		if (ettList.get(index).equals("")==false&&ettList.get(index).equals(null)==false) {
+			if (barafel) {
+				Boolean a = false;
+				for (int i = 0; i < felaktiga2.length; i++) {
+					if (felaktiga2[i]==index) {
+						a=true;
+						System.err.println(felaktiga2[i]);
+					}
+				}
+				if (a==false) {
+					index++;
+					sätt();
+				}
+			}
 			label.setText(ettList.get(index));
 			frame.repaint();
 		}
@@ -1870,6 +1919,10 @@ class Glosor{
 	}
 	private void blanda(){
 		index=0;
+		rätt=0;
+		fel=0;
+		rättLabel.setText("Rätt: 0");
+		felLabel.setText("Fel: 0");
 		ettList = new ArrayList<String>(Arrays.asList(språk1)); 
 		tvåList = new ArrayList<String>(Arrays.asList(språk2)); 
 		Long seed = System.currentTimeMillis();
@@ -4194,7 +4247,7 @@ class Pass implements ActionListener{
 	private String tid = new SimpleDateFormat("yy MM dd HH").format(new Date());
 	private char[] pass;
 	private static Boolean debugMode = new Boolean(prop.getProperty("debug", "false"));
-	private boolean b;
+	private boolean b = true;
 	public Pass() {
 		checkLogin();
 		
@@ -4264,6 +4317,7 @@ class Pass implements ActionListener{
 				}
 				
 				if (två>=ett&&två<ett+2) {
+					b = false;
 					System.out.println("Inloggad för mindre än två timmar sedan");
 					pass = correctPassword;
 				}
@@ -4285,7 +4339,6 @@ class Pass implements ActionListener{
 		} catch (Exception e) {
 			
 			System.err.println("Logga in!");
-			b=true;
 		}
 
 		
