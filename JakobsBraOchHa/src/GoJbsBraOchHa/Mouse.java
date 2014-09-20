@@ -8,15 +8,20 @@ import java.net.URL;
 import java.text.*;
 import java.util.*;
 import java.util.List;
+import java.util.function.BinaryOperator;
 
 import javax.crypto.*;
 import javax.crypto.spec.*;
+import javax.naming.BinaryRefAddr;
 import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
+import jdk.nashorn.internal.ir.BinaryNode;
+
+import com.sun.javafx.fxml.expression.BinaryExpression;
 import com.sun.mail.util.*;
 
 import GoJbFrame.GoJbFrame;
@@ -1908,7 +1913,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			avsluta = new JMenuItem("Avsluta"),
 			morse = new JMenuItem("Morse"),
 			Random = new JMenuItem("Random"),
-			klocka = new JMenuItem("Klocka");
+			klocka = new JMenuItem("Klocka"),
+			binära = new JMenuItem("Binär omvandlare");
 	JMenuBar bar = new JMenuBar();
 	
 	Clip clip;
@@ -1955,6 +1961,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		ÖppnaProgram.add(morse);
 		ÖppnaProgram.add(Random);
 		ÖppnaProgram.add(klocka);
+		ÖppnaProgram.add(binära);
 		
 		Mouse.addActionListener(this);
 		Pong.addActionListener(this);
@@ -1973,6 +1980,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		morse.addActionListener(this);
 		Random.addActionListener(this);
 		klocka.addActionListener(this);
+		binära.addActionListener(e -> new ToBinary());
+		binära.addActionListener(e -> frame.setVisible(false));
 		
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 		frame.setBackground(gray);
@@ -4906,3 +4915,58 @@ class PainInTheAss{
 	}
 	
 }
+class ToBinary implements ActionListener{
+	
+	GoJbFrame frame = new GoJbFrame();
+	
+	JSlider slider = new JSlider(0, 50, 1);
+	
+	JTextField text = new JTextField(3);
+	
+	JButton button = new JButton();
+	
+	Timer timer = new Timer(3, this);
+	
+	int foo = Integer.parseInt("1010", 2);
+	
+	public ToBinary(){
+		
+		frame.setLayout(new GridLayout(3,1));
+		
+		frame.add(slider);
+		frame.add(text);
+		frame.add(button);
+		
+		text.setText("0");
+		
+		timer.start();
+		
+		button.addActionListener(e -> System.out.println(Integer.toBinaryString(Integer.parseInt(text.getText()))));
+		
+		System.out.println(foo);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+
+
+		
+		try {
+			Integer.parseInt(text.getText());
+				text.setForeground(black);
+				text.setBackground(white);
+
+		} catch (NumberFormatException e) {
+			text.setForeground(red);
+			text.setBackground(black);
+		}
+		
+		button.setText(Integer.toString(slider.getValue()));
+		frame.revalidate();
+		frame.repaint();
+		button.revalidate();
+		button.repaint();
+		
+	}
+}
+
