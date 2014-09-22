@@ -5080,22 +5080,28 @@ class ToBinary implements ActionListener{
 	}
 }
 
-class DraOchSläpp implements MouseInputListener{
+class DraOchSläpp extends JPanel implements MouseInputListener{
 	
 	GoJbFrame frame = new GoJbFrame();
-	
+	JLayeredPane layeredPane = new JLayeredPane();
 	JLabel label1 = new JLabel(),
-			label2 = new JLabel();
+			label2 = new JLabel(),
+			label3 = new JLabel();
 	
 	int x,a;
 	
 	public DraOchSläpp(){
+		frame.setLayeredPane(layeredPane);
 		
-		frame.add(label1);
-		frame.add(label2);
+		frame.setBackground(white);
 		
+		layeredPane.add(label1);
+		layeredPane.add(label2);
+		layeredPane.add(this);
+		setSize(frame.getSize());
+		layeredPane.setLayer(this, 10);
 		frame.setLayout(new BorderLayout());
-		
+//		frame.getGlassPane().add(this);
 		label1.setOpaque(true);
 		label1.setBackground(blue);
 		label1.setSize(70,70);
@@ -5112,42 +5118,35 @@ class DraOchSläpp implements MouseInputListener{
 		frame.addMouseListener(this);
 		label1.addMouseListener(this);
 		label2.addMouseListener(this);
-		
+		System.out.println("ddf");
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
-		if (e.getSource()==label1 && a==0){
+		if (e.getSource()==label1){
 		if(SwingUtilities.isRightMouseButton(e)){
 			System.err.println("redbfer");
 			
-			a = 1;
+			layeredPane.setLayer(label1, 25);
+			layeredPane.setLayer(label2, 0);
 			
-			frame.remove(label2);
-			frame.remove(label1);
-			frame.add(label1);
-			frame.add(label2);
-			label2.setPreferredSize(new Dimension(70, 70));
-			label1.setPreferredSize(new Dimension(70, 70));
+			frame.revalidate();
 			frame.repaint();
 			
 		}
 		}
 		
-		if (e.getSource()==label2&& a==1){
+		if (e.getSource()==label2){
 			if(SwingUtilities.isRightMouseButton(e)){
 				System.err.println("bluee3");
 				
-				a = 0;
+				layeredPane.setLayer(label2, 25);
+				layeredPane.setLayer(label1, 0);
 				
-				frame.remove(label2);
-				frame.remove(label1);
-				frame.add(label2);
-				frame.add(label1);
-				label2.setPreferredSize(new Dimension(70, 70));
-				label1.setPreferredSize(new Dimension(70, 70));
+				frame.revalidate();
 				frame.repaint();
+
 			}
 			}
 	}
@@ -5202,6 +5201,16 @@ class DraOchSläpp implements MouseInputListener{
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
 
+	}
+		@Override
+	protected void paintComponent(Graphics g) {
+//		super.paintComponent(g);
+		
+		g.drawLine(label1.getX(), label1.getY(), label2.getX(), label2.getY());
+		g.drawLine(label1.getX()+label1.getWidth(), label1.getY(), label2.getX()+label2.getWidth(), label2.getY());
+		g.drawLine(label1.getX(), label1.getY()+label1.getHeight(), label2.getX(), label2.getY()+label2.getHeight());
+		g.drawLine(label1.getX()+label1.getWidth(), label1.getY()+label1.getHeight(), label2.getX()+label2.getWidth(), label2.getY()+label2.getHeight());
+		
 	}
 }
 
