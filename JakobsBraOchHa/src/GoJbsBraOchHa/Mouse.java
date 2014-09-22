@@ -5020,7 +5020,7 @@ class ToBinary implements ActionListener{
 	
 	GoJbFrame frame = new GoJbFrame();
 	
-	JSlider slider = new JSlider(0, 50, 1);
+	JSlider slider = new JSlider(0, 2147483647, 1);
 	
 	JTextField text = new JTextField(3);
 	
@@ -5028,7 +5028,7 @@ class ToBinary implements ActionListener{
 	
 	Timer timer = new Timer(3, this);
 	
-	int foo = Integer.parseInt("1010", 2);
+	int foo = Integer.parseInt("1111", 2);
 	
 	public ToBinary(){
 		
@@ -5045,6 +5045,7 @@ class ToBinary implements ActionListener{
 		button.addActionListener(e -> System.out.println(Integer.toBinaryString(Integer.parseInt(text.getText()))));
 		
 		System.out.println(foo);
+		System.err.println(Integer.MAX_VALUE);
 	}
 
 	@Override
@@ -5075,15 +5076,17 @@ class DraOchSläpp implements MouseInputListener{
 	
 	GoJbFrame frame = new GoJbFrame();
 	
-	JLabel label1 = new JLabel("gykg"),
-			label2 = new JLabel("tytri");
+	JLabel label1 = new JLabel(),
+			label2 = new JLabel();
+	
+	int x,a;
 	
 	public DraOchSläpp(){
 		
 		frame.add(label1);
 		frame.add(label2);
 		
-		frame.setLayout(new FlowLayout());
+		frame.setLayout(new BorderLayout());
 		
 		label1.setOpaque(true);
 		label1.setBackground(blue);
@@ -5093,57 +5096,103 @@ class DraOchSläpp implements MouseInputListener{
 		label2.setOpaque(true);
 		label2.setBackground(red);
 		label2.setSize(70,70);
-		label2.setLocation(100,190);
-		frame.addMouseMotionListener(this);
 		
-		System.out.println(label1.getWidth() + "   " + (label1.getX() + label1.getWidth()));
+		frame.addMouseMotionListener(this);
+		label1.addMouseMotionListener(this);
+		label2.addMouseMotionListener(this);
+		
+		frame.addMouseListener(this);
+		label1.addMouseListener(this);
+		label2.addMouseListener(this);
 		
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
+		if (e.getSource()==label1 && a==0){
+		if(SwingUtilities.isRightMouseButton(e)){
+			System.err.println("redbfer");
+			
+			a = 1;
+			
+			frame.remove(label2);
+			frame.remove(label1);
+			frame.add(label1);
+			frame.add(label2);
+			label2.setPreferredSize(new Dimension(70, 70));
+			label1.setPreferredSize(new Dimension(70, 70));
+			frame.repaint();
+			
+		}
+		}
+		
+		if (e.getSource()==label2&& a==1){
+			if(SwingUtilities.isRightMouseButton(e)){
+				System.err.println("bluee3");
+				
+				a = 0;
+				
+				frame.remove(label2);
+				frame.remove(label1);
+				frame.add(label2);
+				frame.add(label1);
+				label2.setPreferredSize(new Dimension(70, 70));
+				label1.setPreferredSize(new Dimension(70, 70));
+				frame.repaint();
+			}
+			}
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
+
 		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
+
 		
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+	public void mousePressed(MouseEvent arg0) {
+
 		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
+
+//		if(a==1&&)
 		
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
 			
-		if (arg0.getX() < label1.getX()+label1.getWidth() && arg0.getX() > label1.getX() && arg0.getY() > label1.getY()
-				&& arg0.getY() < label1.getY()+label1.getHeight()){
-		label1.setLocation(arg0.getX() - 25, arg0.getY() - 50);
-		System.err.println("ssd");
+//		if (arg0.getX() < label1.getX()+label1.getWidth() && arg0.getX() > label1.getX() && arg0.getY() > label1.getY()
+//				&& arg0.getY() < label1.getY()+label1.getHeight()){
+//		label1.setLocation(arg0.getX() - 25, arg0.getY() - 50);
+//		System.err.println("ssd");
+//		}
+		
+		if (arg0.getSource() == label1){
+			label1.setLocation(arg0.getXOnScreen()-750,arg0.getYOnScreen()-330);
+			frame.repaint();
+			frame.revalidate();
+		}
+		if (arg0.getSource() == label2){
+			label2.setLocation(arg0.getXOnScreen()-750,arg0.getYOnScreen()-330);
+			frame.repaint();
+			frame.revalidate();
 		}
 		
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+
 	}
 }
