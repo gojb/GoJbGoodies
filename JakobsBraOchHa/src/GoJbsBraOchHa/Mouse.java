@@ -4,24 +4,19 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.io.*;
-import java.net.URL;
+import java.net.*;
 import java.text.*;
 import java.util.*;
 import java.util.List;
-import java.util.function.BinaryOperator;
 
 import javax.crypto.*;
 import javax.crypto.spec.*;
-import javax.naming.BinaryRefAddr;
 import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
-import jdk.nashorn.internal.ir.BinaryNode;
-
-import com.sun.javafx.fxml.expression.BinaryExpression;
 import com.sun.mail.util.*;
 
 import GoJbFrame.GoJbFrame;
@@ -80,8 +75,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 						  	händelseItem = new JMenuItem("Visa Händelsefönster"),
 						  	räknaItem = new JMenuItem("Öppna Miniräknare"),
 						  	pongItem = new JMenuItem("Spela Pong"),
-						  	rörandeItem = new JMenuItem("Öppna RörandeMojäng",
-						  				new ImageIcon(getClass().getResource("/images/Nopeliten.png"))),
+						  	rörandeItem = new JMenuItem("Öppna RörandeMojäng", Bild("/images/Nopeliten.png")),
 						  	studsItem = new JMenuItem("Öppna Studsande Objekt"),
 						  	snakeItem = new JMenuItem("Spela Snake"),
 							loggaUtItem = new JMenuItem("Logga ut"),
@@ -152,7 +146,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		class SetImageIcon{
 			public SetImageIcon() {
 				try {
-					fönsterIcon = new ImageIcon(getClass().getResource("/images/Java-icon.png")).getImage();
+					fönsterIcon = Bild("/images/Java-icon.png").getImage();
 				} 
 				catch (Exception e) {
 					((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
@@ -174,7 +168,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 	}
 
 	Mouse(){
-		
 		laddtext.setFont(typsnitt);
 		laddtext.setHorizontalAlignment(CENTER);
 		laddfönster.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -587,22 +580,15 @@ public class Mouse extends JPanel implements 	ActionListener,
 
 	}
 	public static void spelaLjud(String filnamn){
+		try {
+			Clip clip = AudioSystem.getClip();
+			clip.open(AudioSystem.getAudioInputStream(Mouse.class.getResource(filnamn)));
+			clip.start();
 
-		class SpelaLjud{
-			SpelaLjud(String filnamn){
-				try {
-					Clip clip = AudioSystem.getClip();
-					clip.open(AudioSystem.getAudioInputStream(getClass().getResource(filnamn)));
-					clip.start();
-
-				} catch (Exception e) {
-					((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-					showMessageDialog(null, "Filen: \"" + filnamn + "\" hittades inte", "Ljud", ERROR_MESSAGE);
-				}
-			}
+		} catch (Exception e) {
+			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+			showMessageDialog(null, "Filen: \"" + filnamn + "\" hittades inte", "Ljud", ERROR_MESSAGE);
 		}
-		new SpelaLjud(filnamn);
-		new String();
 	}
 	public static void sparaProp(String kommentar) {
 		try {
@@ -619,6 +605,9 @@ public class Mouse extends JPanel implements 	ActionListener,
 				System.err.println("Problem med åtkomst till disk!");
 			}
 		}  
+	}
+	public static ImageIcon Bild(String filnamn){
+		return new ImageIcon(Mouse.class.getResource(filnamn));
 	}
 }
 class Mandat{
@@ -674,7 +663,7 @@ class Mandat{
 		summaLabel.setBackground(white);
 		for (int i = 1; i < mandat.length; i++) {
 			parti[i]=new JLabel(partiNamn[i]);
-			parti[i].setIcon(new ImageIcon(getClass().getResource("/images/Partier/" + partiNamn[i] + ".png")));
+			parti[i].setIcon(Bild("/images/Partier/" + partiNamn[i] + ".png"));
 			parti[i].setBackground(white);
 			parti[i].setOpaque(true);
 			värden[i]=new JTextField();
@@ -695,7 +684,7 @@ class Mandat{
 		mellanrum.setBackground(white);
 		mellanrum2.setOpaque(true);
 		mellanrum2.setBackground(white);
-		button.addActionListener(e -> {jämför();});
+		button.addActionListener(e -> jämför());
 		frame.add(button);
 		frame.add(summaLabel);
 		frame.add(mellanrum);
@@ -703,7 +692,7 @@ class Mandat{
 		frame.setLayout(new GridLayout(i+1,4,1,2));
 		frame.setIconImage(fönsterIcon);
 		frame.getContentPane().setBackground(black);
-		frame.setDefaultCloseOperation(3);
+		frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
@@ -1091,6 +1080,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		else if (SpelareHöger.equals("")) {
 			SpelareHöger = "Spelare 2";
 		}
+		
 		
 		addMouseMotionListener(this);
 		setForeground(red);
@@ -1566,14 +1556,14 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		}
 	}
 }
-class FlappyGoJb extends JPanel implements KeyListener{
+class FlappyGoJb extends JPanel implements KeyListener,WindowListener{
 	private static final long serialVersionUID = 1L;
 	
-	JFrame frame = new JFrame("FlappyGoJb");
-	int x,y,a,x2,a2;
-	final int bredd=35,höjd=60;
-	Timer timer = new Timer(20, e -> check());
-	boolean mellanslag;
+	private JFrame frame = new JFrame("FlappyGoJb");
+	private int x,y,a,poäng=-1;
+	private final int bredd=35;
+	private Timer timer = new Timer(20, e -> check());
+	private boolean mellanslag;
 	
 	FlappyGoJb(){
 		
@@ -1584,50 +1574,73 @@ class FlappyGoJb extends JPanel implements KeyListener{
 		frame.setSize(500, 500);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		y=getHeight()-64;
+		frame.addWindowListener(this);
 		timer.start();
 		skapaHinder();
 	}
-	void check() {
-		int i =10;
-		if (y<getHeight()-64) {
-			y=y+3;
+	private void gameover(){
+		timer.stop();
+		y=getHeight()/2;
+		mellanslag=false;
+		if (showConfirmDialog(null, "Game over! Vill du spela igen?","Du förlorade!",YES_NO_OPTION,ERROR_MESSAGE)==NO_OPTION) {
+			frame.dispose();
+			return;
 		}
+		poäng=-1;
+		skapaHinder();
+	}
+	private void check() {
+		int i =20;
+		if (y+64<getHeight()) {
+			y=y+5;
+		}
+		else 
+			gameover();
 		if (x+bredd<=0) {
 			skapaHinder();
 		}
-		if (y+64>a&&y<a+höjd&&i+64>x&&i<x+bredd) {
-			skapaHinder();
-			System.out.println("Game over");
+		if (y<a+getHeight()&&i+64>x&&i<x+bredd||y+64>a+164+getHeight()&&i+64>x&&i<x+bredd) {
+			gameover();
 		}
 		frame.repaint();
 		if (mellanslag) {
-			if (y>64) {
-				y = y - 30;
+			if (y>0) {
+				y=y-15;
 			}
 			else {
-				y=0;
+				gameover();
 			}
 		}
 		
 		x=x-8;
 		frame.repaint();
 	}
-	void skapaHinder(){
-		a=random.nextInt(getHeight()-höjd);
+	private void skapaHinder(){
+		
+		timer.start();
+		a=random.nextInt(getHeight());
+		if (a<getHeight()*0.1 || a+164>getHeight()*0.9) {
+			skapaHinder();
+			System.out.println("yeah");
+			return;
+		}
+		poäng++;
+		a=a-getHeight();
 		x=getWidth();
 	}
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
-		g2.drawImage(fönsterIcon, 10,y,null);
-		g2.fillRect(x, a, bredd,höjd);
-		g2.drawRect(x, a, bredd,höjd);
-		g2.fillRect(x2, a2, bredd,höjd);
-		g2.drawRect(x2, a2, bredd,höjd);
+		
+		g2.drawImage(fönsterIcon, 20,y,null);
+		g2.fillRect(x, a, bredd,getHeight());
+		g2.drawRect(x, a, bredd,getHeight());
+		g2.fillRect(x, a+164+getHeight(), bredd,getHeight());
+		g2.drawRect(x, a+164+getHeight(), bredd,getHeight());
+		g2.setFont(typsnitt);
+		g2.setColor(green);
+		g2.drawString(Integer.toString(poäng), getWidth()/2, 50);
 		 
-	}
-	public void keyTyped(KeyEvent e) {
 	}
 	
 	public void keyPressed(KeyEvent e) {
@@ -1638,6 +1651,16 @@ class FlappyGoJb extends JPanel implements KeyListener{
 	public void keyReleased(KeyEvent e) {
 		mellanslag=false;
 	}
+	public void windowClosed(WindowEvent e) {
+		timer.stop();
+	}
+	public void keyTyped(KeyEvent e) {}
+	public void windowIconified(WindowEvent e) {}
+	public void windowDeiconified(WindowEvent e) {}
+	public void windowActivated(WindowEvent e) {}
+	public void windowDeactivated(WindowEvent e) {}
+	public void windowOpened(WindowEvent e) {}
+	public void windowClosing(WindowEvent e) {}
 }
 @SuppressWarnings("serial")
 class Studsa extends JPanel implements ActionListener{
@@ -1727,6 +1750,7 @@ class Glosor{
 	private JMenuBar bar = new JMenuBar();
 	private JMenu instMenu = new JMenu("Inställningar");
 	private JMenuItem instItem = new JMenuItem("Ställ in glosor");
+	private JCheckBoxMenuItem ljudItem = new JCheckBoxMenuItem("Ljud", Bild("/images/Sound.jpg"),Boolean.valueOf(prop.getProperty("glosljud", "true")));
 	private JButton button = new JButton("Spara"),button2 = new JButton("Byt plats"),button3 = new JButton("Rensa"),button4 = new JButton("Starta om");
 	private String[] språk1 = new String[28],
 					språk2 = new String[språk1.length];
@@ -1738,11 +1762,12 @@ class Glosor{
 	private JPanel panel = new JPanel(new BorderLayout()),restartPanel = new JPanel(new FlowLayout());
 	private Timer timer = new Timer(2000, e -> {stoppatimer();label2.setText("");});void stoppatimer(){timer.stop();}
 	private Boolean barafel = false;
-	
-	
+
 	Glosor() {
+		ljudItem.addActionListener(e -> {prop.setProperty("glosljud", Boolean.toString(ljudItem.isSelected()));sparaProp("Ljud");});
 		frame.setSize(frame.getWidth(), 300);
 		frame.setJMenuBar(bar);
+		frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		frame.add(panel,BorderLayout.NORTH);
 		frame.add(label,BorderLayout.CENTER);
@@ -1790,6 +1815,7 @@ class Glosor{
 		restartPanel.add(button4);
 		bar.add(instMenu);
 		instMenu.add(instItem);
+		instMenu.add(ljudItem);
 		instItem.addActionListener(e -> {frame2.setVisible(true);frame.setEnabled(false);});
 		button.addActionListener(e -> spara());
 		button2.addActionListener(e -> byt());
@@ -1797,8 +1823,23 @@ class Glosor{
 		button4.addActionListener(e -> spara());
 		textField.addKeyListener(new KeyListener() {
 			public void keyTyped(KeyEvent e){}public void keyReleased(KeyEvent e){}public void keyPressed(KeyEvent e){
-				if (e.getKeyCode()==10){kolla();}if (e.getKeyCode()==82&&e.getModifiersEx()==128){spara();}}}
-		);
+				if (e.getKeyCode()==10){kolla();}if (e.getKeyCode()==82&&e.getModifiersEx()==128){spara();
+		}}});
+		frame.addWindowListener(new WindowListener() {
+			public void windowOpened(WindowEvent e) {}public void windowIconified(WindowEvent e) {}
+			public void windowDeiconified(WindowEvent e) {}public void windowDeactivated(WindowEvent e) {}
+			public void windowClosing(WindowEvent e) {}public void windowActivated(WindowEvent e) {}
+			public void windowClosed(WindowEvent e) {
+					boolean b = false;
+				for (Frame frame : JFrame.getFrames()) {
+					if (frame.isVisible()) {
+						b = true;
+					}
+				}
+				if (!b) {
+					System.exit(0);
+				}
+		}});
 		blanda();
 		sätt();
 	}
@@ -1847,10 +1888,14 @@ class Glosor{
 		if (textField.getText().equals(tvåList.get(index))){
 			rätt++;
 			rättLabel.setText("Rätt: " + rätt);
-			spelaLjud("/images/tada.wav");
+			if (ljudItem.isSelected()) {
+				spelaLjud("/images/tada.wav");
+			}
 		}
 		else {
-			spelaLjud("/images/Wrong.wav");
+			if (ljudItem.isSelected()) {
+				spelaLjud("/images/Wrong.wav");
+			}
 			felaktiga[fel]=index;
 			fel++;
 			felLabel.setText("Fel: " + fel);
@@ -1873,7 +1918,7 @@ class Glosor{
 					felaktiga[i]=255;
 				}
 				String[] strings = {"Starta om","Öva på felaktiga"};
-				if (showOptionDialog(frame, "Rätt: " + rätt + "\nFel: " + fel, "Resultat", DEFAULT_OPTION, INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/images/Java-icon.png")), strings, strings[1])==1) {
+				if (showOptionDialog(frame, "Rätt: " + rätt + "\nFel: " + fel, "Resultat", DEFAULT_OPTION, INFORMATION_MESSAGE, Bild("/images/Java-icon.png"), strings, strings[1])==1) {
 					System.err.println("poj");
 					barafel=true;
 					index=0;
@@ -1888,20 +1933,17 @@ class Glosor{
 			}
 			else {
 				barafel=false;
-				showMessageDialog(frame, "Alla rätt!","Resultat", INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/images/Done.jpg")));
+				showMessageDialog(frame, "Alla rätt!","Resultat", INFORMATION_MESSAGE, Bild("/images/Done.jpg"));
 				blanda();
 			}
-			
-			
 		}
-		
 		if (ettList.get(index).equals("")==false&&ettList.get(index).equals(null)==false) {
 			if (barafel) {
 				Boolean a = false;
-				for (int i = 0; i < felaktiga2.length; i++) {
-					if (felaktiga2[i]==index) {
+				for (int element : felaktiga2) {
+					if (element==index) {
 						a=true;
-						System.err.println(felaktiga2[i]);
+						System.err.println(element);
 					}
 				}
 				if (a==false) {
@@ -1918,6 +1960,7 @@ class Glosor{
 		}
 	}
 	private void blanda(){
+		
 		index=0;
 		rätt=0;
 		fel=0;
@@ -1972,7 +2015,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 	JMenuBar bar = new JMenuBar();
 	
 	Clip clip;
-
 	static int qq = 1;
 	static int x = 800;
 	static int yy = 900;
@@ -3508,7 +3550,7 @@ class Maze extends JPanel implements ActionListener, MouseMotionListener{
 		JFrame frame = new JFrame("Haha");
 
 		public Mål(){
-			frame.add(new JLabel(new ImageIcon(getClass().getResource("/images/Bild.jpg"))));
+			frame.add(new JLabel(Bild("/images/Bild.jpg")));
 			frame.pack();
 			frame.setVisible(true);
 			frame.setLocationRelativeTo(null);
@@ -3644,7 +3686,7 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 	String a;
 	public Impossible(String textString){
 
-		Image image = new ImageIcon(getClass().getResource("/images/Nope.png")).getImage();
+		Image image = Bild("/images/Nope.png").getImage();
 		
 		Cursor c = Toolkit.getDefaultToolkit().createCustomCursor(
 				image , new Point(frame.getX(),frame.getY()), "img");
@@ -3787,8 +3829,8 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 	JLabel vinstlabel = new JLabel(),
 			turLabel = new JLabel();
 			
-	ImageIcon o = new ImageIcon(getClass().getResource("/images/O.png")),
-			x = new ImageIcon(getClass().getResource("/images/X.png"));
+	ImageIcon 	o = Bild("/images/O.png"),
+				x = Bild("/images/X.png");
 
 	int a,å;
 	
@@ -4268,7 +4310,7 @@ class Pass implements ActionListener{
 		användareJakob.addActionListener(this);
 
 		frame.setUndecorated(true);
-		frame.setAlwaysOnTop(true);
+		
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 		frame.add(label);
 		frame.add(passwordField);
@@ -4278,7 +4320,7 @@ class Pass implements ActionListener{
 		frame.setMinimumSize(frame.getSize());
 		frame.setLocationRelativeTo(null);	
 		frame.setVisible(true);
-
+		frame.toFront();
 		timer.start();
 		
 	}
@@ -4533,10 +4575,10 @@ class SkapaFärg extends JPanel implements ActionListener{
 
 class Avsluta implements ActionListener{
 			
-	JButton b1 = new JButton("Stäng av", new ImageIcon(getClass().getResource("/images/icon.png")));
-	JButton b2 = new JButton("Logga ut", new ImageIcon(getClass().getResource("/images/icon2.png")));
-	JButton b3 = new JButton("Starta om", new ImageIcon(getClass().getResource("/images/icon3.png")));
-	JButton b4 = new JButton("Viloläge", new ImageIcon(getClass().getResource("/images/icon4.png")));
+	JButton b1 = new JButton("Stäng av", Bild("/images/icon.png"));
+	JButton b2 = new JButton("Logga ut", Bild("/images/icon2.png"));
+	JButton b3 = new JButton("Starta om", Bild("/images/icon3.png"));
+	JButton b4 = new JButton("Viloläge", Bild("/images/icon4.png"));
 	JSlider s1 = new JSlider(JSlider.HORIZONTAL, 0, 100, 10);
 	
 	JFrame f1 = new JFrame("GoJbs Shutdown");
@@ -4904,7 +4946,11 @@ class Klocka implements ActionListener{
 	}
 }
 class Update implements Runnable{
-	public void run(){
+	public synchronized void run(){
+//		try {
+//			wait();
+//		} catch (InterruptedException e2) {System.err.println(",uglf");}
+		vänta(10000);
 		if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")) {
 			try {
 				URL u = new URL("http://gojb.bl.ee/GoJb.jar");
