@@ -1556,14 +1556,14 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 		}
 	}
 }
-class FlappyGoJb extends JPanel implements KeyListener{
+class FlappyGoJb extends JPanel implements KeyListener,WindowListener{
 	private static final long serialVersionUID = 1L;
 	
-	JFrame frame = new JFrame("FlappyGoJb");
-	int x,y,a,x2,a2;
-	final int bredd=35,höjd=60;
-	Timer timer = new Timer(20, e -> check());
-	boolean mellanslag;
+	private JFrame frame = new JFrame("FlappyGoJb");
+	private int x,y,a,poäng=-1;
+	private final int bredd=35;
+	private Timer timer = new Timer(20, e -> check());
+	private boolean mellanslag;
 	
 	FlappyGoJb(){
 		
@@ -1574,17 +1574,23 @@ class FlappyGoJb extends JPanel implements KeyListener{
 		frame.setSize(500, 500);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		
+		frame.addWindowListener(this);
 		timer.start();
 		skapaHinder();
 	}
-	void gameover(){
-		skapaHinder();
+	private void gameover(){
+		timer.stop();
 		y=getHeight()/2;
-			System.out.println("Game over");
+		mellanslag=false;
+		if (showConfirmDialog(null, "Game over! Vill du spela igen?","Du förlorade!",YES_NO_OPTION,ERROR_MESSAGE)==NO_OPTION) {
+			frame.dispose();
+			return;
+		}
+		poäng=-1;
+		skapaHinder();
 	}
-	void check() {
-		int i =10;
+	private void check() {
+		int i =20;
 		if (y+64<getHeight()) {
 			y=y+5;
 		}
@@ -1593,7 +1599,7 @@ class FlappyGoJb extends JPanel implements KeyListener{
 		if (x+bredd<=0) {
 			skapaHinder();
 		}
-		if (y+64>a&&y<a+höjd&&i+64>x&&i<x+bredd) {
+		if (y<a+getHeight()&&i+64>x&&i<x+bredd||y+64>a+164+getHeight()&&i+64>x&&i<x+bredd) {
 			gameover();
 		}
 		frame.repaint();
@@ -1609,21 +1615,32 @@ class FlappyGoJb extends JPanel implements KeyListener{
 		x=x-8;
 		frame.repaint();
 	}
-	void skapaHinder(){
-		a=random.nextInt(getHeight()-höjd);
+	private void skapaHinder(){
+		
+		timer.start();
+		a=random.nextInt(getHeight());
+		if (a<getHeight()*0.1 || a+164>getHeight()*0.9) {
+			skapaHinder();
+			System.out.println("yeah");
+			return;
+		}
+		poäng++;
+		a=a-getHeight();
 		x=getWidth();
 	}
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
-		g2.drawImage(fönsterIcon, 10,y,null);
-		g2.fillRect(x, a, bredd,höjd);
-		g2.drawRect(x, a, bredd,höjd);
-		g2.fillRect(x2, a2, bredd,höjd);
-		g2.drawRect(x2, a2, bredd,höjd);
+		
+		g2.drawImage(fönsterIcon, 20,y,null);
+		g2.fillRect(x, a, bredd,getHeight());
+		g2.drawRect(x, a, bredd,getHeight());
+		g2.fillRect(x, a+164+getHeight(), bredd,getHeight());
+		g2.drawRect(x, a+164+getHeight(), bredd,getHeight());
+		g2.setFont(typsnitt);
+		g2.setColor(green);
+		g2.drawString(Integer.toString(poäng), getWidth()/2, 50);
 		 
-	}
-	public void keyTyped(KeyEvent e) {
 	}
 	
 	public void keyPressed(KeyEvent e) {
@@ -1634,6 +1651,16 @@ class FlappyGoJb extends JPanel implements KeyListener{
 	public void keyReleased(KeyEvent e) {
 		mellanslag=false;
 	}
+	public void windowClosed(WindowEvent e) {
+		timer.stop();
+	}
+	public void keyTyped(KeyEvent e) {}
+	public void windowIconified(WindowEvent e) {}
+	public void windowDeiconified(WindowEvent e) {}
+	public void windowActivated(WindowEvent e) {}
+	public void windowDeactivated(WindowEvent e) {}
+	public void windowOpened(WindowEvent e) {}
+	public void windowClosing(WindowEvent e) {}
 }
 @SuppressWarnings("serial")
 class Studsa extends JPanel implements ActionListener{
