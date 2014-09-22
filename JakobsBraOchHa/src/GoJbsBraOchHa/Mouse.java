@@ -168,7 +168,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 	}
 
 	Mouse(){
-//		notify();
 		laddtext.setFont(typsnitt);
 		laddtext.setHorizontalAlignment(CENTER);
 		laddfönster.setDefaultCloseOperation(EXIT_ON_CLOSE);
