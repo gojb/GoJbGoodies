@@ -1567,7 +1567,7 @@ class FlappyGoJb extends JPanel implements KeyListener,WindowListener{
 	
 	FlappyGoJb(){
 		
-		setBackground(new Color(255, 120, 120));
+		setBackground(white);
 		frame.addKeyListener(this);
 		frame.setIconImage(fönsterIcon);
 		frame.add(this);
@@ -1582,7 +1582,7 @@ class FlappyGoJb extends JPanel implements KeyListener,WindowListener{
 		timer.stop();
 		y=getHeight()/2;
 		mellanslag=false;
-		if (showConfirmDialog(null, "Game over! Vill du spela igen?","Du förlorade!",YES_NO_OPTION,ERROR_MESSAGE)==NO_OPTION) {
+		if (showConfirmDialog(null, "Game over! Vill du spela igen?","Du förlorade!",YES_NO_OPTION,ERROR_MESSAGE)!=YES_OPTION) {
 			frame.dispose();
 			return;
 		}
@@ -1621,7 +1621,6 @@ class FlappyGoJb extends JPanel implements KeyListener,WindowListener{
 		a=random.nextInt(getHeight());
 		if (a<getHeight()*0.1 || a+164>getHeight()*0.9) {
 			skapaHinder();
-			System.out.println("yeah");
 			return;
 		}
 		poäng++;
@@ -1640,7 +1639,6 @@ class FlappyGoJb extends JPanel implements KeyListener,WindowListener{
 		g2.setFont(typsnitt);
 		g2.setColor(green);
 		g2.drawString(Integer.toString(poäng), getWidth()/2, 50);
-		 
 	}
 	
 	public void keyPressed(KeyEvent e) {
@@ -1649,7 +1647,9 @@ class FlappyGoJb extends JPanel implements KeyListener,WindowListener{
 		}
 	}
 	public void keyReleased(KeyEvent e) {
-		mellanslag=false;
+		if (e.getKeyCode()==KeyEvent.VK_SPACE) {
+			mellanslag=false;
+		}
 	}
 	public void windowClosed(WindowEvent e) {
 		timer.stop();
