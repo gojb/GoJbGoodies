@@ -1767,7 +1767,8 @@ class Glosor{
 	private int index,fel,rätt;
 	private ArrayList<String> ettList,tvåList;
 	private JPanel panel = new JPanel(new BorderLayout()),restartPanel = new JPanel(new FlowLayout());
-	private Timer timer = new Timer(2000, e -> {stoppatimer();label2.setText("");});void stoppatimer(){timer.stop();}
+	private Timer timer = new Timer(2000, e -> {stoppatimer();label2.setText("");});
+	private void stoppatimer(){timer.stop();}
 
 	Glosor() {
 		ljudItem.addActionListener(e -> {prop.setProperty("glosljud", Boolean.toString(ljudItem.isSelected()));sparaProp("Ljud");});
@@ -1850,7 +1851,7 @@ class Glosor{
 		blanda();
 		sätt();
 	}
-	FocusListener f = new FocusListener() {
+	private FocusListener f = new FocusListener() {
 		public void focusLost(FocusEvent e) {}
 		public void focusGained(FocusEvent e) {
 			((JTextComponent) e.getSource()).selectAll();
