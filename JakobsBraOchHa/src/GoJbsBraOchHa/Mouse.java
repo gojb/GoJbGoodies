@@ -464,7 +464,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 			huvudfönster.dispose();
 		}
 		else if (knapp.getSource()==debugItem) {
-			if (new Boolean(prop.getProperty("debug", "false"))==false) {
+			if (!new Boolean(prop.getProperty("debug", "false"))) {
 				prop.setProperty("debug", "true");
 				debugItem.setText("Debug är nu: " +prop.getProperty("debug"));
 			}
@@ -1527,7 +1527,7 @@ class Snakespel extends JPanel implements KeyListener, ActionListener,WindowList
 			}
 		}
 		if(KeyEvent.getKeyText(e.getKeyCode()) == "F2"){
-			if (timer.isRunning()==false) {
+			if (!timer.isRunning()) {
 				Restart();
 			}
 		}
@@ -1765,11 +1765,10 @@ class Glosor{
 	private JTextField[] ettFields = new JTextField[språk1.length],
 						tvåFields = new JTextField[språk1.length];
 	private int index,fel,rätt;
-	private int[] felaktiga = new int[språk1.length],felaktiga2 = new int[språk1.length];
 	private ArrayList<String> ettList,tvåList;
 	private JPanel panel = new JPanel(new BorderLayout()),restartPanel = new JPanel(new FlowLayout());
-	private Timer timer = new Timer(2000, e -> {stoppatimer();label2.setText("");});void stoppatimer(){timer.stop();}
-	private Boolean barafel = false;
+	private Timer timer = new Timer(2000, e -> {stoppatimer();label2.setText("");});
+	private void stoppatimer(){timer.stop();}
 
 	Glosor() {
 		ljudItem.addActionListener(e -> {prop.setProperty("glosljud", Boolean.toString(ljudItem.isSelected()));sparaProp("Ljud");});
@@ -1789,6 +1788,7 @@ class Glosor{
 			tvåFields[i]=new JTextField();
 			frame2.add(ettFields[i]);
 			frame2.add(tvåFields[i]);
+			ettFields[i].setPreferredSize(new Dimension(60, ettFields[i].getPreferredSize().height));
 			ettFields[i].setText(språk1[i]);
 			tvåFields[i].setText(språk2[i]);
 			ettFields[i].addFocusListener(f); 
@@ -1838,7 +1838,7 @@ class Glosor{
 			public void windowDeiconified(WindowEvent e) {}public void windowDeactivated(WindowEvent e) {}
 			public void windowClosing(WindowEvent e) {}public void windowActivated(WindowEvent e) {}
 			public void windowClosed(WindowEvent e) {
-					boolean b = false;
+				boolean b = false;
 				for (Frame frame : JFrame.getFrames()) {
 					if (frame.isVisible()) {
 						b = true;
@@ -1851,14 +1851,13 @@ class Glosor{
 		blanda();
 		sätt();
 	}
-	FocusListener f = new FocusListener() {
+	private FocusListener f = new FocusListener() {
 		public void focusLost(FocusEvent e) {}
 		public void focusGained(FocusEvent e) {
 			((JTextComponent) e.getSource()).selectAll();
 		}
 	};
 	private void byt() {
-		
 		String[] strings = new String[ettFields.length];
 		for (int i = 0; i < ettFields.length; i++) {
 			strings[i]=ettFields[i].getText();
@@ -1873,7 +1872,6 @@ class Glosor{
 			språk2[i]=tvåFields[i].getText();
 			prop.setProperty("språk1[" + i + "]", språk1[i]);
 			prop.setProperty("språk2[" + i + "]", språk2[i]);
-			felaktiga[i]=255;
 		}
 		sparaProp("Glosor");
 		frame2.dispose();
@@ -1892,19 +1890,18 @@ class Glosor{
 		}
 	}
 	private void kolla() {
-		
 		if (textField.getText().equals(tvåList.get(index))){
 			rätt++;
 			rättLabel.setText("Rätt: " + rätt);
 			if (ljudItem.isSelected()) {
 				spelaLjud("/images/tada.wav");
 			}
+			ettList.set(index, "");
 		}
 		else {
 			if (ljudItem.isSelected()) {
 				spelaLjud("/images/Wrong.wav");
 			}
-			felaktiga[fel]=index;
 			fel++;
 			felLabel.setText("Fel: " + fel);
 			label2.setText(tvåList.get(index));
@@ -1921,44 +1918,24 @@ class Glosor{
 				return;
 			}
 			if (fel!=0) {
-				felaktiga2 = felaktiga.clone();
-				for (int i = 0; i < felaktiga.length; i++) {
-					felaktiga[i]=255;
-				}
 				String[] strings = {"Starta om","Öva på felaktiga"};
 				if (showOptionDialog(frame, "Rätt: " + rätt + "\nFel: " + fel, "Resultat", DEFAULT_OPTION, INFORMATION_MESSAGE, Bild("/images/Java-icon.png"), strings, strings[1])==1) {
 					System.err.println("poj");
-					barafel=true;
 					index=0;
 					fel=0;
+					felLabel.setText("0");
 				}
 				else {
-					barafel=false;
 					System.err.println("doj");
-					
 					blanda();
 				}
 			}
 			else {
-				barafel=false;
 				showMessageDialog(frame, "Alla rätt!","Resultat", INFORMATION_MESSAGE, Bild("/images/Done.jpg"));
 				blanda();
 			}
 		}
-		if (ettList.get(index).equals("")==false&&ettList.get(index).equals(null)==false) {
-			if (barafel) {
-				Boolean a = false;
-				for (int element : felaktiga2) {
-					if (element==index) {
-						a=true;
-						System.err.println(element);
-					}
-				}
-				if (a==false) {
-					index++;
-					sätt();
-				}
-			}
+		if (!ettList.get(index).equals("")&&!ettList.get(index).equals(null)) {
 			label.setText(ettList.get(index));
 			frame.repaint();
 		}
@@ -1968,7 +1945,6 @@ class Glosor{
 		}
 	}
 	private void blanda(){
-		
 		index=0;
 		rätt=0;
 		fel=0;
