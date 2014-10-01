@@ -1,6 +1,10 @@
 package GoJbFrame;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.Timer;
 
 /**
  * GoJbFrame är en vanlig JFrame fast med några inställningar förkonfigurerade 
@@ -18,7 +22,10 @@ import javax.swing.JFrame;
  * @version 1.0
  */
 
-public class GoJbFrame extends JFrame{
+public class GoJbFrame extends JFrame implements WindowListener{
+	
+	Timer timer = new Timer(1000*60*2, e -> System.exit(3));
+	
 private static final long serialVersionUID = 1L;
 	
 	
@@ -34,11 +41,48 @@ private static final long serialVersionUID = 1L;
 		setDefaultCloseOperation(3);
 		setVisible(boolean1);
 		setTitle(title);
+		addWindowListener(this);
 		try {
 			setIconImage(new ImageIcon(getClass().getResource("/images/Java-icon.png")).getImage());
 		} catch (Exception e) {
 			System.err.println("Ikon saknas");
 		}
+	}
+	@Override
+	public void windowActivated(WindowEvent e) {
+		timer.stop();
+		
+	}
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+	}
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+
+		timer.start();
+		
+	}
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		timer.stop();
+	}
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		timer.start();
+		
+	}
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		timer.stop();
 	}
 }
 class Standard{

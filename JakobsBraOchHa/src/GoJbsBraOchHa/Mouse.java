@@ -5036,7 +5036,7 @@ class ToBinary implements ActionListener{
 	
 	Timer timer = new Timer(3, this);
 	
-	int foo = Integer.parseInt("1111", 2);
+	int foo = Integer.parseInt("111111111", 2);
 	
 	public ToBinary(){
 		
@@ -5072,6 +5072,7 @@ class ToBinary implements ActionListener{
 		}
 		
 		button.setText(Integer.toString(slider.getValue()));
+		System.out.println(Integer.toBinaryString(slider.getValue()));
 		frame.revalidate();
 		frame.repaint();
 		button.revalidate();
@@ -5082,6 +5083,11 @@ class ToBinary implements ActionListener{
 
 class DraOchSläpp extends JPanel implements MouseInputListener{
 	
+	/**
+	 * 
+	 */
+	
+	private static final long serialVersionUID = -2889156010528648564L;
 	GoJbFrame frame = new GoJbFrame();
 	JLayeredPane layeredPane = new JLayeredPane();
 	JLabel label1 = new JLabel(),
