@@ -1995,8 +1995,9 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			Random = new JMenuItem("Random"),
 			klocka = new JMenuItem("Klocka"),
 			binära = new JMenuItem("Binär omvandlare"),
-			draOchSläpp = new JMenuItem("Dra & Släpp");
-	JMenuBar bar = new JMenuBar();
+			draOchSläpp = new JMenuItem("Dra & Släpp"),
+			sök = new JMenuItem("Sök");
+			JMenuBar bar = new JMenuBar();
 	
 	Clip clip;
 	static int qq = 1;
@@ -2043,6 +2044,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		ÖppnaProgram.add(klocka);
 		ÖppnaProgram.add(binära);
 		ÖppnaProgram.add(draOchSläpp);
+		ÖppnaProgram.add(sök);
+		
 		
 		Mouse.addActionListener(this);
 		Pong.addActionListener(this);
@@ -2063,6 +2066,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		klocka.addActionListener(this);
 		binära.addActionListener(e -> {new ToBinary();frame.setVisible(false);});
 		draOchSläpp.addActionListener(e -> {new DraOchSläpp();frame.dispose();});		
+		sök.addActionListener(e -> {new Sök();frame.dispose();});
 		
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 		frame.setBackground(gray);
@@ -4552,7 +4556,7 @@ class SkapaFärg extends JPanel implements ActionListener{
 			String hexColour = Integer.toHexString(paneliPanel.getBackground().getRGB() & 0xffffff);
 			hexColour = "000000".substring(0, 6 - hexColour.length()) + hexColour;
 			System.out.println("#" + hexColour);
-
+			System.out.println(Color.decode("#" + hexColour));
 		}	
 	}
 }
@@ -5396,5 +5400,76 @@ class FullscreenExample {
 		GL11.glVertex2f(x - 50, y + 50);
 		GL11.glEnd();
 		GL11.glPopMatrix();
+	}
+}
+
+class Sök implements ActionListener{
+	
+	GoJbFrame frame2 = new GoJbFrame("Sökruta",false),
+			frame = new GoJbFrame("Sökresultat");
+	
+	JLabel label1 = new JLabel("Hej"),
+			label2 = new JLabel("Hallå"),
+			label3 = new JLabel("Tjenare");
+	
+	Timer timer = new Timer(10, this);
+	
+	int x = 4;
+	
+	JTextField text = new JTextField(5);
+	
+	public Sök(){
+		
+		frame2.setSize(300, 20);
+		frame2.setUndecorated(true);
+		frame2.setVisible(true);
+		frame2.setLocation(frame.getX(), frame.getY() - 20);
+		frame2.add(text);
+		
+		frame.setLayout(new GridLayout(x,1));
+		frame.add(label1);
+		frame.add(label2);
+		frame.add(label3);
+		
+		label1.setBackground(blue);
+		label2.setBackground(green);
+		label3.setBackground(red);
+		
+		label1.setOpaque(true);
+		label2.setOpaque(true);
+		label3.setOpaque(true);
+		
+		timer.start();
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		label1.setVisible(true);
+		label2.setVisible(true);
+		label3.setVisible(true);
+		
+		x = 4;
+		
+		if(!label1.getText().toLowerCase().contains(text.getText().toLowerCase())){
+			label1.setVisible(false);
+			x--;
+			frame.repaint();
+			frame.revalidate();
+		}
+		if(!label2.getText().toLowerCase().contains(text.getText().toLowerCase())){
+			label2.setVisible(false);
+			x--;
+			frame.repaint();
+			frame.revalidate();
+		}
+		if(!label3.getText().toLowerCase().contains(text.getText().toLowerCase())){
+			label3.setVisible(false);
+			x--;
+			frame.repaint();
+			frame.revalidate();
+		}
+		
+		
 	}
 }
