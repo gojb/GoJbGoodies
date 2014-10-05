@@ -618,9 +618,73 @@ public class Mouse extends JPanel implements 	ActionListener,
 		return new ImageIcon(Mouse.class.getResource(filnamn));
 	}
 }
+class Update implements Runnable{
+	public synchronized void run(){
+		vänta(10000);
+		if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")) {
+			try {
+				URL u = new URL("http://gojb.bl.ee/GoJb.jar");
+				System.out.println("Online: " + u.openConnection().getLastModified());
+				URL loc = getClass().getProtectionDomain().getCodeSource().getLocation();
+				try {
+					System.out.println("Lokal:  "+ new File(loc.toURI()).lastModified());
+				} catch (Exception e1) {}
+				if (new File(loc.toURI()).lastModified() + 60000 < u.openConnection().getLastModified()) {
+					spelaLjud("/images/tada.wav");
+					if (showConfirmDialog(null, "En nyare version av programmet är tillgängligt.\nVill du uppdatera nu?","Uppdatering",YES_NO_OPTION,WARNING_MESSAGE)==YES_OPTION) {
+						InputStream in = new BufferedInputStream(u.openStream());
+						ByteArrayOutputStream out = new ByteArrayOutputStream();
+						byte[] buf = new byte[1024];
+						int n = 0;
+						JProgressBar bar = new JProgressBar(0, in.available()/2);
+						JFrame frame = new JFrame("Laddar ner...");
+						frame.add(bar);
+						frame.setIconImage(fönsterIcon);
+						frame.setLocationRelativeTo(null);
+						frame.setVisible(true);
+						frame.setAlwaysOnTop(true);
+						frame.setSize(500,200);
+						while (-1!=(n=in.read(buf))){
+							out.write(buf, 0, n);
+							bar.setValue(bar.getValue()+1);
+						}
+						out.close();
+						in.close();
+						FileOutputStream fos = new FileOutputStream(new File(loc.toURI()));
+						fos.write(out.toByteArray());
+						fos.close();
+						System.out.println("Finished");
+						frame.dispose();
+						showMessageDialog(null, "Uppdateringen slutfördes! Programmet startas om...", "Slutfört", INFORMATION_MESSAGE);
+						try {
+							Runtime.getRuntime().exec("java -jar " + loc.getFile().toString().substring(1) + " " + argString);
+							System.err.println("java -jar " + loc.getFile().toString().substring(1) + " " + argString);
+						} catch (Exception e) {
+							e.printStackTrace(); 
+						}
+						System.exit(0);
+					}
+				}
+			} catch(Exception e){
+				System.err.println("Ingen uppdatering hittades");
+			}
+		}
+	}
+}
 class Mandat{
 	private JFrame frame = new JFrame("Mandatsimulator för riksdagen");
-	private final int i = 11;
+	private String[] partiNamn = {	"",
+									"Socialdemokraterna",
+									"Vänsterpartiet",
+									"Miljöpartiet",
+									"Moderaterna",
+									"Centerpartiet",
+									"Folkpartiet",
+									"Kristdemokraterna",
+									"Sverigedemokraterna",
+									"Feministiskt initiativ",
+									"Övriga"};
+	private final int i = partiNamn.length;
 	private JTextField[] värden = new JTextField[i];
 	private JLabel[] mandat = new JLabel[i],
 			parti = new JLabel[i],
@@ -633,21 +697,11 @@ class Mandat{
 			procent = new double[i];
 	private int[] antalmandat = new int[i];
 	private JButton button = new JButton("Öppna jämförelser");
-	private String[] partiNamn = {	"",
-									"Socialdemokraterna",
-									"Vänsterpartiet",
-									"Miljöpartiet",
-									"Moderaterna",
-									"Centerpartiet",
-									"Folkpartiet",
-									"Kristdemokraterna",
-									"Sverigedemokraterna",
-									"Feministiskt initiativ",
-									"Övriga"};
 	private Color[] färger = {white,red,red.darker(),green,blue,green.darker(),blue.darker(),blue.darker().darker(),yellow,magenta,gray};
 	private JFrame[] jämförelseFrames = new JFrame[20];
-	int nr;
-	public Mandat() {
+ 	private int nr;
+ 	private long s = 0;
+	Mandat() {
 
 		JLabel label = new JLabel("Parti:");
 		JLabel label2 = new JLabel("Röster:");
@@ -675,7 +729,7 @@ class Mandat{
 			parti[i].setBackground(white);
 			parti[i].setOpaque(true);
 			värden[i]=new JTextField();
-			värden[i].addCaretListener(e -> {uppdaterasumma();});
+			värden[i].addCaretListener(e -> uppdaterasumma());
 			mandat[i]=new JLabel();
 			mandat[i].setOpaque(true);
 			mandat[i].setBackground(white);
@@ -705,7 +759,7 @@ class Mandat{
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
-	long s = 0;
+	
 	private void uppdaterasumma() {
 		s=0;
 		for (int i = 1; i < mandat.length; i++) {
@@ -722,7 +776,6 @@ class Mandat{
 		}
 		summaLabel.setText("Totalt: " + Long.toString(s));
 		beräkna();
-
 	}
 	private void beräkna(){
 
@@ -774,7 +827,7 @@ class Mandat{
 			} catch (Exception e) {}
 		}
 	}
-	void jämför(){
+	private void jämför(){
 		nr++;
 		JCheckBox[] checkBoxes = new JCheckBox[i];
 		JFrame frame = jämförelseFrames[nr] = new JFrame();
@@ -1831,8 +1884,8 @@ class Glosor{
 		button4.addActionListener(e -> spara());
 		textField.addKeyListener(new KeyListener() {
 			public void keyTyped(KeyEvent e){}public void keyReleased(KeyEvent e){}public void keyPressed(KeyEvent e){
-				if (e.getKeyCode()==10){kolla();}if (e.getKeyCode()==82&&e.getModifiersEx()==128){spara();
-		}}});
+				if (e.getKeyCode()==10)kolla(); if (e.getKeyCode()==82&&e.getModifiersEx()==128)spara();
+		}});
 		frame.addWindowListener(new WindowListener() {
 			public void windowOpened(WindowEvent e) {}public void windowIconified(WindowEvent e) {}
 			public void windowDeiconified(WindowEvent e) {}public void windowDeactivated(WindowEvent e) {}
@@ -1917,16 +1970,20 @@ class Glosor{
 			if (rätt==0&&fel==0) {
 				return;
 			}
+			label.setText("");
 			if (fel!=0) {
 				String[] strings = {"Starta om","Öva på felaktiga"};
-				if (showOptionDialog(frame, "Rätt: " + rätt + "\nFel: " + fel, "Resultat", DEFAULT_OPTION, INFORMATION_MESSAGE, Bild("/images/Java-icon.png"), strings, strings[1])==1) {
-					System.err.println("poj");
+				JOptionPane optionPane = new JOptionPane("Rätt: " + rätt + "\nFel: " + fel, INFORMATION_MESSAGE, DEFAULT_OPTION, Bild("/images/Java-icon.png"), strings, strings[1]);
+				JDialog dialog = optionPane.createDialog("Resultat");
+				dialog.setIconImage(fönsterIcon);
+				dialog.setLocation(frame.getX()+50, frame.getY()-50);
+				dialog.setVisible(true);
+				if (optionPane.getValue().equals(optionPane.getOptions()[1])) {
 					index=0;
 					fel=0;
-					felLabel.setText("0");
+					felLabel.setText("Fel: " + fel);
 				}
 				else {
-					System.err.println("doj");
 					blanda();
 				}
 			}
@@ -4930,62 +4987,6 @@ class Klocka implements ActionListener{
 		if (arg0.getSource() == timer2){
 			String tid = new SimpleDateFormat("HH:mm:ss").format(new Date());
 			label2.setText(tid);
-		}
-	}
-}
-class Update implements Runnable{
-	public synchronized void run(){
-//		try {
-//			wait();
-//		} catch (InterruptedException e2) {System.err.println(",uglf");}
-		vänta(10000);
-		if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")) {
-			try {
-				URL u = new URL("http://gojb.bl.ee/GoJb.jar");
-				System.out.println("Online: " + u.openConnection().getLastModified());
-				URL loc = getClass().getProtectionDomain().getCodeSource().getLocation();
-				try {
-					System.out.println("Lokal:  "+ new File(loc.toURI()).lastModified());
-				} catch (Exception e1) {}
-				if (new File(loc.toURI()).lastModified() + 30000 < u.openConnection().getLastModified()) {
-					spelaLjud("/images/tada.wav");
-					if (showConfirmDialog(null, "En nyare version av programmet är tillgängligt.\nVill du uppdatera nu?","Uppdatering",YES_NO_OPTION,WARNING_MESSAGE)==YES_OPTION) {
-						InputStream in = new BufferedInputStream(u.openStream());
-						ByteArrayOutputStream out = new ByteArrayOutputStream();
-						byte[] buf = new byte[1024];
-						int n = 0;
-						JProgressBar bar = new JProgressBar(0, in.available()/2);
-						JFrame frame = new JFrame("Laddar ner...");
-						frame.add(bar);
-						frame.setIconImage(fönsterIcon);
-						frame.setLocationRelativeTo(null);
-						frame.setVisible(true);
-						frame.setAlwaysOnTop(true);
-						frame.setSize(500,200);
-						while (-1!=(n=in.read(buf))){
-							out.write(buf, 0, n);
-							bar.setValue(bar.getValue()+1);
-						}
-						out.close();
-						in.close();
-						FileOutputStream fos = new FileOutputStream(new File(loc.toURI()));
-						fos.write(out.toByteArray());
-						fos.close();
-						System.out.println("Finished");
-						frame.dispose();
-						showMessageDialog(null, "Uppdateringen slutfördes! Programmet startas om...", "Slutfört", INFORMATION_MESSAGE);
-						try {
-							Runtime.getRuntime().exec("java -jar " + loc.getFile().toString().substring(1) + " " + argString);
-							System.err.println("java -jar " + loc.getFile().toString().substring(1) + " " + argString);
-						} catch (Exception e) {
-							e.printStackTrace(); 
-						}
-						System.exit(0);
-					}
-				}
-			} catch(Exception e){
-				System.err.println("Ingen uppdatering hittades");
-			}
 		}
 	}
 }
