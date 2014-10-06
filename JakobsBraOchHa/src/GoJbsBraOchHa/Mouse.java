@@ -7,7 +7,6 @@ import java.io.*;
 import java.net.*;
 import java.text.*;
 import java.util.*;
-import java.util.List;
 
 import javax.crypto.*;
 import javax.crypto.spec.*;
@@ -84,7 +83,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 						  	studsItem = new JMenuItem("Öppna Studsande Objekt"),
 						  	snakeItem = new JMenuItem("Spela Snake"),
 							loggaUtItem = new JMenuItem("Logga ut"),
-							debugItem = new JMenuItem("Debug är nu: " +prop.getProperty("debug", "false")),
+							debugItem = new JMenuItem("Debug är nu: " + prop.getProperty("debug", "false")),
 							mandatItem = new JMenuItem("Simulator till riksdagsmandat"),
 							glosItem = new JMenuItem("Träna på glosor"),
 							flappyItem = new JMenuItem("Spela FlappyGojb"),
@@ -785,7 +784,7 @@ class Mandat{
 		}
 		if (s!=0) {
 			for (int i1 = 1; i1 < 350; i1++) {
-				List<Double> list = new ArrayList<Double>(i);
+				ArrayList<Double> list = new ArrayList<Double>(i);
 
 				for (int i = 1; i < mandat.length; i++) {
 
@@ -5470,7 +5469,5 @@ class Sök implements ActionListener{
 			frame.repaint();
 			frame.revalidate();
 		}
-		
-		
 	}
 }
