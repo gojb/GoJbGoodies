@@ -4047,40 +4047,22 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 
 			frame.setAlwaysOnTop(true);
 
-			if(label[1].getIcon() == o||
-					label[1].getIcon() == x){
-
-				if(label[2].getIcon() == o||
-						label[2].getIcon() == x){
-
-					if(label[3].getIcon() == o||
-							label[3].getIcon() == x){
-
-						if(label[4].getIcon() == o||
-								label[4].getIcon() == x){
-
-							if(label[5].getIcon() == o||
-									label[5].getIcon() == x){
-
-								if(label[6].getIcon() == o||
-										label[6].getIcon() == x){
-
-									if(label[7].getIcon() == o||
-											label[7].getIcon() == x){
-
-										if(label[8].getIcon() == o||
-												label[8].getIcon() == x){
-
-											if(label[9].getIcon() == o||
-													label[9].getIcon() == x){
+			if(label[1].getIcon() == o||label[1].getIcon() == x){
+				if(label[2].getIcon() == o||label[2].getIcon() == x){
+					if(label[3].getIcon() == o||label[3].getIcon() == x){
+						if(label[4].getIcon() == o||label[4].getIcon() == x){
+							if(label[5].getIcon() == o||label[5].getIcon() == x){
+								if(label[6].getIcon() == o||label[6].getIcon() == x){
+									if(label[7].getIcon() == o||label[7].getIcon() == x){
+										if(label[8].getIcon() == o||label[8].getIcon() == x){
+											if(label[9].getIcon() == o||label[9].getIcon() == x){
 
 												Vinst.setVisible(true);
-						//						repaint();
+//												repaint();
 												vinstlabel.setHorizontalAlignment(JLabel.CENTER);
 												vinstlabel.setText("Det blev lika");
 
 												a = 2;
-
 											}
 										}
 									}
