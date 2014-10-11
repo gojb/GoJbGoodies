@@ -22,6 +22,7 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.opengl.DisplayMode;
 
 import com.sun.mail.util.*;
+
 import GoJbFrame.GoJbFrame;
 import static GoJbsBraOchHa.Mouse.*;
 import static javax.swing.SwingConstants.*;
@@ -132,7 +133,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 	public static void main(String[] arg) {
 		
 		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 			showMessageDialog(null, "Den angivna LookAndFeel hittades inte!","Error",ERROR_MESSAGE);
@@ -147,20 +148,14 @@ public class Mouse extends JPanel implements 	ActionListener,
 		} catch (Exception e) {
 			System.err.println("Properties saknas");
 		}
-		class SetImageIcon{
-			public SetImageIcon() {
-				try {
-					fönsterIcon = Bild("/images/Java-icon.png").getImage();
-				} 
-				catch (Exception e) {
-					((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-					showMessageDialog(null, "ImageIcon hittades inte","Filfel",ERROR_MESSAGE);
-				}
-			}
+		try {
+			fönsterIcon = Bild("/images/Java-icon.png").getImage();
+		} 
+		catch (Exception e) {
+			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+			showMessageDialog(null, "ImageIcon hittades inte","Filfel",ERROR_MESSAGE);
 		}
-		new SetImageIcon();
 		new Thread(new Update()).start();
-		
 		try {
 			argString =arg[0];
 			if (argString.equals("Glosor")) {
