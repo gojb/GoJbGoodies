@@ -622,42 +622,43 @@ class Update implements Runnable{
 		vänta(10000);
 		if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")) {
 			try {
-				URL u = new URL("http://gojb.bl.ee/GoJb.jar");
-				System.out.println("Online: " + u.openConnection().getLastModified());
-				URL loc = getClass().getProtectionDomain().getCodeSource().getLocation();
-				try {
-					System.out.println("Lokal:  "+ new File(loc.toURI()).lastModified());
-				} catch (Exception e1) {}
-				if (new File(loc.toURI()).lastModified() + 60000 < u.openConnection().getLastModified()) {
+				URLConnection connection = new URL("http://gojb.bl.ee/GoJbGuide.jar").openConnection();
+				File file = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
+				System.out.println("Online: " + connection.getLastModified());
+				System.out.println("File: " + file);
+				System.out.println("Lokal:  "+ file.lastModified());
+				if (file.lastModified() + 60000 < connection.getLastModified()) {
 					spelaLjud("/images/tada.wav");
 					if (showConfirmDialog(null, "En nyare version av programmet är tillgängligt.\nVill du uppdatera nu?","Uppdatering",YES_NO_OPTION,WARNING_MESSAGE)==YES_OPTION) {
-						InputStream in = new BufferedInputStream(u.openStream());
-						ByteArrayOutputStream out = new ByteArrayOutputStream();
-						byte[] buf = new byte[1024];
-						int n = 0;
-						JProgressBar bar = new JProgressBar(0, in.available()/2);
-						JFrame frame = new JFrame("Laddar ner...");
+						JProgressBar bar = new JProgressBar(0, connection.getContentLength());
+						JFrame frame = new JFrame("Downloading update...");
 						frame.add(bar);
-						frame.setIconImage(fönsterIcon);
+						frame.setIconImage(new ImageIcon(getClass().getResource("/images/Java-icon.png")).getImage());
 						frame.setLocationRelativeTo(null);
+						frame.setSize(500,100);
 						frame.setVisible(true);
-						frame.setAlwaysOnTop(true);
-						frame.setSize(500,200);
+						InputStream in = connection.getInputStream();
+						ByteArrayOutputStream out = new ByteArrayOutputStream();
+						int n = 0;
+						byte[] buf = new byte[1024];
 						while (-1!=(n=in.read(buf))){
 							out.write(buf, 0, n);
-							bar.setValue(bar.getValue()+1);
+							bar.setValue(bar.getValue()+n);
 						}
-						out.close();
-						in.close();
-						FileOutputStream fos = new FileOutputStream(new File(loc.toURI()));
+						frame.setTitle("Saving...");
+						bar.setIndeterminate(true);
+						FileOutputStream fos = new FileOutputStream(file);
 						fos.write(out.toByteArray());
 						fos.close();
-						System.out.println("Finished");
+						out.close();
+						in.close();
+						System.out.println("Klart!");
 						frame.dispose();
 						showMessageDialog(null, "Uppdateringen slutfördes! Programmet startas om...", "Slutfört", INFORMATION_MESSAGE);
 						try {
-							Runtime.getRuntime().exec("java -jar " + loc.getFile().toString().substring(1) + " " + argString);
-							System.err.println("java -jar " + loc.getFile().toString().substring(1) + " " + argString);
+							String string = "java -jar \"" + file.toString()+"\"";
+							Runtime.getRuntime().exec(string);
+							System.err.println(string);
 						} catch (Exception e) {
 							e.printStackTrace(); 
 						}
@@ -5533,8 +5534,7 @@ class Download extends Observable implements Runnable {
 
 	// Start or resume downloading.
 	private void download() {
-		Thread thread = new Thread(this);
-		thread.start();
+		new Thread(this).start();
 	}
 
 	// Get file name portion of URL.
