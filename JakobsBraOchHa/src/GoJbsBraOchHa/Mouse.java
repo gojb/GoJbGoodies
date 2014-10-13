@@ -5453,3 +5453,8 @@ class Sök implements ActionListener{
 		}
 	}
 }
+class Läsmail{
+	public Läsmail() {
+		
+	}
+}
