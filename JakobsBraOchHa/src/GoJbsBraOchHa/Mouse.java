@@ -10,6 +10,7 @@ import java.util.*;
 
 import javax.crypto.*;
 import javax.crypto.spec.*;
+import javax.mail.*;
 import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.Timer;
@@ -87,7 +88,8 @@ public class Mouse extends JPanel implements 	ActionListener,
 							mandatItem = new JMenuItem("Simulator till riksdagsmandat"),
 							glosItem = new JMenuItem("Träna på glosor"),
 							flappyItem = new JMenuItem("Spela FlappyGojb"),
-							glItem = new JMenuItem("3d");
+							glItem = new JMenuItem("3d"),
+							mailItem = new JMenuItem("Läs GoJbMail");
 
 	private JButton 		knapp1 = new JButton("Blå"),
 							knapp2 = new JButton("Grön"),
@@ -201,6 +203,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		glosItem.addActionListener(e -> new Glosor());
 		flappyItem.addActionListener(e -> new FlappyGoJb());
 		glItem.addActionListener(e -> new FullscreenExample().start());
+		mailItem.addActionListener(e -> new Mailkorg());
 		
 		autoscrollknapp.addActionListener(this);
 		loggaUtItem.addActionListener(this);
@@ -238,6 +241,7 @@ public class Mouse extends JPanel implements 	ActionListener,
 		arkivMeny.add(glosItem);
 		arkivMeny.add(flappyItem);
 		arkivMeny.add(glItem);
+		arkivMeny.add(mailItem);
 		arkivMeny.addSeparator();
 		arkivMeny.add(loggaUtItem);
 		arkivMeny.add(avslutaItem);
@@ -356,7 +360,6 @@ public class Mouse extends JPanel implements 	ActionListener,
 	}
 	
 	public void actionPerformed(ActionEvent knapp) {
-//		System.out.println(knapp.getSource());
 		skrivHändelsetext(knapp.getSource().toString());
 		if (knapp.getSource()== startTimer){
 
@@ -5447,5 +5450,40 @@ class Sök implements ActionListener{
 }
 
 class Mailkorg{
-	
+	public Mailkorg() {
+		try {
+
+			Store store = Session.getDefaultInstance(System.getProperties(), null).getStore("imaps");
+			store.connect("mx1.hostinger.se","gojb@gojb.bl.ee", "uggen0684");
+
+			Folder folder = store.getFolder("Inbox");
+
+			if(!folder.isOpen()){
+				folder.open(Folder.READ_WRITE); 
+			}
+			Message[] messages = folder.getMessages();
+			System.out.println("No of Messages : " + folder.getMessageCount());
+			System.out.println("No of Unread Messages : " + folder.getUnreadMessageCount());
+			System.out.println(messages.length);
+			for (int i=messages.length; i > -1 ;i--) 
+			{
+
+				System.out.println("*****************************************************************************");
+				System.out.println("MESSAGE " + (i + 1) + ":");
+				Message msg =  messages[i];
+
+				System.out.println("Subject: " + msg.getSubject());
+				System.out.println("From: " + msg.getFrom()[0]);
+				System.out.println("To: "+msg.getAllRecipients()[0]);
+				System.out.println("Date: "+msg.getReceivedDate());
+				System.out.println("Size: "+msg.getSize());
+				System.out.println(msg.getFlags());
+				System.out.println("Body: \n"+ msg.getContent());
+				System.out.println(msg.getContentType());
+			} 		
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
