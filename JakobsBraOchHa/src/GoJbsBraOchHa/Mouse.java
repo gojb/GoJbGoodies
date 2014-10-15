@@ -5461,10 +5461,11 @@ class ReggPlåtar implements ActionListener{
 
 	JButton button = new JButton("ny reggplåt");
 	
-	GoJbFrame frame = new GoJbFrame();
-	
-	int Low = 100;
+	int Low = 0;
 	int High = 999;
+	
+	GoJbFrame frame = new GoJbFrame();
+
 
 	char string;	
 	public static void main(String[] args) {
@@ -5481,6 +5482,8 @@ class ReggPlåtar implements ActionListener{
 	}
 
 	public void Kör(){
+		
+		int ran = random1.nextInt((High-Low)-Low);
 
 		char c = (char)(r.nextInt(26) + 'a');
 		char c2 = (char)(r.nextInt(26) + 'a');
@@ -5493,11 +5496,23 @@ class ReggPlåtar implements ActionListener{
 		if (c == 'i'||c == 'v'||c == 'q') {
 		}
 		else {
-			System.err.println(random1.nextInt(High-Low)+Low + " - "+ (c + "" + c2 + c3).toUpperCase());
-			string = c;
-		}
-
-	}
+		
+			if (Integer.toString(ran).length()==2){
+				System.err.println((c + "" + c2 + c3).toUpperCase() + " - "+ (ran)+"0");
+				System.out.println("0");
+			}
+			else if (Integer.toString(ran).length()==1){
+				System.err.println((c + "" + c2 + c3).toUpperCase() + " - "+ (ran)+"00");
+				System.out.println("00");
+			}
+			else if (Integer.toString(ran).length()==3){
+				System.err.println((c + "" + c2 + c3).toUpperCase() + " - "+ (ran));
+				System.out.println("-");
+			}
+			
+			}
+}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
