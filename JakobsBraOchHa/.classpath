@@ -9,5 +9,8 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="GoJbsBraOchHa/windows"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="servlet-api.jar"/>
+	<classpathentry kind="lib" path="catalina.jar"/>
+	<classpathentry kind="lib" path="websocket-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
