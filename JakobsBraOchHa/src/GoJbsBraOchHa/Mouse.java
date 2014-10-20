@@ -59,8 +59,8 @@ WindowListener{
 
 	//MailKorg stringar:
 	static String Mottagare, Ämne, Innehåll;
-	
-	
+
+
 	private JMenuBar 		menyBar = new JMenuBar();
 
 	private JMenu 			arkivMeny = new JMenu("Arkiv"), 
@@ -164,6 +164,10 @@ WindowListener{
 			argString =arg[0];
 			if (argString.equals("Glosor")) {
 				new Glosor();
+				return;
+			}
+			else if (argString.equals("Mail")) {
+				new Mailkorg();
 				return;
 			}
 		} catch (Exception e) {argString ="";}
@@ -5455,10 +5459,17 @@ class Sök implements ActionListener{
 
 class Mailkorg implements ActionListener{
 
-	GoJbFrame frame = new GoJbFrame();
-//			skapa = new GoJbFrame();
+	GoJbFrame frame = new GoJbFrame(),
+			skapa = new GoJbFrame();
+
+	static JTextField Mottagare = new JTextField(),
+			Ämne = new JTextField();
 	
-//	JTextField Mottagare = new JTextField()
+	static JTextArea Innehåll = new JTextArea();
+	
+static JLabel label1 = new JLabel("Till"),
+			label2 = new JLabel("Ämne"),
+			label3 = new JLabel("Innehåll");
 
 	JButton SkickaKnapp = new JButton("Skicka"),
 			HämtaKnapp = new JButton("Hämta"),
@@ -5471,11 +5482,29 @@ class Mailkorg implements ActionListener{
 		frame.add(HämtaKnapp);
 		frame.add(button3);
 
+		skapa.setLayout(new BoxLayout(skapa.getContentPane(), BoxLayout.Y_AXIS));
+		skapa.add(label1);
+		skapa.add(Mottagare);
+		skapa.add(label2);
+		skapa.add(Ämne);
+		skapa.add(label3);
+		skapa.add(Innehåll);
+		skapa.add(SkickaKnapp);
+		
+		label1.setMinimumSize(new Dimension(30000,50));
+		label2.setMinimumSize(new Dimension(30000,50));
+		label3.setMinimumSize(new Dimension(30000,50));
+		
+		Mottagare.setMaximumSize(new Dimension(300000, 500));
+		Ämne.setMaximumSize(new Dimension(30000,500));
+		Innehåll.setPreferredSize(new Dimension(300, 500));
+		Innehåll.setLineWrap(true);
+		Innehåll.setWrapStyleWord(true);
 		SkickaKnapp.addActionListener(this);
 		HämtaKnapp.addActionListener(e -> {GoJbMail.Starta("Hämta");});
 		button3.addActionListener(e -> {GoJbMail.Starta("sdfgbgjhcfxz");});
 
-
+		skapa.revalidate();
 		frame.revalidate();
 
 	}
@@ -5485,11 +5514,8 @@ class Mailkorg implements ActionListener{
 
 		if(e.getSource()==SkickaKnapp){
 
-			Mottagare = JOptionPane.showInputDialog("Mottagare").toString();
-			Ämne = JOptionPane.showInputDialog("Ämne").toString();
-			Innehåll = JOptionPane.showInputDialog("Innehåll").toString();
-
 			System.err.println("isuahodhfzc  fdgxgf");
+
 			
 			GoJbMail.Starta("Skicka");
 

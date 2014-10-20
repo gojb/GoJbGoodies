@@ -4,10 +4,10 @@ class Temp {
 		
 //		new Mandat();
 //		new Glosor();
-//		String[] hStrings = {"Glosor"};
-//		Mouse.main(hStrings);s
+		String[] hStrings = {"Mail"};
+		Mouse.main(hStrings);
 		
-		new Mailkorg();
+//		new Mailkorg();
 		
 	}
 }

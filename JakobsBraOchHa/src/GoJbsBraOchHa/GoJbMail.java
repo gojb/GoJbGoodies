@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.mail.*;
 import javax.mail.internet.*;
+import javax.swing.JFrame;
 
 class GoJbMail{
 	
@@ -13,6 +14,7 @@ class GoJbMail{
 		
 		if(starta.toLowerCase().equals("hämta")){
 			System.err.println("Hämta");
+			HämtaMail.main(null);
 		}
 		else if(starta.toLowerCase().equals("skicka")){
 			System.err.println("Skicka");
@@ -62,12 +64,15 @@ class SkickaMail {
 
 		Message msg = new MimeMessage( mailSession );
 
-		System.out.println(Mouse.Mottagare+"--"+ Mouse.Ämne + "---" + Mouse.Innehåll);
+		System.out.println(Mailkorg.label1.getText().toLowerCase() +"--"+ Mailkorg.label2.getText().toLowerCase() +"--"+ Mailkorg.label3.getText().toLowerCase());
+		
+		
+		
 		
 		msg.setFrom( new InternetAddress( "GoJb<gojb@gojb.bl.ee>" ) );
-		msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse(Mouse.Mottagare));	
-		msg.setSubject(Mouse.Ämne);
-		msg.setText(Mouse.Innehåll);
+		msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse(Mailkorg.Mottagare.getText().toLowerCase()));	
+		msg.setSubject(Mailkorg.Ämne.getText());
+		msg.setText(Mailkorg.Innehåll.getText());
 
 
 		Transport.send( msg );
@@ -80,8 +85,15 @@ class SkickaMail {
 
 class HämtaMail implements Runnable{
 
+	JFrame frame;
+	
 	public static void main(String[] args) {
+		System.err.println("uvueshjd");
 		new Thread(new HämtaMail()).start();
+	}
+	
+	public void Kör() {
+		System.err.println("Ktesgdhjklxfcg");
 	}
 	@Override
 	public void run(){
@@ -91,6 +103,9 @@ class HämtaMail implements Runnable{
 			Store store = session.getStore("imap");
 			store.connect("mx1.hostinger.se", "gojb@gojb.bl.ee", "uggen0684");
 
+			frame = new JFrame();
+			frame.setVisible(false);
+			
 			System.out.println("Funkar");
 
 			Folder folder = store.getFolder("Inbox");
