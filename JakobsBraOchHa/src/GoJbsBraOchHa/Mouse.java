@@ -624,11 +624,12 @@ class Update implements Runnable{
 		vänta(10000);
 		if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")) {
 			try {
-				URLConnection connection = new URL("http://gojb.bl.ee/GoJbGuide.jar").openConnection();
+				URLConnection connection = new URL("http://gojb.bl.ee/GoJb.jar").openConnection();
 				File file = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
+				System.out.println("File:   " + file);
 				System.out.println("Online: " + connection.getLastModified());
-				System.out.println("File: " + file);
 				System.out.println("Lokal:  "+ file.lastModified());
+				System.out.println("Bytes:  "+ connection.getContentLength());
 				if (file.lastModified() + 60000 < connection.getLastModified()) {
 					spelaLjud("/images/tada.wav");
 					if (showConfirmDialog(null, "En nyare version av programmet är tillgängligt.\nVill du uppdatera nu?","Uppdatering",YES_NO_OPTION,WARNING_MESSAGE)==YES_OPTION) {
@@ -656,9 +657,12 @@ class Update implements Runnable{
 						in.close();
 						System.out.println("Klart!");
 						frame.dispose();
+						if (file.getPath().getBytes().length==connection.getContentLength()) {
+							
+						} 
 						showMessageDialog(null, "Uppdateringen slutfördes! Programmet startas om...", "Slutfört", INFORMATION_MESSAGE);
 						try {
-							String string = "java -jar \"" + file.toString()+"\"";
+							String string = "java -jar \"" + file.toString()+"\" "+ argString;
 							Runtime.getRuntime().exec(string);
 							System.err.println(string);
 						} catch (Exception e) {
