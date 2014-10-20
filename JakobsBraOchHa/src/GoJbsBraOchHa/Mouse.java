@@ -5451,6 +5451,13 @@ class Sök implements ActionListener{
 
 class Mailkorg{
 	
+	GoJbFrame frame = new GoJbFrame();
+	
+	public Mailkorg(){
+		
+		GoJbMail.Starta("hämta");
+		
+	}
 }
 
 class ReggPlåtar implements ActionListener{
