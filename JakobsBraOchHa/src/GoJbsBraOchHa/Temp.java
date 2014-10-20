@@ -5,7 +5,7 @@ class Temp {
 //		new Mandat();
 //		new Glosor();
 //		String[] hStrings = {"Glosor"};
-//		Mouse.main(hStrings);
+//		Mouse.main(hStrings);s
 		
 		new Mailkorg();
 		

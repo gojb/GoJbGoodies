@@ -1,19 +1,34 @@
 package GoJbsBraOchHa;
 
 import java.util.*;
+
 import javax.mail.*;
 import javax.mail.internet.*;
 
 class GoJbMail{
-	public static void Starta(String starta){
+	
+	String Mottagare, Ämne, innehållString;
+	
+	public static void Starta(String starta){		
 		
-		if(starta.toLowerCase().equals("sämta")){
+		if(starta.toLowerCase().equals("hämta")){
 			System.err.println("Hämta");
 		}
-		if(starta.toLowerCase().equals("skicka")){
+		else if(starta.toLowerCase().equals("skicka")){
 			System.err.println("Skicka");
+			
+			new SkickaMail();
+			try {
+				SkickaMail.Skicka(null, null, null);
+			} catch (AddressException e) {
+				// FIXME Auto-generated catch block
+				e.printStackTrace();
+			} catch (MessagingException e) {
+				// FIXME Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		else {
+		else if(!starta.toLowerCase().equals("skicka")||!starta.toLowerCase().equals("hämta")) {
 			System.err.println("---ERROR---");
 		}
 	}
@@ -23,11 +38,12 @@ class GoJbMail{
 class SkickaMail {
 
 	public static void main(String[] args) throws Exception {
-		new SkickaMail();
+		System.err.println("Main");
 	}
 
 	public static void Skicka(String Till, String Ämne, String Meddelande) throws AddressException, MessagingException{
 
+		System.err.println("Påbörjat");
 
 		Properties props = new Properties();
 		props.put("mail.smtp.host", "mx1.hostinger.se");
@@ -46,15 +62,18 @@ class SkickaMail {
 
 		Message msg = new MimeMessage( mailSession );
 
-
+		System.out.println(Mouse.Mottagare+"--"+ Mouse.Ämne + "---" + Mouse.Innehåll);
+		
 		msg.setFrom( new InternetAddress( "GoJb<gojb@gojb.bl.ee>" ) );
-		msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse(Till));	
-		msg.setSubject(Ämne);
-		msg.setText(Meddelande);
+		msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse(Mouse.Mottagare));	
+		msg.setSubject(Mouse.Ämne);
+		msg.setText(Mouse.Innehåll);
 
 
 		Transport.send( msg );
 
+		System.err.println("---SKICKAT---");
+		
 	}
 
 }

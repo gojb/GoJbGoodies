@@ -57,6 +57,10 @@ WindowListener{
 
 	private JPanel 			knappPanel = new JPanel();
 
+	//MailKorg stringar:
+	static String Mottagare, Ämne, Innehåll;
+	
+	
 	private JMenuBar 		menyBar = new JMenuBar();
 
 	private JMenu 			arkivMeny = new JMenu("Arkiv"), 
@@ -5449,14 +5453,48 @@ class Sök implements ActionListener{
 	}
 }
 
-class Mailkorg{
-	
+class Mailkorg implements ActionListener{
+
 	GoJbFrame frame = new GoJbFrame();
+//			skapa = new GoJbFrame();
 	
+//	JTextField Mottagare = new JTextField()
+
+	JButton SkickaKnapp = new JButton("Skicka"),
+			HämtaKnapp = new JButton("Hämta"),
+			button3 = new JButton("sökdjabf");
+
 	public Mailkorg(){
-		
-		GoJbMail.Starta("hämta");
-		
+
+		frame.setLayout(new GridLayout(3,0));
+		frame.add(SkickaKnapp);
+		frame.add(HämtaKnapp);
+		frame.add(button3);
+
+		SkickaKnapp.addActionListener(this);
+		HämtaKnapp.addActionListener(e -> {GoJbMail.Starta("Hämta");});
+		button3.addActionListener(e -> {GoJbMail.Starta("sdfgbgjhcfxz");});
+
+
+		frame.revalidate();
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		if(e.getSource()==SkickaKnapp){
+
+			Mottagare = JOptionPane.showInputDialog("Mottagare").toString();
+			Ämne = JOptionPane.showInputDialog("Ämne").toString();
+			Innehåll = JOptionPane.showInputDialog("Innehåll").toString();
+
+			System.err.println("isuahodhfzc  fdgxgf");
+			
+			GoJbMail.Starta("Skicka");
+
+		}
+
 	}
 }
 
@@ -5467,10 +5505,10 @@ class ReggPlåtar implements ActionListener{
 			r = new Random();
 
 	JButton button = new JButton("ny reggplåt");
-	
+
 	int Low = 0;
 	int High = 999;
-	
+
 	GoJbFrame frame = new GoJbFrame();
 
 
@@ -5480,22 +5518,22 @@ class ReggPlåtar implements ActionListener{
 	}
 
 	public ReggPlåtar(){
-		
+
 		frame.add(button);
 
 		button.addActionListener(this);
-		
+
 		System.err.println("");
 	}
 
 	public void Kör(){
-		
+
 		int ran = random1.nextInt((High-Low)-Low);
 
 		char c = (char)(r.nextInt(26) + 'a');
 		char c2 = (char)(r.nextInt(26) + 'a');
 		char c3 = (char)(r.nextInt(26) + 'a');
-		
+
 		if (c == 'i'||c == 'v'||c == 'q') {
 		}
 		if (c == 'i'||c == 'v'||c == 'q') {
@@ -5503,7 +5541,7 @@ class ReggPlåtar implements ActionListener{
 		if (c == 'i'||c == 'v'||c == 'q') {
 		}
 		else {
-		
+
 			if (Integer.toString(ran).length()==2){
 				System.err.println((c + "" + c2 + c3).toUpperCase() + " - "+ (ran)+"0");
 				System.out.println("0");
@@ -5516,10 +5554,10 @@ class ReggPlåtar implements ActionListener{
 				System.err.println((c + "" + c2 + c3).toUpperCase() + " - "+ (ran));
 				System.out.println("-");
 			}
-			
-			}
-}
-	
+
+		}
+	}
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
