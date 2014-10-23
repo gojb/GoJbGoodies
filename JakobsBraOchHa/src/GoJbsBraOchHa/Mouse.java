@@ -5508,11 +5508,11 @@ class ReggPlåtar implements ActionListener{
 	Random random1 = new Random(),
 			r = new Random();
 
-Timer timer = new Timer(1,this);
+	Timer timer = new Timer(1,this);
 
-Boolean TimerKör = false;
+	Boolean TimerKör = false;
 
-	JButton button = new JButton("ny reggplåt");
+	JButton button = new JButton("Start");
 
 	int Low = 0;
 	int High = 999;
@@ -5571,8 +5571,19 @@ Boolean TimerKör = false;
 	public void actionPerformed(ActionEvent e) {
 
 		if(e.getSource==button&&timer.isStart()==false){
-Kör();
+			button.setText("Stop");
+			timer.start();
+		}
+		if(e.getSource==button&&timer.isStart()==true){
+			button.setText("Start");
+			timer.stop();
+		}
+		
+		if (e.getSource()==timer){
+		Kör();
 }
+		
+	}
 	}
 
-}
+
