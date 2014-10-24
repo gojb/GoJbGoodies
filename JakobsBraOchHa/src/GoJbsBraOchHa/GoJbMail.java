@@ -7,26 +7,27 @@ import javax.mail.internet.*;
 import javax.swing.JFrame;
 
 class GoJbMail{
-	
+
 	String Mottagare, Ämne, innehållString;
-	
+
 	public static void Starta(String starta){		
-		
+
 		if(starta.toLowerCase().equals("hämta")){
 			System.err.println("Hämta");
 			HämtaMail.main(null);
 		}
 		else if(starta.toLowerCase().equals("skicka")){
 			System.err.println("Skicka");
-			
+
 			new SkickaMail();
 			try {
 				SkickaMail.Skicka(null, null, null);
 			} catch (AddressException e) {
-				// FIXME Auto-generated catch block
+
 				e.printStackTrace();
-			} catch (MessagingException e) {
-				// FIXME Auto-generated catch block
+			} 
+			catch (MessagingException e) {
+
 				e.printStackTrace();
 			}
 		}
@@ -64,11 +65,11 @@ class SkickaMail {
 
 		Message msg = new MimeMessage( mailSession );
 
-		System.out.println(Mailkorg.label1.getText().toLowerCase() +"--"+ Mailkorg.label2.getText().toLowerCase() +"--"+ Mailkorg.label3.getText().toLowerCase());
-		
-		
-		
-		
+		System.out.println(Mailkorg.Mottagare.getText().toLowerCase() +"--"+ Mailkorg.Ämne.getText() +"--"+ Mailkorg.Innehåll.getText());
+
+
+
+
 		msg.setFrom( new InternetAddress( "GoJb<gojb@gojb.bl.ee>" ) );
 		msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse(Mailkorg.Mottagare.getText().toLowerCase()));	
 		msg.setSubject(Mailkorg.Ämne.getText());
@@ -78,7 +79,7 @@ class SkickaMail {
 		Transport.send( msg );
 
 		System.err.println("---SKICKAT---");
-		
+
 	}
 
 }
@@ -86,12 +87,12 @@ class SkickaMail {
 class HämtaMail implements Runnable{
 
 	JFrame frame;
-	
+
 	public static void main(String[] args) {
 		System.err.println("uvueshjd");
 		new Thread(new HämtaMail()).start();
 	}
-	
+
 	public void Kör() {
 		System.err.println("Ktesgdhjklxfcg");
 	}
@@ -105,7 +106,7 @@ class HämtaMail implements Runnable{
 
 			frame = new JFrame();
 			frame.setVisible(false);
-			
+
 			System.out.println("Funkar");
 
 			Folder folder = store.getFolder("Inbox");
@@ -113,12 +114,12 @@ class HämtaMail implements Runnable{
 			Message[] msgs = folder.getMessages();
 
 			for (int j = msgs.length-1; j > 0; j--) {
-		
+
 				Message msg = msgs[j];
-				
+
 				System.err.println("lerj");
 				if(msg.isSet(Flags.Flag.SEEN)){
-				System.out.println("SEEN");	
+					System.out.println("SEEN");	
 				}
 			}
 
