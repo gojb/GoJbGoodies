@@ -1,0 +1,22 @@
+okt 13, 2014 8:54:15 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: contextInitialized()
+okt 13, 2014 8:54:15 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: contextInitialized()
+okt 13, 2014 8:54:15 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: attributeAdded('org.apache.jasper.compiler.TldLocationsCache', 'org.apache.jasper.compiler.TldLocationsCache@6a53779b')
+okt 13, 2014 9:00:28 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: sessionCreated('649DEA6D6131E27D58267B779476393C')
+okt 13, 2014 9:01:10 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeAdded('649DEA6D6131E27D58267B779476393C', 'foo', 'bar')
+okt 13, 2014 9:01:23 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: attributeAdded('org.apache.jasper.runtime.JspApplicationContextImpl', 'org.apache.jasper.runtime.JspApplicationContextImpl@42d83813')
+okt 13, 2014 9:01:28 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: attributeAdded('org.apache.jasper.compiler.ELInterpreter', 'org.apache.jasper.compiler.ELInterpreterFactory$DefaultELInterpreter@71ff0aad')
+okt 13, 2014 9:02:53 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeAdded('649DEA6D6131E27D58267B779476393C', 'cb', 'colors.ColorGameBean@7696348c')
+okt 13, 2014 9:51:43 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: sessionDestroyed('649DEA6D6131E27D58267B779476393C')
+okt 13, 2014 9:51:43 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeRemoved('649DEA6D6131E27D58267B779476393C', 'foo', 'bar')
+okt 13, 2014 9:51:43 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeRemoved('649DEA6D6131E27D58267B779476393C', 'cb', 'colors.ColorGameBean@7696348c')

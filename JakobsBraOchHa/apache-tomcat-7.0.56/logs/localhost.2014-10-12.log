@@ -1,0 +1,108 @@
+okt 12, 2014 9:00:55 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: contextInitialized()
+okt 12, 2014 9:00:55 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: contextInitialized()
+okt 12, 2014 9:00:55 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: attributeAdded('org.apache.jasper.compiler.TldLocationsCache', 'org.apache.jasper.compiler.TldLocationsCache@560f215')
+okt 12, 2014 9:01:31 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: attributeAdded('org.apache.jasper.runtime.JspApplicationContextImpl', 'org.apache.jasper.runtime.JspApplicationContextImpl@215dbe4b')
+okt 12, 2014 9:01:31 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: attributeAdded('org.apache.jasper.compiler.ELInterpreter', 'org.apache.jasper.compiler.ELInterpreterFactory$DefaultELInterpreter@518b7129')
+okt 12, 2014 9:01:32 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: sessionCreated('AEFE6351A68407CB193CBA7E039D86F2')
+okt 12, 2014 9:03:12 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeAdded('AEFE6351A68407CB193CBA7E039D86F2', 'cc', 'c')
+okt 12, 2014 9:03:19 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeAdded('AEFE6351A68407CB193CBA7E039D86F2', 'xc', 'xxc')
+okt 12, 2014 9:03:24 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('AEFE6351A68407CB193CBA7E039D86F2', 'xc', 'xxc')
+okt 12, 2014 9:03:32 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('AEFE6351A68407CB193CBA7E039D86F2', 'xc', '')
+okt 12, 2014 9:03:36 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeAdded('AEFE6351A68407CB193CBA7E039D86F2', '<zsg', 'xv')
+okt 12, 2014 9:03:45 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('AEFE6351A68407CB193CBA7E039D86F2', 'xc', 'dfrh')
+okt 12, 2014 9:03:52 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('AEFE6351A68407CB193CBA7E039D86F2', 'xc', 'dfrh')
+okt 12, 2014 9:04:01 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeAdded('AEFE6351A68407CB193CBA7E039D86F2', 'ad', 'ag')
+okt 12, 2014 9:04:03 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeAdded('AEFE6351A68407CB193CBA7E039D86F2', 'foo', 'bar')
+okt 12, 2014 9:04:05 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('AEFE6351A68407CB193CBA7E039D86F2', 'foo', 'bar')
+okt 12, 2014 9:10:39 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: sessionCreated('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1')
+okt 12, 2014 9:10:58 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeAdded('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', '', '')
+okt 12, 2014 9:10:59 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', '', '')
+okt 12, 2014 9:11:00 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', '', '')
+okt 12, 2014 9:11:02 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', '', '')
+okt 12, 2014 9:11:02 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', '', '')
+okt 12, 2014 9:11:02 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', '', '')
+okt 12, 2014 9:11:04 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeAdded('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', 's', '')
+okt 12, 2014 9:11:05 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', '', '')
+okt 12, 2014 9:11:06 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', '', '')
+okt 12, 2014 9:11:06 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', '', '')
+okt 12, 2014 9:11:08 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeAdded('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', 'a', '')
+okt 12, 2014 9:11:09 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', '', '')
+okt 12, 2014 9:11:18 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeAdded('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', 'foo', 'bar')
+okt 12, 2014 9:11:20 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', 'foo', 'bar')
+okt 12, 2014 9:11:21 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', 'foo', 'bar')
+okt 12, 2014 9:11:21 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', '', '')
+okt 12, 2014 9:11:22 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', 'foo', 'bar')
+okt 12, 2014 9:11:24 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', 'foo', 'bar')
+okt 12, 2014 9:11:30 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', '', '')
+okt 12, 2014 9:11:30 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', 'foo', 'bar')
+okt 12, 2014 9:11:31 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', 'foo', 'bar')
+okt 12, 2014 9:11:31 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: attributeReplaced('ABC7AAA3FCE2FCE2EB8234F7C66F4AB1', 'foo', 'bar')
+okt 12, 2014 9:17:41 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: contextDestroyed()
+okt 12, 2014 9:17:41 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: contextDestroyed()
+okt 12, 2014 9:17:55 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: contextInitialized()
+okt 12, 2014 9:17:55 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: contextInitialized()
+okt 12, 2014 9:17:55 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: attributeAdded('org.apache.jasper.compiler.TldLocationsCache', 'org.apache.jasper.compiler.TldLocationsCache@b97cbd5')
+okt 12, 2014 9:19:19 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: contextDestroyed()
+okt 12, 2014 9:19:19 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: contextDestroyed()
+okt 12, 2014 9:19:29 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: contextInitialized()
+okt 12, 2014 9:19:29 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: contextInitialized()
+okt 12, 2014 9:19:29 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: attributeAdded('org.apache.jasper.compiler.TldLocationsCache', 'org.apache.jasper.compiler.TldLocationsCache@b97cbd5')
+okt 12, 2014 9:23:16 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: contextDestroyed()
+okt 12, 2014 9:23:16 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: contextDestroyed()
+okt 12, 2014 9:23:29 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: contextInitialized()
+okt 12, 2014 9:23:29 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: contextInitialized()
+okt 12, 2014 9:23:29 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: attributeAdded('org.apache.jasper.compiler.TldLocationsCache', 'org.apache.jasper.compiler.TldLocationsCache@b97cbd5')

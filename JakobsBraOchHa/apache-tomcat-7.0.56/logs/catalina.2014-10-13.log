@@ -1,0 +1,154 @@
+okt 13, 2014 8:54:02 EM org.apache.catalina.core.AprLifecycleListener init
+INFO: Loaded APR based Apache Tomcat Native library 1.1.31 using APR version 1.4.8.
+okt 13, 2014 8:54:02 EM org.apache.catalina.core.AprLifecycleListener init
+INFO: APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+okt 13, 2014 8:54:04 EM org.apache.catalina.core.AprLifecycleListener initializeSSL
+INFO: OpenSSL successfully initialized (OpenSSL 1.0.1h 5 Jun 2014)
+okt 13, 2014 8:54:05 EM org.apache.coyote.AbstractProtocol init
+INFO: Initializing ProtocolHandler ["http-apr-8080"]
+okt 13, 2014 8:54:05 EM org.apache.coyote.AbstractProtocol init
+INFO: Initializing ProtocolHandler ["ajp-apr-8009"]
+okt 13, 2014 8:54:05 EM org.apache.catalina.startup.Catalina load
+INFO: Initialization processed in 5745 ms
+okt 13, 2014 8:54:05 EM org.apache.catalina.core.StandardService startInternal
+INFO: Starting service Catalina
+okt 13, 2014 8:54:05 EM org.apache.catalina.core.StandardEngine startInternal
+INFO: Starting Servlet Engine: Apache Tomcat/7.0.56
+okt 13, 2014 8:54:05 EM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory C:\java\apache-tomcat-7.0.56\webapps\docs
+okt 13, 2014 8:54:09 EM org.apache.catalina.util.SessionIdGenerator createSecureRandom
+INFO: Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took [1,277] milliseconds.
+okt 13, 2014 8:54:09 EM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deployment of web application directory C:\java\apache-tomcat-7.0.56\webapps\docs has finished in 3,296 ms
+okt 13, 2014 8:54:09 EM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory C:\java\apache-tomcat-7.0.56\webapps\examples
+okt 13, 2014 8:54:15 EM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deployment of web application directory C:\java\apache-tomcat-7.0.56\webapps\examples has finished in 6,111 ms
+okt 13, 2014 8:54:15 EM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory C:\java\apache-tomcat-7.0.56\webapps\host-manager
+okt 13, 2014 8:54:16 EM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deployment of web application directory C:\java\apache-tomcat-7.0.56\webapps\host-manager has finished in 935 ms
+okt 13, 2014 8:54:16 EM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory C:\java\apache-tomcat-7.0.56\webapps\manager
+okt 13, 2014 8:54:16 EM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deployment of web application directory C:\java\apache-tomcat-7.0.56\webapps\manager has finished in 459 ms
+okt 13, 2014 8:54:16 EM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory C:\java\apache-tomcat-7.0.56\webapps\ROOT
+okt 13, 2014 8:54:17 EM org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deployment of web application directory C:\java\apache-tomcat-7.0.56\webapps\ROOT has finished in 272 ms
+okt 13, 2014 8:54:17 EM org.apache.coyote.AbstractProtocol start
+INFO: Starting ProtocolHandler ["http-apr-8080"]
+okt 13, 2014 8:54:17 EM org.apache.coyote.AbstractProtocol start
+INFO: Starting ProtocolHandler ["ajp-apr-8009"]
+okt 13, 2014 8:54:17 EM org.apache.catalina.startup.Catalina start
+INFO: Server startup in 11547 ms
+okt 13, 2014 9:08:16 EM websocket.chat.ChatAnnotation onError
+ALLVARLIG: Chat Error: java.io.IOException: java.util.concurrent.ExecutionException: java.io.EOFException: The client aborted the connection.
+java.io.IOException: java.util.concurrent.ExecutionException: java.io.EOFException: The client aborted the connection.
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.startMessageBlock(WsRemoteEndpointImplBase.java:253)
+	at org.apache.tomcat.websocket.WsSession.sendCloseMessage(WsSession.java:510)
+	at org.apache.tomcat.websocket.WsSession.onClose(WsSession.java:464)
+	at org.apache.tomcat.websocket.WsFrameBase.processDataControl(WsFrameBase.java:342)
+	at org.apache.tomcat.websocket.WsFrameBase.processData(WsFrameBase.java:284)
+	at org.apache.tomcat.websocket.WsFrameBase.processInputBuffer(WsFrameBase.java:130)
+	at org.apache.tomcat.websocket.server.WsFrameServer.onDataAvailable(WsFrameServer.java:56)
+	at org.apache.tomcat.websocket.server.WsHttpUpgradeHandler$WsReadListener.onDataAvailable(WsHttpUpgradeHandler.java:203)
+	at org.apache.coyote.http11.upgrade.AbstractServletInputStream.onDataAvailable(AbstractServletInputStream.java:203)
+	at org.apache.coyote.http11.upgrade.AbstractProcessor.upgradeDispatch(AbstractProcessor.java:92)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:609)
+	at org.apache.tomcat.util.net.AprEndpoint$SocketProcessor.doRun(AprEndpoint.java:2462)
+	at org.apache.tomcat.util.net.AprEndpoint$SocketProcessor.run(AprEndpoint.java:2451)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.util.concurrent.ExecutionException: java.io.EOFException: The client aborted the connection.
+	at org.apache.tomcat.websocket.FutureToSendHandler.get(FutureToSendHandler.java:102)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.startMessageBlock(WsRemoteEndpointImplBase.java:248)
+	... 16 more
+Caused by: java.io.EOFException: The client aborted the connection.
+	at org.apache.coyote.http11.upgrade.AprServletOutputStream.doWriteInternal(AprServletOutputStream.java:142)
+	at org.apache.coyote.http11.upgrade.AprServletOutputStream.doWrite(AprServletOutputStream.java:70)
+	at org.apache.coyote.http11.upgrade.AbstractServletOutputStream.writeInternal(AbstractServletOutputStream.java:153)
+	at org.apache.coyote.http11.upgrade.AbstractServletOutputStream.write(AbstractServletOutputStream.java:121)
+	at org.apache.tomcat.websocket.server.WsRemoteEndpointImplServer.onWritePossible(WsRemoteEndpointImplServer.java:95)
+	at org.apache.tomcat.websocket.server.WsRemoteEndpointImplServer.doWrite(WsRemoteEndpointImplServer.java:82)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.writeMessagePart(WsRemoteEndpointImplBase.java:423)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.startMessage(WsRemoteEndpointImplBase.java:314)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.startMessageBlock(WsRemoteEndpointImplBase.java:243)
+	... 16 more
+
+okt 13, 2014 9:18:50 EM websocket.chat.ChatAnnotation onError
+ALLVARLIG: Chat Error: java.io.IOException: java.util.concurrent.ExecutionException: java.io.EOFException: The client aborted the connection.
+java.io.IOException: java.util.concurrent.ExecutionException: java.io.EOFException: The client aborted the connection.
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.startMessageBlock(WsRemoteEndpointImplBase.java:253)
+	at org.apache.tomcat.websocket.WsSession.sendCloseMessage(WsSession.java:510)
+	at org.apache.tomcat.websocket.WsSession.onClose(WsSession.java:464)
+	at org.apache.tomcat.websocket.WsFrameBase.processDataControl(WsFrameBase.java:342)
+	at org.apache.tomcat.websocket.WsFrameBase.processData(WsFrameBase.java:284)
+	at org.apache.tomcat.websocket.WsFrameBase.processInputBuffer(WsFrameBase.java:130)
+	at org.apache.tomcat.websocket.server.WsFrameServer.onDataAvailable(WsFrameServer.java:56)
+	at org.apache.tomcat.websocket.server.WsHttpUpgradeHandler$WsReadListener.onDataAvailable(WsHttpUpgradeHandler.java:203)
+	at org.apache.coyote.http11.upgrade.AbstractServletInputStream.onDataAvailable(AbstractServletInputStream.java:203)
+	at org.apache.coyote.http11.upgrade.AbstractProcessor.upgradeDispatch(AbstractProcessor.java:92)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:609)
+	at org.apache.tomcat.util.net.AprEndpoint$SocketProcessor.doRun(AprEndpoint.java:2462)
+	at org.apache.tomcat.util.net.AprEndpoint$SocketProcessor.run(AprEndpoint.java:2451)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.util.concurrent.ExecutionException: java.io.EOFException: The client aborted the connection.
+	at org.apache.tomcat.websocket.FutureToSendHandler.get(FutureToSendHandler.java:102)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.startMessageBlock(WsRemoteEndpointImplBase.java:248)
+	... 16 more
+Caused by: java.io.EOFException: The client aborted the connection.
+	at org.apache.coyote.http11.upgrade.AprServletOutputStream.doWriteInternal(AprServletOutputStream.java:142)
+	at org.apache.coyote.http11.upgrade.AprServletOutputStream.doWrite(AprServletOutputStream.java:70)
+	at org.apache.coyote.http11.upgrade.AbstractServletOutputStream.writeInternal(AbstractServletOutputStream.java:153)
+	at org.apache.coyote.http11.upgrade.AbstractServletOutputStream.write(AbstractServletOutputStream.java:121)
+	at org.apache.tomcat.websocket.server.WsRemoteEndpointImplServer.onWritePossible(WsRemoteEndpointImplServer.java:95)
+	at org.apache.tomcat.websocket.server.WsRemoteEndpointImplServer.doWrite(WsRemoteEndpointImplServer.java:82)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.writeMessagePart(WsRemoteEndpointImplBase.java:423)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.startMessage(WsRemoteEndpointImplBase.java:314)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.startMessageBlock(WsRemoteEndpointImplBase.java:243)
+	... 16 more
+
+okt 13, 2014 9:34:35 EM websocket.chat.ChatAnnotation onError
+ALLVARLIG: Chat Error: java.io.IOException: java.util.concurrent.ExecutionException: java.io.EOFException: The client aborted the connection.
+java.io.IOException: java.util.concurrent.ExecutionException: java.io.EOFException: The client aborted the connection.
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.startMessageBlock(WsRemoteEndpointImplBase.java:253)
+	at org.apache.tomcat.websocket.WsSession.sendCloseMessage(WsSession.java:510)
+	at org.apache.tomcat.websocket.WsSession.onClose(WsSession.java:464)
+	at org.apache.tomcat.websocket.WsFrameBase.processDataControl(WsFrameBase.java:342)
+	at org.apache.tomcat.websocket.WsFrameBase.processData(WsFrameBase.java:284)
+	at org.apache.tomcat.websocket.WsFrameBase.processInputBuffer(WsFrameBase.java:130)
+	at org.apache.tomcat.websocket.server.WsFrameServer.onDataAvailable(WsFrameServer.java:56)
+	at org.apache.tomcat.websocket.server.WsHttpUpgradeHandler$WsReadListener.onDataAvailable(WsHttpUpgradeHandler.java:203)
+	at org.apache.coyote.http11.upgrade.AbstractServletInputStream.onDataAvailable(AbstractServletInputStream.java:203)
+	at org.apache.coyote.http11.upgrade.AbstractProcessor.upgradeDispatch(AbstractProcessor.java:92)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:609)
+	at org.apache.tomcat.util.net.AprEndpoint$SocketProcessor.doRun(AprEndpoint.java:2462)
+	at org.apache.tomcat.util.net.AprEndpoint$SocketProcessor.run(AprEndpoint.java:2451)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.util.concurrent.ExecutionException: java.io.EOFException: The client aborted the connection.
+	at org.apache.tomcat.websocket.FutureToSendHandler.get(FutureToSendHandler.java:102)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.startMessageBlock(WsRemoteEndpointImplBase.java:248)
+	... 16 more
+Caused by: java.io.EOFException: The client aborted the connection.
+	at org.apache.coyote.http11.upgrade.AprServletOutputStream.doWriteInternal(AprServletOutputStream.java:142)
+	at org.apache.coyote.http11.upgrade.AprServletOutputStream.doWrite(AprServletOutputStream.java:70)
+	at org.apache.coyote.http11.upgrade.AbstractServletOutputStream.writeInternal(AbstractServletOutputStream.java:153)
+	at org.apache.coyote.http11.upgrade.AbstractServletOutputStream.write(AbstractServletOutputStream.java:121)
+	at org.apache.tomcat.websocket.server.WsRemoteEndpointImplServer.onWritePossible(WsRemoteEndpointImplServer.java:95)
+	at org.apache.tomcat.websocket.server.WsRemoteEndpointImplServer.doWrite(WsRemoteEndpointImplServer.java:82)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.writeMessagePart(WsRemoteEndpointImplBase.java:423)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.startMessage(WsRemoteEndpointImplBase.java:314)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.startMessageBlock(WsRemoteEndpointImplBase.java:243)
+	... 16 more
+
+okt 13, 2014 10:33:08 EM org.apache.coyote.AbstractProtocol pause
+INFO: Pausing ProtocolHandler ["http-apr-8080"]

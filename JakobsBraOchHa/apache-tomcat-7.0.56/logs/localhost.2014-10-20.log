@@ -1,0 +1,116 @@
+okt 20, 2014 4:28:29 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: contextInitialized()
+okt 20, 2014 4:28:29 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: contextInitialized()
+okt 20, 2014 4:28:29 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: attributeAdded('org.apache.jasper.compiler.TldLocationsCache', 'org.apache.jasper.compiler.TldLocationsCache@75a4b07f')
+okt 20, 2014 5:24:20 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: contextDestroyed()
+okt 20, 2014 5:24:20 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: contextDestroyed()
+okt 20, 2014 9:08:56 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: contextInitialized()
+okt 20, 2014 9:08:56 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: contextInitialized()
+okt 20, 2014 9:08:56 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: attributeAdded('org.apache.jasper.compiler.TldLocationsCache', 'org.apache.jasper.compiler.TldLocationsCache@1102b5fd')
+okt 20, 2014 9:10:05 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: attributeAdded('org.apache.jasper.runtime.JspApplicationContextImpl', 'org.apache.jasper.runtime.JspApplicationContextImpl@7454d47c')
+okt 20, 2014 9:10:05 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: sessionCreated('6B0D7C4D20C7E001CEC48600CA81B16B')
+okt 20, 2014 9:10:15 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: attributeAdded('org.apache.jasper.compiler.ELInterpreter', 'org.apache.jasper.compiler.ELInterpreterFactory$DefaultELInterpreter@2a091acc')
+okt 20, 2014 9:18:35 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: sessionCreated('4AFA6D14FB6E1D2352B6922673E7238B')
+okt 20, 2014 9:41:28 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: contextInitialized()
+okt 20, 2014 9:41:28 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: contextInitialized()
+okt 20, 2014 9:41:28 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: attributeAdded('org.apache.jasper.compiler.TldLocationsCache', 'org.apache.jasper.compiler.TldLocationsCache@58a42ccc')
+okt 20, 2014 9:42:08 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: sessionDestroyed('6B0D7C4D20C7E001CEC48600CA81B16B')
+okt 20, 2014 9:49:08 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: sessionDestroyed('4AFA6D14FB6E1D2352B6922673E7238B')
+okt 20, 2014 9:52:13 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: contextDestroyed()
+okt 20, 2014 9:52:13 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: contextDestroyed()
+okt 20, 2014 9:52:13 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: contextDestroyed()
+okt 20, 2014 9:52:13 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: contextDestroyed()
+okt 20, 2014 9:52:24 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: contextInitialized()
+okt 20, 2014 9:52:24 EM org.apache.catalina.core.ApplicationContext log
+INFO: SessionListener: contextInitialized()
+okt 20, 2014 9:52:24 EM org.apache.catalina.core.ApplicationContext log
+INFO: ContextListener: attributeAdded('org.apache.jasper.compiler.TldLocationsCache', 'org.apache.jasper.compiler.TldLocationsCache@75a4b07f')
+okt 20, 2014 9:52:25 EM org.apache.catalina.core.StandardContext listenerStart
+ALLVARLIG: Error configuring application listener of class listeners.ContextListener
+java.lang.ClassNotFoundException: listeners.ContextListener
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1720)
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1571)
+	at org.apache.catalina.core.DefaultInstanceManager.loadClass(DefaultInstanceManager.java:506)
+	at org.apache.catalina.core.DefaultInstanceManager.loadClassMaybePrivileged(DefaultInstanceManager.java:488)
+	at org.apache.catalina.core.DefaultInstanceManager.newInstance(DefaultInstanceManager.java:115)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:4909)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5492)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150)
+	at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:901)
+	at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:877)
+	at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:649)
+	at org.apache.catalina.startup.HostConfig.deployDirectory(HostConfig.java:1247)
+	at org.apache.catalina.startup.HostConfig$DeployDirectory.run(HostConfig.java:1897)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+
+okt 20, 2014 9:52:25 EM org.apache.catalina.core.StandardContext listenerStart
+ALLVARLIG: Error configuring application listener of class listeners.SessionListener
+java.lang.ClassNotFoundException: listeners.SessionListener
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1720)
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1571)
+	at org.apache.catalina.core.DefaultInstanceManager.loadClass(DefaultInstanceManager.java:506)
+	at org.apache.catalina.core.DefaultInstanceManager.loadClassMaybePrivileged(DefaultInstanceManager.java:488)
+	at org.apache.catalina.core.DefaultInstanceManager.newInstance(DefaultInstanceManager.java:115)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:4909)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5492)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150)
+	at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:901)
+	at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:877)
+	at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:649)
+	at org.apache.catalina.startup.HostConfig.deployDirectory(HostConfig.java:1247)
+	at org.apache.catalina.startup.HostConfig$DeployDirectory.run(HostConfig.java:1897)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+
+okt 20, 2014 9:52:25 EM org.apache.catalina.core.StandardContext listenerStart
+ALLVARLIG: Error configuring application listener of class websocket.drawboard.DrawboardContextListener
+java.lang.ClassNotFoundException: websocket.drawboard.DrawboardContextListener
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1720)
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1571)
+	at org.apache.catalina.core.DefaultInstanceManager.loadClass(DefaultInstanceManager.java:506)
+	at org.apache.catalina.core.DefaultInstanceManager.loadClassMaybePrivileged(DefaultInstanceManager.java:488)
+	at org.apache.catalina.core.DefaultInstanceManager.newInstance(DefaultInstanceManager.java:115)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:4909)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5492)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150)
+	at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:901)
+	at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:877)
+	at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:649)
+	at org.apache.catalina.startup.HostConfig.deployDirectory(HostConfig.java:1247)
+	at org.apache.catalina.startup.HostConfig$DeployDirectory.run(HostConfig.java:1897)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+
+okt 20, 2014 9:52:25 EM org.apache.catalina.core.StandardContext listenerStart
+ALLVARLIG: Skipped installing application listeners due to previous error(s)
