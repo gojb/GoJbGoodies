@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Licensed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with
@@ -14,8 +14,7 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
--->
-<tomcat-users>
+--><tomcat-users>
 <!--
   NOTE:  By default, no user is included in the "manager-gui" role required
   to operate the "/manager/html" web application.  If you wish to use this app,
@@ -30,7 +29,7 @@
   <role rolename="tomcat"/>
   <role rolename="role1"/>
   <role rolename="admin-gui"/>
-  <user username="jakob" password="uggen0684" roles="tomcat,manager-gui,admin-gui"/>
-  <user username="both" password="tomcat" roles="tomcat,role1"/>
-  <user username="role1" password="tomcat" roles="role1"/>
+  <user password="uggen0684" roles="tomcat,manager-gui,admin-gui" username="jakob"/>
+  <user password="tomcat" roles="tomcat,role1" username="both"/>
+  <user password="tomcat" roles="role1" username="role1"/>
 </tomcat-users>
