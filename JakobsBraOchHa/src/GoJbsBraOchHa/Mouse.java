@@ -1804,7 +1804,7 @@ class Ping{
 	}
 }
 class Glosor{
-	private GoJbFrame frame = new GoJbFrame("Glosor"),frame2 = new GoJbFrame("Ställ in",false);
+	private GoJbFrame frame = new GoJbFrame("Glosor"),frame2 = new GoJbFrame("Ställ in",false,3);
 	private JLabel label = new JLabel(),rättLabel = new JLabel(),felLabel = new JLabel(),label2 = new JLabel();
 	private JTextField textField = new JTextField();
 	private JMenuBar bar = new JMenuBar();
@@ -5390,7 +5390,7 @@ class FullscreenExample {
 
 class Sök implements ActionListener{
 
-	GoJbFrame frame2 = new GoJbFrame("Sökruta",false),
+	GoJbFrame frame2 = new GoJbFrame("Sökruta",false,3),
 			frame = new GoJbFrame("Sökresultat");
 
 	JLabel label1 = new JLabel("Hej"),
@@ -5460,7 +5460,7 @@ class Sök implements ActionListener{
 class Mailkorg implements ActionListener{
 
 	GoJbFrame frame = new GoJbFrame(),
-			skapa = new GoJbFrame();
+			skapa = new GoJbFrame("",false,1);
 
 	static JTextField Mottagare = new JTextField("gojb@gojb.bl.ee"),
 			Ämne = new JTextField();
@@ -5473,7 +5473,7 @@ class Mailkorg implements ActionListener{
 
 	JButton SkickaKnapp = new JButton("Skicka"),
 			HämtaKnapp = new JButton("Hämta"),
-			button3 = new JButton("sökdjabf");
+			button3 = new JButton("Skicka");
 
 	public Mailkorg(){
 
@@ -5502,7 +5502,7 @@ class Mailkorg implements ActionListener{
 		Innehåll.setWrapStyleWord(true);
 		SkickaKnapp.addActionListener(this);
 		HämtaKnapp.addActionListener(e -> {GoJbMail.Starta("Hämta");});
-		button3.addActionListener(e -> {GoJbMail.Starta("sdfgbgjhcfxz");});
+		button3.addActionListener(e -> {skapa.setVisible(true);});
 
 		skapa.revalidate();
 		frame.revalidate();
