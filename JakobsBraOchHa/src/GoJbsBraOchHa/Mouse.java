@@ -5462,7 +5462,7 @@ class Mailkorg implements ActionListener{
 	GoJbFrame frame = new GoJbFrame(),
 			skapa = new GoJbFrame();
 
-	static JTextField Mottagare = new JTextField(),
+	static JTextField Mottagare = new JTextField("gojb@gojb.bl.ee"),
 			Ämne = new JTextField();
 	
 	static JTextArea Innehåll = new JTextArea();

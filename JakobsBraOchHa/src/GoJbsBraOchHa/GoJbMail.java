@@ -1,10 +1,12 @@
 package GoJbsBraOchHa;
 
+import java.awt.GridLayout;
 import java.util.*;
 
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 class GoJbMail{
 
@@ -86,14 +88,18 @@ class SkickaMail {
 
 class HämtaMail implements Runnable{
 
-	JFrame frame;
+	JFrame frame = new JFrame();
 
+	int x;
+	
 	public static void main(String[] args) {
 		System.err.println("uvueshjd");
+		
 		new Thread(new HämtaMail()).start();
 	}
 
 	public void Kör() {
+
 		System.err.println("Ktesgdhjklxfcg");
 	}
 	@Override
@@ -104,9 +110,11 @@ class HämtaMail implements Runnable{
 			Store store = session.getStore("imap");
 			store.connect("mx1.hostinger.se", "gojb@gojb.bl.ee", "uggen0684");
 
-			frame = new JFrame();
-			frame.setVisible(false);
-
+			frame.setVisible(true);
+			frame.setSize(500,500);
+			frame.setLocationRelativeTo(null);
+			frame.setLayout(new GridLayout(0,3));
+			
 			System.out.println("Funkar");
 
 			Folder folder = store.getFolder("Inbox");
@@ -114,13 +122,22 @@ class HämtaMail implements Runnable{
 			Message[] msgs = folder.getMessages();
 
 			for (int j = msgs.length-1; j > 0; j--) {
-
+				if(j>10){
+					x=1;
+				}
 				Message msg = msgs[j];
-
+				
+				Date date = new Date();
+				date = msg.getReceivedDate();
+				System.out.println(date.getTime());
+				
+				frame.add(new JLabel(Integer.toString(j)));
+				
 				System.err.println("lerj");
 				if(msg.isSet(Flags.Flag.SEEN)){
 					System.out.println("SEEN");	
 				}
+				
 			}
 
 		}catch(Exception e)    {
