@@ -1804,7 +1804,7 @@ class Ping{
 	}
 }
 class Glosor{
-	private GoJbFrame frame = new GoJbFrame("Glosor"),frame2 = new GoJbFrame("Ställ in",false);
+	private GoJbFrame frame = new GoJbFrame("Glosor"),frame2 = new GoJbFrame("Ställ in",false,3);
 	private JLabel label = new JLabel(),rättLabel = new JLabel(),felLabel = new JLabel(),label2 = new JLabel();
 	private JTextField textField = new JTextField();
 	private JMenuBar bar = new JMenuBar();
@@ -5390,7 +5390,7 @@ class FullscreenExample {
 
 class Sök implements ActionListener{
 
-	GoJbFrame frame2 = new GoJbFrame("Sökruta",false),
+	GoJbFrame frame2 = new GoJbFrame("Sökruta",false,3),
 			frame = new GoJbFrame("Sökresultat");
 
 	JLabel label1 = new JLabel("Hej"),
@@ -5460,20 +5460,20 @@ class Sök implements ActionListener{
 class Mailkorg implements ActionListener{
 
 	GoJbFrame frame = new GoJbFrame(),
-			skapa = new GoJbFrame();
+			skapa = new GoJbFrame("",false,1);
 
-	static JTextField Mottagare = new JTextField(),
+	static JTextField Mottagare = new JTextField("gojb@gojb.bl.ee"),
 			Ämne = new JTextField();
-	
+
 	static JTextArea Innehåll = new JTextArea();
-	
-static JLabel label1 = new JLabel("Till"),
+
+	static JLabel label1 = new JLabel("Till"),
 			label2 = new JLabel("Ämne"),
 			label3 = new JLabel("Innehåll");
 
 	JButton SkickaKnapp = new JButton("Skicka"),
 			HämtaKnapp = new JButton("Hämta"),
-			button3 = new JButton("sökdjabf");
+			button3 = new JButton("Skicka");
 
 	public Mailkorg(){
 
@@ -5490,11 +5490,11 @@ static JLabel label1 = new JLabel("Till"),
 		skapa.add(label3);
 		skapa.add(Innehåll);
 		skapa.add(SkickaKnapp);
-		
+
 		label1.setMinimumSize(new Dimension(30000,50));
 		label2.setMinimumSize(new Dimension(30000,50));
 		label3.setMinimumSize(new Dimension(30000,50));
-		
+
 		Mottagare.setMaximumSize(new Dimension(300000, 500));
 		Ämne.setMaximumSize(new Dimension(30000,500));
 		Innehåll.setPreferredSize(new Dimension(300, 500));
@@ -5502,7 +5502,7 @@ static JLabel label1 = new JLabel("Till"),
 		Innehåll.setWrapStyleWord(true);
 		SkickaKnapp.addActionListener(this);
 		HämtaKnapp.addActionListener(e -> {GoJbMail.Starta("Hämta");});
-		button3.addActionListener(e -> {GoJbMail.Starta("sdfgbgjhcfxz");});
+		button3.addActionListener(e -> {skapa.setVisible(true);});
 
 		skapa.revalidate();
 		frame.revalidate();
@@ -5516,7 +5516,7 @@ static JLabel label1 = new JLabel("Till"),
 
 			System.err.println("isuahodhfzc  fdgxgf");
 
-			
+
 			GoJbMail.Starta("Skicka");
 
 		}
@@ -5530,7 +5530,11 @@ class ReggPlåtar implements ActionListener{
 	Random random1 = new Random(),
 			r = new Random();
 
-	JButton button = new JButton("ny reggplåt");
+	Timer timer = new Timer(1,this);
+
+	Boolean TimerKör = false;
+
+	JButton button = new JButton("Start");
 
 	int Low = 0;
 	int High = 999;
@@ -5588,7 +5592,18 @@ class ReggPlåtar implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		Kör();
-	}
+		if(e.getSource()==button&&timer.isRunning()==false){
+			button.setText("Stop");
+			timer.start();
+			System.err.println("d");
+		}
+		else if(e.getSource()==button&&timer.isRunning()==true){
+			button.setText("Start");
+			timer.stop();
+		}
 
+		if (e.getSource()==timer){
+			Kör();
+		}
+	}
 }

@@ -1,10 +1,11 @@
 package GoJbsBraOchHa;
 
+import java.awt.*;
 import java.util.*;
 
 import javax.mail.*;
 import javax.mail.internet.*;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 class GoJbMail{
 
@@ -20,16 +21,7 @@ class GoJbMail{
 			System.err.println("Skicka");
 
 			new SkickaMail();
-			try {
-				SkickaMail.Skicka(null, null, null);
-			} catch (AddressException e) {
-
-				e.printStackTrace();
-			} 
-			catch (MessagingException e) {
-
-				e.printStackTrace();
-			}
+			
 		}
 		else if(!starta.toLowerCase().equals("skicka")||!starta.toLowerCase().equals("hämta")) {
 			System.err.println("---ERROR---");
@@ -86,46 +78,123 @@ class SkickaMail {
 
 class HämtaMail implements Runnable{
 
-	JFrame frame;
+	JFrame frame = new JFrame();
 
+	JPanel panel = new JPanel();
+	
+	int x;
+
+	JMenuBar bar = new JMenuBar();
+	
+	JScrollPane scrollBar = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	
 	public static void main(String[] args) {
 		System.err.println("uvueshjd");
+		
 		new Thread(new HämtaMail()).start();
 	}
 
 	public void Kör() {
+
 		System.err.println("Ktesgdhjklxfcg");
 	}
+	
+	public void kärna(){
+
+		frame.setVisible(true);
+		frame.setSize(500,500);
+		frame.setLocationRelativeTo(null);
+		frame.add(scrollBar);
+		frame.setIconImage(Mouse.fönsterIcon);
+		frame.setJMenuBar(bar);
+		
+		System.out.println("Funkar");
+		
+		scrollBar.getVerticalScrollBar().setUnitIncrement(20);
+		
+		panel.setLayout(new GridLayout(0,1));
+		
+		frame.revalidate();
+		frame.repaint();
+	}
+	
 	@Override
 	public void run(){
+		kärna();
 		Session session = Session.getDefaultInstance(System.getProperties());
 		System.out.println("Funkar");
 		try {
 			Store store = session.getStore("imap");
 			store.connect("mx1.hostinger.se", "gojb@gojb.bl.ee", "uggen0684");
 
-			frame = new JFrame();
-			frame.setVisible(false);
-
-			System.out.println("Funkar");
-
 			Folder folder = store.getFolder("Inbox");
 			folder.open(Folder.READ_WRITE);
 			Message[] msgs = folder.getMessages();
 
 			for (int j = msgs.length-1; j > 0; j--) {
-
+				if(j>10){
+					x=1;
+				}
 				Message msg = msgs[j];
-
+				
+				if(!msg.isSet(Flags.Flag.DELETED)){				
+				
 				System.err.println("lerj");
 				if(msg.isSet(Flags.Flag.SEEN)){
 					System.out.println("SEEN");	
+					LäggTill(msg,Color.red);
+				}}
+				else{
+					LäggTill(msg,Color.black);
 				}
+				
 			}
 
 		}catch(Exception e)    {
 			e.printStackTrace();
 		}
+	}
+	public void LäggTill(Message message, Color color){
+		JButton b = new JButton(),
+				delete = new JButton("Delete");
+		
+		JMenuBar bar = new JMenuBar();
+		
+		delete.setSize(100,20);
+		delete.addActionListener(e -> {try {
+			message.setFlag(Flags.Flag.DELETED, true);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}});
+		
+		b.setForeground(color);
+		
+		panel.add(b);
+		
+		b.addActionListener(e -> {JFrame f = new JFrame();JTextArea text = null;
+		try {
+			text = new JTextArea("-- From: "+ message.getFrom()[0].toString() + "\n \n--Subject: " + message.getSubject() + "\n \n--Content: \n" + 
+					message.getContent().toString());
+		} catch (Exception e1) {
+
+			e1.printStackTrace();
+		}f.add(text);text.setEditable(false);f.setVisible(true);f.setSize(500, 500);f.setJMenuBar(bar);f.setIconImage(Mouse.fönsterIcon);text.setLineWrap(true);
+		text.setWrapStyleWord(true);bar.add(delete);try {
+			message.setFlag(Flags.Flag.DELETED, true);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}b.setForeground(Color.red);});
+		
+		b.setPreferredSize(new Dimension(500,100));
+		
+		try {
+			b.setText(message.getSubject());
+		} catch (MessagingException e) {
+		}
+		
+		
+		frame.revalidate();
+		
 	}
 }
 

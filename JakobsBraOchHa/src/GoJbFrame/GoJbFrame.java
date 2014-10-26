@@ -30,15 +30,15 @@ private static final long serialVersionUID = 1L;
 	
 	
 	public GoJbFrame() {
-		this("", true);
+		this("", true,3);
 	}
 	public GoJbFrame(String title){
-		this(title,true);
+		this(title,true,3);
 	}
-	public GoJbFrame(String title,Boolean visible){
+	public GoJbFrame(String title,Boolean visible, int close){
 		setSize(500, 500);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(3);
+		setDefaultCloseOperation(close);
 		setVisible(visible);
 		setTitle(title);
 		addWindowListener(this);
