@@ -134,7 +134,7 @@ WindowListener{
 			(int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2),
 			(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2*1.5));
 
-	public static void main(String[] arg) {
+	public static void main(String... arg) {
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
