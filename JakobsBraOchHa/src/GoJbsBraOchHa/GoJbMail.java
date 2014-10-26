@@ -1,12 +1,11 @@
 package GoJbsBraOchHa;
 
-import java.awt.GridLayout;
+import java.awt.*;
 import java.util.*;
 
 import javax.mail.*;
 import javax.mail.internet.*;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.*;
 
 class GoJbMail{
 
@@ -90,7 +89,12 @@ class HämtaMail implements Runnable{
 
 	JFrame frame = new JFrame();
 
+	JPanel panel = new JPanel();
+	
 	int x;
+
+	
+	JScrollPane Bar = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	
 	public static void main(String[] args) {
 		System.err.println("uvueshjd");
@@ -113,9 +117,14 @@ class HämtaMail implements Runnable{
 			frame.setVisible(true);
 			frame.setSize(500,500);
 			frame.setLocationRelativeTo(null);
-			frame.setLayout(new GridLayout(0,3));
+			frame.add(Bar);
 			
 			System.out.println("Funkar");
+			
+			Bar.getVerticalScrollBar().setUnitIncrement(20);
+			
+			panel.setLayout(new GridLayout(0,1));
+			
 
 			Folder folder = store.getFolder("Inbox");
 			folder.open(Folder.READ_WRITE);
@@ -127,15 +136,17 @@ class HämtaMail implements Runnable{
 				}
 				Message msg = msgs[j];
 				
-				Date date = new Date();
-				date = msg.getReceivedDate();
-				System.out.println(date.getTime());
+				if(!msg.isSet(Flags.Flag.DELETED))
 				
-				frame.add(new JLabel(Integer.toString(j)));
+				
 				
 				System.err.println("lerj");
 				if(msg.isSet(Flags.Flag.SEEN)){
 					System.out.println("SEEN");	
+					LäggTill(msg,Color.red);
+				}
+				else{
+					LäggTill(msg,Color.black);
 				}
 				
 			}
@@ -143,6 +154,38 @@ class HämtaMail implements Runnable{
 		}catch(Exception e)    {
 			e.printStackTrace();
 		}
+	}
+	public void LäggTill(Message message, Color color){
+		JButton b = new JButton();
+		
+		b.setForeground(color);
+		
+		panel.add(b);
+		
+		b.addActionListener(e -> {JFrame f = new JFrame();JTextArea text = null;
+		try {
+			text = new JTextArea("-- From: "+ message.getFrom()[0].toString() + "\n \n--Subject: " + message.getSubject() + "\n \n--Content: \n" + 
+					message.getContent().toString());
+		} catch (Exception e1) {
+
+			e1.printStackTrace();
+		}f.add(text);text.setEditable(false);f.setVisible(true);f.setSize(500, 500);text.setLineWrap(true);
+		text.setWrapStyleWord(true);try {
+			message.setFlag(Flags.Flag.DELETED, true);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}b.setForeground(Color.red);});
+		
+		b.setPreferredSize(new Dimension(500,100));
+		
+		try {
+			b.setText(message.getSubject());
+		} catch (MessagingException e) {
+		}
+		
+		
+		frame.revalidate();
+		
 	}
 }
 

@@ -5464,10 +5464,10 @@ class Mailkorg implements ActionListener{
 
 	static JTextField Mottagare = new JTextField("gojb@gojb.bl.ee"),
 			Ämne = new JTextField();
-	
+
 	static JTextArea Innehåll = new JTextArea();
-	
-static JLabel label1 = new JLabel("Till"),
+
+	static JLabel label1 = new JLabel("Till"),
 			label2 = new JLabel("Ämne"),
 			label3 = new JLabel("Innehåll");
 
@@ -5490,11 +5490,11 @@ static JLabel label1 = new JLabel("Till"),
 		skapa.add(label3);
 		skapa.add(Innehåll);
 		skapa.add(SkickaKnapp);
-		
+
 		label1.setMinimumSize(new Dimension(30000,50));
 		label2.setMinimumSize(new Dimension(30000,50));
 		label3.setMinimumSize(new Dimension(30000,50));
-		
+
 		Mottagare.setMaximumSize(new Dimension(300000, 500));
 		Ämne.setMaximumSize(new Dimension(30000,500));
 		Innehåll.setPreferredSize(new Dimension(300, 500));
@@ -5516,7 +5516,7 @@ static JLabel label1 = new JLabel("Till"),
 
 			System.err.println("isuahodhfzc  fdgxgf");
 
-			
+
 			GoJbMail.Starta("Skicka");
 
 		}
@@ -5530,7 +5530,11 @@ class ReggPlåtar implements ActionListener{
 	Random random1 = new Random(),
 			r = new Random();
 
-	JButton button = new JButton("ny reggplåt");
+	Timer timer = new Timer(1,this);
+
+	Boolean TimerKör = false;
+
+	JButton button = new JButton("Start");
 
 	int Low = 0;
 	int High = 999;
@@ -5588,7 +5592,18 @@ class ReggPlåtar implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		Kör();
-	}
+		if(e.getSource()==button&&timer.isRunning()==false){
+			button.setText("Stop");
+			timer.start();
+			System.err.println("d");
+		}
+		else if(e.getSource()==button&&timer.isRunning()==true){
+			button.setText("Start");
+			timer.stop();
+		}
 
+		if (e.getSource()==timer){
+			Kör();
+		}
+	}
 }
