@@ -13,7 +13,7 @@ public class Chatta {
 
 	private String nickname;
 	private Session session;
-	private static Integer pers;
+	private static Integer pers = new Integer(0);
 
 	@OnOpen
 	public void start(Session session) {
@@ -30,9 +30,9 @@ public class Chatta {
 	public void incoming(String message) {
 		if (message.startsWith("NAME:")&&nickname==null) {
 			nickname = message.substring(5);
-			if (nickname=="") {
-				nickname="Okänd" + pers.toString();
+			if (nickname.equals("")) {
 				pers++;
+				nickname="Okänd " + pers.toString();
 			}
 			broadcast("* " + nickname +" har anslutit.");
 		}
