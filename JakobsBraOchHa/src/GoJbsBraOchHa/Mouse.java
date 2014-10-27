@@ -5626,12 +5626,13 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 	private final int startlängd= 3;
 	private int	pixelstorlek;
 	private int[] x=new int[50],y=new int[50],z=new int[50],q=new int[50];
-	private int snakelängdx,snakelängdz,posx=100,posy=100,posyz=100,posyq,pluppX,pluppY, stringy,stringq, s = 1,a=1;
+	private int snakelängdx,snakelängdz,posx=100,posy=100,posyz=100,posyq,pluppX,pluppY, stringy,stringq, s = 1,a=1,
+			Svart,Cyan;
 	private Timer timer = new Timer(100, this);
 	private String riktning = "ner",riktningz = "upp";
 	private BufferedReader in;
 	private PrintWriter out;
-	private boolean förlust, paused=false;
+	private boolean förlust, paused=false,gameover;
 	JButton local = new JButton("Play on the same computer"),
 			online = new JButton("Play online");
 
@@ -5716,25 +5717,40 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 
 	}
 	Timer timers = new Timer(100, e-> {if (b) ansluten();});
-	
+
 	void ansluten(){
-			väntframe.dispose();
-			start.dispose();
-			frame.setVisible(true);
-			paused=true;Restart();
-			timer.stop();	
-			frame.revalidate();
-			frame.repaint();
-			timers.stop();
+		väntframe.dispose();
+		start.dispose();
+		frame.setVisible(true);
+		paused=true;Restart();
+		timer.stop();	
+		frame.revalidate();
+		frame.repaint();
+		timers.stop();
 	}
 	private void GameOver(){
 		timer.stop();
+		frame.repaint();
+		frame.revalidate();
 		förlust = true;
+
+		gameover = true;
 
 		((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 
 	}
 	private void Restart() {
+
+		gameover=false;
+
+		for (int i = 0; i < x.length; i++) {
+			x[i]=0;
+			q[i]=0;
+			y[i]=0;
+			z[i]=0;
+		}
+		repaint();
+
 		posx = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
 		posy = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
 
@@ -5745,16 +5761,12 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				posx<getWidth()*0.2||
 				posy>getHeight()*0.8||
 				posy<getHeight()*0.2) {
-
-			System.out.println("Räknar om: " + posx);
 			Restart();
 		}
 		if (	posyz>getWidth()*0.8||
 				posyz<getWidth()*0.2||
 				posyq>getHeight()*0.8||
 				posyq<getHeight()*0.2) {
-
-			System.err.println("Räknar om: " + posyz);
 			Restart();
 		}
 		else{		
@@ -5855,7 +5867,6 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				snakelängdx++;
 				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
 				System.err.println(snakelängdx);
-				System.out.println("MAT!!");
 
 			}
 			if (z[1]==pluppX&&q[1]==pluppY) {
@@ -5863,7 +5874,6 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				snakelängdz++;
 				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
 				System.err.println(snakelängdz);
-				System.out.println("MAT!");
 
 			}
 			if (riktning=="ner") {
@@ -5881,37 +5891,42 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				x[1]=x[1]-pixelstorlek;
 
 			}
-			for (int i = 2; i <= snakelängdx; i++) {
-				if (x[1]==x[i]&&y[1]==y[i]) {
-					System.out.println("GameOver");
-					GameOver();
-					System.err.println("Poäng till Cyan");
-				}
-			}
-			for (int i = 2; i <= snakelängdx; i++) {
+			boolean körd = false;
+			for (int i = 1; i <= snakelängdx; i++) {
 				if (x[1]==z[i]&&y[1]==q[i]) {
 					System.out.println("GameOver");
 					GameOver();
 					System.err.println("Poäng till Cyan");
+					System.out.println("1");
+					körd=true;
 				}
 			}
-			for (int i = 2; i <= snakelängdx; i++) {
-				if (z[1]==x[i]&&q[1]==x[i]) {
+			for (int i = 1; i <= snakelängdz; i++) {
+				if (körd) {
+					break;
+				}
+				if (z[1]==x[i]&&y[i]==q[1]) {
 					System.out.println("GameOver");
 					GameOver();
 					System.err.println("Poäng till Svart");
+					System.out.println("2");
 				}
 			}
+
 			if (x[1]<0) {
+				System.err.println("Poäng till Cyan");
 				GameOver();
 			}
 			if (x[1]+pixelstorlek>getWidth()) {
+				System.err.println("Poäng till Cyan");
 				GameOver();
 			}
 			if (y[1]<0) {
+				System.err.println("Poäng till Cyan");
 				GameOver();		
 			}
 			if (y[1]+pixelstorlek>getHeight()) {
+				System.err.println("Poäng till Cyan");
 				GameOver();
 			}
 
@@ -5929,29 +5944,25 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			else if (riktningz=="vänster") {
 				z[1]=z[1]-pixelstorlek;
 
-			}
-			for (int i = 2; i <= snakelängdz; i++) {
-				if (z[1]==z[i]&&q[1]==q[i]) {
-					System.out.println("GameOver");
-					GameOver();
-					System.err.println("Poäng till Svart");
-				}
-			}
+			}			
 			if (z[1]<0) {
+				System.err.println("Poäng till Svart");
 				GameOver();
 			}
 			if (z[1]+pixelstorlek>getWidth()) {
+				System.err.println("Poäng till Svart");
 				GameOver();
 			}
 			if (q[1]<0) {
+				System.err.println("Poäng till Svart");
 				GameOver();		
 			}
 			if (q[1]+pixelstorlek>getHeight()) {
+				System.err.println("Poäng till Svart");
 				GameOver();
 			}
-
-
 			frame.repaint();
+			frame.revalidate();
 		}
 
 	}
@@ -6024,19 +6035,21 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		if(KeyEvent.getKeyText(e.getKeyCode()) == "F2"){
 			if (!timer.isRunning()) {
 				Restart();
-				frame.repaint();
-				frame.revalidate();
-				timer.stop();
-				
+				paused=false;
+
 			}
 		}
 		if(e.getKeyCode() == KeyEvent.VK_SPACE&&paused==true){
-			timer.start();
-			paused=false;
+			if(!gameover){
+				timer.start();
+				paused=false;
+			}
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_SPACE&&paused==false){
-			timer.stop();
-			paused=true;
+			if(!gameover){
+				timer.stop();
+				paused=true;
+			}
 		}
 	}
 	public void windowClosing(WindowEvent e) {
