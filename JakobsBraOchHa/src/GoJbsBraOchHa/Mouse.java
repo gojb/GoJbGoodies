@@ -5622,14 +5622,16 @@ class ReggPlåtar implements ActionListener{
 @SuppressWarnings("serial")
 class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, WindowListener, ComponentListener{
 	
-	private JFrame frame = new JFrame("Snake");
+	private JFrame frame = new JFrame("Snake"), start = new JFrame("Start");
 		private final int startlängd= 3;
 		private int	pixelstorlek;
 		private int[] x=new int[50],y=new int[50];
 		private int snakelängd,posx=100,posy=100,pluppX,pluppY, stringy, s = 1;
 		private Timer timer = new Timer(100, this);
 		private String riktning = "ner";
-		private boolean förlust;
+		private boolean förlust, första = true, paused=false;
+		JButton local = new JButton("Play on the same computer"),
+				online = new JButton("Play online");
 
 
 	public MultiPlayerSnake(){
@@ -5649,14 +5651,24 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			frame.addWindowListener(this);
 			frame.getContentPane().setBackground(black);
 			frame.addComponentListener(this);	
-
-			frame.setVisible(true);
-			Restart();
+			frame.setDefaultCloseOperation(3);
+			
+			start.setVisible(true);
+			start.setSize(240,140);
+			start.setLayout(new GridLayout(2,1));
+			start.setLocationRelativeTo(null);
+			start.add(local);
+			start.add(online);
+			start.setDefaultCloseOperation(3);
+			
+			local.addActionListener(e -> {start.dispose();frame.setVisible(true);förlust=true;});
+			
+			online.addActionListener(e -> {start.dispose();frame.setVisible(true);förlust=true;});
+			
 		}
 		private void GameOver(){
 			timer.stop();
 			förlust = true;
-			int hs;
 
 			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 
@@ -5713,6 +5725,10 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			if (förlust) {
 				g.setColor(red);
 				g.setFont(new Font(null, 0, 25));
+				if(första){
+				g.drawString("Tryck på F2 för att börja",10 , getHeight()/2);
+				}
+				else if(!första)
 				g.drawString("Du förlorade! Tryck F2 för att spela igen",10 , getHeight()/2);
 			}
 			g.setColor(red);
@@ -5795,6 +5811,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		public void componentShown(ComponentEvent e) {}
 		public void componentHidden(ComponentEvent e) {}
 
+		@SuppressWarnings("unused")
 		public void keyPressed(KeyEvent e) {
 			if (s==1) {
 				if(KeyEvent.getKeyText(e.getKeyCode()) == "Vänsterpil"){
@@ -5826,6 +5843,14 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				if (!timer.isRunning()) {
 					Restart();
 				}
+			}
+			if(e.getKeyCode() == KeyEvent.VK_SPACE&&paused==true){
+				timer.start();
+				paused=false;
+			}
+			else if(e.getKeyCode() == KeyEvent.VK_SPACE&&paused==false){
+				timer.stop();
+				paused=true;
 			}
 		}
 		public void windowClosing(WindowEvent e) {
