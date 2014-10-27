@@ -7,7 +7,6 @@ import java.io.*;
 import java.net.*;
 import java.text.*;
 import java.util.*;
-
 import javax.crypto.*;
 import javax.crypto.spec.*;
 import javax.sound.sampled.*;
@@ -15,7 +14,6 @@ import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.event.*;
 import javax.swing.text.*;
-
 import org.lwjgl.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.*;
@@ -5626,13 +5624,14 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		private final int startlängd= 3;
 		private int	pixelstorlek;
 		private int[] x=new int[50],y=new int[50];
-		private int snakelängd,posx=100,posy=100,pluppX,pluppY, stringy, s = 1;
+		private int snakelängd,posx=100,posy=100,pluppX,pluppY, s = 1;
 		private Timer timer = new Timer(100, this);
 		private String riktning = "ner";
 		private boolean förlust;
 
 
 	public MultiPlayerSnake(){
+	
 			pixelstorlek=(int) Math.round(((double)fönsterSize.width)/100);
 
 			setBackground(white);
@@ -5656,13 +5655,8 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		private void GameOver(){
 			timer.stop();
 			förlust = true;
-			int hs;
-
 			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 
-			
-
-			
 		}
 		private void Restart() {
 			posx = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
@@ -5701,10 +5695,8 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			super.paintComponent(g1);
 
 			if(y[1] < 45) {
-				stringy = y[1] + 40;
 			}
 			if (y[1] > 45){
-				stringy = y[1] - 20;
 			}
 
 			Graphics2D g = (Graphics2D)g1;
