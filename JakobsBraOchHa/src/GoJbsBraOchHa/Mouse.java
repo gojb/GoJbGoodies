@@ -5969,9 +5969,10 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		if(KeyEvent.getKeyText(e.getKeyCode()) == "F2"){
 			if (!timer.isRunning()) {
 				Restart();
-				timer.stop();
 				frame.repaint();
 				frame.revalidate();
+				timer.stop();
+				
 			}
 		}
 		if(e.getKeyCode() == KeyEvent.VK_SPACE&&paused==true){
