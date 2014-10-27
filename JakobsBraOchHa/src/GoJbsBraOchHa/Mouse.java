@@ -5622,7 +5622,7 @@ class ReggPlåtar implements ActionListener{
 @SuppressWarnings("serial")
 class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, WindowListener, ComponentListener{
 
-	private JFrame frame = new JFrame("Snake"), start = new JFrame("Start");
+	private JFrame frame = new JFrame("Snake"), start = new JFrame("Start"),väntframe= new JFrame();
 	private final int startlängd= 3;
 	private int	pixelstorlek;
 	private int[] x=new int[50],y=new int[50],z=new int[50],q=new int[50];
@@ -5631,7 +5631,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 	private String riktning = "ner",riktningz = "upp";
 	private BufferedReader in;
 	private PrintWriter out;
-	private boolean förlust, paused=false;
+	private boolean förlust, paused=false,b,ansluten;
 	JButton local = new JButton("Play on the same computer"),
 			online = new JButton("Play online");
 
@@ -5671,7 +5671,6 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		frame.revalidate();
 		frame.repaint();
 	}
-	boolean b;
 	class a implements Runnable{
 		public void run() {
 			try {
@@ -5686,11 +5685,11 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			}
 		}
 	}
-	JFrame väntframe= new JFrame();
 	void online(){
 		Thread runnable = new Thread(new a());
 		String[]strings={"Server", "Klient" };
-		if (showOptionDialog(frame, "", "Multiplayer", DEFAULT_OPTION, QUESTION_MESSAGE, null, strings, 0)==0) {
+		int i = showOptionDialog(frame, "", "Multiplayer", DEFAULT_OPTION, QUESTION_MESSAGE, null, strings, 0);
+		if (i==0) {
 
 			JLabel jLabel= new JLabel("Väntar på anslutning...",Bild("/images/loading.gif"),CENTER);
 
@@ -5702,8 +5701,9 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			väntframe.repaint();
 
 			runnable.start();
+			timers.start();
 		}
-		else {
+		else if (i==1) {
 			try {
 				@SuppressWarnings("resource")
 				Socket socket = new Socket(showInputDialog("Adress till server"), 11622);
@@ -5713,21 +5713,20 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				e.printStackTrace();
 			}
 		}
-		timers.start();
-
 	}
 	Timer timers = new Timer(100, e-> {if (b) ansluten();});
-	
+
 	void ansluten(){
-			väntframe.dispose();
-			start.dispose();
-			frame.setVisible(true);
-			paused=true;
-			Restart();
-			timer.stop();	
-			frame.revalidate();
-			frame.repaint();
-			timers.stop();
+		ansluten=true;
+		väntframe.dispose();
+		start.dispose();
+		frame.setVisible(true);
+		paused=true;
+		Restart();
+		timer.stop();	
+		frame.revalidate();
+		frame.repaint();
+		timers.stop();
 	}
 	private void GameOver(){
 		timer.stop();
@@ -6016,7 +6015,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				frame.repaint();
 				frame.revalidate();
 				timer.stop();
-				
+
 			}
 		}
 		if(e.getKeyCode() == KeyEvent.VK_SPACE&&paused==true){
