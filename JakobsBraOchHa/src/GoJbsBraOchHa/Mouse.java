@@ -2377,7 +2377,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		}
 
 		else if (arg0.getSource() == Random){
-			new random();
+			new Randoms();
 			frame.dispose();
 		}
 		else if (arg0.getSource() == klocka){
@@ -4822,7 +4822,7 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 	}
 }
 
-class random implements ActionListener{
+class Randoms implements ActionListener{
 
 	JLabel label = new JLabel();
 
@@ -4844,7 +4844,7 @@ class random implements ActionListener{
 
 
 
-	public random(){
+	public Randoms(){
 
 		frame.setLayout(new BorderLayout());
 
@@ -5543,9 +5543,6 @@ class ReggPlåtar implements ActionListener{
 
 
 	char string;	
-	public static void main(String[] args) {
-		new ReggPlåtar();
-	}
 
 	public ReggPlåtar(){
 

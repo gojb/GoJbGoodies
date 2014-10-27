@@ -17,7 +17,7 @@
 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Apache Tomcat WebSocket Examples: Chat</title>
+    <title>GoJbs Chatt</title>
     <style type="text/css">
         input#chat {
             width: 410px
@@ -59,7 +59,7 @@
 
             Chat.socket.onopen = function () {
             	var person = prompt("Vad heter du?", "");
-            	Chat.socket.send("NAME:" + person);
+            	Chat.socket.send(person);
                 Console.log('Info: Anslutning Öppnad');
                 document.getElementById('knapp').setAttribute('disabled','disabled');
                 document.getElementById('chat').onkeydown = function(event) {
@@ -77,6 +77,7 @@
 
             Chat.socket.onmessage = function (message) {
                 Console.log(message.data);
+                
             };
         });
 
@@ -95,9 +96,6 @@
                 document.getElementById('chat').value = '';
             }
         });
-        Chat.anslut = function() {
-        	Chat.initialize();
-        }
 
         var Console = {};
 
@@ -111,9 +109,20 @@
                 console.removeChild(console.firstChild);
             }
             console.scrollTop = console.scrollHeight;
+            document.title = "Nytt";
+            playSound();
         });
-
+        function playSound(){   
+        	var embed=document.createElement('object');
+        	  embed.setAttribute('type','audio/wav');
+        	  embed.setAttribute('data', 'http://gojb.bl.ee/bing.mp3');
+        	  embed.setAttribute('autostart', true);
+        	  embed.setAttribute('width', '0px');
+        	  embed.setAttribute('height', '0px');
+        	  document.getElementsByTagName('body')[0].appendChild(embed);
+        	  }
         Chat.initialize();
+        
 
     </script>
 </head>
@@ -121,7 +130,7 @@
 <div>
     <p>
         <input type="text" placeholder="Skriv meddelande och tryck på enter för att skicka" id="chat" />
-        <button type="button" onclick="Chat.anslut()" id="knapp">Anslut</button>
+        <button type="button" onclick="Chat.initialize()" id="knapp">Anslut</button>
     </p>
     <div id="console-container">
         <div id="console"/>

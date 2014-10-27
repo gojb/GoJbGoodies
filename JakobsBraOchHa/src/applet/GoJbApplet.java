@@ -12,6 +12,6 @@ public class GoJbApplet extends JApplet{
 	}
 	public GoJbApplet() {
 		getContentPane().setBackground(Color.WHITE);
-		Mouse.main(null);
+		Mouse.main("");
 	}
 }

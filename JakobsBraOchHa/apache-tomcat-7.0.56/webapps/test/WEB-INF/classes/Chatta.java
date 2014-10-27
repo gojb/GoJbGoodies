@@ -1,61 +1,58 @@
 
-import java.io.IOException;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.ArrayList;
+
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
+
+import org.apache.juli.logging.*;
 
 @ServerEndpoint(value = "/chat")
 public class Chatta {
 
-	private static final Set<Chatta> connections =
-			new CopyOnWriteArraySet<>();
+	static final Log log = LogFactory.getLog(Chatta.class);
+	private static final ArrayList<Session> connections = new ArrayList<Session>();
 
-	private String nickname;
+	private String namn;
 	private Session session;
-	private static Integer pers = new Integer(0);
-
+	private static Integer pers = 0;
+	
 	@OnOpen
 	public void start(Session session) {
-		this.session = session;
-		connections.add(this);
-
+		this.session=session;
+		connections.add(session);
 	}
 	@OnClose
 	public void end() {
-		connections.remove(this);
-		broadcast("* " + nickname + " har lämnat.");
+		stäng(session);
+	}
+	@OnError
+	public void error(Throwable t){}
+	private void stäng(Session session) {
+		connections.remove(session);
+		utgående("* " + namn + " har lämnat.");
 	}
 	@OnMessage
-	public void incoming(String message) {
-		if (message.startsWith("NAME:")&&nickname==null) {
-			nickname = message.substring(5);
-			if (nickname.equals("")) {
+	public void inkommande(String message) {
+		if (namn==null) {
+			namn = message;
+			if (namn.equals("")) {
 				pers++;
-				nickname="Okänd " + pers.toString();
+				namn="Okänd " + pers.toString();
 			}
-			broadcast("* " + nickname +" har anslutit.");
+			utgående("* " + namn +" har anslutit.");
 		}
 		else {
-			broadcast(nickname+": "+ message);
+			utgående(namn+": "+ message);
 		}
 	}
-	private static void broadcast(String msg) {
-		for (Chatta client : connections) {
+	private void utgående(String msg) {
+		for (Session session:connections) {
 			try {
-				synchronized (client) {
-					client.session.getBasicRemote().sendText(msg);
+				synchronized (session) {
+					session.getBasicRemote().sendText(msg);
 				}
-			} catch (IOException e) {
-				connections.remove(client);
-				try {
-					client.session.close();
-				} catch (IOException e1) {
-					// Ignore
-				}
-				String message = String.format("* %s %s",
-						client.nickname, " har lämnat.");
-				broadcast(message);
+			} catch (Exception e) {
+				stäng(session);
 			}
 		}
 	}
