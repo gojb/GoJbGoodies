@@ -5629,6 +5629,8 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 	private int snakelängd,posx=100,posy=100,posyz=100,posyq,pluppX,pluppY, stringy, s = 1;
 	private Timer timer = new Timer(100, this);
 	private String riktning = "ner";
+	private BufferedReader in;
+	private PrintWriter out;
 	private boolean förlust, paused=false;
 	JButton local = new JButton("Play on the same computer"),
 			online = new JButton("Play online");
@@ -5664,11 +5666,66 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		local.addActionListener(e -> {start.dispose();frame.setVisible(true);paused=true;Restart();timer.stop();	frame.revalidate();
 		frame.repaint();});
 
-		online.addActionListener(e -> {start.dispose();frame.setVisible(true);paused=true;Restart();timer.stop();	frame.revalidate();
-		frame.repaint();});
-		
+		online.addActionListener(e -> online());
+
 		frame.revalidate();
 		frame.repaint();
+	}
+	boolean b;
+	class a implements Runnable{
+		public void run() {
+			try {
+				ServerSocket listener = new ServerSocket(11622);
+				Socket socket = listener.accept();
+				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				out = new PrintWriter(socket.getOutputStream(), true);
+				b=true;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	JFrame väntframe= new JFrame();
+	void online(){
+		Thread runnable = new Thread(new a());
+		String[]strings={"Server", "Klient" };
+		if (showOptionDialog(frame, "", "Multiplayer", DEFAULT_OPTION, QUESTION_MESSAGE, null, strings, 0)==0) {
+
+			JLabel jLabel= new JLabel("Väntar på anslutning...",Bild("/images/loading.gif"),CENTER);
+
+			väntframe.setVisible(true);
+			väntframe.add(jLabel);
+			väntframe.setSize(400, 200);
+			väntframe.setLocationRelativeTo(null);
+			väntframe.setAlwaysOnTop(true);
+			väntframe.repaint();
+
+			runnable.start();
+		}
+		else {
+			try {
+				@SuppressWarnings("resource")
+				Socket socket = new Socket(showInputDialog("Adress till server"), 11622);
+				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				out = new PrintWriter(socket.getOutputStream(), true);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		timers.start();
+
+	}
+	Timer timers = new Timer(100, e-> {if (b) ansluten();});
+	
+	void ansluten(){
+			väntframe.dispose();
+			start.dispose();
+			frame.setVisible(true);
+			paused=true;Restart();
+			timer.stop();	
+			frame.revalidate();
+			frame.repaint();
+			timers.stop();
 	}
 	private void GameOver(){
 		timer.stop();
@@ -5817,8 +5874,6 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 	public void componentResized(ComponentEvent e) {}
 	public void componentShown(ComponentEvent e) {}
 	public void componentHidden(ComponentEvent e) {}
-
-	@SuppressWarnings("unused")
 	public void keyPressed(KeyEvent e) {
 		if (s==1) {
 			if(KeyEvent.getKeyText(e.getKeyCode()) == "Vänsterpil"){
