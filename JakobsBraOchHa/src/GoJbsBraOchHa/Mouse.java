@@ -5459,8 +5459,7 @@ class Sök implements ActionListener{
 
 class Mailkorg implements ActionListener{
 
-	GoJbFrame frame = new GoJbFrame(),
-			skapa = new GoJbFrame("",false,1);
+	static GoJbFrame frame = new GoJbFrame();
 
 	static JTextField Mottagare = new JTextField("gojb@gojb.bl.ee"),
 			Ämne = new JTextField();
@@ -5471,25 +5470,17 @@ class Mailkorg implements ActionListener{
 			label2 = new JLabel("Ämne"),
 			label3 = new JLabel("Innehåll");
 
-	JButton SkickaKnapp = new JButton("Skicka"),
-			HämtaKnapp = new JButton("Hämta"),
-			button3 = new JButton("Skicka");
+	static JButton SkickaKnapp = new JButton("Skicka");
+
+	JButton HämtaKnapp = new JButton("Hämta");
+
+	JButton button3 = new JButton("Skicka");
 
 	public Mailkorg(){
 
 		frame.setLayout(new GridLayout(3,0));
-		frame.add(SkickaKnapp);
 		frame.add(HämtaKnapp);
 		frame.add(button3);
-
-		skapa.setLayout(new BoxLayout(skapa.getContentPane(), BoxLayout.Y_AXIS));
-		skapa.add(label1);
-		skapa.add(Mottagare);
-		skapa.add(label2);
-		skapa.add(Ämne);
-		skapa.add(label3);
-		skapa.add(Innehåll);
-		skapa.add(SkickaKnapp);
 
 		label1.setMinimumSize(new Dimension(30000,50));
 		label2.setMinimumSize(new Dimension(30000,50));
@@ -5502,13 +5493,34 @@ class Mailkorg implements ActionListener{
 		Innehåll.setWrapStyleWord(true);
 		SkickaKnapp.addActionListener(this);
 		HämtaKnapp.addActionListener(e -> {GoJbMail.Starta("Hämta");});
-		button3.addActionListener(e -> {skapa.setVisible(true);});
+		button3.addActionListener(e -> {SkickaFönster("gojb@gojb.bl.ee","",false);});
 
-		skapa.revalidate();
+		
 		frame.revalidate();
 
 	}
+	public static void SkickaFönster(String from, String toWhom, Boolean focus){
+		
+		GoJbFrame skapa = new GoJbFrame("",true,1);
 
+		Mailkorg.Mottagare.setText(from);
+		Mailkorg.Ämne.setText(toWhom);
+		Mailkorg.Innehåll.setText("");
+		
+		skapa.setLayout(new BoxLayout(skapa.getContentPane(), BoxLayout.Y_AXIS));
+		skapa.add(label1);
+		skapa.add(Mottagare);
+		skapa.add(label2);
+		skapa.add(Ämne);
+		skapa.add(label3);
+		skapa.add(Innehåll);
+		skapa.add(SkickaKnapp);
+		
+		skapa.revalidate();
+		if(focus==true){
+		Innehåll.requestFocusInWindow();
+		}
+		}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 

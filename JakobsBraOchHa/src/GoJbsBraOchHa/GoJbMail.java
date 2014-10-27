@@ -21,7 +21,17 @@ class GoJbMail{
 			System.err.println("Skicka");
 
 			new SkickaMail();
-			
+
+			try {
+				SkickaMail.Skicka(Mailkorg.Mottagare.getText().toLowerCase(),Mailkorg.Ämne.getText(),Mailkorg.Innehåll.getText());
+			} catch (AddressException e) {
+				e.printStackTrace();
+				System.err.println("--Fel på Adress!!");
+			} catch (MessagingException e) {
+				System.err.println("--Fel på Meddelande");
+				e.printStackTrace();
+			}
+
 		}
 		else if(!starta.toLowerCase().equals("skicka")||!starta.toLowerCase().equals("hämta")) {
 			System.err.println("---ERROR---");
@@ -57,16 +67,15 @@ class SkickaMail {
 
 		Message msg = new MimeMessage( mailSession );
 
-		System.out.println(Mailkorg.Mottagare.getText().toLowerCase() +"--"+ Mailkorg.Ämne.getText() +"--"+ Mailkorg.Innehåll.getText());
+		System.out.println(Mailkorg.Mottagare.getText().toLowerCase() +"--" + Mailkorg.Ämne.getText() +"--"+ Mailkorg.Innehåll.getText());
 
 
 
 
-		msg.setFrom( new InternetAddress( "GoJb<gojb@gojb.bl.ee>" ) );
-		msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse(Mailkorg.Mottagare.getText().toLowerCase()));	
-		msg.setSubject(Mailkorg.Ämne.getText());
-		msg.setText(Mailkorg.Innehåll.getText());
-
+		msg.setFrom(new InternetAddress( "GoJb<gojb@gojb.bl.ee>" ) );
+		msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse(Till));	
+		msg.setSubject(Ämne);
+		msg.setText(Meddelande);
 
 		Transport.send( msg );
 
@@ -81,16 +90,20 @@ class HämtaMail implements Runnable{
 	JFrame frame = new JFrame();
 
 	JPanel panel = new JPanel();
+
+	Boolean deleteBoolean = false;
+
+	JFrame f = new JFrame();
 	
 	int x;
 
 	JMenuBar bar = new JMenuBar();
-	
+
 	JScrollPane scrollBar = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-	
+
 	public static void main(String[] args) {
 		System.err.println("uvueshjd");
-		
+
 		new Thread(new HämtaMail()).start();
 	}
 
@@ -98,7 +111,7 @@ class HämtaMail implements Runnable{
 
 		System.err.println("Ktesgdhjklxfcg");
 	}
-	
+
 	public void kärna(){
 
 		frame.setVisible(true);
@@ -107,23 +120,24 @@ class HämtaMail implements Runnable{
 		frame.add(scrollBar);
 		frame.setIconImage(Mouse.fönsterIcon);
 		frame.setJMenuBar(bar);
-		
+
 		System.out.println("Funkar");
 		
 		scrollBar.getVerticalScrollBar().setUnitIncrement(20);
-		
+
 		panel.setLayout(new GridLayout(0,1));
 		
 		frame.revalidate();
 		frame.repaint();
 	}
-	
+
 	@Override
 	public void run(){
 		kärna();
 		Session session = Session.getDefaultInstance(System.getProperties());
 		System.out.println("Funkar");
 		try {
+			session.setDebug(false); // Enable the debug mode
 			Store store = session.getStore("imap");
 			store.connect("mx1.hostinger.se", "gojb@gojb.bl.ee", "uggen0684");
 
@@ -136,42 +150,56 @@ class HämtaMail implements Runnable{
 					x=1;
 				}
 				Message msg = msgs[j];
-				
+
 				if(!msg.isSet(Flags.Flag.DELETED)){				
-				
-				System.err.println("lerj");
-				if(msg.isSet(Flags.Flag.SEEN)){
-					System.out.println("SEEN");	
-					LäggTill(msg,Color.red);
-				}}
-				else{
-					LäggTill(msg,Color.black);
+					if(msg.getSubject().contains("gej")){
+						System.out.println("oöwktrrget");
+					}
+					System.err.println("lerj");
+					if(msg.isSet(Flags.Flag.SEEN)==true){
+						System.out.println("SEEN");	
+						LäggTill(msg,Color.red);
+					}
+					else if(msg.isSet(Flags.Flag.SEEN)==false){
+						System.out.println("--Not SEEN");
+						LäggTill(msg,Color.black);
+					}
 				}
-				
 			}
 
 		}catch(Exception e)    {
 			e.printStackTrace();
 		}
 	}
-	public void LäggTill(Message message, Color color){
+	public void LäggTill(Message message,Color color){
 		JButton b = new JButton(),
-				delete = new JButton("Delete");
-		
+				delete = new JButton("Delete"),
+				reply = new JButton("Reply");
+
 		JMenuBar bar = new JMenuBar();
-		
+
 		delete.setSize(100,20);
+
 		delete.addActionListener(e -> {try {
 			message.setFlag(Flags.Flag.DELETED, true);
+			b.setForeground(Color.magenta);
+			f.dispose();
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}});
-		
+
+		reply.setSize(100, 20);
+		reply.addActionListener(e -> {try {
+			Mailkorg.SkickaFönster(message.getFrom()[0].toString(),"RE: " + message.getSubject().toString(),true);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}});
+
 		b.setForeground(color);
-		
+
 		panel.add(b);
-		
-		b.addActionListener(e -> {JFrame f = new JFrame();JTextArea text = null;
+
+		b.addActionListener(e -> {JTextArea text = null;
 		try {
 			text = new JTextArea("-- From: "+ message.getFrom()[0].toString() + "\n \n--Subject: " + message.getSubject() + "\n \n--Content: \n" + 
 					message.getContent().toString());
@@ -179,22 +207,23 @@ class HämtaMail implements Runnable{
 
 			e1.printStackTrace();
 		}f.add(text);text.setEditable(false);f.setVisible(true);f.setSize(500, 500);f.setJMenuBar(bar);f.setIconImage(Mouse.fönsterIcon);text.setLineWrap(true);
-		text.setWrapStyleWord(true);bar.add(delete);try {
-			message.setFlag(Flags.Flag.DELETED, true);
+		text.setWrapStyleWord(true);bar.add(delete);bar.add(reply);
+		try {
+			message.setFlag(Flags.Flag.SEEN, true);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}b.setForeground(Color.red);});
-		
+
 		b.setPreferredSize(new Dimension(500,100));
-		
+
 		try {
 			b.setText(message.getSubject());
 		} catch (MessagingException e) {
 		}
-		
-		
+
+
 		frame.revalidate();
-		
+
 	}
 }
 
