@@ -5739,6 +5739,16 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 
 		((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 
+		if(Svart==10){
+			JOptionPane.showMessageDialog(null, "Svart vann!");
+			frame.dispose();
+		}
+		else if (Cyan==10){
+
+			JOptionPane.showMessageDialog(null, "Cyan vann!");
+			frame.dispose();
+		}
+
 	}
 	private void Restart() {
 
@@ -5801,7 +5811,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		if(paused||paused==true){
+		if(paused){
 			g.setColor(blue);
 			g.setFont(new Font(null, 0, 25));
 			g.drawString("Spelet pausat. Tryck på mellanslag för att fortsätta.", 10, getHeight()/2);
@@ -5811,7 +5821,8 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		if (förlust) {
 			g.setColor(red);
 			g.setFont(new Font(null, 0, 25));
-			g.drawString("Du förlorade! Tryck F2 för att spela igen",10 , getHeight()/2);
+			g.drawString("Du förlorade!",10 , getHeight()/2-25);
+			g.drawString("Tryck F2 eller \"R\" för \natt spela igen",10 , getHeight()/2);
 		}
 		g.setColor(red);
 		g.drawOval(pluppX, pluppY, pixelstorlek-2, pixelstorlek-2);
@@ -5884,7 +5895,8 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				if (x[1]==z[i]&&y[1]==q[i]) {
 					System.out.println("GameOver");
 					GameOver();
-					System.err.println("Poäng till Cyan");
+					Cyan++;
+					System.err.println("Poäng till Cyan. (C) "+Cyan+" - "+Svart+" (S)");
 					System.out.println("1");
 					körd=true;
 				}
@@ -5896,25 +5908,30 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				if (z[1]==x[i]&&y[i]==q[1]) {
 					System.out.println("GameOver");
 					GameOver();
-					System.err.println("Poäng till Svart");
+					Svart++;
+					System.err.println("Poäng till Svart. (C) "+Cyan+" - "+Svart+" (S)");
 					System.out.println("2");
 				}
 			}
 
 			if (x[1]<0) {
-				System.err.println("Poäng till Cyan");
+				Cyan++;
+				System.err.println("Poäng till Cyan. (C) "+Cyan+" - "+Svart+" (S)");
 				GameOver();
 			}
-			if (x[1]+pixelstorlek>getWidth()) {
-				System.err.println("Poäng till Cyan");
+			else if (x[1]+pixelstorlek>getWidth()) {
+				Cyan++;
+				System.err.println("Poäng till Cyan. (C) "+Cyan+" - "+Svart+" (S)");
 				GameOver();
 			}
-			if (y[1]<0) {
-				System.err.println("Poäng till Cyan");
+			else if (y[1]<0) {
+				Cyan++;
+				System.err.println("Poäng till Cyan. (C) "+Cyan+" - "+Svart+" (S)");
 				GameOver();		
 			}
-			if (y[1]+pixelstorlek>getHeight()) {
-				System.err.println("Poäng till Cyan");
+			else if (y[1]+pixelstorlek>getHeight()) {
+				Cyan++;
+				System.err.println("Poäng till Cyan. (C) "+Cyan+" - "+Svart+" (S)");
 				GameOver();
 			}
 
@@ -5934,19 +5951,23 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 
 			}			
 			if (z[1]<0) {
-				System.err.println("Poäng till Svart");
+				Svart++;
+				System.err.println("Poäng till Svart. (C) "+Cyan+" - "+Svart+" (S)");
 				GameOver();
 			}
-			if (z[1]+pixelstorlek>getWidth()) {
-				System.err.println("Poäng till Svart");
+			else if (z[1]+pixelstorlek>getWidth()) {
+				Svart++;
+				System.err.println("Poäng till Svart. (C) "+Cyan+" - "+Svart+" (S)");
 				GameOver();
 			}
-			if (q[1]<0) {
-				System.err.println("Poäng till Svart");
+			else if (q[1]<0) {
+				Svart++;
+				System.err.println("Poäng till Svart. (C) "+Cyan+" - "+Svart+" (S)");
 				GameOver();		
 			}
-			if (q[1]+pixelstorlek>getHeight()) {
-				System.err.println("Poäng till Svart");
+			else if (q[1]+pixelstorlek>getHeight()) {
+				Svart++;
+				System.err.println("Poäng till Svart. (C) "+Cyan+" - "+Svart+" (S)");
 				GameOver();
 			}
 			frame.repaint();
@@ -6020,11 +6041,11 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			}
 
 		}
-		if(KeyEvent.getKeyText(e.getKeyCode()) == "F2"){
+		if(e.getKeyCode() == KeyEvent.VK_F2&&förlust==true||e.getKeyCode() == KeyEvent.VK_R&&förlust==true||
+				e.getKeyCode() == KeyEvent.VK_F2&&paused==true||e.getKeyCode() == KeyEvent.VK_R&&paused==true){
 			if (!timer.isRunning()) {
 				Restart();
 				paused=false;
-
 			}
 		}
 		if(e.getKeyCode() == KeyEvent.VK_SPACE&&paused==true){
