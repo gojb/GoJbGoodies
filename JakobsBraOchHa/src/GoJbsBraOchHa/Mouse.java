@@ -5722,7 +5722,8 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			väntframe.dispose();
 			start.dispose();
 			frame.setVisible(true);
-			paused=true;Restart();
+			paused=true;
+			Restart();
 			timer.stop();	
 			frame.revalidate();
 			frame.repaint();
@@ -5784,15 +5785,6 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 	}
 	public void paintComponent(Graphics g1){
 		super.paintComponent(g1);
-
-		if(y[1] < 45) {
-		}
-		if (y[1] > 45){
-		}
-		if(q[1] < 45) {
-		}
-		if (q[1] > 45){
-		}
 
 		Graphics2D g = (Graphics2D)g1;
 
