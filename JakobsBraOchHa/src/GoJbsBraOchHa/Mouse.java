@@ -5626,7 +5626,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 	private final int startlängd= 3;
 	private int	pixelstorlek;
 	private int[] x=new int[50],y=new int[50],z=new int[50],q=new int[50];
-	private int snakelängdx,snakelängdz,posx=100,posy=100,posyz=100,posyq,pluppX,pluppY, stringy,stringq, s = 1,a=1;
+	private int snakelängdx,snakelängdz,posx=100,posy=100,posyz=100,posyq,pluppX,pluppY, s = 1,a=1;
 	private Timer timer = new Timer(100, this);
 	private String riktning = "ner",riktningz = "upp";
 	private BufferedReader in;
@@ -5675,6 +5675,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 	class a implements Runnable{
 		public void run() {
 			try {
+				@SuppressWarnings("resource")
 				ServerSocket listener = new ServerSocket(11622);
 				Socket socket = listener.accept();
 				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -5785,16 +5786,12 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		super.paintComponent(g1);
 
 		if(y[1] < 45) {
-			stringy = y[1] + 40;
 		}
 		if (y[1] > 45){
-			stringy = y[1] - 20;
 		}
 		if(q[1] < 45) {
-			stringq = q[1] + 40;
 		}
 		if (q[1] > 45){
-			stringq = q[1] - 20;
 		}
 
 		Graphics2D g = (Graphics2D)g1;
