@@ -5625,7 +5625,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 	private JFrame frame = new JFrame("Snake"), start = new JFrame("Start"),väntframe= new JFrame();
 	private final int startlängd= 3;
 	private int	pixelstorlek;
-	private int[] x=new int[50],y=new int[50],z=new int[50],q=new int[50];
+	private int[] x=new int[101],y=new int[101],z=new int[101],q=new int[101];
 	private int snakelängdx,snakelängdz,posx=100,posy=100,posyz=100,posyq,pluppX,pluppY, s = 1,a=1,
 			Svart,Cyan;
 	private Timer timer = new Timer(100, this);

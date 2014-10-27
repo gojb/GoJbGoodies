@@ -176,12 +176,29 @@ class HämtaMail implements Runnable{
 	public void LäggTill(Message message,Color color){
 		JButton b = new JButton(),
 				delete = new JButton("Delete"),
-				reply = new JButton("Reply");
+				reply = new JButton("Reply"),
+				GoJb = new JButton("GoJb");
 
 		JMenuBar bar = new JMenuBar();
 
 		delete.setSize(100,20);
+		GoJb.setSize(150,20);
+		GoJb.setBackground(Color.blue);
+		
+		GoJb.addActionListener(e -> {try {
+			Mailkorg.SkickaFönster(message.getFrom()[0].toString(),"Svar på GoJbGuide",true);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}});
 
+		try {
+			if(message.getSubject().equals("--Bugg/idéer--")){
+				bar.add(GoJb);
+			}
+		} catch (MessagingException e2) {
+			e2.printStackTrace();
+		}
+		
 		delete.addActionListener(e -> {try {
 			message.setFlag(Flags.Flag.DELETED, true);
 			b.setForeground(Color.magenta);
