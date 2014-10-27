@@ -5700,7 +5700,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			väntframe.setLocationRelativeTo(null);
 			väntframe.setAlwaysOnTop(true);
 			väntframe.repaint();
-
+			väntframe.setIconImage(fönsterIcon);
 			runnable.start();
 			timers.start();
 		}
@@ -5712,6 +5712,21 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				out = new PrintWriter(socket.getOutputStream(), true);
 			} catch (IOException e) {
 				e.printStackTrace();
+			}
+			while (true) {
+				Scanner scanner = null;
+				try {
+					scanner = new Scanner(in.readLine());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				try {
+					while (true) {
+						System.out.println(scanner.next());
+					}
+				} catch (Exception e) {
+					
+				}	
 			}
 		}
 	}
@@ -5795,6 +5810,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		pluppY = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
 	}
 	public void paintComponent(Graphics g1){
+		out.println("------------------------------");
 		super.paintComponent(g1);
 
 		Graphics2D g = (Graphics2D)g1;
@@ -5824,10 +5840,9 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		g.fillRect(z[1], q[1], pixelstorlek-2, pixelstorlek-2);
 		g.setColor(GREEN);
 		g.setFont(Mouse.typsnitt);
-
+		out.print("B: ");
 		for (int i = snakelängdx+1; i >= 2; i--) {
-
-
+			out.print(x[i]+" "+y[i]+" ");
 			g.setColor(black);
 			x[i]=x[i-1];
 			y[i]=y[i-1];
@@ -5835,7 +5850,10 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			g.fillRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
 			s=1;
 		}
+		out.println();
+		out.print("C: ");
 		for (int u = snakelängdz+1; u >= 2; u--){
+			out.print(z[u]+" "+q[u]+" ");
 			g.setColor(cyan);
 			z[u]=z[u-1];
 			q[u]=q[u-1];
@@ -5844,6 +5862,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 
 			a=1;
 		}
+		out.println();
 	}
 
 	public void actionPerformed(ActionEvent e) {

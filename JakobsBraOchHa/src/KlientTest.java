@@ -13,12 +13,12 @@ public class KlientTest {
     private JFrame frame = new JFrame("Capitalize Client");
     private JTextField dataField = new JTextField(40);
     private JTextArea messageArea = new JTextArea(8, 60);
-
+    private JScrollPane jScrollPane = new JScrollPane(messageArea);
     public KlientTest() {
 
         messageArea.setEditable(false);
         frame.add(dataField, "North");
-        frame.add(new JScrollPane(messageArea), "Center");
+        frame.add(jScrollPane, "Center");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -55,8 +55,9 @@ public class KlientTest {
         in = new BufferedReader(
                 new InputStreamReader(socket.getInputStream()));
         out = new PrintWriter(socket.getOutputStream(), true);
-        for (int i = 0; i < 3; i++) {
+        while (true) {
             messageArea.append(in.readLine() + "\n");
+            messageArea.setCaretPosition(messageArea.getDocument().getLength());
         }
     }
     public static void main(String[] args) throws Exception {
