@@ -161,7 +161,7 @@ WindowListener{
 		}
 		new Thread(new Update()).start();
 		try {
-			argString =arg[0];
+			argString = arg[0];
 			if (argString.equals("Glosor")) {
 				new Glosor();
 				return;
