@@ -151,6 +151,8 @@ class HämtaMail implements Runnable{
 				}
 				Message msg = msgs[j];
 
+				System.err.println(msgs[6].getContent());
+				
 				if(!msg.isSet(Flags.Flag.DELETED)){				
 					if(msg.getSubject().contains("gej")){
 						System.out.println("oöwktrrget");
