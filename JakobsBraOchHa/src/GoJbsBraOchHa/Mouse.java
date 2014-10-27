@@ -5632,7 +5632,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 	private String riktning = "ner",riktningz = "upp";
 	private BufferedReader in;
 	private PrintWriter out;
-	private boolean förlust, paused=false,gameover,b,ansluten;
+	private boolean förlust, paused=false,gameover,b;
 	JButton local = new JButton("Play on the same computer"),
 			online = new JButton("Play online");
 
@@ -5742,7 +5742,6 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		frame.revalidate();
 		frame.repaint();
 		timers.stop();
-		ansluten=true;
 	}
 	private void GameOver(){
 		timer.stop();
