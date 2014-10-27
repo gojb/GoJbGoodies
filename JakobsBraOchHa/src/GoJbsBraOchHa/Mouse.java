@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.*;
 import java.text.*;
 import java.util.*;
+
 import javax.crypto.*;
 import javax.crypto.spec.*;
 import javax.sound.sampled.*;
@@ -14,6 +15,7 @@ import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.event.*;
 import javax.swing.text.*;
+
 import org.lwjgl.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.*;
@@ -3612,7 +3614,7 @@ class Maze extends JPanel implements ActionListener, MouseMotionListener{
 }
 @SuppressWarnings("serial")
 class Snake extends JPanel implements KeyListener, ActionListener{
- 
+
 	JFrame frame = new JFrame("Snake");
 	int x = 250,y = 250,a,b = 1,bredd = 25,höjd = 100,q;
 	Timer timer = new Timer(30,this);	
@@ -5496,18 +5498,18 @@ class Mailkorg implements ActionListener{
 		HämtaKnapp.addActionListener(e -> {GoJbMail.Starta("Hämta");});
 		button3.addActionListener(e -> {SkickaFönster("gojb@gojb.bl.ee","",false);});
 
-		
+
 		frame.revalidate();
 
 	}
 	public static void SkickaFönster(String from, String toWhom, Boolean focus){
-		
+
 		GoJbFrame skapa = new GoJbFrame("",true,1);
 
 		Mailkorg.Mottagare.setText(from);
 		Mailkorg.Ämne.setText(toWhom);
 		Mailkorg.Innehåll.setText("");
-		
+
 		skapa.setLayout(new BoxLayout(skapa.getContentPane(), BoxLayout.Y_AXIS));
 		skapa.add(label1);
 		skapa.add(Mottagare);
@@ -5516,12 +5518,12 @@ class Mailkorg implements ActionListener{
 		skapa.add(label3);
 		skapa.add(Innehåll);
 		skapa.add(SkickaKnapp);
-		
+
 		skapa.revalidate();
 		if(focus==true){
-		Innehåll.requestFocusInWindow();
+			Innehåll.requestFocusInWindow();
 		}
-		}
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -5619,211 +5621,249 @@ class ReggPlåtar implements ActionListener{
 }
 @SuppressWarnings("serial")
 class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, WindowListener, ComponentListener{
-	
-	private JFrame frame = new JFrame("Snake");
-		private final int startlängd= 3;
-		private int	pixelstorlek;
-		private int[] x=new int[50],y=new int[50];
-		private int snakelängd,posx=100,posy=100,pluppX,pluppY, s = 1;
-		private Timer timer = new Timer(100, this);
-		private String riktning = "ner";
-		private boolean förlust;
+
+	private JFrame frame = new JFrame("Snake"), start = new JFrame("Start");
+	private final int startlängd= 3;
+	private int	pixelstorlek;
+	private int[] x=new int[50],y=new int[50],z=new int[50],q=new int[50];
+	private int snakelängd,posx=100,posy=100,posyz=100,posyq,pluppX,pluppY, stringy, s = 1;
+	private Timer timer = new Timer(100, this);
+	private String riktning = "ner";
+	private boolean förlust, paused=false;
+	JButton local = new JButton("Play on the same computer"),
+			online = new JButton("Play online");
 
 
 	public MultiPlayerSnake(){
-	
-			pixelstorlek=(int) Math.round(((double)fönsterSize.width)/100);
+		pixelstorlek=(int) Math.round(((double)fönsterSize.width)/100);
 
-			setBackground(white);
-			setPreferredSize(new Dimension(pixelstorlek*50, pixelstorlek*50));
-			setOpaque(true);
+		setBackground(white);
+		setPreferredSize(new Dimension(pixelstorlek*50, pixelstorlek*50));
+		setOpaque(true);
 
-			frame.setLayout(new BorderLayout());
-			frame.add(this,BorderLayout.CENTER);		
-			frame.setIconImage(fönsterIcon);
-			frame.setResizable(false);		
-			frame.addKeyListener(this);
-			frame.pack();
-			frame.setLocationRelativeTo(null);
-			frame.addWindowListener(this);
-			frame.getContentPane().setBackground(black);
-			frame.addComponentListener(this);	
+		frame.setLayout(new BorderLayout());
+		frame.add(this,BorderLayout.CENTER);		
+		frame.setIconImage(fönsterIcon);
+		frame.setResizable(false);		
+		frame.addKeyListener(this);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.addWindowListener(this);
+		frame.getContentPane().setBackground(black);
+		frame.addComponentListener(this);	
+		frame.setDefaultCloseOperation(3);
 
-			frame.setVisible(true);
+		start.setVisible(true);
+		start.setSize(240,140);
+		start.setLayout(new GridLayout(2,1));
+		start.setLocationRelativeTo(null);
+		start.add(local);
+		start.add(online);
+		start.setDefaultCloseOperation(3);
+
+		local.addActionListener(e -> {start.dispose();frame.setVisible(true);paused=true;Restart();timer.stop();	frame.revalidate();
+		frame.repaint();});
+
+		online.addActionListener(e -> {start.dispose();frame.setVisible(true);paused=true;Restart();timer.stop();	frame.revalidate();
+		frame.repaint();});
+		
+		frame.revalidate();
+		frame.repaint();
+	}
+	private void GameOver(){
+		timer.stop();
+		förlust = true;
+
+		((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+
+	}
+	private void Restart() {
+		posx = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
+		posy = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
+
+		if (	posx>getWidth()*0.8||
+				posx<getWidth()*0.2||
+				posy>getHeight()*0.8||
+				posy<getHeight()*0.2) {
+
+			System.out.println("Räknar om: " + posx);
 			Restart();
 		}
-		private void GameOver(){
-			timer.stop();
-			förlust = true;
-			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+		else{		
+			String [] arr = {"upp", "ner", "höger", "vänster"};
 
-		}
-		private void Restart() {
-			posx = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
-			posy = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
+			int select = random.nextInt(arr.length); 
 
-			if (	posx>getWidth()*0.8||
-					posx<getWidth()*0.2||
-					posy>getHeight()*0.8||
-					posy<getHeight()*0.2) {
+			riktning=arr[select];
+			snakelängd = startlängd;
+			x[1]=posx;
+			y[1]=posy;
+			z[1]=posyz;
+			q[1]=posyq;
+			PlaceraPlupp();
+			förlust= false;
+			repaint();
+			timer.start();
 
-				System.out.println("Räknar om: " + posx);
-				Restart();
-			}
-			else{		
-				String [] arr = {"upp", "ner", "höger", "vänster"};
-
-				int select = random.nextInt(arr.length); 
-
-				riktning=arr[select];
-				snakelängd = startlängd;
-				x[1]=posx;
-				y[1]=posy;
-				PlaceraPlupp();
-				förlust= false;
-				repaint();
-				timer.start();
-
-			}
-		}
-		private void PlaceraPlupp(){
-
-			pluppX = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
-			pluppY = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
-		}
-		public void paintComponent(Graphics g1){
-			super.paintComponent(g1);
-
-			if(y[1] < 45) {
-			}
-			if (y[1] > 45){
-			}
-
-			Graphics2D g = (Graphics2D)g1;
-
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			if (förlust) {
-				g.setColor(red);
-				g.setFont(new Font(null, 0, 25));
-				g.drawString("Du förlorade! Tryck F2 för att spela igen",10 , getHeight()/2);
-			}
-			g.setColor(red);
-			g.drawOval(pluppX, pluppY, pixelstorlek-2, pixelstorlek-2);
-			g.fillOval(pluppX, pluppY, pixelstorlek-2, pixelstorlek-2);
-			g.setColor(black);
-			g.drawRect(x[1], y[1], pixelstorlek-2, pixelstorlek-2);
-			g.fillRect(x[1], y[1], pixelstorlek-2, pixelstorlek-2);
-			g.setColor(GREEN);
-			g.setFont(Mouse.typsnitt);
-
-			for (int i = snakelängd+1; i >= 2; i--) {
-
-				g.setColor(black);
-				x[i]=x[i-1];
-				y[i]=y[i-1];
-				g.drawRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
-				g.fillRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
-				s=1;
-			}
-		}
-
-		public void actionPerformed(ActionEvent e) {
-
-			if (e.getSource()==timer){
-
-				if (x[1]==pluppX&&y[1]==pluppY) {
-					PlaceraPlupp();
-					snakelängd++;
-					((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
-					System.err.println(snakelängd);
-
-				}
-				if (riktning=="ner") {
-					y[1]=y[1]+pixelstorlek;
-				}
-				else if (riktning=="upp") {
-
-					y[1]=y[1]-pixelstorlek;
-				}
-				else if (riktning=="höger") {
-					x[1]=x[1]+pixelstorlek;
-
-				}
-				else if (riktning=="vänster") {
-					x[1]=x[1]-pixelstorlek;
-
-				}
-				for (int i = 2; i <= snakelängd; i++) {
-					if (x[1]==x[i]&&y[1]==y[i]) {
-						System.out.println("GameOver");
-						GameOver();
-					}
-				}
-				if (x[1]<0) {
-					GameOver();
-				}
-				if (x[1]+pixelstorlek>getWidth()) {
-					GameOver();
-				}
-				if (y[1]<0) {
-					GameOver();		
-				}
-				if (y[1]+pixelstorlek>getHeight()) {
-					GameOver();
-				}
-
-				frame.repaint();
-			}
-		}
-		public void keyTyped(KeyEvent e) {}
-		public void keyReleased(KeyEvent e) {}
-		public void windowOpened(WindowEvent e) {}
-		public void windowClosed(WindowEvent e) {}
-		public void windowIconified(WindowEvent e) {}
-		public void windowDeiconified(WindowEvent e) {}
-		public void windowActivated(WindowEvent e) {}
-		public void windowDeactivated(WindowEvent e) {}
-		public void componentResized(ComponentEvent e) {}
-		public void componentShown(ComponentEvent e) {}
-		public void componentHidden(ComponentEvent e) {}
-
-		public void keyPressed(KeyEvent e) {
-			if (s==1) {
-				if(KeyEvent.getKeyText(e.getKeyCode()) == "Vänsterpil"){
-					if (riktning!="höger"){
-						riktning="vänster";
-						s=0;
-					}
-				}
-				else if(KeyEvent.getKeyText(e.getKeyCode()) == "Högerpil"){
-					if (riktning!="vänster"){
-						riktning="höger";
-						s=0;
-					}
-				}
-				else if(KeyEvent.getKeyText(e.getKeyCode()) == "Upp"){
-					if (riktning!="ner"){
-						riktning="upp";
-						s=0;
-					}
-				}
-				else if(KeyEvent.getKeyText(e.getKeyCode()) == "Nedpil"){
-					if (riktning!="upp"){
-						riktning="ner";
-						s=0;
-					}
-				}
-			}
-			if(KeyEvent.getKeyText(e.getKeyCode()) == "F2"){
-				if (!timer.isRunning()) {
-					Restart();
-				}
-			}
-		}
-		public void windowClosing(WindowEvent e) {
-			timer.stop();
-		}
-		public void componentMoved(ComponentEvent e) {
 		}
 	}
+	private void PlaceraPlupp(){
+
+		pluppX = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
+		pluppY = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
+	}
+	public void paintComponent(Graphics g1){
+		super.paintComponent(g1);
+
+		if(y[1] < 45) {
+			stringy = y[1] + 40;
+		}
+		if (y[1] > 45){
+			stringy = y[1] - 20;
+		}
+
+		Graphics2D g = (Graphics2D)g1;
+
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+		if(paused||paused==true){
+			g.setColor(blue);
+			g.setFont(new Font(null, 0, 25));
+			g.drawString("Spelet pausat. Tryck på mellanslag för att fortsätta.", 10, getHeight()/2);
+			frame.revalidate();
+			frame.repaint();
+		}
+		if (förlust) {
+			g.setColor(red);
+			g.setFont(new Font(null, 0, 25));
+			g.drawString("Du förlorade! Tryck F2 för att spela igen",10 , getHeight()/2);
+		}
+		g.setColor(red);
+		g.drawOval(pluppX, pluppY, pixelstorlek-2, pixelstorlek-2);
+		g.fillOval(pluppX, pluppY, pixelstorlek-2, pixelstorlek-2);
+		g.setColor(black);
+		g.drawRect(x[1], y[1], pixelstorlek-2, pixelstorlek-2);
+		g.fillRect(x[1], y[1], pixelstorlek-2, pixelstorlek-2);
+		g.setColor(GREEN);
+		g.setFont(Mouse.typsnitt);
+
+		for (int i = snakelängd+1; i >= 2; i--) {
+
+			g.setColor(black);
+			x[i]=x[i-1];
+			y[i]=y[i-1];
+			g.drawRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
+			g.fillRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
+			s=1;
+		}
+	}
+
+	public void actionPerformed(ActionEvent e) {
+
+		if (e.getSource()==timer){
+
+			if (x[1]==pluppX&&y[1]==pluppY) {
+				PlaceraPlupp();
+				snakelängd++;
+				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
+				System.err.println(snakelängd);
+
+			}
+			if (riktning=="ner") {
+				y[1]=y[1]+pixelstorlek;
+			}
+			else if (riktning=="upp") {
+
+				y[1]=y[1]-pixelstorlek;
+			}
+			else if (riktning=="höger") {
+				x[1]=x[1]+pixelstorlek;
+
+			}
+			else if (riktning=="vänster") {
+				x[1]=x[1]-pixelstorlek;
+
+			}
+			for (int i = 2; i <= snakelängd; i++) {
+				if (x[1]==x[i]&&y[1]==y[i]) {
+					System.out.println("GameOver");
+					GameOver();
+				}
+			}
+			if (x[1]<0) {
+				GameOver();
+			}
+			if (x[1]+pixelstorlek>getWidth()) {
+				GameOver();
+			}
+			if (y[1]<0) {
+				GameOver();		
+			}
+			if (y[1]+pixelstorlek>getHeight()) {
+				GameOver();
+			}
+
+			frame.repaint();
+		}
+	}
+	public void keyTyped(KeyEvent e) {}
+	public void keyReleased(KeyEvent e) {}
+	public void windowOpened(WindowEvent e) {}
+	public void windowClosed(WindowEvent e) {}
+	public void windowIconified(WindowEvent e) {}
+	public void windowDeiconified(WindowEvent e) {}
+	public void windowActivated(WindowEvent e) {}
+	public void windowDeactivated(WindowEvent e) {}
+	public void componentResized(ComponentEvent e) {}
+	public void componentShown(ComponentEvent e) {}
+	public void componentHidden(ComponentEvent e) {}
+
+	@SuppressWarnings("unused")
+	public void keyPressed(KeyEvent e) {
+		if (s==1) {
+			if(KeyEvent.getKeyText(e.getKeyCode()) == "Vänsterpil"){
+				if (riktning!="höger"){
+					riktning="vänster";
+					s=0;
+				}
+			}
+			else if(KeyEvent.getKeyText(e.getKeyCode()) == "Högerpil"){
+				if (riktning!="vänster"){
+					riktning="höger";
+					s=0;
+				}
+			}
+			else if(KeyEvent.getKeyText(e.getKeyCode()) == "Upp"){
+				if (riktning!="ner"){
+					riktning="upp";
+					s=0;
+				}
+			}
+			else if(KeyEvent.getKeyText(e.getKeyCode()) == "Nedpil"){
+				if (riktning!="upp"){
+					riktning="ner";
+					s=0;
+				}
+			}
+		}
+		if(KeyEvent.getKeyText(e.getKeyCode()) == "F2"){
+			if (!timer.isRunning()) {
+				Restart();
+			}
+		}
+		if(e.getKeyCode() == KeyEvent.VK_SPACE&&paused==true){
+			timer.start();
+			paused=false;
+		}
+		else if(e.getKeyCode() == KeyEvent.VK_SPACE&&paused==false){
+			timer.stop();
+			paused=true;
+		}
+	}
+	public void windowClosing(WindowEvent e) {
+		timer.stop();
+	}
+	public void componentMoved(ComponentEvent e) {
+	}
+}
 
