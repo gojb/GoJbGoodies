@@ -5756,8 +5756,8 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 									q[snakelängdz]=Integer.parseInt(scanner.next())*pixelstorlek;
 								}
 								else if (string.equals("P")) {
-									pluppX=Integer.parseInt(scanner.next());
-									pluppY=Integer.parseInt(scanner.next());
+									pluppX=Integer.parseInt(scanner.next())*pixelstorlek;
+									pluppY=Integer.parseInt(scanner.next())*pixelstorlek;
 								}
 							}
 							synchronized (frame) {
@@ -5951,7 +5951,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				out.print(z[i]/pixelstorlek+" "+q[i]/pixelstorlek+" ");
 			}
 			out.println();
-			out.println("P " + pluppX + " " + pluppY);
+			out.println("P " + pluppX/pixelstorlek + " " + pluppY/pixelstorlek);
 		} catch (Exception e) {
 
 		}
