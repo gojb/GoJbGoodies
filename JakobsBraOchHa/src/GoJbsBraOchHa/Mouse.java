@@ -5648,12 +5648,13 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 	private static String riktning = "ner",riktningz = "upp";
 	private BufferedReader in;
 	private PrintWriter out;
-	private boolean förlust, paused=false,gameover,b,client;
+	private boolean förlust, paused=false,gameover,b;
+	private static boolean client;
 	JButton local = new JButton("Play on the same computer"),
 			online = new JButton("Play online");
 
 	public MultiPlayerSnake(){
-		pixelstorlek=(int) Math.round(((double)fönsterSize.width)/100);
+		pixelstorlek= (int) Math.round(((double)fönsterSize.width)/100);
 
 		setBackground(white);
 		setPreferredSize(new Dimension(pixelstorlek*50, pixelstorlek*50));
@@ -5787,9 +5788,33 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			public void run() {
 				while (true) {
 					try {
-						riktningz=in.readLine();
+						String string = in.readLine();
+						if(a==1){
+							if(string.equals("vänster")){
+								if (riktningz!="höger"){
+									riktningz="vänster";
+									a=0;
+								}
+							}
+							else if(string.equals("höger")){
+								if (riktningz!="vänster"){
+									riktningz="höger";
+									a=0;
+								}
+							}
+							else if(string.equals("upp")){
+								if (riktningz!="ner"){
+									riktningz="upp";
+								}
+							}
+							else if(string.equals("ner")){
+								if (riktningz!="upp"){
+									riktningz="ner";
+								}
+							}
+						}
 						System.out.println(riktningz);
-						a=0;
+						
 					} catch (IOException e) {
 						break;
 					}
@@ -5982,6 +6007,19 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				x[1]=x[1]-pixelstorlek;
 
 			}
+			if (riktningz=="ner") {
+				q[1]=q[1]+pixelstorlek;
+			}
+			else if (riktningz=="upp") {
+				q[1]=q[1]-pixelstorlek;
+			}
+			else if (riktningz=="höger") {
+				z[1]=z[1]+pixelstorlek;
+
+			}
+			else if (riktningz=="vänster") {
+				z[1]=z[1]-pixelstorlek;
+			}
 			boolean körd = false;
 			for (int i = 1; i <= snakelängdx; i++) {
 				if (x[1]==z[i]&&y[1]==q[i]) {
@@ -6026,20 +6064,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				System.err.println("Poäng till Cyan. (C) "+Cyan+" - "+Svart+" (S)");
 				GameOver();
 			}
-
-			if (riktningz=="ner") {
-				q[1]=q[1]+pixelstorlek;
-			}
-			else if (riktningz=="upp") {
-				q[1]=q[1]-pixelstorlek;
-			}
-			else if (riktningz=="höger") {
-				z[1]=z[1]+pixelstorlek;
-
-			}
-			else if (riktningz=="vänster") {
-				z[1]=z[1]-pixelstorlek;
-			}			
+			
 			if (z[1]<0) {
 				Svart++;
 				System.err.println("Poäng till Svart. (C) "+Cyan+" - "+Svart+" (S)");
@@ -6081,32 +6106,21 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			System.err.println(riktningz);
 			System.err.println(e.getKeyCode());
 			if(e.getKeyCode() == KeyEvent.VK_LEFT){
-				if (riktningz!="höger"){
-					riktningz="vänster";
-					System.err.println("df");
-				}
+				out.println("vänster");
+				return;
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-				if (riktningz!="vänster"){
-					riktningz="höger";
-					System.err.println("df2");
-				}
+				out.println("höger");
+				return;
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_UP){
-				if (riktningz!="ner"){
-					riktningz="upp";
-					System.err.println("df3");
-				}
+				out.println("upp");
+				return;
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_DOWN){
-				if (riktningz!="upp"){
-					riktningz="ner";
-					System.err.println("df4");
-				}
+				out.println("ner");
+				return;
 			}
-			out.print(riktningz);
-			out.println();
-			return;
 		}
 		if (s==1) {
 			if(e.getKeyCode() == KeyEvent.VK_LEFT){
