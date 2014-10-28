@@ -5622,7 +5622,7 @@ class ReggPlåtar implements ActionListener{
 @SuppressWarnings("serial")
 class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, WindowListener, ComponentListener{
 
-	private JFrame frame = new JFrame("Snake"), start = new JFrame("Start"),väntframe= new JFrame();
+	static JFrame frame = new JFrame("Snake"), start = new JFrame("Start"),väntframe= new JFrame();
 	private final int startlängd= 3;
 	private int	pixelstorlek;
 	private int[] x=new int[101],y=new int[101],z=new int[101],q=new int[101];
@@ -5632,7 +5632,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 	private String riktning = "ner",riktningz = "upp";
 	private BufferedReader in;
 	private PrintWriter out;
-	private boolean förlust, paused=false,gameover,b;
+	private boolean förlust, paused=false,gameover,b,ansluten;
 	JButton local = new JButton("Play on the same computer"),
 			online = new JButton("Play online");
 
@@ -5713,41 +5713,51 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			while (true) {
-				Scanner scanner = null;
-				try {
-					scanner = new Scanner(in.readLine());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				String string2 = null;
-				int c=1,b=1;
-				try {
-					while (scanner.hasNext()) {
-						String string = scanner.next();
-						if (string.equals("B")) {
-							string2="B";
+			frame.setVisible(true);
+			paused=false;
+			förlust=false;
+			new Thread(){
+				public void run() {
+					ansluten=true;
+					Scanner scanner = null;
+					while (true) {
+						try {
+							scanner = new Scanner(in.readLine());
+							String string2 = "";
+							String string = scanner.next();
+							System.out.println(string);
+							if (string.contains("B")) {
+								string2="B";
+								snakelängdx=0;
+							}
+							else if (string.contains("C")) {
+								string2="C";
+								snakelängdz=0;
+							}
+							while (scanner.hasNext()) {
+								if (string2.equals("B")) {
+									x[++snakelängdx]=Integer.parseInt(scanner.next());
+									y[snakelängdx]=Integer.parseInt(scanner.next());
+								}
+								else if (string2.equals("C")) {
+									z[++snakelängdz]=Integer.parseInt(scanner.next());
+									q[snakelängdz]=Integer.parseInt(scanner.next());
+								}
+							}
+							System.out.println("rep");
+							synchronized (frame) {
+								frame.repaint();
+							}						
 						}
-						else if (string.equals("C")) {
-							string2="C";
-						}
-						else if (string2.equals("B")) {
-							this.x[b]=Integer.parseInt(string);
-							this.y[b++]=Integer.parseInt(scanner.next());
-						}
-						else if (string2.equals("C")) {
-							this.z[b]=Integer.parseInt(string);
-							this.q[b++]=Integer.parseInt(scanner.next());
+						catch (Exception e) {
+							break;
 						}
 					}
-				} catch (Exception e) {
-					
 				}
-				frame.repaint();
-			}
+			}.start();
 		}
 	}
-	Timer timers = new Timer(100, e-> {if (b) ansluten();});
+	Timer timers = new Timer(100, e-> {if(b)ansluten();});
 
 	void ansluten(){
 		väntframe.dispose();
@@ -5836,12 +5846,28 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		pluppY = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
 	}
 	public void paintComponent(Graphics g1){
-		out.println("------------------------------");
 		super.paintComponent(g1);
-
 		Graphics2D g = (Graphics2D)g1;
-
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		if (ansluten) {
+			System.out.println("Jaaa");
+			for (int i = 1; i <= snakelängdx; i++) {
+			g.setColor(black);
+			
+			g.drawRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
+			g.fillRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
+			}
+			for (int i = 1; i <= snakelängdz; i++) {
+				g.setColor(cyan);
+				
+				g.drawRect(z[i], q[i], pixelstorlek-2, pixelstorlek-2);
+				g.fillRect(z[i], q[i], pixelstorlek-2, pixelstorlek-2);
+				}
+			return;
+		}
+		
+
+		
 
 		if(paused){
 			g.setColor(blue);
@@ -5867,9 +5893,21 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		g.fillRect(z[1], q[1], pixelstorlek-2, pixelstorlek-2);
 		g.setColor(GREEN);
 		g.setFont(Mouse.typsnitt);
-		out.print("B: ");
+		try {
+			out.print("B ");
+			for (int i = 1; i <= snakelängdx; i++) {
+				out.print(x[i]+" "+y[i]+" ");
+			}
+			out.println();
+			out.print("C ");
+			for (int i = 1; i <= snakelängdz; i++) {
+				out.print(z[i]+" "+q[i]+" ");
+			}
+			out.println();
+		} catch (Exception e) {
+
+		}
 		for (int i = snakelängdx+1; i >= 2; i--) {
-			out.print(x[i]+" "+y[i]+" ");
 			g.setColor(black);
 			x[i]=x[i-1];
 			y[i]=y[i-1];
@@ -5877,10 +5915,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			g.fillRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
 			s=1;
 		}
-		out.println();
-		out.print("C: ");
 		for (int u = snakelängdz+1; u >= 2; u--){
-			out.print(z[u]+" "+q[u]+" ");
 			g.setColor(cyan);
 			z[u]=z[u-1];
 			q[u]=q[u-1];
@@ -5889,7 +5924,6 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 
 			a=1;
 		}
-		out.println();
 	}
 
 	public void actionPerformed(ActionEvent e) {
