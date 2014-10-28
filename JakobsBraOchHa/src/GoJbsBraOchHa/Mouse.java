@@ -1155,7 +1155,6 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		frame.setIconImage(fönsterIcon);
 		frame.addWindowListener(this);
 		frame.addKeyListener(this);
-		frame.addKeyListener(this);
 		frame.add(this);
 		frame.pack();
 		frame.repaint();
@@ -3826,7 +3825,7 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 			}
 		}
 		else if (nr==1) {
-			if(arg0.getKeyChar() == 'ä'){
+			if(arg0.getKeyChar() == 'o'){
 				nr++;
 
 			}
@@ -5639,20 +5638,19 @@ class ReggPlåtar implements ActionListener{
 @SuppressWarnings("serial")
 class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, WindowListener, ComponentListener{
 
-	private JFrame frame = new JFrame("Snake"), start = new JFrame("Start"),väntframe= new JFrame();
+	static JFrame frame = new JFrame("Snake"), start = new JFrame("Start"),väntframe= new JFrame();
 	private final int startlängd= 3;
 	private int	pixelstorlek;
 	private int[] x=new int[101],y=new int[101],z=new int[101],q=new int[101];
 	private int snakelängdx,snakelängdz,posx=100,posy=100,posyz=100,posyq,pluppX,pluppY, s = 1,a=1,
 			Svart,Cyan;
 	private Timer timer = new Timer(100, this);
-	private String riktning = "ner",riktningz = "upp";
+	private static String riktning = "ner",riktningz = "upp";
 	private BufferedReader in;
 	private PrintWriter out;
-	private boolean förlust, paused=false,gameover,b;
+	private boolean förlust, paused=false,gameover,b,client;
 	JButton local = new JButton("Play on the same computer"),
 			online = new JButton("Play online");
-
 
 	public MultiPlayerSnake(){
 		pixelstorlek=(int) Math.round(((double)fönsterSize.width)/100);
@@ -5730,24 +5728,50 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			while (true) {
-				Scanner scanner = null;
-				try {
-					scanner = new Scanner(in.readLine());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				try {
+			frame.setVisible(true);
+			paused=false;
+			förlust=false;
+			new Thread(){
+				public void run() {
+					client=true;
+					Scanner scanner = null;
 					while (true) {
-						System.out.println(scanner.next());
+						try {
+							scanner = new Scanner(in.readLine());
+							String string = scanner.next();
+							if (string.equals("B")) {
+								snakelängdx=0;
+							}
+							else if (string.equals("C")) {
+								snakelängdz=0;
+							}
+							while (scanner.hasNext()) {
+								if (string.equals("B")) {
+									x[++snakelängdx]=Integer.parseInt(scanner.next());
+									y[snakelängdx]=Integer.parseInt(scanner.next());
+								}
+								else if (string.equals("C")) {
+									z[++snakelängdz]=Integer.parseInt(scanner.next());
+									q[snakelängdz]=Integer.parseInt(scanner.next());
+								}
+								else if (string.equals("P")) {
+									pluppX=Integer.parseInt(scanner.next());
+									pluppY=Integer.parseInt(scanner.next());
+								}
+							}
+							synchronized (frame) {
+								frame.repaint();
+							}						
+						}
+						catch (Exception e) {
+							break;
+						}
 					}
-				} catch (Exception e) {
-					
-				}	
-			}
+				}
+			}.start();
 		}
 	}
-	Timer timers = new Timer(100, e-> {if (b) ansluten();});
+	Timer timers = new Timer(100, e-> {if(b)ansluten();});
 
 	void ansluten(){
 		väntframe.dispose();
@@ -5759,6 +5783,19 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		frame.revalidate();
 		frame.repaint();
 		timers.stop();
+		new Thread(){
+			public void run() {
+				while (true) {
+					try {
+						riktningz=in.readLine();
+						System.out.println(riktningz);
+						a=0;
+					} catch (IOException e) {
+						break;
+					}
+				}
+			};
+		}.start();
 	}
 	private void GameOver(){
 		timer.stop();
@@ -5836,13 +5873,9 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		pluppY = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
 	}
 	public void paintComponent(Graphics g1){
-		out.println("------------------------------");
 		super.paintComponent(g1);
-
 		Graphics2D g = (Graphics2D)g1;
-
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
 		if(paused){
 			g.setColor(blue);
 			g.setFont(new Font(null, 0, 25));
@@ -5859,6 +5892,21 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		g.setColor(red);
 		g.drawOval(pluppX, pluppY, pixelstorlek-2, pixelstorlek-2);
 		g.fillOval(pluppX, pluppY, pixelstorlek-2, pixelstorlek-2);
+		if (client) {
+			for (int i = 1; i <= snakelängdx; i++) {
+				g.setColor(black);
+
+				g.drawRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
+				g.fillRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
+			}
+			for (int i = 1; i <= snakelängdz; i++) {
+				g.setColor(cyan);
+
+				g.drawRect(z[i], q[i], pixelstorlek-2, pixelstorlek-2);
+				g.fillRect(z[i], q[i], pixelstorlek-2, pixelstorlek-2);
+			}
+			return;
+		}
 		g.setColor(black);
 		g.drawRect(x[1], y[1], pixelstorlek-2, pixelstorlek-2);
 		g.fillRect(x[1], y[1], pixelstorlek-2, pixelstorlek-2);
@@ -5867,9 +5915,22 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		g.fillRect(z[1], q[1], pixelstorlek-2, pixelstorlek-2);
 		g.setColor(GREEN);
 		g.setFont(Mouse.typsnitt);
-		out.print("B: ");
+		try {
+			out.print("B ");
+			for (int i = 1; i <= snakelängdx; i++) {
+				out.print(x[i]+" "+y[i]+" ");
+			}
+			out.println();
+			out.print("C ");
+			for (int i = 1; i <= snakelängdz; i++) {
+				out.print(z[i]+" "+q[i]+" ");
+			}
+			out.println();
+			out.println("P " + pluppX + " " + pluppY);
+		} catch (Exception e) {
+
+		}
 		for (int i = snakelängdx+1; i >= 2; i--) {
-			out.print(x[i]+" "+y[i]+" ");
 			g.setColor(black);
 			x[i]=x[i-1];
 			y[i]=y[i-1];
@@ -5877,10 +5938,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			g.fillRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
 			s=1;
 		}
-		out.println();
-		out.print("C: ");
 		for (int u = snakelängdz+1; u >= 2; u--){
-			out.print(z[u]+" "+q[u]+" ");
 			g.setColor(cyan);
 			z[u]=z[u-1];
 			q[u]=q[u-1];
@@ -5889,7 +5947,6 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 
 			a=1;
 		}
-		out.println();
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -5974,7 +6031,6 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				q[1]=q[1]+pixelstorlek;
 			}
 			else if (riktningz=="upp") {
-
 				q[1]=q[1]-pixelstorlek;
 			}
 			else if (riktningz=="höger") {
@@ -5983,7 +6039,6 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			}
 			else if (riktningz=="vänster") {
 				z[1]=z[1]-pixelstorlek;
-
 			}			
 			if (z[1]<0) {
 				Svart++;
@@ -6022,6 +6077,37 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 	public void componentShown(ComponentEvent e) {}
 	public void componentHidden(ComponentEvent e) {}
 	public void keyPressed(KeyEvent e) {
+		if (client) {
+			System.err.println(riktningz);
+			System.err.println(e.getKeyCode());
+			if(e.getKeyCode() == KeyEvent.VK_LEFT){
+				if (riktningz!="höger"){
+					riktningz="vänster";
+					System.err.println("df");
+				}
+			}
+			else if(e.getKeyCode() == KeyEvent.VK_RIGHT){
+				if (riktningz!="vänster"){
+					riktningz="höger";
+					System.err.println("df2");
+				}
+			}
+			else if(e.getKeyCode() == KeyEvent.VK_UP){
+				if (riktningz!="ner"){
+					riktningz="upp";
+					System.err.println("df3");
+				}
+			}
+			else if(e.getKeyCode() == KeyEvent.VK_DOWN){
+				if (riktningz!="upp"){
+					riktningz="ner";
+					System.err.println("df4");
+				}
+			}
+			out.print(riktningz);
+			out.println();
+			return;
+		}
 		if (s==1) {
 			if(e.getKeyCode() == KeyEvent.VK_LEFT){
 				if (riktning!="höger"){
@@ -6065,13 +6151,11 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			else if(e.getKeyCode() == KeyEvent.VK_W){
 				if (riktningz!="ner"){
 					riktningz="upp";
-					a=0;
 				}
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_S){
 				if (riktningz!="upp"){
 					riktningz="ner";
-					a=0;
 				}
 			}
 
