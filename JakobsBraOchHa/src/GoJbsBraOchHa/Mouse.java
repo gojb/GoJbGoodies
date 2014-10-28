@@ -1786,39 +1786,39 @@ class Ping{
 		GoJbFrame frame = new GoJbFrame();
 		JTextArea textArea = new JTextArea();
 		JScrollPane scrollPane = new JScrollPane(textArea);
-		
+
 		frame.add(scrollPane);
 		for(int i = 10;0<i;i--){
-		try {
+			try {
 
-			new Thread(){
-				public void run() {
-					
-					System.err.println(x++);
-					
-					try {
-						Runtime.getRuntime().exec("ping " + string + " -l 65500 -n 1000").getInputStream();
-						
-					} catch (IOException e) {
-						// FIXME Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-				};
-			}.start();
-			
-////			BufferedReader inputStream = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("ping " + string + " -l 65500 -n 1000").getInputStream()));
-//
-//			String s;
-//			// reading output stream of the command
-//			while ((s = inputStream.readLine()) != null) {
-//				System.out.println(s);
-//			}
+				new Thread(){
+					public void run() {
 
-		} catch (Exception e) {e.printStackTrace();}
+						System.err.println(x++);
+
+						try {
+							Runtime.getRuntime().exec("ping " + string + " -l 65500 -n 1000").getInputStream();
+
+						} catch (IOException e) {
+							// FIXME Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					};
+				}.start();
+
+				////			BufferedReader inputStream = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("ping " + string + " -l 65500 -n 1000").getInputStream()));
+				//
+				//			String s;
+				//			// reading output stream of the command
+				//			while ((s = inputStream.readLine()) != null) {
+				//				System.out.println(s);
+				//			}
+
+			} catch (Exception e) {e.printStackTrace();}
+		}
 	}
 }
-	}
 class Glosor{
 	private GoJbFrame frame = new GoJbFrame("Glosor"),frame2 = new GoJbFrame("Ställ in",false,3);
 	private JLabel label = new JLabel(),rättLabel = new JLabel(),felLabel = new JLabel(),label2 = new JLabel();
@@ -5816,7 +5816,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 							}
 						}
 						System.out.println(riktningz);
-						
+
 					} catch (IOException e) {
 						break;
 					}
@@ -5963,29 +5963,26 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			y[i]=y[i-1];
 			g.drawRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
 			g.fillRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
-			s=1;
+
 		}
+		s=1;
 		for (int u = snakelängdz+1; u >= 2; u--){
 			g.setColor(cyan);
 			z[u]=z[u-1];
 			q[u]=q[u-1];
 			g.drawRect(z[u], q[u], pixelstorlek-2, pixelstorlek-2);
-			g.fillRect(z[u], q[u], pixelstorlek-2, pixelstorlek-2);
-
-			a=1;
+			g.fillRect(z[u], q[u], pixelstorlek-2, pixelstorlek-2);			
 		}
+		a=1;
 	}
 
 	public void actionPerformed(ActionEvent e) {
-
 		if (e.getSource()==timer){
-
 			if (x[1]==pluppX&&y[1]==pluppY) {
 				PlaceraPlupp();
 				snakelängdx++;
 				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
 				System.err.println(snakelängdx);
-
 			}
 			if (z[1]==pluppX&&q[1]==pluppY) {
 				PlaceraPlupp();
@@ -6066,7 +6063,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				System.err.println("Poäng till Cyan. (C) "+Cyan+" - "+Svart+" (S)");
 				GameOver();
 			}
-			
+
 			if (z[1]<0) {
 				Svart++;
 				System.err.println("Poäng till Svart. (C) "+Cyan+" - "+Svart+" (S)");
@@ -6122,53 +6119,39 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			return;
 		}
 		if (s==1) {
-			if(e.getKeyCode() == KeyEvent.VK_LEFT){
-				if (riktning!="höger"){
-					riktning="vänster";
-					s=0;
-				}
+			if(e.getKeyCode() == KeyEvent.VK_LEFT&&riktning!="höger"&&riktning!="vänster"){
+				riktning="vänster";
+				s=0;
 			}
-			else if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-				if (riktning!="vänster"){
-					riktning="höger";
-					s=0;
-				}
+			else if(e.getKeyCode() == KeyEvent.VK_RIGHT&&riktning!="höger"&&riktning!="vänster"){
+				riktning="höger";
+				s=0;
 			}
-			else if(e.getKeyCode() == KeyEvent.VK_UP){
-				if (riktning!="ner"){
-					riktning="upp";
-					s=0;
-				}
+			else if(e.getKeyCode() == KeyEvent.VK_UP&&riktning!="ner"&&riktning!="upp"){
+				riktning="upp";
+				s=0;
 			}
-			else if(e.getKeyCode() == KeyEvent.VK_DOWN){
-				if (riktning!="upp"){
-					riktning="ner";
-					s=0;
-				}
+			else if(e.getKeyCode() == KeyEvent.VK_DOWN&&riktning!="upp"&&riktning!="ner"){
+				riktning="ner";
+				s=0;
 			}
 		}
 		if (!client) {
 			if (a == 1) {
-				if (e.getKeyCode() == KeyEvent.VK_A) {
-					if (riktningz != "höger") {
-						riktningz = "vänster";
-						a = 0;
-					}
-				} else if (e.getKeyCode() == KeyEvent.VK_D) {
-					if (riktningz != "vänster") {
-						riktningz = "höger";
-						a = 0;
-					}
-				} else if (e.getKeyCode() == KeyEvent.VK_W) {
-					if (riktningz != "ner") {
-						riktningz = "upp";
-					}
-				} else if (e.getKeyCode() == KeyEvent.VK_S) {
-					if (riktningz != "upp") {
-						riktningz = "ner";
-					}
+				if (e.getKeyCode() == KeyEvent.VK_A&&riktningz != "höger"&&riktning!="vänster") {
+					riktningz = "vänster";
+					a = 0;
 				}
-
+				else if (e.getKeyCode() == KeyEvent.VK_D&&riktningz != "vänster"&&riktning!="höger") {
+					riktningz = "höger";
+					a = 0;
+				} else if (e.getKeyCode() == KeyEvent.VK_W&&riktningz != "ner"&&riktning!="upp") {
+					riktningz = "upp";
+					a = 0;
+				} else if (e.getKeyCode() == KeyEvent.VK_S&&riktningz != "upp"&&riktning!="ner") {
+					riktningz = "ner";
+					a = 0;
+				}
 			}
 		}
 		if(e.getKeyCode() == KeyEvent.VK_F2&&förlust==true||e.getKeyCode() == KeyEvent.VK_R&&förlust==true||
