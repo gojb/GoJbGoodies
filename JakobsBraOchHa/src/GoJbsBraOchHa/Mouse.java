@@ -5748,12 +5748,12 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 							}
 							while (scanner.hasNext()) {
 								if (string.equals("B")) {
-									x[++snakelängdx]=Integer.parseInt(scanner.next());
-									y[snakelängdx]=Integer.parseInt(scanner.next());
+									x[++snakelängdx]=Integer.parseInt(scanner.next())*pixelstorlek;
+									y[snakelängdx]=Integer.parseInt(scanner.next())*pixelstorlek;
 								}
 								else if (string.equals("C")) {
-									z[++snakelängdz]=Integer.parseInt(scanner.next());
-									q[snakelängdz]=Integer.parseInt(scanner.next());
+									z[++snakelängdz]=Integer.parseInt(scanner.next())*pixelstorlek;
+									q[snakelängdz]=Integer.parseInt(scanner.next())*pixelstorlek;
 								}
 								else if (string.equals("P")) {
 									pluppX=Integer.parseInt(scanner.next());
@@ -5943,12 +5943,12 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		try {
 			out.print("B ");
 			for (int i = 1; i <= snakelängdx; i++) {
-				out.print(x[i]+" "+y[i]+" ");
+				out.print(x[i]/pixelstorlek+" "+y[i]/pixelstorlek+" ");
 			}
 			out.println();
 			out.print("C ");
 			for (int i = 1; i <= snakelängdz; i++) {
-				out.print(z[i]+" "+q[i]+" ");
+				out.print(z[i]/pixelstorlek+" "+q[i]/pixelstorlek+" ");
 			}
 			out.println();
 			out.println("P " + pluppX + " " + pluppY);

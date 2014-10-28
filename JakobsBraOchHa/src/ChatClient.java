@@ -116,8 +116,8 @@ public class ChatClient {
 	 * Runs the client as an application with a closeable frame.
 	 */
 	public static void main(String[] args) throws Exception {
-//		new ChatClient();
-		TicTacToeClient.main(args);
+		new ChatClient();
+//		TicTacToeClient.main(args);
 	}
 }
 
