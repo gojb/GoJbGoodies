@@ -43,12 +43,9 @@ import static javax.swing.JOptionPane.*;
  */
 
 @SuppressWarnings("serial")
-public class Mouse extends JPanel implements 	ActionListener,
-MouseInputListener,
-KeyListener,
-WindowListener{
+public class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListener,WindowListener{
 
-	private JFrame			huvudfönster = new JFrame("Hej Hej :D"), 
+	private JFrame huvudfönster = new JFrame("Hej Hej :D"), 
 			händelsefönster = new JFrame("Händelser"),
 			hastighetsfönster =  new JFrame("Ändra hastighet"),
 			om = new JFrame("Om"),
@@ -204,7 +201,7 @@ WindowListener{
 		rensKnapp.addActionListener(e -> text.setText(null));
 		pongItem.addActionListener(e -> new Pongspel());
 		studsItem.addActionListener(e -> new Studsa());
-		snakeItem.addActionListener(e -> new Snakespel());
+		snakeItem.addActionListener(e -> new Snake());
 		mandatItem.addActionListener(e -> new Mandat());
 		glosItem.addActionListener(e -> new Glosor());
 		flappyItem.addActionListener(e -> new FlappyGoJb());
@@ -1330,291 +1327,6 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 	public void windowDeactivated(WindowEvent e) {}
 	public void mouseMoved(MouseEvent e) {}
 }
-@SuppressWarnings("serial")
-class Snakespel extends JPanel implements KeyListener, ActionListener,WindowListener,ComponentListener{
-	private JFrame frame = new JFrame("Snake"),highFrame = new JFrame("Highscore");
-	private final int startlängd= 3;
-	private int	pixelstorlek;
-	private int[] x=new int[50],y=new int[50];
-	private String[] highscore= new String[6];
-	private int snakelängd,posx=100,posy=100,pluppX,pluppY, stringy, s = 1;
-	private Timer timer = new Timer(100, this);
-	private String riktning = "ner";
-	private boolean förlust;
-
-	public Snakespel() {
-
-		pixelstorlek=(int) Math.round(((double)fönsterSize.width)/100);
-
-		highscore[0]= "";
-		highscore[1]= prop.getProperty("Score1","0");
-		highscore[2]= prop.getProperty("Score2","0");
-		highscore[3]= prop.getProperty("Score3","0");
-		highscore[4]= prop.getProperty("Score4","0");
-		highscore[5]= prop.getProperty("Score5","0");
-
-		setBackground(white);
-		setPreferredSize(new Dimension(pixelstorlek*50, pixelstorlek*50));
-		setOpaque(true);
-
-		frame.setLayout(new BorderLayout());
-		frame.add(this,BorderLayout.CENTER);		
-		frame.setIconImage(fönsterIcon);
-		frame.setResizable(false);		
-		frame.addKeyListener(this);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.addWindowListener(this);
-		frame.getContentPane().setBackground(black);
-		frame.addComponentListener(this);	
-
-		highFrame.add(Scorepanel);
-		highFrame.setSize(frame.getSize());
-		highFrame.setIconImage(fönsterIcon);
-		highFrame.setUndecorated(true);
-		highFrame.setLocation(frame.getX()-frame.getWidth(),frame.getY());
-		highFrame.setVisible(true);
-
-		frame.setVisible(true);
-		Restart();
-	}
-	private void GameOver(){
-		timer.stop();
-		förlust = true;
-		int hs;
-
-		((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-
-		Scanner scanner = new Scanner(highscore[5]);
-		hs= scanner.nextInt();
-		scanner.close();
-		if (snakelängd>hs) {
-			highscore[5]=Integer.toString(snakelängd) + " " + showInputDialog("Skriv ditt namn");
-			if (snakelängd<10) {
-				highscore[5]="0"+highscore[5];
-			}
-
-			Arrays.sort(highscore);
-			String[]tillfälligscore = new String[6];
-			tillfälligscore[1] = highscore[1];
-			tillfälligscore[2] = highscore[2];
-			tillfälligscore[3] = highscore[3];
-			tillfälligscore[4] = highscore[4];
-			tillfälligscore[5] = highscore[5];
-
-			highscore[1]= tillfälligscore[5];
-			highscore[2]= tillfälligscore[4];
-			highscore[3]= tillfälligscore[3];
-			highscore[4]= tillfälligscore[2];
-			highscore[5]= tillfälligscore[1];
-
-			prop.setProperty("Score1", (highscore[1]));
-			prop.setProperty("Score2", (highscore[2]));
-			prop.setProperty("Score3", (highscore[3]));
-			prop.setProperty("Score4", (highscore[4]));
-			prop.setProperty("Score5", (highscore[5]));
-			highFrame.repaint();;
-		}
-		sparaProp("Highscore i Snakespel");
-		skrivHändelsetext(highscore[1]);
-		skrivHändelsetext(highscore[2]);
-		skrivHändelsetext(highscore[3]);
-		skrivHändelsetext(highscore[4]);
-		skrivHändelsetext(highscore[5]);
-	}
-	private void Restart() {
-		posx = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
-		posy = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
-
-		if (	posx>getWidth()*0.8||
-				posx<getWidth()*0.2||
-				posy>getHeight()*0.8||
-				posy<getHeight()*0.2) {
-
-			System.out.println("Räknar om: " + posx);
-			Restart();
-		}
-		else{		
-			String [] arr = {"upp", "ner", "höger", "vänster"};
-
-			int select = random.nextInt(arr.length); 
-
-			riktning=arr[select];
-			snakelängd = startlängd;
-			x[1]=posx;
-			y[1]=posy;
-			PlaceraPlupp();
-			förlust= false;
-			repaint();
-			timer.start();
-
-		}
-	}
-	private void PlaceraPlupp(){
-
-		pluppX = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
-		pluppY = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
-	}
-	public void paintComponent(Graphics g1){
-		super.paintComponent(g1);
-
-		if(y[1] < 45) {
-			stringy = y[1] + 40;
-		}
-		if (y[1] > 45){
-			stringy = y[1] - 20;
-		}
-
-		Graphics2D g = (Graphics2D)g1;
-
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		if (förlust) {
-			g.setColor(red);
-			g.setFont(new Font(null, 0, 25));
-			g.drawString("Du förlorade! Tryck F2 för att spela igen",10 , getHeight()/2);
-		}
-		g.setColor(red);
-		g.drawOval(pluppX, pluppY, pixelstorlek-2, pixelstorlek-2);
-		g.fillOval(pluppX, pluppY, pixelstorlek-2, pixelstorlek-2);
-		g.setColor(black);
-		g.drawRect(x[1], y[1], pixelstorlek-2, pixelstorlek-2);
-		g.fillRect(x[1], y[1], pixelstorlek-2, pixelstorlek-2);
-		g.setColor(GREEN);
-		g.setFont(Mouse.typsnitt);
-		g.drawString(Integer.toString(snakelängd), x[1], stringy);
-		for (int i = snakelängd+1; i >= 2; i--) {
-
-			g.setColor(black);
-			x[i]=x[i-1];
-			y[i]=y[i-1];
-			g.drawRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
-			g.fillRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
-			s=1;
-		}
-	}
-
-	public void actionPerformed(ActionEvent e) {
-
-		if (e.getSource()==timer){
-
-			if (x[1]==pluppX&&y[1]==pluppY) {
-				PlaceraPlupp();
-				snakelängd++;
-				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
-				System.err.println(snakelängd);
-
-			}
-			if (riktning=="ner") {
-				y[1]=y[1]+pixelstorlek;
-			}
-			else if (riktning=="upp") {
-
-				y[1]=y[1]-pixelstorlek;
-			}
-			else if (riktning=="höger") {
-				x[1]=x[1]+pixelstorlek;
-
-			}
-			else if (riktning=="vänster") {
-				x[1]=x[1]-pixelstorlek;
-
-			}
-			for (int i = 2; i <= snakelängd; i++) {
-				if (x[1]==x[i]&&y[1]==y[i]) {
-					System.out.println("GameOver");
-					GameOver();
-				}
-			}
-			if (x[1]<0) {
-				GameOver();
-			}
-			if (x[1]+pixelstorlek>getWidth()) {
-				GameOver();
-			}
-			if (y[1]<0) {
-				GameOver();		
-			}
-			if (y[1]+pixelstorlek>getHeight()) {
-				GameOver();
-			}
-
-			frame.repaint();
-		}
-	}
-	public void keyTyped(KeyEvent e) {}
-	public void keyReleased(KeyEvent e) {}
-	public void windowOpened(WindowEvent e) {}
-	public void windowClosed(WindowEvent e) {}
-	public void windowIconified(WindowEvent e) {}
-	public void windowDeiconified(WindowEvent e) {}
-	public void windowActivated(WindowEvent e) {}
-	public void windowDeactivated(WindowEvent e) {}
-	public void componentResized(ComponentEvent e) {}
-	public void componentShown(ComponentEvent e) {}
-	public void componentHidden(ComponentEvent e) {}
-
-	public void keyPressed(KeyEvent e) {
-		if (s==1) {
-			if(KeyEvent.getKeyText(e.getKeyCode()) == "Vänsterpil"){
-				if (riktning!="höger"){
-					riktning="vänster";
-					s=0;
-				}
-			}
-			else if(KeyEvent.getKeyText(e.getKeyCode()) == "Högerpil"){
-				if (riktning!="vänster"){
-					riktning="höger";
-					s=0;
-				}
-			}
-			else if(KeyEvent.getKeyText(e.getKeyCode()) == "Upp"){
-				if (riktning!="ner"){
-					riktning="upp";
-					s=0;
-				}
-			}
-			else if(KeyEvent.getKeyText(e.getKeyCode()) == "Nedpil"){
-				if (riktning!="upp"){
-					riktning="ner";
-					s=0;
-				}
-			}
-		}
-		if(KeyEvent.getKeyText(e.getKeyCode()) == "F2"){
-			if (!timer.isRunning()) {
-				Restart();
-			}
-		}
-	}
-
-	public void windowClosing(WindowEvent e) {
-		timer.stop();
-		highFrame.dispose();
-	}
-
-
-	public void componentMoved(ComponentEvent e) {
-		highFrame.setLocation(frame.getX()-frame.getWidth(),frame.getY());
-	}
-	private JPanel Scorepanel = new JPanel(){
-		public void paintComponent(Graphics g){
-			super.paintComponent(g);
-			setBackground(Color.white);
-			Graphics2D g2 = (Graphics2D)g;
-			int pos = 50;
-
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g2.setColor(red);
-			g2.setFont(new Font(null, 0, 25));
-			g.drawString("Highscore:",10 , pos);
-
-			for (int i = 1; i < highscore.length; i++) {
-				pos=pos+25;
-				g.drawString(highscore[i],10 , pos);
-			}
-		}
-	};
-}
 class FlappyGoJb extends JPanel implements KeyListener,WindowListener{
 	private static final long serialVersionUID = 1L;
 
@@ -2069,8 +1781,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			binära = new JMenuItem("Binär omvandlare"),
 			draOchSläpp = new JMenuItem("Dra & Släpp"),
 			sök = new JMenuItem("Sök"),
-			reggplåtar = new JMenuItem("Reggplåtar"),
-			multiSnake = new JMenuItem("Multiplayer Snake");
+			reggplåtar = new JMenuItem("Reggplåtar");
 	JMenuBar bar = new JMenuBar();
 
 	Clip clip;
@@ -2107,7 +1818,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		ÖppnaProgram.add(OrginalFönster);
 		ÖppnaProgram.add(Pong);
 		ÖppnaProgram.add(Maze);
-		ÖppnaProgram.add(Snake);
 		ÖppnaProgram.add(impossible);
 		ÖppnaProgram.add(ticTacToe);
 		ÖppnaProgram.add(lösenord);
@@ -2120,7 +1830,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		ÖppnaProgram.add(draOchSläpp);
 		ÖppnaProgram.add(sök);
 		ÖppnaProgram.add(reggplåtar);
-		ÖppnaProgram.add(multiSnake);
+		ÖppnaProgram.add(Snake);
 
 
 		Mouse.addActionListener(this);
@@ -2131,7 +1841,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		Betyg.addActionListener(this);
 		OrginalFönster.addActionListener(this);
 		Maze.addActionListener(this);
-		Snake.addActionListener(this);
+
 		impossible.addActionListener(this);
 		ticTacToe.addActionListener(this);
 		lösenord.addActionListener(this);
@@ -2140,11 +1850,11 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		morse.addActionListener(this);
 		Random.addActionListener(this);
 		klocka.addActionListener(this);
+		Snake.addActionListener(e -> {new Snake();frame.dispose();});
 		binära.addActionListener(e -> {new ToBinary();frame.setVisible(false);});
 		draOchSläpp.addActionListener(e -> {new DraOchSläpp();frame.dispose();});		
 		sök.addActionListener(e -> {new Sök();frame.dispose();});
 		reggplåtar.addActionListener(e -> {new ReggPlåtar();frame.dispose();});
-		multiSnake.addActionListener(e -> {new MultiPlayerSnake();frame.dispose();});
 
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 		frame.setBackground(gray);
@@ -2161,12 +1871,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		frame.setVisible(true);
 
 		robot.mouseMove(200, 100);
-		//		String [] names ={"Biologi", "Fysik", "Kemi", "Teknik", 
-		//		"Historia", "Geografi", "Sammhällskunskap", "Religon", 
-		//		"Slöjd", "ModernaSpråk", "Idrott", "HemOchKonsumentkunskap", "Musik", "Bild"};
-		//	      for( String name : names ) {
-		//	         System.out.println(name + ".setLayout(new GridLayout(3,1));");
-		//	      }
 	}
 
 	public void mouseMoved(MouseEvent e) {
@@ -2175,10 +1879,12 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		y = e.getY() -80;
 
 		if (x < 150 && y > 425){if (ii == 0){
-			new GameOver();frame.dispose();
+			new GameOver();
+			frame.dispose();
 		}}
 		if (x > 950 && x < 1100 && y > 150 && y < 550){if (ii == 0){
-			new GameOver();frame.dispose();
+			new GameOver();
+			frame.dispose();
 		}}
 
 		if (x > 1106 && x < 1264 && y < 495){
@@ -2208,25 +1914,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			new GameOver();
 			frame.dispose();
 		}
-
-
 		System.out.println("Musen rör sig på: " + e.getX()  + ", " + e.getY());
-		//
-		//		if (x < 0){
-		//			System.exit(3);
-		//		}
-		//		if (x > 1851){
-		//			System.exit(3);
-		//		}
-		//		
-		//		if (y < 0){
-		//			System.exit(3);
-		//		}
-		//		if (y > 700){ 
-		//			System.exit(3);
-		//			}
-		//		
-
 		if ( x == 50) {
 			if (y == 50){
 
@@ -2748,30 +2436,14 @@ class Miniräknare implements ActionListener, KeyListener{
 
 }
 
-class Merit implements WindowListener, KeyListener, ActionListener{
+class Merit implements  ActionListener{
 
+	String [] ämnen ={"Biologi", "Fysik", "Kemi", "Teknik","Matte", 
+			"Historia", "Geografi", "Sammhällskunskap", "Religon", 
+			"Slöjd", "ModernaSpråk", "Idrott", "HemOchKonsumentkunskap",
+			"Musik", "Bild","Svenska","Enelska"};
 
-
-	JFrame huvudframe = new JFrame(),
-			Svenska = new JFrame("Svenska"),
-			Engelska = new JFrame("Engelska"),
-			Matte = new JFrame("Matte"),
-			Biologi = new JFrame("Biologi"),
-			Fysik = new JFrame("Fysik"),
-			Kemi = new JFrame("Kemi"),
-			Teknik = new JFrame("Teknik"),
-			Slöjd = new JFrame("Slöjd"),
-			ModernaSpråk = new JFrame("ModernaSpråk"),
-			Bild = new JFrame("Bild"),
-			Religon = new JFrame("Religon"),
-			Geografi = new JFrame("Geografi"),
-			Historia = new JFrame("Historia"),
-			Samhällskunskap = new JFrame("Samhällskunskap"),
-			Musik = new JFrame("Musik"),
-			Idrott = new JFrame("Idrott"),
-			HemOchKonsumentkunskap = new JFrame("HemOchKonsumentkunskap"),
-			Resultat = new JFrame("Resultat");
-
+	JFrame frame = new JFrame(),Resultat = new JFrame("Resultat"),betygFrame  = new JFrame();
 
 	JLabel resultatlabel = new JLabel("",CENTER);
 
@@ -2787,14 +2459,14 @@ class Merit implements WindowListener, KeyListener, ActionListener{
 
 	double x = 0;
 
+	int i;
+
 
 	public Merit(){
 
-		huvudframe.setVisible(true);
-		huvudframe.setLocationRelativeTo(null);
-		huvudframe.setShape(null);
-		huvudframe.pack();
-		huvudframe.setSize(200,200);
+		frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
+		frame.setSize(200,200);
 
 		A.setSize(30, 30);
 		B.setSize(30, 30);
@@ -2803,8 +2475,6 @@ class Merit implements WindowListener, KeyListener, ActionListener{
 		E.setSize(30,30);
 		F.setSize(30,30);
 
-		Svenska.addKeyListener(null);
-		huvudframe.addKeyListener(this);
 		Börja.setPreferredSize(new Dimension(30, 30));
 
 		A.addActionListener(this);
@@ -2814,119 +2484,25 @@ class Merit implements WindowListener, KeyListener, ActionListener{
 		E.addActionListener(this);
 		F.addActionListener(this);
 
+		frame.add(Börja);
 
-		huvudframe.add(Börja);
+		Börja.addActionListener(e -> {betygFrame.setVisible(true);frame.dispose();});
 
-		Börja.addActionListener(this);
+		betygFrame.add(A);
+		betygFrame.add(B);
+		betygFrame.add(C);
+		betygFrame.add(D);
+		betygFrame.add(E);
+		betygFrame.add(F);
+		betygFrame.setLayout(new GridLayout(3,2));
+		betygFrame.setSize(300, 250);
+		betygFrame.setLocationRelativeTo(null);
 
-		Svenska.setLocationRelativeTo(null);
-		Engelska.setLocationRelativeTo(null);
-		Matte.setLocationRelativeTo(null);
-		Biologi.setLocationRelativeTo(null);
-		Fysik.setLocationRelativeTo(null);
-		Kemi.setLocationRelativeTo(null);
-		Bild.setLocationRelativeTo(null);
-		Idrott.setLocationRelativeTo(null);
-		HemOchKonsumentkunskap.setLocationRelativeTo(null);
-		Samhällskunskap.setLocationRelativeTo(null);
-		Historia.setLocationRelativeTo(null);
-		Geografi.setLocationRelativeTo(null);
-		Religon.setLocationRelativeTo(null);
-		Musik.setLocationRelativeTo(null);
-		Slöjd.setLocationRelativeTo(null);
-		ModernaSpråk.setLocationRelativeTo(null);
-		Teknik.setLocationRelativeTo(null);
-
-
-		Svenska.pack();
-		Engelska.pack();
-		Matte.pack();
-		Biologi.pack();
-		Fysik.pack();
-		Kemi.pack();
-		Bild.pack();
-		Idrott.pack();  
-		HemOchKonsumentkunskap.pack();
-		Samhällskunskap.pack();
-		Historia.pack();
-		Geografi.pack();
-		Religon.pack();
-		Musik.pack();
-		Slöjd.pack();
-		ModernaSpråk.pack();
-
-		Svenska.add(A);
-		Svenska.add(B);
-		Svenska.add(C);
-		Svenska.add(D);
-		Svenska.add(E);
-		Svenska.add(F);
-
-
-		Svenska.setLayout(new GridLayout(3,1));
-		Engelska.setLayout(new GridLayout(3,1));
-		Matte.setLayout(new GridLayout(3,1));
-		Biologi.setLayout(new GridLayout(3,1));
-		Fysik.setLayout(new GridLayout(3,1));
-		Kemi.setLayout(new GridLayout(3,1));
-		Teknik.setLayout(new GridLayout(3,1));
-		Historia.setLayout(new GridLayout(3,1));
-		Geografi.setLayout(new GridLayout(3,1));
-		Samhällskunskap.setLayout(new GridLayout(3,1));
-		Religon.setLayout(new GridLayout(3,1));
-		Slöjd.setLayout(new GridLayout(3,1));
-		ModernaSpråk.setLayout(new GridLayout(3,1));
-		Idrott.setLayout(new GridLayout(3,1));
-		HemOchKonsumentkunskap.setLayout(new GridLayout(3,1));
-		Musik.setLayout(new GridLayout(3,1));
-		Bild.setLayout(new GridLayout(3,1));
-
-		Svenska.setSize(300, 250);
-		Engelska.setSize(300, 250);
-		Matte.setSize(300, 250);
-		Biologi.setSize(300, 250);
-		Fysik.setSize(300, 250);
-		Kemi.setSize(300, 250);
-		Teknik.setSize(300, 250);
-		Historia.setSize(300, 250);
-		Geografi.setSize(300, 250);
-		Samhällskunskap.setSize(300, 250);
-		Religon.setSize(300, 250);
-		Slöjd.setSize(300, 250);
-		ModernaSpråk.setSize(300, 250);
-		Idrott.setSize(300, 250);
-		HemOchKonsumentkunskap.setSize(300, 250);
-		Musik.setSize(300, 250);
-		Bild .setSize(300, 250);
-
-		/* 
-		 	Ordning
-
-		 	Svenska
-			Engelska
-			Matte
-			Biologi
-			Fysik
-			Kemi
-			Teknik
-			Historia
-			Geografi
-			Samhällskunskap
-			Religon
-			Slöjd 
-			ModernaSpråk
-			Idrott
-			HemOchKonsumentkunskap
-			Musik
-			Bild 
-		 */
+		betygFrame.setTitle(ämnen[i++]);
 	}
 	public void actionPerformed(ActionEvent e) { 
-
-
 		if (e.getSource() == A){
 			x = x + 20;
-
 		}
 		else if (e.getSource() == B){
 			x = x + 17.5;
@@ -2945,331 +2521,29 @@ class Merit implements WindowListener, KeyListener, ActionListener{
 		}
 		else if (e.getSource() == F){
 			x = x + 0;
-
 		}
-
-		if (Svenska.isVisible() == true){
-
-			Svenska.setVisible(false);
-			Engelska.setVisible(true);
-
-			Engelska.add(A);
-			Engelska.add(B);
-			Engelska.add(C);
-			Engelska.add(D);
-			Engelska.add(E);
-			Engelska.add(F);
-			System.out.println(x);
-
-		}
-
-		else if (Engelska.isVisible() == true){
-
-			Engelska.setVisible(false);
-			Matte.setVisible(true);
-
-			Matte.add(A);
-			Matte.add(B);
-			Matte.add(C);
-			Matte.add(D);
-			Matte.add(E);
-			Matte.add(F);
-			System.out.println(x);
-		}
-		else if (Matte.isVisible() == true){
-			Matte.setVisible(false);
-			Biologi.setVisible(true);
-
-			Biologi.add(A);
-			Biologi.add(B);
-			Biologi.add(C);
-			Biologi.add(D);
-			Biologi.add(E);
-			Biologi.add(F);
-			System.out.println(x);
-		}
-		else if (Biologi.isVisible() == true){
-
-			Biologi.setVisible(false);
-			Fysik.setVisible(true);
-
-			Fysik.add(A);
-			Fysik.add(B);
-			Fysik.add(C);
-			Fysik.add(D);
-			Fysik.add(E);
-			Fysik.add(F);
-			System.out.println(x);
-
-		}
-
-		else if (Fysik.isVisible() == true){
-
-			Fysik.setVisible(false);
-			Kemi.setVisible(true);
-
-			Kemi.add(A);
-			Kemi.add(B);
-			Kemi.add(C);
-			Kemi.add(D);
-			Kemi.add(E);
-			Kemi.add(F);
-			System.out.println(x);
-
-		}
-		else if (Kemi.isVisible() == true){
-			Kemi.setVisible(false);
-			Teknik.setVisible(true);
-
-			Teknik.add(A);
-			Teknik.add(B);
-			Teknik.add(C);
-			Teknik.add(D);
-			Teknik.add(E);
-			Teknik.add(F);
-			System.out.println(x);
-		}
-		else if (Teknik.isVisible() == true){
-
-			Teknik.setVisible(false);
-			Historia.setVisible(true);
-
-			Historia.add(A);
-			Historia.add(B);
-			Historia.add(C);
-			Historia.add(D);
-			Historia.add(E);
-			Historia.add(F);
-			System.out.println(x);
-		}
-		else if (Historia.isVisible() == true){
-
-			Historia.setVisible(false);
-			Geografi.setVisible(true);
-
-			Geografi.add(A);
-			Geografi.add(B);
-			Geografi.add(C);
-			Geografi.add(D);
-			Geografi.add(E);
-			Geografi.add(F);
-			System.out.println(x);
-		}
-		else if (Geografi.isVisible() == true){
-
-			Geografi.setVisible(false);
-			Samhällskunskap.setVisible(true);
-
-			Samhällskunskap.add(A);
-			Samhällskunskap.add(B);
-			Samhällskunskap.add(C);
-			Samhällskunskap.add(D);
-			Samhällskunskap.add(E);
-			Samhällskunskap.add(F);
-			System.out.println(x);
-		}
-		else if (Samhällskunskap.isVisible() == true){
-
-			Samhällskunskap.setVisible(false);
-			Religon.setVisible(true);
-
-			Religon.add(A);
-			Religon.add(B);
-			Religon.add(C);
-			Religon.add(D);
-			Religon.add(E);
-			Religon.add(F);
-			System.out.println(x);
-		}
-		else if (Religon.isVisible() == true){
-
-
-			Religon.setVisible(false);
-			Slöjd.setVisible(true);
-
-			Slöjd.add(A);
-			Slöjd.add(B);
-			Slöjd.add(C);
-			Slöjd.add(D);
-			Slöjd.add(E);
-			Slöjd.add(F);
-			System.out.println(x);
-		}
-		else if (Slöjd.isVisible() == true){
-
-			Slöjd.setVisible(false);
-			ModernaSpråk.setVisible(true);
-
-			ModernaSpråk.add(A);
-			ModernaSpråk.add(B);
-			ModernaSpråk.add(C);
-			ModernaSpråk.add(D);
-			ModernaSpråk.add(E);
-			ModernaSpråk.add(F);
-			System.out.println(x);
-		}
-		else if (ModernaSpråk.isVisible() == true){
-
-			ModernaSpråk.setVisible(false);
-			Idrott.setVisible(true);
-
-			Idrott.add(A);
-			Idrott.add(B);
-			Idrott.add(C);
-			Idrott.add(D);
-			Idrott.add(E);
-			Idrott.add(F);
-			System.out.println(x);
-		}
-		else if (Idrott.isVisible() == true){
-
-			Idrott.setVisible(false);
-			HemOchKonsumentkunskap.setVisible(true);
-
-			HemOchKonsumentkunskap.add(A);
-			HemOchKonsumentkunskap.add(B);
-			HemOchKonsumentkunskap.add(C);
-			HemOchKonsumentkunskap.add(D);
-			HemOchKonsumentkunskap.add(E);
-			HemOchKonsumentkunskap.add(F);
-			System.out.println(x);
-		}
-		else if (HemOchKonsumentkunskap.isVisible() == true){
-
-			HemOchKonsumentkunskap.setVisible(false);
-			Musik.setVisible(true);
-
-			Musik.add(A);
-			Musik.add(B);
-			Musik.add(C);
-			Musik.add(D);
-			Musik.add(E);
-			Musik.add(F);
-			System.out.println(x);
-		}
-		else if (Musik.isVisible() == true){
-
-			Musik.setVisible(false);
-			Bild.setVisible(true);
-
-			Bild.add(A);
-			Bild.add(B);
-			Bild.add(C);
-			Bild.add(D);
-			Bild.add(E);
-			Bild.add(F);
-			System.out.println(x);
-
-		}
-
-		else if (Bild.isVisible() == true){
-
-			Bild.setVisible(false);
+		try {
+			betygFrame.setTitle(ämnen[i++]);
+		} catch (ArrayIndexOutOfBoundsException e2) {
+			betygFrame.dispose();
 			Resultat.setVisible(true);
 			Resultat.setLayout(new BorderLayout());
-			resultatlabel.setText(String.valueOf(x));
 			Resultat.add(resultatlabel,BorderLayout.CENTER);
-			resultatlabel.setHorizontalTextPosition(RIGHT);
-
-			Resultat.setSize(Bild.getSize());
+			Resultat.setSize(betygFrame.getSize());
 			Resultat.setLocationRelativeTo(null);
+
 			resultatlabel.setFont(new Font("fsgadh",Font.BOLD,45));
+			resultatlabel.setHorizontalTextPosition(RIGHT);
+			resultatlabel.setText(String.valueOf(x));
 
 			if (x < 100){	
-
 				spelaLjud("/images/dusuger.wav");
-
 			}
 			else {
 				spelaLjud("/images/tada.wav");
 			}
 		}
-
-		else if (e.getSource() == Börja){
-			huvudframe.setVisible(false);
-			Svenska.setVisible(true);
-		}}
-
-
-	public void keyPressed(KeyEvent e) {
-
-		if (Svenska.isVisible() == true){
-			if (e.getSource() == A){
-				x = x + 20;
-				Svenska.setVisible(false);
-				Engelska.setVisible(true);
-			}
-			if (e.getSource() == B){
-				x = x + 20;
-				Svenska.setVisible(false);
-				Engelska.setVisible(true);
-			}
-			if (e.getSource() == A){
-				x = x + 20;
-				Svenska.setVisible(false);
-				Engelska.setVisible(true);
-			}
-			if (e.getSource() == A){
-				x = x + 20;
-				Svenska.setVisible(false);
-				Engelska.setVisible(true);
-			}
-		}
-
 	}
-
-	public void keyReleased(KeyEvent arg0) { 
-
-	}
-
-	public void keyTyped(KeyEvent e) {
-
-
-		if (KeyEvent.getKeyText(e.getKeyCode()) == "d"){
-			System.out.println("iygsd");
-		}
-		if (e.getKeyChar() == 67){
-
-		}
-
-		if (e.getKeyChar() == 68){
-		}
-		if (e.getKeyChar() == 69){
-
-		}
-		if (e.getKeyChar() == 70){
-
-		}
-	}
-
-	public void windowActivated(WindowEvent arg0) {
-
-	}
-
-	public void windowClosed(WindowEvent arg0) {
-
-	}
-
-	public void windowClosing(WindowEvent arg0) {
-
-	}
-
-	public void windowDeactivated(WindowEvent arg0) {
-
-	}
-
-	public void windowDeiconified(WindowEvent arg0) {
-
-	}
-
-	public void windowIconified(WindowEvent arg0) {
-
-	}
-
-	public void windowOpened(WindowEvent arg0) {
-
-	}
-
 }
 
 
@@ -3628,119 +2902,6 @@ class Maze extends JPanel implements ActionListener, MouseMotionListener{
 		}
 	}
 }
-@SuppressWarnings("serial")
-class Snake extends JPanel implements KeyListener, ActionListener{
-
-	JFrame frame = new JFrame("Snake");
-	int x = 250,y = 250,a,b = 1,bredd = 25,höjd = 100,q;
-	Timer timer = new Timer(30,this);	
-
-	public Snake(){
-
-		frame.setSize(500, 500);
-		frame.setLocationRelativeTo(null);
-		frame.setBackground(BLACK);
-		frame.setVisible(true);
-		frame.add(this);
-		timer.start();
-		frame.addKeyListener(this);
-		random.nextInt(5);
-		System.out.println(random.nextInt());
-
-	}
-	public void paintComponent (Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
-
-		g2.setColor(GREEN);
-		g2.fillRect(x ,y,bredd,höjd);
-		frame.repaint();
-	}
-
-	public void keyPressed(KeyEvent arg0) {
-
-		if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Vänsterpil"){
-			a = -1;
-			b = 0;
-
-			if (bredd < höjd){
-
-
-				q = höjd;
-				höjd = bredd;
-				bredd = q;
-
-
-				frame.repaint();
-				System.out.println(a + "," + b);
-			}}
-		else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Högerpil"){
-			a = +1;
-			b = 0;
-
-			if (bredd < höjd){
-
-				q = höjd;
-				höjd = bredd;
-				bredd = q;
-
-
-				frame.repaint();
-				System.out.println(a + "," + b);
-			}}
-		else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Upp"){
-
-			a = 0;
-			b = -1;
-
-			if (bredd > höjd){
-
-
-				q = höjd;
-				höjd = bredd;
-				bredd = q;
-
-
-				frame.repaint();
-				System.out.println(a + "," + b);
-			}
-		}
-		else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Nedpil"){
-
-			a = 0;
-			b = +1;
-
-			if (bredd > höjd){
-
-
-				q = höjd;
-				höjd = bredd;
-				bredd = q;
-
-
-				frame.repaint();
-				System.out.println(a + "," + b);
-			}
-		}
-	}
-
-	public void keyReleased(KeyEvent arg0) {
-
-	}
-
-	public void keyTyped(KeyEvent arg0) {
-
-	}
-
-	public void actionPerformed(ActionEvent arg0) {
-		if (arg0.getSource()==timer){
-
-			x = x + a;
-			y = y + b;
-			frame.repaint();
-		}
-	}
-}
-
 @SuppressWarnings("serial")
 class Impossible extends JPanel implements ActionListener,KeyListener, MouseInputListener,MouseWheelListener{
 
@@ -4889,8 +4050,6 @@ class Randoms implements ActionListener{
 		System.out.println(tid);
 
 	}
-
-	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if (arg0.getSource() == button){
 			ranidom();
@@ -4899,7 +4058,6 @@ class Randoms implements ActionListener{
 			System.err.println(System.currentTimeMillis());
 		}
 	}
-
 	public void ranidom() {
 		long y = System.currentTimeMillis();
 
@@ -5636,24 +4794,25 @@ class ReggPlåtar implements ActionListener{
 	}
 }
 @SuppressWarnings("serial")
-class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, WindowListener, ComponentListener{
-
-	static JFrame frame = new JFrame("Snake"), start = new JFrame("Start"),väntframe= new JFrame();
-	private final int startlängd= 3;
+class Snake extends JPanel implements KeyListener, ActionListener, WindowListener, ComponentListener{
+	private final int MAXIMUM = 101;
+	private static JFrame frame = new JFrame("Snake"), start = new JFrame("Start"),väntframe= new JFrame(),highFrame=new JFrame("Highscore");
+	private final int startlängd=3;
 	private int	pixelstorlek;
-	private int[] x=new int[101],y=new int[101],z=new int[101],q=new int[101];
-	private int snakelängdx,snakelängdz,posx=100,posy=100,posyz=100,posyq,pluppX,pluppY, s = 1,a=1,
-			Svart,Cyan;
+	private int[] x=new int[MAXIMUM],y=new int[MAXIMUM],z=new int[MAXIMUM],q=new int[MAXIMUM];
+	private int snakelängdx,snakelängdz=-1,pluppX,pluppY,s=1,a=1,svartPoäng,cyanPoäng,yLoc;
 	private Timer timer = new Timer(100, this);
 	private static String riktning = "ner",riktningz = "upp";
 	private BufferedReader in;
 	private PrintWriter out;
-	private boolean förlust, paused=false,gameover,b;
+	private boolean förlust, paused=false,gameover,b,oneplayer;
 	private static boolean client;
-	JButton local = new JButton("Play on the same computer"),
-			online = new JButton("Play online");
+	private JButton local = new JButton("Play two on this computer"),
+			online = new JButton("Play online"),
+			one = new JButton("Single Player");
+	private String[] highscore = new String[6];
 
-	public MultiPlayerSnake(){
+	public Snake(){
 		pixelstorlek = Math.round(fönsterSize.width/70);
 
 		setBackground(white);
@@ -5676,19 +4835,44 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 
 		start.setVisible(true);
 		start.setSize(240,140);
-		start.setLayout(new GridLayout(2,1));
+		start.setLayout(new GridLayout(0,1));
 		start.setLocationRelativeTo(null);
+		start.add(one);
 		start.add(local);
 		start.add(online);
 		start.setDefaultCloseOperation(3);
 
-		local.addActionListener(e -> {start.dispose();frame.setVisible(true);paused=true;Restart();timer.stop();	frame.revalidate();
-		frame.repaint();});
-
+		local.addActionListener(e -> {
+			start.dispose();
+			frame.setVisible(true);
+			paused=true;Restart();
+			timer.stop();
+			frame.revalidate();
+			frame.repaint();
+		});
+		one.addActionListener(e -> {
+			oneplayer=true;
+			frame.setVisible(true);
+			Restart();
+			highscore[0]= "";
+			highscore[1]= prop.getProperty("Score1","0");
+			highscore[2]= prop.getProperty("Score2","0");
+			highscore[3]= prop.getProperty("Score3","0");
+			highscore[4]= prop.getProperty("Score4","0");
+			highscore[5]= prop.getProperty("Score5","0");
+			highFrame.add(Scorepanel);
+			highFrame.setSize(frame.getWidth()/2 ,frame.getHeight());
+			highFrame.setIconImage(fönsterIcon);
+			highFrame.setUndecorated(true);
+			highFrame.setLocation(frame.getX()-highFrame.getWidth(),frame.getY());
+			highFrame.setVisible(true);
+			frame.toFront();
+		});
 		online.addActionListener(e -> online());
 
 		frame.revalidate();
 		frame.repaint();
+
 	}
 	class a implements Runnable{
 		public void run() {
@@ -5707,18 +4891,19 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 	void online(){
 		Thread runnable = new Thread(new a());
 		String[]strings={"Server", "Klient" };
-		int i = showOptionDialog(frame, "", "Multiplayer", DEFAULT_OPTION, QUESTION_MESSAGE, null, strings, 0);
+		int i = showOptionDialog(frame, "Server eller klient?", "Multiplayer", DEFAULT_OPTION, QUESTION_MESSAGE, null, strings, 0);
 		if (i==0) {
-
+			start.dispose();
 			JLabel jLabel= new JLabel("Väntar på anslutning...",Bild("/images/loading.gif"),CENTER);
 
 			väntframe.setVisible(true);
 			väntframe.add(jLabel);
-			väntframe.setSize(400, 200);
 			väntframe.setLocationRelativeTo(null);
 			väntframe.setAlwaysOnTop(true);
 			väntframe.repaint();
+			väntframe.getContentPane().setBackground(white);
 			väntframe.setIconImage(fönsterIcon);
+			väntframe.pack();
 			runnable.start();
 			timers.start();
 		}
@@ -5779,10 +4964,10 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 	void ansluten(){
 		väntframe.dispose();
 		start.dispose();
-		frame.setVisible(true);
 		paused=true;
 		Restart();
-		timer.stop();	
+		timer.stop();
+		frame.setVisible(true);	
 		frame.revalidate();
 		frame.repaint();
 		timers.stop();
@@ -5793,25 +4978,27 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 						String string = in.readLine();
 						if(a==1){
 							if(string.equals("vänster")){
-								if (riktningz!="höger"){
+								if (riktningz!="höger"&&riktning!="vänster"){
 									riktningz="vänster";
 									a=0;
 								}
 							}
 							else if(string.equals("höger")){
-								if (riktningz!="vänster"){
+								if (riktningz!="höger"&&riktning!="vänster"){
 									riktningz="höger";
 									a=0;
 								}
 							}
 							else if(string.equals("upp")){
-								if (riktningz!="ner"){
+								if (riktningz!="ner"&&riktningz!="upp"){
 									riktningz="upp";
+									a=0;
 								}
 							}
 							else if(string.equals("ner")){
-								if (riktningz!="upp"){
+								if (riktningz!="ner"&&riktningz!="upp"){
 									riktningz="ner";
+									a=0;
 								}
 							}
 						}
@@ -5834,21 +5021,58 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 
 		((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 
-		if(Svart==10){
-			JOptionPane.showMessageDialog(null, "Svart vann!");
-			frame.dispose();
-		}
-		else if (Cyan==10){
+		if (oneplayer) {
+			Scanner scanner = new Scanner(highscore[5]);
+			int hs = scanner.nextInt();
+			scanner.close();
+			if (snakelängdx > hs) {
+				highscore[5] = Integer.toString(snakelängdx) + " "
+						+ showInputDialog("Skriv ditt namn");
+				if (snakelängdx < 10) {
+					highscore[5] = "0" + highscore[5];
+				}
 
-			JOptionPane.showMessageDialog(null, "Cyan vann!");
-			frame.dispose();
-		}
+				Arrays.sort(highscore);
+				String[] tillfälligscore = new String[6];
+				tillfälligscore[1] = highscore[1];
+				tillfälligscore[2] = highscore[2];
+				tillfälligscore[3] = highscore[3];
+				tillfälligscore[4] = highscore[4];
+				tillfälligscore[5] = highscore[5];
 
+				highscore[1] = tillfälligscore[5];
+				highscore[2] = tillfälligscore[4];
+				highscore[3] = tillfälligscore[3];
+				highscore[4] = tillfälligscore[2];
+				highscore[5] = tillfälligscore[1];
+
+				prop.setProperty("Score1", (highscore[1]));
+				prop.setProperty("Score2", (highscore[2]));
+				prop.setProperty("Score3", (highscore[3]));
+				prop.setProperty("Score4", (highscore[4]));
+				prop.setProperty("Score5", (highscore[5]));
+				highFrame.repaint();
+			}
+			sparaProp("Highscore i Snakespel");
+			skrivHändelsetext(highscore[1]);
+			skrivHändelsetext(highscore[2]);
+			skrivHändelsetext(highscore[3]);
+			skrivHändelsetext(highscore[4]);
+			skrivHändelsetext(highscore[5]);
+		}
+		else {
+			if(svartPoäng==10){
+				JOptionPane.showMessageDialog(null, "Svart vann!");
+				frame.dispose();
+			}
+			else if (cyanPoäng==10){
+				JOptionPane.showMessageDialog(null, "Cyan vann!");
+				frame.dispose();
+			}
+		}
 	}
 	private void Restart() {
-
 		gameover=false;
-
 		for (int i = 0; i < x.length; i++) {
 			x[i]=0;
 			q[i]=0;
@@ -5857,22 +5081,16 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		}
 		repaint();
 
-		posx = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
-		posy = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
+		int posx = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
+		int posy = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
 
-		posyz = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
-		posyq = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
+		int posyz = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
+		int posyq = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
 
-		if (	posx>getWidth()*0.8||
-				posx<getWidth()*0.2||
-				posy>getHeight()*0.8||
-				posy<getHeight()*0.2) {
+		if (posx>getWidth()*0.8||posx<getWidth()*0.2||posy>getHeight()*0.8||posy<getHeight()*0.2) {
 			Restart();
 		}
-		if (	posyz>getWidth()*0.8||
-				posyz<getWidth()*0.2||
-				posyq>getHeight()*0.8||
-				posyq<getHeight()*0.2) {
+		else if (posyz>getWidth()*0.8||posyz<getWidth()*0.2||posyq>getHeight()*0.8||posyq<getHeight()*0.2) {
 			Restart();
 		}
 		else{		
@@ -5882,11 +5100,25 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 
 			riktning=arr[select];
 			snakelängdx = startlängd;
-			snakelängdz = startlängd;
+			if (!oneplayer) {
+				snakelängdz = startlängd;
+			}
 			x[1]=posx;
 			y[1]=posy;
-			z[1]=posyz;
-			q[1]=posyq;
+			for (int i = 2; i < MAXIMUM; i++) {
+				x[i]=-2;
+				q[i]=-2;
+				y[i]=-2;
+				z[i]=-2;
+			}
+			if (!oneplayer) {
+				z[1] = posyz;
+				q[1] = posyq;
+			}
+			else {
+				z[1]=-2;
+				z[1]=-2;
+			}
 			PlaceraPlupp();
 			förlust= false;
 			repaint();
@@ -5919,6 +5151,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		g.setColor(red);
 		g.drawOval(pluppX, pluppY, pixelstorlek-2, pixelstorlek-2);
 		g.fillOval(pluppX, pluppY, pixelstorlek-2, pixelstorlek-2);
+
 		if (client) {
 			for (int i = 1; i <= snakelängdx; i++) {
 				g.setColor(black);
@@ -5937,11 +5170,11 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 		g.setColor(black);
 		g.drawRect(x[1], y[1], pixelstorlek-2, pixelstorlek-2);
 		g.fillRect(x[1], y[1], pixelstorlek-2, pixelstorlek-2);
-		g.setColor(cyan);
-		g.drawRect(z[1], q[1], pixelstorlek-2, pixelstorlek-2);
-		g.fillRect(z[1], q[1], pixelstorlek-2, pixelstorlek-2);
-		g.setColor(GREEN);
-		g.setFont(Mouse.typsnitt);
+		if (!oneplayer) {
+			g.setColor(cyan);
+			g.drawRect(z[1], q[1], pixelstorlek - 2, pixelstorlek - 2);
+			g.fillRect(z[1], q[1], pixelstorlek - 2, pixelstorlek - 2);
+		}
 		try {
 			out.print("B ");
 			for (int i = 1; i <= snakelängdx; i++) {
@@ -5963,17 +5196,29 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			y[i]=y[i-1];
 			g.drawRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
 			g.fillRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
-
 		}
 		s=1;
-		for (int u = snakelängdz+1; u >= 2; u--){
-			g.setColor(cyan);
-			z[u]=z[u-1];
-			q[u]=q[u-1];
-			g.drawRect(z[u], q[u], pixelstorlek-2, pixelstorlek-2);
-			g.fillRect(z[u], q[u], pixelstorlek-2, pixelstorlek-2);			
+		if (!oneplayer) {
+			for (int u = snakelängdz + 1; u >= 2; u--) {
+				g.setColor(cyan);
+				z[u] = z[u - 1];
+				q[u] = q[u - 1];
+				g.drawRect(z[u], q[u], pixelstorlek - 2, pixelstorlek - 2);
+				g.fillRect(z[u], q[u], pixelstorlek - 2, pixelstorlek - 2);
+			}
+			a = 1;
 		}
-		a=1;
+		else {
+			if(y[1] < 45) {
+				yLoc = y[1] + 40;
+			}
+			if (y[1] > 45){
+				yLoc = y[1] - 20;
+			}
+			g.setColor(GREEN);
+			g.setFont(Mouse.typsnitt);
+			g.drawString(Integer.toString(snakelängdx), x[1], yLoc);
+		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -5984,48 +5229,42 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
 				System.err.println(snakelängdx);
 			}
-			if (z[1]==pluppX&&q[1]==pluppY) {
+			if (z[1]==pluppX&&q[1]==pluppY&&!oneplayer) {
 				PlaceraPlupp();
 				snakelängdz++;
 				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
 				System.err.println(snakelängdz);
-
 			}
 			if (riktning=="ner") {
 				y[1]=y[1]+pixelstorlek;
 			}
 			else if (riktning=="upp") {
-
 				y[1]=y[1]-pixelstorlek;
 			}
 			else if (riktning=="höger") {
 				x[1]=x[1]+pixelstorlek;
-
 			}
 			else if (riktning=="vänster") {
 				x[1]=x[1]-pixelstorlek;
-
 			}
-			if (riktningz=="ner") {
-				q[1]=q[1]+pixelstorlek;
-			}
-			else if (riktningz=="upp") {
-				q[1]=q[1]-pixelstorlek;
-			}
-			else if (riktningz=="höger") {
-				z[1]=z[1]+pixelstorlek;
-
-			}
-			else if (riktningz=="vänster") {
-				z[1]=z[1]-pixelstorlek;
+			if (!oneplayer) {
+				if (riktningz == "ner") {
+					q[1] = q[1] + pixelstorlek;
+				} else if (riktningz == "upp") {
+					q[1] = q[1] - pixelstorlek;
+				} else if (riktningz == "höger") {
+					z[1] = z[1] + pixelstorlek;
+				} else if (riktningz == "vänster") {
+					z[1] = z[1] - pixelstorlek;
+				}
 			}
 			boolean körd = false;
 			for (int i = 1; i <= snakelängdx; i++) {
-				if (x[1]==z[i]&&y[1]==q[i]) {
+				if ((x[1]==z[i]&&y[1]==q[i])||(i>1&&x[1]==x[i]&&y[1]==y[i])) {
 					System.out.println("GameOver");
 					GameOver();
-					Cyan++;
-					System.err.println("Poäng till Cyan. (C) "+Cyan+" - "+Svart+" (S)");
+					cyanPoäng++;
+					System.err.println("Poäng till Cyan. (C) "+cyanPoäng+" - "+svartPoäng+" (S)");
 					System.out.println("1");
 					körd=true;
 				}
@@ -6034,60 +5273,27 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				if (körd) {
 					break;
 				}
-				if (z[1]==x[i]&&y[i]==q[1]) {
+				if (z[1]==x[i]&&q[1]==y[i]) {
 					System.out.println("GameOver");
 					GameOver();
-					Svart++;
-					System.err.println("Poäng till Svart. (C) "+Cyan+" - "+Svart+" (S)");
+					svartPoäng++;
+					System.err.println("Poäng till Svart. (C) "+cyanPoäng+" - "+svartPoäng+" (S)");
 					System.out.println("2");
 				}
 			}
-
-			if (x[1]<0) {
-				Cyan++;
-				System.err.println("Poäng till Cyan. (C) "+Cyan+" - "+Svart+" (S)");
+			if (x[1]<0||x[1]+pixelstorlek>getWidth()||y[1]<0||y[1]+pixelstorlek>getHeight()) {
+				cyanPoäng++;
+				System.err.println("Poäng till Cyan. (C) "+cyanPoäng+" - "+svartPoäng+" (S)");
 				GameOver();
 			}
-			else if (x[1]+pixelstorlek>getWidth()) {
-				Cyan++;
-				System.err.println("Poäng till Cyan. (C) "+Cyan+" - "+Svart+" (S)");
-				GameOver();
-			}
-			else if (y[1]<0) {
-				Cyan++;
-				System.err.println("Poäng till Cyan. (C) "+Cyan+" - "+Svart+" (S)");
-				GameOver();		
-			}
-			else if (y[1]+pixelstorlek>getHeight()) {
-				Cyan++;
-				System.err.println("Poäng till Cyan. (C) "+Cyan+" - "+Svart+" (S)");
-				GameOver();
-			}
-
-			if (z[1]<0) {
-				Svart++;
-				System.err.println("Poäng till Svart. (C) "+Cyan+" - "+Svart+" (S)");
-				GameOver();
-			}
-			else if (z[1]+pixelstorlek>getWidth()) {
-				Svart++;
-				System.err.println("Poäng till Svart. (C) "+Cyan+" - "+Svart+" (S)");
-				GameOver();
-			}
-			else if (q[1]<0) {
-				Svart++;
-				System.err.println("Poäng till Svart. (C) "+Cyan+" - "+Svart+" (S)");
-				GameOver();		
-			}
-			else if (q[1]+pixelstorlek>getHeight()) {
-				Svart++;
-				System.err.println("Poäng till Svart. (C) "+Cyan+" - "+Svart+" (S)");
+			if ((z[1]<0||z[1]+pixelstorlek>getWidth()||q[1]<0||q[1]+pixelstorlek>getHeight())&&!oneplayer) {
+				svartPoäng++;
+				System.err.println("Poäng till Svart. (C) "+cyanPoäng+" - "+svartPoäng+" (S)");
 				GameOver();
 			}
 			frame.repaint();
 			frame.revalidate();
 		}
-
 	}
 	public void keyTyped(KeyEvent e) {}
 	public void keyReleased(KeyEvent e) {}
@@ -6145,10 +5351,12 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				else if (e.getKeyCode() == KeyEvent.VK_D&&riktningz != "vänster"&&riktning!="höger") {
 					riktningz = "höger";
 					a = 0;
-				} else if (e.getKeyCode() == KeyEvent.VK_W&&riktningz != "ner"&&riktning!="upp") {
+				}
+				else if (e.getKeyCode() == KeyEvent.VK_W&&riktningz != "ner"&&riktning!="upp") {
 					riktningz = "upp";
 					a = 0;
-				} else if (e.getKeyCode() == KeyEvent.VK_S&&riktningz != "upp"&&riktning!="ner") {
+				}
+				else if (e.getKeyCode() == KeyEvent.VK_S&&riktningz != "upp"&&riktning!="ner") {
 					riktningz = "ner";
 					a = 0;
 				}
@@ -6176,8 +5384,27 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 	}
 	public void windowClosing(WindowEvent e) {
 		timer.stop();
+		highFrame.dispose();
 	}
 	public void componentMoved(ComponentEvent e) {
+		highFrame.setLocation(frame.getX()-highFrame.getWidth(),frame.getY());
 	}
-}
+	private JPanel Scorepanel = new JPanel(){
+		public void paintComponent(Graphics g){
+			super.paintComponent(g);
+			setBackground(Color.white);
+			Graphics2D g2 = (Graphics2D)g;
+			int pos = 50;
 
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2.setColor(red);
+			g2.setFont(new Font(null, 0, 25));
+			g.drawString("Highscore:",10 , pos);
+
+			for (int i = 1; i < highscore.length; i++) {
+				pos=pos+25;
+				g.drawString(highscore[i],10 , pos);
+			}
+		}
+	};
+}
