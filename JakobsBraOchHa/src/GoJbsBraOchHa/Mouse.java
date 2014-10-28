@@ -2234,9 +2234,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 
 
 class Miniräknare implements ActionListener, KeyListener{
-
-
-
+	
 	JButton b1 = new JButton("1"),
 			b2 = new JButton("2"),
 			b3 = new JButton("3"),
@@ -2252,6 +2250,7 @@ class Miniräknare implements ActionListener, KeyListener{
 			b12 = new JButton("*"),
 			b13 = new JButton("/"),
 			b14 = new JButton("=");
+	
 	JTextArea textruta = new JTextArea();
 
 	JLabel räknesätt = new JLabel(),
@@ -2467,6 +2466,7 @@ class Merit implements  ActionListener{
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 		frame.setSize(200,200);
+		frame.setIconImage(fönsterIcon);
 
 		A.setSize(30, 30);
 		B.setSize(30, 30);
@@ -2497,6 +2497,7 @@ class Merit implements  ActionListener{
 		betygFrame.setLayout(new GridLayout(3,2));
 		betygFrame.setSize(300, 250);
 		betygFrame.setLocationRelativeTo(null);
+		betygFrame.setIconImage(fönsterIcon);
 
 		betygFrame.setTitle(ämnen[i++]);
 	}
@@ -2531,6 +2532,7 @@ class Merit implements  ActionListener{
 			Resultat.add(resultatlabel,BorderLayout.CENTER);
 			Resultat.setSize(betygFrame.getSize());
 			Resultat.setLocationRelativeTo(null);
+			Resultat.setIconImage(fönsterIcon);
 
 			resultatlabel.setFont(new Font("fsgadh",Font.BOLD,45));
 			resultatlabel.setHorizontalTextPosition(RIGHT);
