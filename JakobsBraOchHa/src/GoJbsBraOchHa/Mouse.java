@@ -3809,7 +3809,7 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 			}
 		}
 		else if (nr==1) {
-			if(arg0.getKeyChar() == 'ä'){
+			if(arg0.getKeyChar() == 'o'){
 				nr++;
 
 			}
@@ -5720,13 +5720,30 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				String string2 = null;
+				int c=1,b=1;
 				try {
-					while (true) {
-						System.out.println(scanner.next());
+					while (scanner.hasNext()) {
+						String string = scanner.next();
+						if (string.equals("B")) {
+							string2="B";
+						}
+						else if (string.equals("C")) {
+							string2="C";
+						}
+						else if (string2.equals("B")) {
+							this.x[b]=Integer.parseInt(string);
+							this.y[b++]=Integer.parseInt(scanner.next());
+						}
+						else if (string2.equals("C")) {
+							this.z[b]=Integer.parseInt(string);
+							this.q[b++]=Integer.parseInt(scanner.next());
+						}
 					}
 				} catch (Exception e) {
 					
-				}	
+				}
+				frame.repaint();
 			}
 		}
 	}
