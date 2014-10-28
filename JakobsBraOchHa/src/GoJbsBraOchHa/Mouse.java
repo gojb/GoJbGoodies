@@ -6107,20 +6107,17 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			System.err.println(e.getKeyCode());
 			if(e.getKeyCode() == KeyEvent.VK_LEFT){
 				out.println("vänster");
-				return;
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_RIGHT){
 				out.println("höger");
-				return;
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_UP){
 				out.println("upp");
-				return;
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_DOWN){
 				out.println("ner");
-				return;
 			}
+			return;
 		}
 		if (s==1) {
 			if(e.getKeyCode() == KeyEvent.VK_LEFT){
