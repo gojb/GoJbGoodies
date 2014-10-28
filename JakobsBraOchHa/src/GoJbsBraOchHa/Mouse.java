@@ -1155,7 +1155,6 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		frame.setIconImage(fönsterIcon);
 		frame.addWindowListener(this);
 		frame.addKeyListener(this);
-		frame.addKeyListener(this);
 		frame.add(this);
 		frame.pack();
 		frame.repaint();
@@ -5629,7 +5628,7 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 	private int snakelängdx,snakelängdz,posx=100,posy=100,posyz=100,posyq,pluppX,pluppY, s = 1,a=1,
 			Svart,Cyan;
 	private Timer timer = new Timer(100, this);
-	private String riktning = "ner",riktningz = "upp";
+	private static String riktning = "ner",riktningz = "upp";
 	private BufferedReader in;
 	private PrintWriter out;
 	private boolean förlust, paused=false,gameover,b,client;
@@ -6023,7 +6022,6 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			}
 			else if (riktningz=="vänster") {
 				z[1]=z[1]-pixelstorlek;
-
 			}			
 			if (z[1]<0) {
 				Svart++;
@@ -6063,29 +6061,34 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 	public void componentHidden(ComponentEvent e) {}
 	public void keyPressed(KeyEvent e) {
 		if (client) {
-			System.err.println("lsköca");
+			System.err.println(riktningz);
+			System.err.println(e.getKeyCode());
 			if(e.getKeyCode() == KeyEvent.VK_LEFT){
 				if (riktningz!="höger"){
 					riktningz="vänster";
-					
+					System.err.println("df");
 				}
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_RIGHT){
 				if (riktningz!="vänster"){
 					riktningz="höger";
+					System.err.println("df2");
 				}
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_UP){
 				if (riktningz!="ner"){
 					riktningz="upp";
+					System.err.println("df3");
 				}
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_DOWN){
 				if (riktningz!="upp"){
 					riktningz="ner";
+					System.err.println("df4");
 				}
 			}
-			out.println(riktningz);
+			out.print(riktningz);
+			out.println();
 			return;
 		}
 		if (s==1) {
