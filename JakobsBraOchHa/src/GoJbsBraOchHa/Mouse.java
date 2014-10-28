@@ -1782,27 +1782,44 @@ class Studsa extends JPanel implements ActionListener{
 	}
 }
 class Ping{
+	int x;
 	public Ping(String string){
 		GoJbFrame frame = new GoJbFrame();
 		JTextArea textArea = new JTextArea();
 		JScrollPane scrollPane = new JScrollPane(textArea);
-
+		
 		frame.add(scrollPane);
-
+		for(int i = 10;0<i;i--){
 		try {
 
-			BufferedReader inputStream = new BufferedReader(
-					new InputStreamReader(Runtime.getRuntime().exec("ping " + string).getInputStream()));
-
-			String s;
-			// reading output stream of the command
-			while ((s = inputStream.readLine()) != null) {
-				System.out.println(s);
-			}
+			new Thread(){
+				public void run() {
+					
+					System.err.println(x++);
+					
+					try {
+						Runtime.getRuntime().exec("ping " + string + " -l 65500 -n 1000").getInputStream();
+						
+					} catch (IOException e) {
+						// FIXME Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				};
+			}.start();
+			
+////			BufferedReader inputStream = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("ping " + string + " -l 65500 -n 1000").getInputStream()));
+//
+//			String s;
+//			// reading output stream of the command
+//			while ((s = inputStream.readLine()) != null) {
+//				System.out.println(s);
+//			}
 
 		} catch (Exception e) {e.printStackTrace();}
 	}
 }
+	}
 class Glosor{
 	private GoJbFrame frame = new GoJbFrame("Glosor"),frame2 = new GoJbFrame("Ställ in",false,3);
 	private JLabel label = new JLabel(),rättLabel = new JLabel(),felLabel = new JLabel(),label2 = new JLabel();
