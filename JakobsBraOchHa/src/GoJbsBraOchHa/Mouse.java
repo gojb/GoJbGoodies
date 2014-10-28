@@ -5654,10 +5654,12 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 			online = new JButton("Play online");
 
 	public MultiPlayerSnake(){
-		pixelstorlek= (int) Math.round(((double)fönsterSize.width)/100);
+		pixelstorlek = Math.round(fönsterSize.width/70);
 
 		setBackground(white);
 		setPreferredSize(new Dimension(pixelstorlek*50, pixelstorlek*50));
+		setMaximumSize(new Dimension(pixelstorlek*50, pixelstorlek*50));
+		setMinimumSize(new Dimension(pixelstorlek*50, pixelstorlek*50));
 		setOpaque(true);
 
 		frame.setLayout(new BorderLayout());
@@ -6145,31 +6147,29 @@ class MultiPlayerSnake extends JPanel implements KeyListener, ActionListener, Wi
 				}
 			}
 		}
-		if(a==1){
+		if (!client) {
+			if (a == 1) {
+				if (e.getKeyCode() == KeyEvent.VK_A) {
+					if (riktningz != "höger") {
+						riktningz = "vänster";
+						a = 0;
+					}
+				} else if (e.getKeyCode() == KeyEvent.VK_D) {
+					if (riktningz != "vänster") {
+						riktningz = "höger";
+						a = 0;
+					}
+				} else if (e.getKeyCode() == KeyEvent.VK_W) {
+					if (riktningz != "ner") {
+						riktningz = "upp";
+					}
+				} else if (e.getKeyCode() == KeyEvent.VK_S) {
+					if (riktningz != "upp") {
+						riktningz = "ner";
+					}
+				}
 
-			if(e.getKeyCode() == KeyEvent.VK_A){
-				if (riktningz!="höger"){
-					riktningz="vänster";
-					a=0;
-				}
 			}
-			else if(e.getKeyCode() == KeyEvent.VK_D){
-				if (riktningz!="vänster"){
-					riktningz="höger";
-					a=0;
-				}
-			}
-			else if(e.getKeyCode() == KeyEvent.VK_W){
-				if (riktningz!="ner"){
-					riktningz="upp";
-				}
-			}
-			else if(e.getKeyCode() == KeyEvent.VK_S){
-				if (riktningz!="upp"){
-					riktningz="ner";
-				}
-			}
-
 		}
 		if(e.getKeyCode() == KeyEvent.VK_F2&&förlust==true||e.getKeyCode() == KeyEvent.VK_R&&förlust==true||
 				e.getKeyCode() == KeyEvent.VK_F2&&paused==true||e.getKeyCode() == KeyEvent.VK_R&&paused==true){
