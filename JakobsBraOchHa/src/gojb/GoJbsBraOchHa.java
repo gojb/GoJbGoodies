@@ -244,17 +244,17 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 			laddfönster = new JFrame("Startar..."),
 			avslutningsfönster = new JFrame("Avslutar...");
 
-	private JPanel 			knappPanel = new JPanel();
+	private JPanel knappPanel = new JPanel();
 
-	private JMenuBar 		menyBar = new JMenuBar();
+	private JMenuBar menyBar = new JMenuBar();
 
-	private JMenu 			arkivMeny = new JMenu("Arkiv"), 
+	private JMenu arkivMeny = new JMenu("Arkiv"), 
 			hjälpMeny = new JMenu("Hjälp"),
 			redigeraMeny = new JMenu("Redigera"),
 			färgbyteMeny = new JMenu("Byt bakgrundsfärg"),
 			textFärgByte = new JMenu("Byt Textfärg");
 
-	private JMenuItem 		avslutaItem = new JMenuItem("Avsluta"), 
+	private JMenuItem avslutaItem = new JMenuItem("Avsluta"), 
 			omItem = new JMenuItem("Om"),
 			visaItem = new JMenuItem("Visa"),
 			döljItem = new JMenuItem("Dölj"),
@@ -277,7 +277,7 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 			flappyItem = new JMenuItem("Spela FlappyGojb"),
 			glItem = new JMenuItem("3d");
 
-	private JButton 		knapp1 = new JButton("Blå"),
+	private JButton knapp1 = new JButton("Blå"),
 			knapp2 = new JButton("Grön"),
 			knapp3 = new JButton("Röd"),
 			knapp4 = new JButton("Gul"),
@@ -285,28 +285,28 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 			autoscrollknapp = new JButton("Stäng av autoscroll"),
 			rensKnapp = new JButton("Rensa");
 
-	private JScrollPane 	jahaPane = new JScrollPane(text,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+	private JScrollPane jahaPane = new JScrollPane(text,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 			JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-	private JProgressBar 	laddstapelStart = new JProgressBar(0,100),
+	private JProgressBar laddstapelStart = new JProgressBar(0,100),
 			laddstapelAvslut = new JProgressBar(0, 100);
 
-	private JLabel 			omtext = new JLabel("<html>Hallåj! Det här programmet är skapat av GoJbs Javaprogrammering"),
+	private JLabel omtext = new JLabel("<html>Hallåj! Det här programmet är skapat av GoJbs Javaprogrammering"),
 			laddtext = new JLabel("Startar program..."),
 			avslutningstext = new JLabel("Avslutar program...");
 
-	private JSlider 		slider = new JSlider(HORIZONTAL,0,100,10);
+	private JSlider	slider = new JSlider(HORIZONTAL,0,100,10);
 
-	private Timer 			startTimer = new Timer(2, this),
+	private Timer startTimer = new Timer(2, this),
 			slutTimer = new Timer(2, this);
 
-	private int				flyttHastighet = 10,posX = 125, posY = 75, textbredd;
-	private Color			färg = new Color(0, 0, 255);
-	private String 			texten = "Dra eller använd piltangenterna";
+	private int	flyttHastighet = 10,posX = 125, posY = 75, textbredd;
+	private Color färg = new Color(0, 0, 255);
+	private String texten = "Dra eller använd piltangenterna";
 
 	private static JTextArea text = new JTextArea();
-	private static boolean 	autoscroll = true;
-	public static int		antalFönster = 0;
+	private static boolean autoscroll = true;
+	public static int antalFönster = 0;
 
 	Mouse(){
 		laddtext.setFont(typsnitt);
