@@ -140,6 +140,7 @@ class HämtaMail implements Runnable{
 		kärna();
 		Session session = Session.getDefaultInstance(System.getProperties());
 		System.out.println("Funkar");
+		System.err.println(session.getProperty("port"));
 		try {
 			session.setDebug(false); // Enable the debug mode
 			Store store = session.getStore("imap");
