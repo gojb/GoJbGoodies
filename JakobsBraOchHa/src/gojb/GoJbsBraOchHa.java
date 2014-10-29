@@ -137,13 +137,13 @@ public class GoJbsBraOchHa{
 class Login implements ActionListener{
 	private int x;
 	private Timer timer = new Timer(30, this);	
-	private JPasswordField passwordField;
+	private JPasswordField passwordField = new JPasswordField(10);
 	private JFrame användare= new JFrame(),frame = new JFrame("Verifiera dig!");
 	private JButton användareJakob = new JButton("Jakob"), användareGlenn= new JButton("Glenn");
 	private JLabel label = new JLabel("Skriv Lösenord -->");
 	private char[] correctPassword = {'U','g','g','e','n','0','6','8','4'};
 	private Cipher cipher;
-	private String key =  "Uggen0684";
+	private String key = String.valueOf(correctPassword);
 	private boolean b = true;
 	Login() {
 		try {
@@ -162,10 +162,9 @@ class Login implements ActionListener{
 				passwordField.setText(String.valueOf(correctPassword));
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.err.println("Logga in!");
 		}
-
-		passwordField = new JPasswordField(10);
 		passwordField.addActionListener(this);
 
 		användare.add(användareJakob);
@@ -177,11 +176,11 @@ class Login implements ActionListener{
 		användare.pack();
 		användare.setLocationRelativeTo(null);
 		användareGlenn.addActionListener(e -> {
-			new Mouse();
+			new RörandeMojäng();
 			användare.dispose();
 		});
 		användareJakob.addActionListener(e -> {
-			new RörandeMojäng();
+			new Mouse();
 			användare.dispose();
 		});
 
@@ -234,8 +233,7 @@ class Login implements ActionListener{
 		}
 	}
 }
-@SuppressWarnings("serial")
-class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListener,WindowListener{
+class Mouse implements ActionListener,MouseInputListener,KeyListener,WindowListener{
 
 	private JFrame huvudfönster = new JFrame("Hej Hej :D"), 
 			händelsefönster = new JFrame("Händelser"),
@@ -244,7 +242,17 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 			laddfönster = new JFrame("Startar..."),
 			avslutningsfönster = new JFrame("Avslutar...");
 
-	private JPanel knappPanel = new JPanel();
+	private JPanel knappPanel = new JPanel(),
+			mittPanel=new JPanel(){ private static final long serialVersionUID = 1L;
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			Graphics2D g2 = (Graphics2D)g;
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2.setFont(new Font("Serif", Font.ROMAN_BASELINE, 35));
+			g2.drawString(texten,posX, posY); 
+			textbredd = g2.getFontMetrics().stringWidth(texten);
+		}
+	};
 
 	private JMenuBar menyBar = new JMenuBar();
 
@@ -329,10 +337,10 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 
 		omItem.addActionListener(e -> om.setVisible(true));
 		nyttItem.addActionListener(e -> new Mouse());
-		gulItem.addActionListener(e -> setForeground(YELLOW));
-		rödItem.addActionListener(e -> setForeground(RED));
-		grönItem.addActionListener(e -> setForeground(GREEN));
-		blåItem.addActionListener(e -> {setForeground(BLUE); text.append("Textfärg ändrad till Blå");});
+		gulItem.addActionListener(e -> mittPanel.setForeground(YELLOW));
+		rödItem.addActionListener(e -> mittPanel.setForeground(RED));
+		grönItem.addActionListener(e -> mittPanel.setForeground(GREEN));
+		blåItem.addActionListener(e -> mittPanel.setForeground(BLUE));
 		hastighetItem.addActionListener(e -> hastighetsfönster.setVisible(true));
 		räknaItem.addActionListener(e -> new Räknare());
 		rensKnapp.addActionListener(e -> text.setText(null));
@@ -403,11 +411,11 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 		menyBar.add(redigeraMeny);
 		menyBar.add(hjälpMeny);
 
-		setOpaque(true);
-		setBackground(färg);
-		setForeground(YELLOW);
-		addMouseMotionListener(this);
-		addMouseListener(this);
+		mittPanel.setOpaque(true);
+		mittPanel.setBackground(färg);
+		mittPanel.setForeground(YELLOW);
+		mittPanel.addMouseMotionListener(this);
+		mittPanel.addMouseListener(this);
 
 		händelsefönster.setSize(500,500);
 		händelsefönster.setLayout(new BorderLayout());
@@ -460,7 +468,7 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 		huvudfönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.WEST);
 		huvudfönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.EAST);
 		huvudfönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.SOUTH);
-		huvudfönster.add(this,BorderLayout.CENTER);
+		huvudfönster.add(mittPanel,BorderLayout.CENTER);
 		huvudfönster.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		huvudfönster.setLocationRelativeTo(null);		
 		huvudfönster.revalidate();
@@ -525,7 +533,7 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 		}
 		else if(knapp.getSource() == knapp1){
 			färg = blue;
-			setBackground(färg);
+			mittPanel.setBackground(färg);
 			knapp1.setEnabled(false);
 			knapp2.setEnabled(true);
 			knapp3.setEnabled(true);
@@ -533,7 +541,7 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 		}
 		else if(knapp.getSource() == knapp2){
 			färg = GREEN;
-			setBackground(färg);
+			mittPanel.setBackground(färg);
 			knapp1.setEnabled(true);
 			knapp2.setEnabled(false);
 			knapp3.setEnabled(true);
@@ -541,7 +549,7 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 		}
 		else if(knapp.getSource() == knapp3){
 			färg = red;
-			setBackground(färg);
+			mittPanel.setBackground(färg);
 			knapp1.setEnabled(true);
 			knapp2.setEnabled(true);
 			knapp3.setEnabled(false);
@@ -549,7 +557,7 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 		}	
 		else if(knapp.getSource() == knapp4){
 			färg = yellow;
-			setBackground(färg);
+			mittPanel.setBackground(färg);
 			knapp1.setEnabled(true);
 			knapp2.setEnabled(true);
 			knapp3.setEnabled(true);
@@ -561,7 +569,6 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 		}
 		else if (knapp.getSource() == textByteItem){
 			setTexten();
-			repaint();
 		}
 		else if (knapp.getSource() == händelseItem){
 			händelsefönster.setVisible(true);
@@ -614,11 +621,11 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 		}
 	}
 	public void mouseEntered(MouseEvent e) {
-		setBackground(färg);
+		mittPanel.setBackground(färg);
 	}
 
 	public void mouseExited(MouseEvent e) {
-		setBackground(gray);
+		mittPanel.setBackground(gray);
 	}
 
 	public void keyPressed(KeyEvent arg0) {
@@ -628,20 +635,17 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 		}
 		else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Vänsterpil"){
 			posX = posX - flyttHastighet;
-			repaint();
 		}
 		else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Högerpil"){
 			posX = posX + flyttHastighet;
-			repaint();
 		}
 		else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Upp"){
 			posY = posY - flyttHastighet;
-			repaint();
 		}
 		else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Nedpil"){
 			posY = posY + flyttHastighet;
-			repaint();
 		}
+		huvudfönster.repaint();
 	}
 
 	public void keyReleased(KeyEvent arg0) {
@@ -676,18 +680,6 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 		if (autoscroll == true) {
 			text.setCaretPosition(text.getDocument().getLength());
 		}
-	}
-
-	public void paintComponent(Graphics g){
-
-		super.paintComponent(g);
-		Graphics2D g2 = (Graphics2D)g;
-
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setFont(new Font("Serif", Font.ROMAN_BASELINE, 35));
-		g2.drawString(texten,posX, posY); 
-
-		textbredd = g2.getFontMetrics().stringWidth(texten);
 	}
 	public void setTexten(){
 		String Text = showInputDialog("Ändra text på dragbar remsa");
@@ -1600,7 +1592,6 @@ class Ping{
 							Runtime.getRuntime().exec("ping " + string + " -l 65500 -n 1000").getInputStream();
 
 						} catch (IOException e) {
-							// FIXME Auto-generated catch block
 							e.printStackTrace();
 						}
 
@@ -2034,19 +2025,18 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			frame.repaint();}
 
 		System.out.println(y + " , " + x);
-		if (x < 150){if (ii == 0){
+		if (x < 150&&ii == 0){
 			new GameOver();frame.dispose();
-		}}
-		if (x > 1840){if (ii == 0){
+		}
+		if (x > 1840&&ii == 0){
 			new GameOver();frame.dispose();
-		}}
-
-		if (y < 0){if (ii == 0){
+		}
+		if (y < 0&&ii == 0){
 			new GameOver();frame.dispose();
-		}}
-		if (y > 700){ if (ii == 0){
+		}
+		if (y > 700&&ii == 0){
 			new GameOver();frame.dispose();
-		}}
+		}
 	}
 
 	public void keyReleased(KeyEvent arg0) {
