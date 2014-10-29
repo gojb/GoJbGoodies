@@ -1,4 +1,4 @@
-package GoJbsBraOchHa;;
+package gojb;;
 class Temp {
 	public static void main(String[] args) {
 //		Mouse.main("Mail");

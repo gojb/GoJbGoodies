@@ -1,9 +1,10 @@
 package applet;
 
+import gojb.GoJbsBraOchHa;
+
 import java.awt.Color;
 
 import javax.swing.JApplet;
-import GoJbsBraOchHa.Mouse;
 
 @SuppressWarnings("serial")
 public class GoJbApplet extends JApplet{
@@ -12,6 +13,6 @@ public class GoJbApplet extends JApplet{
 	}
 	public GoJbApplet() {
 		getContentPane().setBackground(Color.WHITE);
-		Mouse.main("");
+		GoJbsBraOchHa.main("");
 	}
 }

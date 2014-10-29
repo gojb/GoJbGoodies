@@ -1,4 +1,4 @@
-package GoJbsBraOchHa;
+package gojb;
 
 import java.awt.*;
 import java.awt.datatransfer.*;
@@ -24,7 +24,8 @@ import org.lwjgl.opengl.DisplayMode;
 import com.sun.mail.util.*;
 
 import GoJbFrame.GoJbFrame;
-import static GoJbsBraOchHa.Mouse.*;
+import static gojb.GoJbsBraOchHa.*;
+import static gojb.Mouse.*;
 import static javax.swing.SwingConstants.*;
 import static java.awt.Color.*;
 import static javax.swing.JFrame.*;
@@ -41,8 +42,59 @@ import static javax.swing.JOptionPane.*;
  * @see <a href="http://gojb.bl.ee/">http://gojb.bl.ee/</a>
  * @version 1.0
  */
+public class GoJbsBraOchHa{
+	
+	public static String	argString;
+	public static Font 		typsnitt = new Font("Arial", 0, 40);
+	public static Image 	fönsterIcon;
+	public static Robot		robot;
+	public static Random 	random = new Random();
+	public static Properties prop = new Properties();
+	public static Dimension fönsterSize = new Dimension(
+			(int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2),
+			(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2*1.5));
+	
+	public static void main(String... arg) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+			showMessageDialog(null, "Den angivna LookAndFeel hittades inte!","Error",ERROR_MESSAGE);
+		}
+		try {
+			robot = new Robot();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			prop.load(new FileInputStream(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb"));
+		} catch (Exception e) {
+			System.err.println("Properties saknas");
+		}
+		try {
+			fönsterIcon = Bild("/images/Java-icon.png").getImage();
+		} 
+		catch (Exception e) {
+			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+			showMessageDialog(null, "ImageIcon hittades inte","Filfel",ERROR_MESSAGE);
+		}
+		new Thread(new Update()).start();
+		try {
+			argString = arg[0];
+			if (argString.equals("Glosor")) {
+				new Glosor();
+				return;
+			}
+			else if (argString.equals("Mail")) {
+				new Mailkorg();
+				return;
+			}
+		} catch (Exception e) {argString ="";}
+		new Pass();
+	}
+}
 @SuppressWarnings("serial")
-public class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListener,WindowListener{
+class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListener,WindowListener{
 
 	private JFrame huvudfönster = new JFrame("Hej Hej :D"), 
 			händelsefönster = new JFrame("Händelser"),
@@ -52,10 +104,6 @@ public class Mouse extends JPanel implements ActionListener,MouseInputListener,K
 			avslutningsfönster = new JFrame("Avslutar...");
 
 	private JPanel 			knappPanel = new JPanel();
-
-	//MailKorg stringar:
-	static String Mottagare, Ämne, Innehåll;
-
 
 	private JMenuBar 		menyBar = new JMenuBar();
 
@@ -118,58 +166,8 @@ public class Mouse extends JPanel implements ActionListener,MouseInputListener,K
 
 	private static JTextArea text = new JTextArea();
 	private static boolean 	autoscroll = true;
-
 	public static int		antalFönster = 0;
-	public static String	argString;
-	public static Font 		typsnitt = new Font("Arial", 0, 40);
-	public static Image 	fönsterIcon;
-	public static Robot		robot;
-	public static Random 	random = new Random();
-	public static Properties prop = new Properties();
-	public static Dimension fönsterSize = new Dimension(
-			(int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2),
-			(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2*1.5));
-
-	public static void main(String... arg) {
-
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-			showMessageDialog(null, "Den angivna LookAndFeel hittades inte!","Error",ERROR_MESSAGE);
-		}
-		try {
-			robot = new Robot();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
-			prop.load(new FileInputStream(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb"));
-		} catch (Exception e) {
-			System.err.println("Properties saknas");
-		}
-		try {
-			fönsterIcon = Bild("/images/Java-icon.png").getImage();
-		} 
-		catch (Exception e) {
-			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-			showMessageDialog(null, "ImageIcon hittades inte","Filfel",ERROR_MESSAGE);
-		}
-		new Thread(new Update()).start();
-		try {
-			argString = arg[0];
-			if (argString.equals("Glosor")) {
-				new Glosor();
-				return;
-			}
-			else if (argString.equals("Mail")) {
-				new Mailkorg();
-				return;
-			}
-		} catch (Exception e) {argString ="";}
-		new Pass();
-	}
-
+	
 	Mouse(){
 		laddtext.setFont(typsnitt);
 		laddtext.setHorizontalAlignment(CENTER);
@@ -5153,7 +5151,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 				yLoc = y[1] - 20;
 			}
 			g.setColor(GREEN);
-			g.setFont(Mouse.typsnitt);
+			g.setFont(typsnitt);
 			g.drawString(Integer.toString(snakelängdx), x[1], yLoc);
 		}
 	}

@@ -1,4 +1,4 @@
-package GoJbsBraOchHa;
+package gojb;
 
 import java.awt.*;
 import java.util.*;
@@ -6,6 +6,8 @@ import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.swing.*;
+
+import static gojb.GoJbsBraOchHa.*;
 
 class GoJbMail{
 
@@ -118,7 +120,7 @@ class HämtaMail implements Runnable{
 		frame.setSize(500,500);
 		frame.setLocationRelativeTo(null);
 		frame.add(scrollBar);
-		frame.setIconImage(Mouse.fönsterIcon);
+		frame.setIconImage(fönsterIcon);
 		frame.setJMenuBar(bar);
 
 		System.out.println("Funkar");
@@ -225,7 +227,7 @@ class HämtaMail implements Runnable{
 		} catch (Exception e1) {
 
 			e1.printStackTrace();
-		}f.add(text);text.setEditable(false);f.setVisible(true);f.setSize(500, 500);f.setJMenuBar(bar);f.setIconImage(Mouse.fönsterIcon);text.setLineWrap(true);
+		}f.add(text);text.setEditable(false);f.setVisible(true);f.setSize(500, 500);f.setJMenuBar(bar);f.setIconImage(fönsterIcon);text.setLineWrap(true);
 		text.setWrapStyleWord(true);bar.add(delete);bar.add(reply);
 		try {
 			message.setFlag(Flags.Flag.SEEN, true);
