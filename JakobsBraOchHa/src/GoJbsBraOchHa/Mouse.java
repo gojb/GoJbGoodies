@@ -2234,7 +2234,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 
 
 class Miniräknare implements ActionListener, KeyListener{
-	
+
 	JButton b1 = new JButton("1"),
 			b2 = new JButton("2"),
 			b3 = new JButton("3"),
@@ -2250,7 +2250,7 @@ class Miniräknare implements ActionListener, KeyListener{
 			b12 = new JButton("*"),
 			b13 = new JButton("/"),
 			b14 = new JButton("=");
-	
+
 	JTextArea textruta = new JTextArea();
 
 	JLabel räknesätt = new JLabel(),
@@ -3119,78 +3119,14 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 	}
 
 	public void mouseClicked(MouseEvent e) {
-
-		if(a== 0 && e.getSource() == label[9]){
-			if (label[9].getIcon() == null){
-				X(9);
-			}}
-		if(a== 0 && e.getSource() == label[8]){
-			if (label[8].getIcon() == null){
-				X(8);
-			}}
-		if(a== 0 && e.getSource() == label[7]){
-			if (label[7].getIcon() == null){
-				X(7);
-			}}
-		if(a== 0 && e.getSource() == label[6]){
-			if (label[6].getIcon() == null){
-				X(6);
-			}}
-		if(a== 0 && e.getSource() == label[5]){
-			if (label[5].getIcon() == null){
-				X(5);
-			}}
-		if(a== 0 && e.getSource() == label[4]){
-			if (label[4].getIcon() == null){
-				X(4);
-			}}
-		if(a== 0 && e.getSource() == label[3]){
-			if (label[3].getIcon() == null){
-				X(3);
-			}}
-		if(a== 0 && e.getSource() == label[2]){
-			if (label[2].getIcon() == null){
-				X(2);
-			}}
-		if(a== 0 && e.getSource() == label[1]){
-			if (label[1].getIcon() == null){
-				X(1);
-			}}
-		if(a== 1 && e.getSource() == label[9]){
-			if (label[9].getIcon() == null){
-				O(9);
-			}}
-		if(a== 1 && e.getSource() == label[8]){
-			if (label[8].getIcon() == null){
-				O(8);
-			}}
-		if(a== 1 && e.getSource() == label[7]){
-			if (label[7].getIcon() == null){
-				O(7);
-			}}
-		if(a== 1 && e.getSource() == label[6]){
-			if (label[6].getIcon() == null){
-				O(6);
-			}}
-		if(a== 1 && e.getSource() == label[5]){
-			if (label[5].getIcon() == null){
-				O(5);
-			}}
-		if(a== 1 && e.getSource() == label[4]){
-			if (label[4].getIcon() == null){
-				O(4);
-			}}
-		if(a== 1 && e.getSource() == label[3]){
-			if (label[3].getIcon() == null){
-				O(3);
-			}}
-		if(a== 1 && e.getSource() == label[2]){
-			if (label[2].getIcon() == null){
-				O(2);
-			}}
-		if(a== 1 && e.getSource() == label[1]){
-			if (label[1].getIcon() == null){
-				O(1);
+		for (int i = 1; i < label.length; i++) {
+			if(e.getSource() == label[i]&&label[i].getIcon() == null){
+				if (a==0) {
+					X(i);
+				}
+				else if (a==1) {
+					O(i);
+				}
 			}
 		}
 	}
