@@ -155,14 +155,8 @@ class HämtaMail implements Runnable{
 					x=1;
 				}
 				Message msg = msgs[j];
-
-				System.err.println(msgs[6].getContent());
-
+				
 				if(!msg.isSet(Flags.Flag.DELETED)){				
-					if(msg.getSubject().contains("gej")){
-						System.out.println("oöwktrrget");
-					}
-					System.err.println("lerj");
 					if(msg.isSet(Flags.Flag.SEEN)==true){
 						System.out.println("SEEN");	
 						LäggTill(msg,Color.red);
