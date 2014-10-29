@@ -13,6 +13,6 @@ public class GoJbApplet extends JApplet{
 	}
 	public GoJbApplet() {
 		getContentPane().setBackground(Color.WHITE);
-		GoJbsBraOchHa.main("");
+		new GoJbsBraOchHa();
 	}
 }
