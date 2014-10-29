@@ -43,7 +43,7 @@ import static javax.swing.JOptionPane.*;
  * @version 1.0
  */
 public class GoJbsBraOchHa{
-	
+
 	public static String	argString;
 	public static Font 		typsnitt = new Font("Arial", 0, 40);
 	public static Image 	fönsterIcon;
@@ -53,7 +53,7 @@ public class GoJbsBraOchHa{
 	public static Dimension fönsterSize = new Dimension(
 			(int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2),
 			(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2*1.5));
-	
+
 	public static void main(String... arg) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -90,7 +90,148 @@ public class GoJbsBraOchHa{
 				return;
 			}
 		} catch (Exception e) {argString ="";}
-		new Pass();
+		new Login();
+	}
+	public static void spelaLjud(String filnamn){
+		try {
+			Clip clip = AudioSystem.getClip();
+			clip.open(AudioSystem.getAudioInputStream(Mouse.class.getResource(filnamn)));
+			clip.start();
+
+		} catch (Exception e) {
+			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+			showMessageDialog(null, "Filen: \"" + filnamn + "\" hittades inte", "Ljud", ERROR_MESSAGE);
+		}
+	}
+	public static void sparaProp(String kommentar) {
+		try {
+			prop.store(new FileWriter(new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")),kommentar);
+		} catch (Exception e) {
+			System.err.println("ga");
+			try {
+				new File((System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\")).mkdir();
+				new File((System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\")).mkdir();
+				prop.store(new FileWriter(new File(System.getProperty("user.home") + 
+						"\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), kommentar);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+				System.err.println("Problem med åtkomst till disk!");
+			}
+		}  
+	}
+	public static ImageIcon Bild(String filnamn){
+		return new ImageIcon(Mouse.class.getResource(filnamn));
+	}
+	public static void vänta(int millisekunder){
+		try {
+			Thread.sleep(millisekunder);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	public GoJbsBraOchHa() {
+		main("");
+	}
+
+}
+class Login implements ActionListener{
+	private int x;
+	private Timer timer = new Timer(30, this);	
+	private JPasswordField passwordField;
+	private JFrame användare= new JFrame(),frame = new JFrame("Verifiera dig!");
+	private JButton användareJakob = new JButton("Jakob"), användareGlenn= new JButton("Glenn");
+	private JLabel label = new JLabel("Skriv Lösenord -->");
+	private char[] correctPassword = {'U','g','g','e','n','0','6','8','4'};
+	private Cipher cipher;
+	private String key =  "Uggen0684";
+	private boolean b = true;
+	Login() {
+		try {
+			while (true) {
+				cipher = Cipher.getInstance("AES");
+				try {
+					cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key.getBytes(), "AES"));
+					break;
+				} catch (Exception e) {
+					key = key + "\0";
+				}
+			}
+			if (System.currentTimeMillis()<=Long.parseLong(new String(cipher.doFinal(BASE64DecoderStream.decode(prop.getProperty("pass").getBytes())),"ISO-8859-1"))+3600000) {
+				b = false;
+				System.out.println("Inloggad för mindre än en timme sedan");
+				passwordField.setText(String.valueOf(correctPassword));
+			}
+		} catch (Exception e) {
+			System.err.println("Logga in!");
+		}
+
+		passwordField = new JPasswordField(10);
+		passwordField.addActionListener(this);
+
+		användare.add(användareJakob);
+		användare.add(användareGlenn);
+		användare.setIconImage(fönsterIcon);
+		användare.setLayout(new FlowLayout());
+		användare.setDefaultCloseOperation(3);
+		användare.setResizable(false);
+		användare.pack();
+		användare.setLocationRelativeTo(null);
+		användareGlenn.addActionListener(e -> {
+			new Mouse();
+			användare.dispose();
+		});
+		användareJakob.addActionListener(e -> {
+			new RörandeMojäng();
+			användare.dispose();
+		});
+
+		frame.setUndecorated(true);
+		frame.setLayout(new GridLayout(0, 2));
+		frame.add(label);
+		frame.add(passwordField);
+		frame.setIconImage(fönsterIcon);
+		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setLocationRelativeTo(null);	
+		frame.setVisible(true);
+		frame.toFront();
+		timer.start();
+	}
+	public static void logout() {
+		prop.setProperty("pass", "0000000000000000");
+		sparaProp("loguot");
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (timer == e.getSource()) {
+			if (Arrays.equals(passwordField.getPassword(),correctPassword)) {
+				frame.dispose();
+				timer.stop();
+				användare.setVisible(true);
+				användare.toFront();
+				if (b) {
+					spelaLjud("/images/Inloggad.wav");
+				}
+				try {
+					cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key.getBytes(), "AES"));								
+					prop.setProperty("pass",  new String(BASE64EncoderStream.encode(cipher.doFinal(Long.toString(System.currentTimeMillis()).getBytes("ISO-8859-1")))));
+					sparaProp("login");
+					return;
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+			try {
+				if(Arrays.equals(Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor).toString().toCharArray(),correctPassword)){
+					passwordField.setText(String.valueOf(correctPassword));
+					System.out.println("Lösenord från urklipp");
+				}
+			} catch (Exception e1){}
+			if(x++ == 600){
+				timer.stop();
+				new Impossible("Tiden gick ut!! Datorn spärrad...");
+			}
+		}
 	}
 }
 @SuppressWarnings("serial")
@@ -131,7 +272,6 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 			studsItem = new JMenuItem("Öppna Studsande Objekt"),
 			snakeItem = new JMenuItem("Spela Snake"),
 			loggaUtItem = new JMenuItem("Logga ut"),
-			debugItem = new JMenuItem("Debug är nu: " + prop.getProperty("debug", "false")),
 			mandatItem = new JMenuItem("Simulator till riksdagsmandat"),
 			glosItem = new JMenuItem("Träna på glosor"),
 			flappyItem = new JMenuItem("Spela FlappyGojb"),
@@ -167,7 +307,7 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 	private static JTextArea text = new JTextArea();
 	private static boolean 	autoscroll = true;
 	public static int		antalFönster = 0;
-	
+
 	Mouse(){
 		laddtext.setFont(typsnitt);
 		laddtext.setHorizontalAlignment(CENTER);
@@ -206,7 +346,6 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 
 		autoscrollknapp.addActionListener(this);
 		loggaUtItem.addActionListener(this);
-		debugItem.addActionListener(this);
 		rörandeItem.addActionListener(this);
 		ok.addActionListener(this);
 		visaItem.addActionListener(this);
@@ -250,7 +389,6 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 		redigeraMeny.add(hastighetItem);
 		redigeraMeny.add(händelseItem);
 
-		hjälpMeny.add(debugItem);
 		hjälpMeny.add(omItem);
 
 		färgbyteMeny.add(döljItem);
@@ -453,21 +591,10 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 			huvudfönster.dispose();
 		}
 		else if (knapp.getSource()==loggaUtItem) {
-			Pass.logout();
+			Login.logout();
 			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
 			showMessageDialog(huvudfönster, "Utloggad!");
 			huvudfönster.dispose();
-		}
-		else if (knapp.getSource()==debugItem) {
-			if (!new Boolean(prop.getProperty("debug", "false"))) {
-				prop.setProperty("debug", "true");
-				debugItem.setText("Debug är nu: " +prop.getProperty("debug"));
-			}
-			else{
-				prop.setProperty("debug", "false");
-				debugItem.setText("Debug är nu: " +prop.getProperty("debug"));
-			}
-			sparaProp("debug");
 		}
 		huvudfönster.revalidate();
 		huvudfönster.repaint();
@@ -550,13 +677,6 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 			text.setCaretPosition(text.getDocument().getLength());
 		}
 	}
-	public static void vänta(int millisekunder){
-		try {
-			Thread.sleep(millisekunder);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
 
 	public void paintComponent(Graphics g){
 
@@ -582,36 +702,7 @@ class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListe
 		System.out.println("Texten ändrad till: " + texten);
 
 	}
-	public static void spelaLjud(String filnamn){
-		try {
-			Clip clip = AudioSystem.getClip();
-			clip.open(AudioSystem.getAudioInputStream(Mouse.class.getResource(filnamn)));
-			clip.start();
 
-		} catch (Exception e) {
-			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-			showMessageDialog(null, "Filen: \"" + filnamn + "\" hittades inte", "Ljud", ERROR_MESSAGE);
-		}
-	}
-	public static void sparaProp(String kommentar) {
-		try {
-			prop.store(new FileWriter(new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")),kommentar);
-		} catch (Exception e) {
-			System.err.println("ga");
-			try {
-				new File((System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\")).mkdir();
-				new File((System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\")).mkdir();
-				prop.store(new FileWriter(new File(System.getProperty("user.home") + 
-						"\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), kommentar);
-			} catch (Exception e2) {
-				e2.printStackTrace();
-				System.err.println("Problem med åtkomst till disk!");
-			}
-		}  
-	}
-	public static ImageIcon Bild(String filnamn){
-		return new ImageIcon(Mouse.class.getResource(filnamn));
-	}
 }
 class Update implements Runnable{
 	public synchronized void run(){
@@ -2108,7 +2199,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		}
 
 		else if (arg0.getSource() == lösenord){
-			new Pass();
+			new Login();
 			frame.dispose();
 		}
 
@@ -3417,198 +3508,6 @@ class TicTacToe implements MouseInputListener, KeyListener, ActionListener{
 	}
 
 	public void keyReleased(KeyEvent e) {}
-}
-
-class Pass implements ActionListener{
-
-	private int x;
-	private Timer timer = new Timer(30, this);	
-	private JPasswordField passwordField;
-	private JFrame användare = new JFrame();
-	private JFrame frame = new JFrame("Verifiera dig!");
-	private JButton användareJakob = new JButton("Jakob"),
-			användareGlenn = new JButton("Glenn");
-	private JLabel label = new JLabel("Skriv Lösenord -->");
-	private char[] correctPassword = {'U','g','g','e','n','0','6','8','4'};
-	private Cipher cipher;
-	private String key =  String.valueOf(correctPassword);
-	private String tid = new SimpleDateFormat("yy MM dd HH").format(new Date());
-	private char[] pass;
-	private static Boolean debugMode = new Boolean(prop.getProperty("debug", "false"));
-	private boolean b = true;
-	public Pass() {
-		checkLogin();
-
-		passwordField = new JPasswordField(10);
-		passwordField.addActionListener(this);
-
-		användare.add(användareJakob);
-		användare.add(användareGlenn);
-		användare.setIconImage(fönsterIcon);
-		användare.setLayout(new FlowLayout());
-		användare.setDefaultCloseOperation(3);
-		användare.setResizable(false);
-		användare.pack();
-		användare.setLocationRelativeTo(null);
-		användareGlenn.addActionListener(this);
-		användareJakob.addActionListener(this);
-
-		frame.setUndecorated(true);
-
-		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
-		frame.add(label);
-		frame.add(passwordField);
-		frame.setIconImage(fönsterIcon);
-		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setMinimumSize(frame.getSize());
-		frame.setLocationRelativeTo(null);	
-		frame.setVisible(true);
-		frame.toFront();
-		timer.start();
-
-	}
-	public static void logout() {
-
-		prop.setProperty("pass", "0000000000000000");
-		sparaProp("loguot");
-
-	}
-	private void checkLogin() {	
-		Scanner pr = null;
-		Scanner pc = null;
-		try {
-			while (true) {
-				cipher = Cipher.getInstance("AES");
-				try {
-					cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key.getBytes(), "AES"));
-					break;
-				} catch (Exception e) {
-					key = key + "\0";
-				}
-			}
-
-			String p = prop.getProperty("pass");
-			byte[] a = BASE64DecoderStream.decode(p.getBytes());
-
-			String f = new String(cipher.doFinal(a),"ISO-8859-1");
-			pr = new Scanner(f);
-			pc = new Scanner(tid);
-			if (pr.next().equals(pc.next())&&pr.next().equals(pc.next())&&pr.next().equals(pc.next())) {
-				Double ett = Double.parseDouble(pr.next());
-				Double två = Double.parseDouble(pc.next());
-				pc.close();
-				pr.close();
-				if (debugMode) {
-					System.out.println(ett);
-					System.out.println(två);
-				}
-
-				if (två>=ett&&två<ett+2) {
-					b = false;
-					System.out.println("Inloggad för mindre än två timmar sedan");
-					pass = correctPassword;
-				}
-			}
-			if (debugMode) {
-				System.out.println("prop " + p);
-				System.out.print("byte " + a + " ");
-				for (byte b : a) {
-					System.out.print(b);
-				}
-				System.out.println();
-
-				System.out.println("Avkrypterad " + f);
-
-				System.out.println(System.getProperty("user.dir"));
-			}
-
-
-		} catch (Exception e) {
-
-			System.err.println("Logga in!");
-		}
-
-
-		try {
-			pc.close();
-			pr.close();
-		} catch (Exception e) {}
-	}
-
-	public void actionPerformed(ActionEvent e) {
-
-		if (timer == e.getSource()) {
-
-			if (Arrays.equals(pass,correctPassword)) {
-				frame.dispose();
-				timer.stop();
-				användare.setVisible(true);
-				användare.toFront();
-				if (b) {
-					spelaLjud("/images/Inloggad.wav");
-				}
-				try {
-					cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key.getBytes(), "AES"));
-					byte[] bs = null;
-					while (true) {
-						try {
-							bs = cipher.doFinal(tid.getBytes("ISO-8859-1"));
-							break;
-						} catch (Exception e1) {
-							tid = tid + "\0";
-						}
-					}
-
-					String string = new String(BASE64EncoderStream.encode(bs));
-
-					prop.setProperty("pass", string);
-					sparaProp("login");
-					if (debugMode) {
-						System.err.println("Sparar " + tid);
-						System.err.print("byte " +  bs + " ");
-						for (byte b : bs) {
-							System.out.print(b);
-						}
-						System.out.println();
-						System.err.println("Krypterat " +string);
-					}
-					return;
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-			}
-			pass = passwordField.getPassword();
-			try {
-				if(Arrays.equals(Toolkit.getDefaultToolkit().getSystemClipboard()
-						.getData(DataFlavor.stringFlavor).toString()
-						.toCharArray(),correctPassword)){
-					pass = correctPassword;
-					System.out.println("Lösenord från urklipp");
-
-				}
-			} catch (Exception e1){}
-
-
-			x++;
-			if(x == 600){
-				timer.stop();
-				new Impossible("Tiden gick ut!! Datorn spärrad...");
-			}
-
-		}
-
-		else if(e.getSource() == användareJakob){
-			new Mouse();
-			användare.dispose();
-		}
-		else if(e.getSource() == användareGlenn){
-			new RörandeMojäng();
-			användare.dispose();
-		}
-
-	}
-
 }
 @SuppressWarnings("serial")
 class SkapaFärg extends JPanel implements ActionListener{
