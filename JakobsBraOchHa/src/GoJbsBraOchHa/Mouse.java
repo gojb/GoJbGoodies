@@ -41,7 +41,6 @@ import static javax.swing.JOptionPane.*;
  * @see <a href="http://gojb.bl.ee/">http://gojb.bl.ee/</a>
  * @version 1.0
  */
-
 @SuppressWarnings("serial")
 public class Mouse extends JPanel implements ActionListener,MouseInputListener,KeyListener,WindowListener{
 
