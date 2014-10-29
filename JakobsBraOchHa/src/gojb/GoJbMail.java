@@ -96,7 +96,7 @@ class HämtaMail implements Runnable{
 	Boolean deleteBoolean = false;
 
 	JFrame f = new JFrame();
-	
+
 	int x;
 
 	JMenuBar bar = new JMenuBar();
@@ -123,12 +123,14 @@ class HämtaMail implements Runnable{
 		frame.setIconImage(fönsterIcon);
 		frame.setJMenuBar(bar);
 
+		f.setUndecorated(true);
+
 		System.out.println("Funkar");
-		
+
 		scrollBar.getVerticalScrollBar().setUnitIncrement(20);
 
 		panel.setLayout(new GridLayout(0,1));
-		
+
 		frame.revalidate();
 		frame.repaint();
 	}
@@ -154,7 +156,7 @@ class HämtaMail implements Runnable{
 				Message msg = msgs[j];
 
 				System.err.println(msgs[6].getContent());
-				
+
 				if(!msg.isSet(Flags.Flag.DELETED)){				
 					if(msg.getSubject().contains("gej")){
 						System.out.println("oöwktrrget");
@@ -186,7 +188,7 @@ class HämtaMail implements Runnable{
 		delete.setSize(100,20);
 		GoJb.setSize(150,20);
 		GoJb.setBackground(Color.blue);
-		
+
 		GoJb.addActionListener(e -> {try {
 			Mailkorg.SkickaFönster(message.getFrom()[0].toString(),"Svar på GoJbGuide",true);
 		} catch (Exception e1) {
@@ -200,7 +202,7 @@ class HämtaMail implements Runnable{
 		} catch (MessagingException e2) {
 			e2.printStackTrace();
 		}
-		
+
 		delete.addActionListener(e -> {try {
 			message.setFlag(Flags.Flag.DELETED, true);
 			b.setForeground(Color.magenta);
@@ -227,7 +229,7 @@ class HämtaMail implements Runnable{
 		} catch (Exception e1) {
 
 			e1.printStackTrace();
-		}f.add(text);text.setEditable(false);f.setVisible(true);f.setSize(500, 500);f.setJMenuBar(bar);f.setIconImage(fönsterIcon);text.setLineWrap(true);
+		}f.add(text);f.setLocation(frame.getX()-500, frame.getY());text.setEditable(false);f.setVisible(true);f.setSize(500, 500);f.setJMenuBar(bar);f.setIconImage(fönsterIcon);text.setLineWrap(true);
 		text.setWrapStyleWord(true);bar.add(delete);bar.add(reply);
 		try {
 			message.setFlag(Flags.Flag.SEEN, true);
