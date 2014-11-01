@@ -30,6 +30,7 @@ import static javax.swing.SwingConstants.*;
 import static java.awt.Color.*;
 import static javax.swing.JFrame.*;
 import static javax.swing.JOptionPane.*;
+import static java.awt.Toolkit.*;
 
 /**
  * Det här programmet innehåller lite
@@ -51,14 +52,14 @@ public class GoJbsBraOchHa{
 	public static Random 	random = new Random();
 	public static Properties prop = new Properties();
 	public static Dimension fönsterSize = new Dimension(
-			(int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2),
-			(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2*1.5));
+			(int)(getDefaultToolkit().getScreenSize().getWidth()/2),
+			(int)(getDefaultToolkit().getScreenSize().getHeight()/2*1.5));
 
 	public static void main(String... arg) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
-			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+			((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 			showMessageDialog(null, "Den angivna LookAndFeel hittades inte!","Error",ERROR_MESSAGE);
 		}
 		try {
@@ -75,7 +76,7 @@ public class GoJbsBraOchHa{
 			fönsterIcon = Bild("/images/Java-icon.png").getImage();
 		} 
 		catch (Exception e) {
-			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+			((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 			showMessageDialog(null, "ImageIcon hittades inte","Filfel",ERROR_MESSAGE);
 		}
 		new Thread(new Update()).start();
@@ -95,11 +96,11 @@ public class GoJbsBraOchHa{
 	public static void spelaLjud(String filnamn){
 		try {
 			Clip clip = AudioSystem.getClip();
-			clip.open(AudioSystem.getAudioInputStream(Mouse.class.getResource(filnamn)));
+			clip.open(AudioSystem.getAudioInputStream(GoJbsBraOchHa.class.getResource(filnamn)));
 			clip.start();
 
 		} catch (Exception e) {
-			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+			((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 			showMessageDialog(null, "Filen: \"" + filnamn + "\" hittades inte", "Ljud", ERROR_MESSAGE);
 		}
 	}
@@ -109,10 +110,9 @@ public class GoJbsBraOchHa{
 		} catch (Exception e) {
 			System.err.println("ga");
 			try {
-				new File((System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\")).mkdir();
-				new File((System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\")).mkdir();
-				prop.store(new FileWriter(new File(System.getProperty("user.home") + 
-						"\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), kommentar);
+				new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\").mkdir();
+				new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\").mkdir();
+				prop.store(new FileWriter(new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), kommentar);
 			} catch (Exception e2) {
 				e2.printStackTrace();
 				System.err.println("Problem med åtkomst till disk!");
@@ -120,7 +120,7 @@ public class GoJbsBraOchHa{
 		}  
 	}
 	public static ImageIcon Bild(String filnamn){
-		return new ImageIcon(Mouse.class.getResource(filnamn));
+		return new ImageIcon(GoJbsBraOchHa.class.getResource(filnamn));
 	}
 	public static void vänta(int millisekunder){
 		try {
@@ -140,7 +140,6 @@ class Login implements ActionListener{
 	private JPasswordField passwordField = new JPasswordField(10);
 	private JFrame användare= new JFrame(),frame = new JFrame("Verifiera dig!");
 	private JButton användareJakob = new JButton("Jakob"), användareGlenn= new JButton("Glenn");
-	private JLabel label = new JLabel("Skriv Lösenord -->");
 	private char[] correctPassword = {'U','g','g','e','n','0','6','8','4'};
 	private Cipher cipher;
 	private String key = String.valueOf(correctPassword);
@@ -186,7 +185,7 @@ class Login implements ActionListener{
 
 		frame.setUndecorated(true);
 		frame.setLayout(new GridLayout(0, 2));
-		frame.add(label);
+		frame.add(new JLabel("Skriv Lösenord -->"));
 		frame.add(passwordField);
 		frame.setIconImage(fönsterIcon);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -221,7 +220,7 @@ class Login implements ActionListener{
 				}
 			}
 			try {
-				if(Arrays.equals(Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor).toString().toCharArray(),correctPassword)){
+				if(Arrays.equals(getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor).toString().toCharArray(),correctPassword)){
 					passwordField.setText(String.valueOf(correctPassword));
 					System.out.println("Lösenord från urklipp");
 				}
@@ -244,14 +243,14 @@ class Mouse implements ActionListener,MouseInputListener,KeyListener,WindowListe
 
 	private JPanel knappPanel = new JPanel(),
 			mittPanel=new JPanel(){ private static final long serialVersionUID = 1L;
-		protected void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			Graphics2D g2 = (Graphics2D)g;
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g2.setFont(new Font("Serif", Font.ROMAN_BASELINE, 35));
-			g2.drawString(texten,posX, posY); 
-			textbredd = g2.getFontMetrics().stringWidth(texten);
-		}
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2 = (Graphics2D)g;
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g2.setFont(new Font("Serif", Font.ROMAN_BASELINE, 35));
+				g2.drawString(texten,posX, posY); 
+				textbredd = g2.getFontMetrics().stringWidth(texten);
+			}
 	};
 
 	private JMenuBar menyBar = new JMenuBar();
@@ -504,7 +503,6 @@ class Mouse implements ActionListener,MouseInputListener,KeyListener,WindowListe
 	}
 
 	public void actionPerformed(ActionEvent knapp) {
-		//		System.out.println(knapp.getSource());
 		skrivHändelsetext(knapp.getSource().toString());
 		if (knapp.getSource()== startTimer){
 
@@ -599,7 +597,7 @@ class Mouse implements ActionListener,MouseInputListener,KeyListener,WindowListe
 		}
 		else if (knapp.getSource()==loggaUtItem) {
 			Login.logout();
-			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
+			((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
 			showMessageDialog(huvudfönster, "Utloggad!");
 			huvudfönster.dispose();
 		}
@@ -671,8 +669,8 @@ class Mouse implements ActionListener,MouseInputListener,KeyListener,WindowListe
 	public void windowActivated(WindowEvent e) {}
 	public void windowDeactivated(WindowEvent e) {}
 	public void mousePressed(MouseEvent e) {}
-	public void mouseClicked(MouseEvent arg0) {}
-	public void mouseReleased(MouseEvent arg0) {}
+	public void mouseClicked(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {}
 
 	public static void skrivHändelsetext(String Händlsetext){
 		text.append(Händlsetext + "\n");
@@ -982,17 +980,9 @@ class Räknare implements ActionListener{
 	JPanel 	RäknarKnappar = new JPanel(),
 			RäknarPanel = new JPanel();
 
-	JButton Miniränkarknapp0 = new JButton("0"),
-			Miniränkarknapp1 = new JButton("1"),
-			Miniränkarknapp2 = new JButton("2"),
-			Miniränkarknapp3 = new JButton("3"),
-			Miniränkarknapp4 = new JButton("4"),
-			Miniränkarknapp5 = new JButton("5"),
-			Miniränkarknapp6 = new JButton("6"),
-			Miniränkarknapp7 = new JButton("7"),
-			Miniränkarknapp8 = new JButton("8"),
-			Miniränkarknapp9 = new JButton("9"),
-			MiniränkarknappPlus = new JButton("+"),
+	JButton[] sifferButtons = new JButton[10];
+
+	JButton	MiniränkarknappPlus = new JButton("+"),
 			MiniränkarknappMinus = new JButton("-"),
 			MiniränkarknappGånger = new JButton("*"),
 			MiniränkarknappDelat = new JButton("/"),
@@ -1014,36 +1004,31 @@ class Räknare implements ActionListener{
 	public Räknare() {
 
 		RäknarKnappar.setLayout(new GridLayout(5,5,5,5));
-		RäknarKnappar.add(Miniränkarknapp1);
-		RäknarKnappar.add(Miniränkarknapp2);
-		RäknarKnappar.add(Miniränkarknapp3);
-		RäknarKnappar.add(MiniränkarknappPlus);
-		RäknarKnappar.add(Miniränkarknapp4);
-		RäknarKnappar.add(Miniränkarknapp5);
-		RäknarKnappar.add(Miniränkarknapp6);
-		RäknarKnappar.add(MiniränkarknappMinus);
-		RäknarKnappar.add(Miniränkarknapp7);
-		RäknarKnappar.add(Miniränkarknapp8);
-		RäknarKnappar.add(Miniränkarknapp9);
-		RäknarKnappar.add(MiniränkarknappGånger);
-		RäknarKnappar.add(Punkt);
-		RäknarKnappar.add(Miniränkarknapp0);
-		RäknarKnappar.add(MiniränkarknappLikamed);	
-		RäknarKnappar.add(MiniränkarknappDelat);
-		RäknarKnappar.add(C);
-		RäknarKnappar.setBackground(white);
 
-		Miniränkarknapp0.setPreferredSize(new Dimension(120,100));
-		Miniränkarknapp0.addActionListener(this);
-		Miniränkarknapp1.addActionListener(this);
-		Miniränkarknapp2.addActionListener(this);
-		Miniränkarknapp3.addActionListener(this);
-		Miniränkarknapp4.addActionListener(this);
-		Miniränkarknapp5.addActionListener(this);
-		Miniränkarknapp6.addActionListener(this);
-		Miniränkarknapp7.addActionListener(this);
-		Miniränkarknapp8.addActionListener(this);
-		Miniränkarknapp9.addActionListener(this);
+		for (int i = 1; i < sifferButtons.length; i++) {
+			sifferButtons[i]=new JButton(Integer.toString(i));
+			sifferButtons[i].addActionListener(this);
+			RäknarKnappar.add(sifferButtons[i]);
+			if (i==3) {
+				RäknarKnappar.add(MiniränkarknappPlus);
+			}
+			else if (i==6) {
+				RäknarKnappar.add(MiniränkarknappMinus);
+			}
+			else if (i==9) {
+				sifferButtons[0] = new JButton("0");
+				sifferButtons[0].setPreferredSize(new Dimension(120,100));
+				sifferButtons[0].addActionListener(this);
+				RäknarKnappar.add(MiniränkarknappGånger);
+				RäknarKnappar.add(Punkt);
+				RäknarKnappar.add(sifferButtons[0]);
+				RäknarKnappar.add(MiniränkarknappLikamed);	
+				RäknarKnappar.add(MiniränkarknappDelat);
+				RäknarKnappar.add(C);
+				RäknarKnappar.setBackground(white);
+				
+			}
+		}
 		MiniränkarknappGånger.addActionListener(this);
 		MiniränkarknappDelat.addActionListener(this);
 		MiniränkarknappMinus.addActionListener(this);
@@ -1114,65 +1099,29 @@ class Räknare implements ActionListener{
 			Räknesätt.setText("");
 			nyräkning = true;
 		}
-		else if (e.getSource() == Miniränkarknapp0){ 
-			Räknartext.append("0");
-
+		else {
+			for (int i = 0; i < sifferButtons.length; i++) {
+				if (e.getSource()==sifferButtons[i]) {
+					Räknartext.append(Integer.toString(i));
+					return;
+				}
+			}
 		}
-		else if (e.getSource() == Miniränkarknapp1){ 
-			Räknartext.append("1");
-
-		}
-		else if (e.getSource() == Miniränkarknapp2){ 
-			Räknartext.append("2");
-
-		}
-		else if (e.getSource() == Miniränkarknapp3){ 
-			Räknartext.append("3");
-
-		}
-		else if (e.getSource() == Miniränkarknapp4){ 
-			Räknartext.append("4");
-
-		}
-		else if (e.getSource() == Miniränkarknapp5){ 
-			Räknartext.append("5");
-
-		}
-		else if (e.getSource() == Miniränkarknapp6){ 
-			Räknartext.append("6");
-
-		}
-		else if (e.getSource() == Miniränkarknapp7){ 
-			Räknartext.append("7");
-
-		}
-		else if (e.getSource() == Miniränkarknapp8){ 
-			Räknartext.append("8");
-
-		}
-		else if (e.getSource() == Miniränkarknapp9){ 
-			Räknartext.append("9");
-
-		}
-		else if (e.getSource() == Punkt) {
+		if (e.getSource() == Punkt) {
 			Räknartext.append(".");
 		}
-
 	}
 	public void RäknaUt() {
-
 		try {
 			a = Double.parseDouble(Summa.getText());
 		} catch (Exception e) {
 			a = 0;
 		}
-
 		try {
 			b = Double.parseDouble(Räknartext.getText());
 		} catch (Exception e) {
 			b = 0;
 		}
-
 		if (Räknesätt.getText() == "+"){
 			Summa.setText(Double.toString(a+b));
 		}
@@ -1183,7 +1132,6 @@ class Räknare implements ActionListener{
 			Summa.setText(Double.toString(a*b));
 		}
 		else if (Räknesätt.getText() == "/") {
-
 			Summa.setText(Double.toString(a/b));
 		}
 		else if (Räknesätt.getText() == "del") {
@@ -1255,7 +1203,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 	private void GameOver(String PoängTillVänsterEllerHöger) {
 		timer.stop();
 		System.out.println("Game over!");
-		Toolkit.getDefaultToolkit().beep();
+		getDefaultToolkit().beep();
 
 		if (PoängTillVänsterEllerHöger=="Vänster"){
 			PoängVänster++;
@@ -1706,7 +1654,8 @@ class Glosor{
 				if (!b) {
 					System.exit(0);
 				}
-			}});
+			}
+		});
 		blanda();
 		sätt();
 	}
@@ -2995,13 +2944,13 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 
 		Image image = Bild("/images/Nope.png").getImage();
 
-		Cursor c = Toolkit.getDefaultToolkit().createCustomCursor(
+		Cursor c = getDefaultToolkit().createCustomCursor(
 				image , new Point(frame.getX(),frame.getY()), "img");
 		a=textString;
 
 		frame.setIconImage(fönsterIcon);
 		frame.setCursor(c);
-		frame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+		frame.setSize(getDefaultToolkit().getScreenSize());
 		frame.add(this);
 		frame.setLocationRelativeTo(null);
 		frame.setUndecorated(true);
@@ -3731,7 +3680,7 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 			clip.open(AudioSystem.getAudioInputStream(getClass().getResource(Filnamn)));
 
 		} catch (Exception e) {
-			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+			((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 			showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", "Ljud", ERROR_MESSAGE);
 		}
 
@@ -3764,7 +3713,7 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 			clip.open(AudioSystem.getAudioInputStream(getClass().getResource(Filnamn)));
 
 		} catch (Exception e) {
-			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+			((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 			showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", "Ljud", ERROR_MESSAGE);
 		}
 	}
@@ -3818,7 +3767,7 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 			clip.open(AudioSystem.getAudioInputStream(getClass().getResource(Filnamn)));
 
 		} catch (Exception e) {
-			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+			((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 			showMessageDialog(null, "Filen: \"" + Filnamn + "\" hittades inte", 
 					"Ljud", ERROR_MESSAGE);
 		}
@@ -4843,7 +4792,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 
 		gameover = true;
 
-		((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+		((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 
 		if (oneplayer) {
 			Scanner scanner = new Scanner(highscore[5]);
@@ -5050,13 +4999,13 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 			if (x[1]==pluppX&&y[1]==pluppY) {
 				PlaceraPlupp();
 				snakelängdx++;
-				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
+				((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
 				System.err.println(snakelängdx);
 			}
 			if (z[1]==pluppX&&q[1]==pluppY&&!oneplayer) {
 				PlaceraPlupp();
 				snakelängdz++;
-				((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
+				((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
 				System.err.println(snakelängdz);
 			}
 			if (riktning=="ner") {
