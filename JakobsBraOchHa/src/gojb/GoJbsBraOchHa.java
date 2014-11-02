@@ -5181,3 +5181,83 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 		}
 	};
 }
+@SuppressWarnings("serial")
+class Kurve implements ActionListener,KeyListener{
+	ArrayList<Pixel> pixels = new ArrayList<>();
+	private final int PIXEL = 20;
+	Timer timer = new Timer(10, this);
+	GoJbFrame frame = new GoJbFrame("Kurve");
+	public Kurve() {
+		frame.add(label);
+		timer.start();
+		frame.revalidate();
+		frame.addKeyListener(this);
+	}
+	
+	JLabel label = new JLabel(){
+		protected void paintComponent(Graphics g) {
+			Graphics2D g2=(Graphics2D) g;
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			for (Pixel pixel : pixels) {
+				pixel.draw(g2);
+			}
+		}
+	};
+	int x,y,a,b,högera;
+	boolean höger,vänster;
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (högera--<=0&&höger) {
+			a=1	;	
+		}
+		else {
+			a=0;
+		}
+		x=x+a;
+		if (vänster) {
+			b=1;
+		}
+		else {
+			b=0;
+		}
+		pixels.add(new Pixel(x, y=y+b));
+		frame.repaint();
+	}
+	@Override
+	public void keyTyped(KeyEvent e) {}
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode()==KeyEvent.VK_LEFT) {
+			vänster=true;
+		}
+		else if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
+			höger=true;
+		}
+	}
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if (e.getKeyCode()==KeyEvent.VK_LEFT) {
+			vänster=false;
+		}
+		else if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
+			höger=false;
+		}
+	}
+	class Pixel{
+		private int x,y;
+		public Pixel(int x,int y) {
+			this.x=x;
+			this.y=y;
+		}
+		void draw(Graphics2D g){
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g.fillOval(x, y, PIXEL,PIXEL);
+			
+//			g.setColor(black);
+////			g.setStroke(new BasicStroke(PIXEL));
+//			g.fillArc(50, 50, 50, 50, 0, 100);
+//			g.setColor(g.getBackground());
+//			g.fillArc(50, 50, 30, 30, 0, 100);			
+		}
+	}
+}
