@@ -47,14 +47,11 @@ public class GoJbsBraOchHa{
 
 	public static String	argString;
 	public static Font 		typsnitt = new Font("Arial", 0, 40);
-	public static Image 	fönsterIcon;
 	public static Robot		robot;
 	public static Random 	random = new Random();
 	public static Properties prop = new Properties();
-	public static Dimension fönsterSize = new Dimension(
-			(int)(getDefaultToolkit().getScreenSize().getWidth()/2),
-			(int)(getDefaultToolkit().getScreenSize().getHeight()/2*1.5));
-
+	public static final Image 	fönsterIcon = Bild("/images/Java-icon.png").getImage();
+	public static final Dimension SKÄRM_SIZE = new Dimension(getDefaultToolkit().getScreenSize());
 	public static void main(String... arg) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -71,13 +68,6 @@ public class GoJbsBraOchHa{
 			prop.load(new FileInputStream(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb"));
 		} catch (Exception e) {
 			System.err.println("Properties saknas");
-		}
-		try {
-			fönsterIcon = Bild("/images/Java-icon.png").getImage();
-		} 
-		catch (Exception e) {
-			((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-			showMessageDialog(null, "ImageIcon hittades inte","Filfel",ERROR_MESSAGE);
 		}
 		new Thread(new Update()).start();
 		try {
@@ -120,7 +110,14 @@ public class GoJbsBraOchHa{
 		}  
 	}
 	public static ImageIcon Bild(String filnamn){
-		return new ImageIcon(GoJbsBraOchHa.class.getResource(filnamn));
+		ImageIcon icon = null;
+		try {
+			icon = new ImageIcon(GoJbsBraOchHa.class.getResource(filnamn));
+		} catch (Exception e) {
+			((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+			showMessageDialog(null, "ImageIcon \""+filnamn+"\" hittades inte","Filfel",ERROR_MESSAGE);
+		}
+		return icon;
 	}
 	public static void vänta(int millisekunder){
 		try {
@@ -132,7 +129,22 @@ public class GoJbsBraOchHa{
 	public GoJbsBraOchHa() {
 		main("");
 	}
-
+	public static WindowListener autoListener = new WindowListener() {
+		public void windowOpened(WindowEvent e) {}public void windowIconified(WindowEvent e) {}
+		public void windowDeiconified(WindowEvent e) {}public void windowDeactivated(WindowEvent e) {}
+		public void windowClosing(WindowEvent e) {}public void windowActivated(WindowEvent e) {}
+		public void windowClosed(WindowEvent e) {
+			boolean b = false;
+			for (Frame frame : JFrame.getFrames()) {
+				if (frame.isVisible()) {
+					b = true;
+				}
+			}
+			if (!b) {
+				System.exit(0);
+			}
+		}
+	};
 }
 class Login implements ActionListener{
 	private int x;
@@ -282,7 +294,8 @@ class Mouse implements ActionListener,MouseInputListener,KeyListener,WindowListe
 			mandatItem = new JMenuItem("Simulator till riksdagsmandat"),
 			glosItem = new JMenuItem("Träna på glosor"),
 			flappyItem = new JMenuItem("Spela FlappyGojb"),
-			glItem = new JMenuItem("3d");
+			glItem = new JMenuItem("3d"),
+			kurveItem = new JMenuItem("Kurve");
 
 	private JButton knapp1 = new JButton("Blå"),
 			knapp2 = new JButton("Grön"),
@@ -350,6 +363,7 @@ class Mouse implements ActionListener,MouseInputListener,KeyListener,WindowListe
 		glosItem.addActionListener(e -> new Glosor());
 		flappyItem.addActionListener(e -> new FlappyGoJb());
 		glItem.addActionListener(e -> new FullscreenExample().start());
+		kurveItem.addActionListener(e -> new Kurve());
 
 		autoscrollknapp.addActionListener(this);
 		loggaUtItem.addActionListener(this);
@@ -386,6 +400,7 @@ class Mouse implements ActionListener,MouseInputListener,KeyListener,WindowListe
 		arkivMeny.add(glosItem);
 		arkivMeny.add(flappyItem);
 		arkivMeny.add(glItem);
+		arkivMeny.add(kurveItem);
 		arkivMeny.addSeparator();
 		arkivMeny.add(loggaUtItem);
 		arkivMeny.add(avslutaItem);
@@ -457,7 +472,7 @@ class Mouse implements ActionListener,MouseInputListener,KeyListener,WindowListe
 		om.setLocationRelativeTo(huvudfönster);
 
 		huvudfönster.setJMenuBar(menyBar);
-		huvudfönster.setSize(fönsterSize);
+		huvudfönster.setSize(SKÄRM_SIZE.width/2,(int)(SKÄRM_SIZE.height/2*1.5));
 		huvudfönster.setLayout(new BorderLayout());
 		huvudfönster.setMinimumSize(new Dimension(400,400));
 		huvudfönster.addKeyListener(this);
@@ -1026,7 +1041,7 @@ class Räknare implements ActionListener{
 				RäknarKnappar.add(MiniränkarknappDelat);
 				RäknarKnappar.add(C);
 				RäknarKnappar.setBackground(white);
-				
+
 			}
 		}
 		MiniränkarknappGånger.addActionListener(this);
@@ -4568,31 +4583,30 @@ class ReggPlåtar implements ActionListener{
 }
 @SuppressWarnings("serial")
 class Snake extends JPanel implements KeyListener, ActionListener, WindowListener, ComponentListener{
+	private enum Spelläge {ONE,TWO,CLIENT,SERVER};
+	Spelläge spelläge;
 	private final int MAXIMUM = 101;
-	private static JFrame frame = new JFrame("Snake"), start = new JFrame("Start"),väntframe= new JFrame(),highFrame=new JFrame("Highscore");
+	private JFrame frame = new JFrame("Snake"), start = new JFrame("Start"),väntframe= new JFrame(),highFrame=new JFrame("Highscore");
 	private final int startlängd=3;
-	private int	pixelstorlek;
+	private final int pixelstorlek=Math.round(SKÄRM_SIZE.width/140);
 	private int[] x=new int[MAXIMUM],y=new int[MAXIMUM],z=new int[MAXIMUM],q=new int[MAXIMUM];
 	private int snakelängdx,snakelängdz=-1,pluppX,pluppY,s=1,a=1,svartPoäng,cyanPoäng,yLoc;
 	private Timer timer = new Timer(100, this);
 	private static String riktning = "ner",riktningz = "upp";
 	private BufferedReader in;
 	private PrintWriter out;
-	private boolean förlust, paused=false,gameover,b,oneplayer;
-	private static boolean client;
+	private boolean förlust, paused=false,gameover,b;
 	private JButton local = new JButton("Play two on this computer"),
 			online = new JButton("Play online"),
 			one = new JButton("Single Player");
 	private String[] highscore = new String[6];
 
 	public Snake(){
-		pixelstorlek = Math.round(fönsterSize.width/70);
-
+		setOpaque(true);
 		setBackground(white);
 		setPreferredSize(new Dimension(pixelstorlek*50, pixelstorlek*50));
 		setMaximumSize(new Dimension(pixelstorlek*50, pixelstorlek*50));
 		setMinimumSize(new Dimension(pixelstorlek*50, pixelstorlek*50));
-		setOpaque(true);
 
 		frame.setLayout(new BorderLayout());
 		frame.add(this,BorderLayout.CENTER);		
@@ -4604,7 +4618,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 		frame.addWindowListener(this);
 		frame.getContentPane().setBackground(black);
 		frame.addComponentListener(this);	
-		frame.setDefaultCloseOperation(3);
+		frame.setDefaultCloseOperation(2);
 
 		start.setVisible(true);
 		start.setSize(240,140);
@@ -4613,9 +4627,11 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 		start.add(one);
 		start.add(local);
 		start.add(online);
-		start.setDefaultCloseOperation(3);
+		start.setDefaultCloseOperation(2);
+		start.setIconImage(fönsterIcon);
 
 		local.addActionListener(e -> {
+			spelläge=Spelläge.TWO;
 			start.dispose();
 			frame.setVisible(true);
 			paused=true;Restart();
@@ -4624,7 +4640,8 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 			frame.repaint();
 		});
 		one.addActionListener(e -> {
-			oneplayer=true;
+			spelläge=Spelläge.ONE;
+			start.dispose();
 			frame.setVisible(true);
 			Restart();
 			highscore[0]= "";
@@ -4663,9 +4680,10 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 	}
 	void online(){
 		Thread runnable = new Thread(new a());
-		String[]strings={"Server", "Klient" };
+		String[]strings={"Server", "Klient"};
 		int i = showOptionDialog(frame, "Server eller klient?", "Multiplayer", DEFAULT_OPTION, QUESTION_MESSAGE, null, strings, 0);
 		if (i==0) {
+			spelläge=Spelläge.SERVER;
 			start.dispose();
 			JLabel jLabel= new JLabel("Väntar på anslutning...",Bild("/images/loading.gif"),CENTER);
 
@@ -4681,6 +4699,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 			timers.start();
 		}
 		else if (i==1) {
+			spelläge=Spelläge.CLIENT;
 			try {
 				@SuppressWarnings("resource")
 				Socket socket = new Socket(showInputDialog("Adress till server"), 11622);
@@ -4694,7 +4713,6 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 			förlust=false;
 			new Thread(){
 				public void run() {
-					client=true;
 					Scanner scanner = null;
 					while (true) {
 						try {
@@ -4794,7 +4812,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 
 		((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 
-		if (oneplayer) {
+		if (spelläge==Spelläge.ONE) {
 			Scanner scanner = new Scanner(highscore[5]);
 			int hs = scanner.nextInt();
 			scanner.close();
@@ -4869,27 +4887,25 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 		else{		
 			String [] arr = {"upp", "ner", "höger", "vänster"};
 
-			int select = random.nextInt(arr.length); 
-
-			riktning=arr[select];
+			riktning=arr[random.nextInt(arr.length)];
 			snakelängdx = startlängd;
-			if (!oneplayer) {
-				snakelängdz = startlängd;
-			}
 			x[1]=posx;
 			y[1]=posy;
+			s=1;
 			for (int i = 2; i < MAXIMUM; i++) {
 				x[i]=-2;
 				q[i]=-2;
 				y[i]=-2;
 				z[i]=-2;
 			}
-			if (!oneplayer) {
+			if (spelläge!=Spelläge.ONE) {
+				riktningz=arr[random.nextInt(arr.length)];
+				snakelängdz = startlängd;
 				z[1] = posyz;
 				q[1] = posyq;
+				a=1;
 			}
 			else {
-				z[1]=-2;
 				z[1]=-2;
 			}
 			PlaceraPlupp();
@@ -4912,8 +4928,6 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 			g.setColor(blue);
 			g.setFont(new Font(null, 0, 25));
 			g.drawString("Spelet pausat. Tryck på mellanslag för att fortsätta.", 10, getHeight()/2);
-			frame.revalidate();
-			frame.repaint();
 		}
 		if (förlust) {
 			g.setColor(red);
@@ -4924,8 +4938,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 		g.setColor(red);
 		g.drawOval(pluppX, pluppY, pixelstorlek-2, pixelstorlek-2);
 		g.fillOval(pluppX, pluppY, pixelstorlek-2, pixelstorlek-2);
-
-		if (client) {
+		if (spelläge==Spelläge.CLIENT) {
 			for (int i = 1; i <= snakelängdx; i++) {
 				g.setColor(black);
 
@@ -4940,38 +4953,40 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 			}
 			return;
 		}
+		else if (spelläge==Spelläge.SERVER) {
+			try {
+				out.print("B ");
+				for (int i = 1; i <= snakelängdx; i++) {
+					out.print(x[i] / pixelstorlek + " " + y[i] / pixelstorlek
+							+ " ");
+				}
+				out.println();
+				out.print("C ");
+				for (int i = 1; i <= snakelängdz; i++) {
+					out.print(z[i] / pixelstorlek + " " + q[i] / pixelstorlek
+							+ " ");
+				}
+				out.println();
+				out.println("P " + pluppX / pixelstorlek + " " + pluppY
+						/ pixelstorlek);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		g.setColor(black);
 		g.drawRect(x[1], y[1], pixelstorlek-2, pixelstorlek-2);
 		g.fillRect(x[1], y[1], pixelstorlek-2, pixelstorlek-2);
-		if (!oneplayer) {
-			g.setColor(cyan);
-			g.drawRect(z[1], q[1], pixelstorlek - 2, pixelstorlek - 2);
-			g.fillRect(z[1], q[1], pixelstorlek - 2, pixelstorlek - 2);
-		}
-		try {
-			out.print("B ");
-			for (int i = 1; i <= snakelängdx; i++) {
-				out.print(x[i]/pixelstorlek+" "+y[i]/pixelstorlek+" ");
-			}
-			out.println();
-			out.print("C ");
-			for (int i = 1; i <= snakelängdz; i++) {
-				out.print(z[i]/pixelstorlek+" "+q[i]/pixelstorlek+" ");
-			}
-			out.println();
-			out.println("P " + pluppX/pixelstorlek + " " + pluppY/pixelstorlek);
-		} catch (Exception e) {
-
-		}
 		for (int i = snakelängdx+1; i >= 2; i--) {
-			g.setColor(black);
 			x[i]=x[i-1];
 			y[i]=y[i-1];
 			g.drawRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
 			g.fillRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
 		}
 		s=1;
-		if (!oneplayer) {
+		if (spelläge!=Spelläge.ONE) {
+			g.setColor(cyan);
+			g.drawRect(z[1], q[1], pixelstorlek - 2, pixelstorlek - 2);
+			g.fillRect(z[1], q[1], pixelstorlek - 2, pixelstorlek - 2);
 			for (int u = snakelängdz + 1; u >= 2; u--) {
 				g.setColor(cyan);
 				z[u] = z[u - 1];
@@ -5002,11 +5017,23 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 				((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
 				System.err.println(snakelängdx);
 			}
-			if (z[1]==pluppX&&q[1]==pluppY&&!oneplayer) {
-				PlaceraPlupp();
-				snakelängdz++;
-				((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
-				System.err.println(snakelängdz);
+			if (spelläge!=Spelläge.ONE) {
+				if (z[1] == pluppX && q[1] == pluppY) {
+					PlaceraPlupp();
+					snakelängdz++;
+					((Runnable) getDefaultToolkit().getDesktopProperty(
+							"win.sound.asterisk")).run();
+					System.err.println(snakelängdz);
+				}
+				if (riktningz == "ner") {
+					q[1] = q[1] + pixelstorlek;
+				} else if (riktningz == "upp") {
+					q[1] = q[1] - pixelstorlek;
+				} else if (riktningz == "höger") {
+					z[1] = z[1] + pixelstorlek;
+				} else if (riktningz == "vänster") {
+					z[1] = z[1] - pixelstorlek;
+				}
 			}
 			if (riktning=="ner") {
 				y[1]=y[1]+pixelstorlek;
@@ -5020,17 +5047,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 			else if (riktning=="vänster") {
 				x[1]=x[1]-pixelstorlek;
 			}
-			if (!oneplayer) {
-				if (riktningz == "ner") {
-					q[1] = q[1] + pixelstorlek;
-				} else if (riktningz == "upp") {
-					q[1] = q[1] - pixelstorlek;
-				} else if (riktningz == "höger") {
-					z[1] = z[1] + pixelstorlek;
-				} else if (riktningz == "vänster") {
-					z[1] = z[1] - pixelstorlek;
-				}
-			}
+
 			boolean körd = false;
 			for (int i = 1; i <= snakelängdx; i++) {
 				if ((x[1]==z[i]&&y[1]==q[i])||(i>1&&x[1]==x[i]&&y[1]==y[i])) {
@@ -5059,7 +5076,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 				System.err.println("Poäng till Cyan. (C) "+cyanPoäng+" - "+svartPoäng+" (S)");
 				GameOver();
 			}
-			if ((z[1]<0||z[1]+pixelstorlek>getWidth()||q[1]<0||q[1]+pixelstorlek>getHeight())&&!oneplayer) {
+			if ((z[1]<0||z[1]+pixelstorlek>getWidth()||q[1]<0||q[1]+pixelstorlek>getHeight())&&spelläge!=Spelläge.ONE) {
 				svartPoäng++;
 				System.err.println("Poäng till Svart. (C) "+cyanPoäng+" - "+svartPoäng+" (S)");
 				GameOver();
@@ -5080,7 +5097,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 	public void componentShown(ComponentEvent e) {}
 	public void componentHidden(ComponentEvent e) {}
 	public void keyPressed(KeyEvent e) {
-		if (client) {
+		if (spelläge==Spelläge.CLIENT) {
 			System.err.println(riktningz);
 			System.err.println(e.getKeyCode());
 			if(e.getKeyCode() == KeyEvent.VK_LEFT){
@@ -5115,24 +5132,22 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 				s=0;
 			}
 		}
-		if (!client) {
-			if (a == 1) {
-				if (e.getKeyCode() == KeyEvent.VK_A&&riktningz != "höger"&&riktning!="vänster") {
-					riktningz = "vänster";
-					a = 0;
-				}
-				else if (e.getKeyCode() == KeyEvent.VK_D&&riktningz != "vänster"&&riktning!="höger") {
-					riktningz = "höger";
-					a = 0;
-				}
-				else if (e.getKeyCode() == KeyEvent.VK_W&&riktningz != "ner"&&riktning!="upp") {
-					riktningz = "upp";
-					a = 0;
-				}
-				else if (e.getKeyCode() == KeyEvent.VK_S&&riktningz != "upp"&&riktning!="ner") {
-					riktningz = "ner";
-					a = 0;
-				}
+		if (a == 1&&spelläge==Spelläge.TWO) {
+			if (e.getKeyCode() ==  KeyEvent.VK_A&&riktningz != "höger"&&riktningz!="vänster") {
+				riktningz = "vänster";
+				a = 0;
+			}
+			else if (e.getKeyCode() == KeyEvent.VK_D&&riktningz != "vänster"&&riktningz!="höger") {
+				riktningz = "höger";
+				a = 0;
+			}
+			else if (e.getKeyCode() == KeyEvent.VK_W&&riktningz != "ner"&&riktningz!="upp") {
+				riktningz = "upp";
+				a = 0;
+			}
+			else if (e.getKeyCode() == KeyEvent.VK_S&&riktningz != "upp"&&riktningz!="ner") {
+				riktningz = "ner";
+				a = 0;
 			}
 		}
 		if(e.getKeyCode() == KeyEvent.VK_F2&&förlust==true||e.getKeyCode() == KeyEvent.VK_R&&förlust==true||
@@ -5183,44 +5198,36 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 }
 @SuppressWarnings("serial")
 class Kurve implements ActionListener,KeyListener{
-	ArrayList<Pixel> pixels = new ArrayList<>();
+	private ArrayList<Pixel> pixels = new ArrayList<Pixel>();
 	private final int PIXEL = 20;
-	Timer timer = new Timer(10, this);
-	GoJbFrame frame = new GoJbFrame("Kurve");
-	public Kurve() {
+	private double x=20,y=20,riktning;
+	private boolean höger,vänster;
+	private Timer timer = new Timer(10, this);
+	private GoJbFrame frame = new GoJbFrame("Kurve",true,DISPOSE_ON_CLOSE);
+	Kurve() {
 		frame.add(label);
 		timer.start();
 		frame.revalidate();
 		frame.addKeyListener(this);
+		frame.addWindowListener(autoListener);
 	}
-	
 	JLabel label = new JLabel(){
 		protected void paintComponent(Graphics g) {
-			Graphics2D g2=(Graphics2D) g;
+			Graphics2D g2=(Graphics2D)g;
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			for (Pixel pixel : pixels) {
 				pixel.draw(g2);
 			}
 		}
 	};
-	int x,y,a,b,högera;
-	boolean höger,vänster;
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (högera--<=0&&höger) {
-			a=1	;	
-		}
-		else {
-			a=0;
-		}
-		x=x+a;
-		if (vänster) {
-			b=1;
-		}
-		else {
-			b=0;
-		}
-		pixels.add(new Pixel(x, y=y+b));
+		if (höger) riktning +=10;
+		if (vänster) riktning -=10;
+
+		double b = riktning/180*Math.atan(1);
+		pixels.add(new Pixel(x += Math.cos(b), y += Math.sin(b)));
 		frame.repaint();
 	}
 	@Override
@@ -5243,21 +5250,14 @@ class Kurve implements ActionListener,KeyListener{
 			höger=false;
 		}
 	}
-	class Pixel{
-		private int x,y;
-		public Pixel(int x,int y) {
+	private class Pixel{
+		private double x,y;
+		Pixel(double x,double y) {
 			this.x=x;
 			this.y=y;
 		}
 		void draw(Graphics2D g){
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g.fillOval(x, y, PIXEL,PIXEL);
-			
-//			g.setColor(black);
-////			g.setStroke(new BasicStroke(PIXEL));
-//			g.fillArc(50, 50, 50, 50, 0, 100);
-//			g.setColor(g.getBackground());
-//			g.fillArc(50, 50, 30, 30, 0, 100);			
+			g.fillOval((int)x, (int)y, PIXEL,PIXEL);
 		}
 	}
 }
