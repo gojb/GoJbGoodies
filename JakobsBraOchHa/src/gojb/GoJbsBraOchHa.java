@@ -134,6 +134,7 @@ public class GoJbsBraOchHa{
 		public void windowDeiconified(WindowEvent e) {}public void windowDeactivated(WindowEvent e) {}
 		public void windowClosing(WindowEvent e) {}public void windowActivated(WindowEvent e) {}
 		public void windowClosed(WindowEvent e) {
+			vänta(2000);
 			boolean b = false;
 			for (Frame frame : JFrame.getFrames()) {
 				if (frame.isVisible()) {
@@ -4582,7 +4583,7 @@ class ReggPlåtar implements ActionListener{
 	}
 }
 @SuppressWarnings("serial")
-class Snake extends JPanel implements KeyListener, ActionListener, WindowListener, ComponentListener{
+class Snake extends JPanel implements KeyListener, ActionListener, ComponentListener{
 	private enum Spelläge {ONE,TWO,CLIENT,SERVER};
 	Spelläge spelläge;
 	private final int MAXIMUM = 101;
@@ -4595,11 +4596,12 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 	private static String riktning = "ner",riktningz = "upp";
 	private BufferedReader in;
 	private PrintWriter out;
-	private boolean förlust, paused=false,gameover,b;
+	private boolean förlust, paused=false,gameover;
 	private JButton local = new JButton("Play two on this computer"),
 			online = new JButton("Play online"),
 			one = new JButton("Single Player");
 	private String[] highscore = new String[6];
+	private Socket socket;
 
 	public Snake(){
 		setOpaque(true);
@@ -4615,12 +4617,21 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 		frame.addKeyListener(this);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
-		frame.addWindowListener(this);
+		frame.addWindowListener(autoListener);
 		frame.getContentPane().setBackground(black);
 		frame.addComponentListener(this);	
 		frame.setDefaultCloseOperation(2);
+		frame.addWindowListener(new WindowListener() {
+			public void windowOpened(WindowEvent e) {}public void windowIconified(WindowEvent e) {}
+			public void windowDeiconified(WindowEvent e) {}public void windowDeactivated(WindowEvent e) {}
+			public void windowActivated(WindowEvent e) {}public void windowClosed(WindowEvent e) {}
+			public void windowClosing(WindowEvent e) {
+				try {
+					socket.close();
+				} catch (Exception e1) {}
+			}
+		});
 
-		start.setVisible(true);
 		start.setSize(240,140);
 		start.setLayout(new GridLayout(0,1));
 		start.setLocationRelativeTo(null);
@@ -4629,6 +4640,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 		start.add(online);
 		start.setDefaultCloseOperation(2);
 		start.setIconImage(fönsterIcon);
+		start.setVisible(true);
 
 		local.addActionListener(e -> {
 			spelläge=Spelläge.TWO;
@@ -4664,45 +4676,87 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 		frame.repaint();
 
 	}
-	class a implements Runnable{
-		public void run() {
-			try {
-				@SuppressWarnings("resource")
-				ServerSocket listener = new ServerSocket(11622);
-				Socket socket = listener.accept();
-				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				out = new PrintWriter(socket.getOutputStream(), true);
-				b=true;
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 	void online(){
-		Thread runnable = new Thread(new a());
+
 		String[]strings={"Server", "Klient"};
 		int i = showOptionDialog(frame, "Server eller klient?", "Multiplayer", DEFAULT_OPTION, QUESTION_MESSAGE, null, strings, 0);
 		if (i==0) {
 			spelläge=Spelläge.SERVER;
+			
 			start.dispose();
-			JLabel jLabel= new JLabel("Väntar på anslutning...",Bild("/images/loading.gif"),CENTER);
-
-			väntframe.setVisible(true);
-			väntframe.add(jLabel);
+			väntframe.add(new JLabel("Väntar på anslutning...",Bild("/images/loading.gif"),CENTER));
 			väntframe.setLocationRelativeTo(null);
 			väntframe.setAlwaysOnTop(true);
 			väntframe.repaint();
 			väntframe.getContentPane().setBackground(white);
 			väntframe.setIconImage(fönsterIcon);
 			väntframe.pack();
-			runnable.start();
-			timers.start();
+			väntframe.addWindowListener(autoListener);
+			väntframe.setDefaultCloseOperation(2);
+			väntframe.setVisible(true);
+			new Thread(){
+				@Override
+				public void run() {
+					try {
+						@SuppressWarnings("resource")
+						ServerSocket listener = new ServerSocket(11622);
+						Socket socket = listener.accept();
+						in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+						out = new PrintWriter(socket.getOutputStream(), true);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					väntframe.dispose();
+					paused=true;
+					Restart();
+					timer.stop();
+					frame.setVisible(true);	
+					frame.revalidate();
+					frame.repaint();
+					while (true) {
+						try {
+							String string = in.readLine();
+							if(a==1){
+								if(string.equals("vänster")){
+									if (riktningz!="höger"&&riktningz!="vänster"){
+										riktningz="vänster";
+										a=0;
+									}
+								}
+								else if(string.equals("höger")){
+									if (riktningz!="höger"&&riktningz!="vänster"){
+										riktningz="höger";
+										a=0;
+									}
+								}
+								else if(string.equals("upp")){
+									if (riktningz!="ner"&&riktningz!="upp"){
+										riktningz="upp";
+										a=0;
+									}
+								}
+								else if(string.equals("ner")){
+									if (riktningz!="ner"&&riktningz!="upp"){
+										riktningz="ner";
+										a=0;
+									}
+								}
+							}
+							System.out.println(riktningz);
+
+						} catch (Exception e) {
+							System.err.println("Frånkopplad");
+							break;
+						}
+					}
+				}
+			}.start();
 		}
 		else if (i==1) {
+			start.dispose();
 			spelläge=Spelläge.CLIENT;
 			try {
-				@SuppressWarnings("resource")
-				Socket socket = new Socket(showInputDialog("Adress till server"), 11622);
+				socket = new Socket(showInputDialog("Adress till server"), 11622);
 				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				out = new PrintWriter(socket.getOutputStream(), true);
 			} catch (IOException e) {
@@ -4743,64 +4797,13 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 							}						
 						}
 						catch (Exception e) {
+							System.err.println("Frånkopplad");
 							break;
 						}
 					}
 				}
 			}.start();
 		}
-	}
-	Timer timers = new Timer(100, e-> {if(b)ansluten();});
-
-	void ansluten(){
-		väntframe.dispose();
-		start.dispose();
-		paused=true;
-		Restart();
-		timer.stop();
-		frame.setVisible(true);	
-		frame.revalidate();
-		frame.repaint();
-		timers.stop();
-		new Thread(){
-			public void run() {
-				while (true) {
-					try {
-						String string = in.readLine();
-						if(a==1){
-							if(string.equals("vänster")){
-								if (riktningz!="höger"&&riktning!="vänster"){
-									riktningz="vänster";
-									a=0;
-								}
-							}
-							else if(string.equals("höger")){
-								if (riktningz!="höger"&&riktning!="vänster"){
-									riktningz="höger";
-									a=0;
-								}
-							}
-							else if(string.equals("upp")){
-								if (riktningz!="ner"&&riktningz!="upp"){
-									riktningz="upp";
-									a=0;
-								}
-							}
-							else if(string.equals("ner")){
-								if (riktningz!="ner"&&riktningz!="upp"){
-									riktningz="ner";
-									a=0;
-								}
-							}
-						}
-						System.out.println(riktningz);
-
-					} catch (IOException e) {
-						break;
-					}
-				}
-			};
-		}.start();
 	}
 	private void GameOver(){
 		timer.stop();
@@ -5087,12 +5090,6 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 	}
 	public void keyTyped(KeyEvent e) {}
 	public void keyReleased(KeyEvent e) {}
-	public void windowOpened(WindowEvent e) {}
-	public void windowClosed(WindowEvent e) {}
-	public void windowIconified(WindowEvent e) {}
-	public void windowDeiconified(WindowEvent e) {}
-	public void windowActivated(WindowEvent e) {}
-	public void windowDeactivated(WindowEvent e) {}
 	public void componentResized(ComponentEvent e) {}
 	public void componentShown(ComponentEvent e) {}
 	public void componentHidden(ComponentEvent e) {}
@@ -5169,10 +5166,6 @@ class Snake extends JPanel implements KeyListener, ActionListener, WindowListene
 				paused=true;
 			}
 		}
-	}
-	public void windowClosing(WindowEvent e) {
-		timer.stop();
-		highFrame.dispose();
 	}
 	public void componentMoved(ComponentEvent e) {
 		highFrame.setLocation(frame.getX()-highFrame.getWidth(),frame.getY());
