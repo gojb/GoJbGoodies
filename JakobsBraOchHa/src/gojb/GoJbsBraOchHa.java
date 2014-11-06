@@ -7,7 +7,6 @@ import java.io.*;
 import java.net.*;
 import java.text.*;
 import java.util.*;
-
 import javax.crypto.*;
 import javax.crypto.spec.*;
 import javax.sound.sampled.*;
@@ -4170,6 +4169,42 @@ class FullscreenExample {
 	boolean vsync;
 
 	public void start() {
+//		try {
+//			System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb";
+//			ZipInputStream zipIn = new ZipInputStream(new FileInputStream(getClass().getResourceAsStream("")));
+//			ZipEntry entry = zipIn.getNextEntry();
+//			while (entry != null) {
+//				String filePath =  "C:\\Users\\Jakob\\Desktop\\ny\\" + File.separator + entry.getName();
+//				if (entry.toString().startsWith("windows_dll/")) {
+//					if (!entry.isDirectory()) {
+//						System.err.println(entry.toString());
+//						BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
+//						byte[] bytesIn = new byte[4096];
+//						int read = 0;
+//						while ((read = zipIn.read(bytesIn)) != -1) {
+//							bos.write(bytesIn, 0, read);
+//						}
+//						bos.close();
+//					}
+//					else {
+//						File dir = new File(filePath);
+//						dir.mkdir();
+//					}
+//				}
+//				zipIn.closeEntry();
+//				entry = zipIn.getNextEntry();
+//			}
+//			zipIn.close();
+//		} catch (Exception e2) {
+//			e2.printStackTrace();
+//		}
+//		try {
+//			System.setProperty("org.lwjgl.librarypath", new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\windows_dll").getAbsolutePath());
+//			//			System.setProperty("org.lwjgl.librarypath", new File("/windows_dll").getPath());
+//		} catch (Exception e1) {
+//			e1.printStackTrace();
+//
+//		}
 		try {
 			Display.setDisplayMode(new DisplayMode(800, 600));
 			Display.setTitle("_GoJbGame");
@@ -4682,7 +4717,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 		int i = showOptionDialog(frame, "Server eller klient?", "Multiplayer", DEFAULT_OPTION, QUESTION_MESSAGE, null, strings, 0);
 		if (i==0) {
 			spelläge=Spelläge.SERVER;
-			
+
 			start.dispose();
 			väntframe.add(new JLabel("Väntar på anslutning...",Bild("/images/loading.gif"),CENTER));
 			väntframe.setLocationRelativeTo(null);
@@ -5192,7 +5227,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 @SuppressWarnings("serial")
 class Kurve implements ActionListener,KeyListener{
 	private ArrayList<Pixel> pixels = new ArrayList<Pixel>();
-	private final int PIXEL = 20;
+	private final int PIXEL = 10;
 	private double x=20,y=20,riktning;
 	private boolean höger,vänster;
 	private Timer timer = new Timer(10, this);
@@ -5203,24 +5238,36 @@ class Kurve implements ActionListener,KeyListener{
 		frame.revalidate();
 		frame.addKeyListener(this);
 		frame.addWindowListener(autoListener);
+		label.setOpaque(true);
+		label.setBackground(black);
 	}
 	JLabel label = new JLabel(){
 		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
 			Graphics2D g2=(Graphics2D)g;
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);		
+			g2.setColor(red);
 			for (Pixel pixel : pixels) {
 				pixel.draw(g2);
 			}
 		}
 	};
-
+	int i;
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (höger) riktning +=10;
-		if (vänster) riktning -=10;
-
+		if (höger) riktning +=9;
+		if (vänster) riktning -=9;
+		System.err.println(riktning/180);
 		double b = riktning/180*Math.atan(1);
-		pixels.add(new Pixel(x += Math.cos(b), y += Math.sin(b)));
+		x += Math.cos(b);
+		y += Math.sin(b);
+		if (i++<200) {
+			pixels.add(new Pixel(x,y));
+		}
+		else if (i>230) {
+			i=0;
+		}
+
 		frame.repaint();
 	}
 	@Override
@@ -5242,6 +5289,14 @@ class Kurve implements ActionListener,KeyListener{
 		else if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
 			höger=false;
 		}
+
+		else if (e.getKeyCode()==KeyEvent.VK_2) {
+			riktning+=27;
+		}
+		else if (e.getKeyCode()==KeyEvent.VK_1) {
+			riktning-=27;
+		}
+
 	}
 	private class Pixel{
 		private double x,y;
@@ -5254,3 +5309,4 @@ class Kurve implements ActionListener,KeyListener{
 		}
 	}
 }
+
