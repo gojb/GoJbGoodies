@@ -7,6 +7,8 @@ import java.io.*;
 import java.net.*;
 import java.text.*;
 import java.util.*;
+import java.util.zip.*;
+
 import javax.crypto.*;
 import javax.crypto.spec.*;
 import javax.sound.sampled.*;
@@ -714,7 +716,7 @@ class Update implements Runnable{
 		vänta(10000);
 		if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")) {
 			try {
-				URLConnection connection = new URL("http://gojb.bl.ee/GoJbGuide.jar").openConnection();
+				URLConnection connection = new URL("http://gojb.bl.ee/GoJb.jar").openConnection();
 				File file = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
 				System.out.println("Online: " + connection.getLastModified());
 				System.out.println("File: " + file);
@@ -4169,43 +4171,43 @@ class FullscreenExample {
 	boolean vsync;
 
 	public void start() {
-//		try {
-//			System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb";
-//			ZipInputStream zipIn = new ZipInputStream(new FileInputStream(getClass().getResourceAsStream("")));
-//			ZipEntry entry = zipIn.getNextEntry();
-//			while (entry != null) {
-//				String filePath =  "C:\\Users\\Jakob\\Desktop\\ny\\" + File.separator + entry.getName();
-//				if (entry.toString().startsWith("windows_dll/")) {
-//					if (!entry.isDirectory()) {
-//						System.err.println(entry.toString());
-//						BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
-//						byte[] bytesIn = new byte[4096];
-//						int read = 0;
-//						while ((read = zipIn.read(bytesIn)) != -1) {
-//							bos.write(bytesIn, 0, read);
-//						}
-//						bos.close();
-//					}
-//					else {
-//						File dir = new File(filePath);
-//						dir.mkdir();
-//					}
-//				}
-//				zipIn.closeEntry();
-//				entry = zipIn.getNextEntry();
-//			}
-//			zipIn.close();
-//		} catch (Exception e2) {
-//			e2.printStackTrace();
-//		}
-//		try {
-//			System.setProperty("org.lwjgl.librarypath", new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\windows_dll").getAbsolutePath());
-//			//			System.setProperty("org.lwjgl.librarypath", new File("/windows_dll").getPath());
-//		} catch (Exception e1) {
-//			e1.printStackTrace();
-//
-//		}
 		try {
+			System.err.println(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()+"windows_dll");
+			ZipInputStream zipIn = new ZipInputStream(getClass().getProtectionDomain().getCodeSource().getLocation().openStream());
+			ZipEntry entry = zipIn.getNextEntry();
+			while (entry != null) {
+				String filePath =  System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa"+File.separator + entry.getName();
+				if (entry.toString().startsWith("windows_dll/")) {
+					System.err.println(entry.toString());
+					if (!entry.isDirectory()) {
+						
+						ByteArrayOutputStream out = new ByteArrayOutputStream();
+						byte[] bytesIn = new byte[4096];
+						int read = 0;
+						while ((read = zipIn.read(bytesIn)) != -1) {
+							out.write(bytesIn, 0, read);
+						}
+						FileOutputStream fos = new FileOutputStream(filePath);
+						fos.write(out.toByteArray());
+						fos.close();
+					}
+					else {
+						File dir = new File(filePath);
+						dir.mkdir();
+					}
+				}
+				zipIn.closeEntry();
+				entry = zipIn.getNextEntry();
+	
+			}
+			zipIn.close();
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
+	
+		try {
+			if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:"))
+				System.setProperty("org.lwjgl.librarypath", new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\windows_dll").getAbsolutePath());
 			Display.setDisplayMode(new DisplayMode(800, 600));
 			Display.setTitle("_GoJbGame");
 			//			Display.setIcon(new ByteBuffer[20]);
