@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry excluding="**/Thumbs.db" kind="src" path="src"/>
-	<classpathentry kind="src" output="apache-tomcat-7.0.56/webapps/test/WEB-INF/classes" path="apache-tomcat-7.0.56/webapps/test/WEB-INF/classes"/>
+	<classpathentry kind="src" output="apache-tomcat-8.0.14/webapps/ROOT/WEB-INF/classes" path="apache-tomcat-8.0.14/webapps/ROOT/WEB-INF/classes"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="javax.mail.jar"/>
 	<classpathentry kind="lib" path="commons-net-3.3.jar"/>
