@@ -26,7 +26,9 @@ public class Chatta {
 		stäng(session);
 	}
 	@OnError
-	public void error(Throwable t){}
+	public void error(Throwable t){
+		log.error(t.getMessage());
+	}
 	private void stäng(Session session) {
 		connections.remove(session);
 		utgående("* " + namn + " har lämnat.");
@@ -45,7 +47,7 @@ public class Chatta {
 			utgående(namn+": "+ message);
 		}
 	}
-	private void utgående(String msg) {
+	private synchronized void utgående(String msg) {
 		for (Session session:connections) {
 			try {
 				synchronized (session) {
