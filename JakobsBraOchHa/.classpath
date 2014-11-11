@@ -10,6 +10,32 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="GoJbsBraOchHa/src/windows_dll"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Server"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/annotations-api.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/bootstrap.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/catalina-ant.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/catalina-ha.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/catalina-storeconfig.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/catalina-tribes.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/catalina.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/ecj-4.4.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/el-api.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/jasper-el.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/jasper.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/jsp-api.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/tomcat-api.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/tomcat-coyote.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/tomcat-dbcp.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/tomcat-i18n-es.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/tomcat-i18n-fr.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/tomcat-i18n-ja.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/tomcat-jdbc.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/tomcat-jni.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/tomcat-juli.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/tomcat-spdy.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/tomcat-util-scan.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/tomcat-util.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/tomcat-websocket.jar"/>
+	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/websocket-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
