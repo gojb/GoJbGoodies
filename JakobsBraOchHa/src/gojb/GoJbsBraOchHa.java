@@ -1580,7 +1580,7 @@ class Ping{
 		JScrollPane scrollPane = new JScrollPane(textArea);
 
 		frame.add(scrollPane);
-		for(int i = 10;0<i;i--){
+		for(int i = 10000;0<i;i--){
 			try {
 
 				new Thread(){
@@ -3066,7 +3066,7 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 			}
 		}
 		else if (nr==1) {
-			if(arg0.getKeyChar() == 'o'){
+			if(arg0.getKeyChar() == 'ä'){
 				nr++;
 
 			}
