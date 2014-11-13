@@ -11,8 +11,6 @@ import static gojb.GoJbsBraOchHa.*;
 
 class GoJbMail{
 
-	String Mottagare, Ämne, innehållString;
-
 	public static void Starta(String starta){		
 
 		if(starta.toLowerCase().equals("hämta")){
