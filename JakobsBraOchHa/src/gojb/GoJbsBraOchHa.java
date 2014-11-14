@@ -1545,7 +1545,7 @@ class Ping{
 		JScrollPane scrollPane = new JScrollPane(textArea);
 
 		frame.add(scrollPane);
-		for(int i = 10;0<i;i--){
+		for(int i = 10000;0<i;i--){
 			try {
 
 				new Thread(){
@@ -1826,7 +1826,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			binära = new JMenuItem("Binär omvandlare"),
 			draOchSläpp = new JMenuItem("Dra & Släpp"),
 			sök = new JMenuItem("Sök"),
-			reggplåtar = new JMenuItem("Reggplåtar");
+			reggplåtar = new JMenuItem("Reggplåtar"),
+			Pac = new JMenuItem("Pac");
 	JMenuBar bar = new JMenuBar();
 
 	Clip clip;
@@ -1876,6 +1877,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		ÖppnaProgram.add(sök);
 		ÖppnaProgram.add(reggplåtar);
 		ÖppnaProgram.add(Snake);
+		ÖppnaProgram.add(Pac);
 
 
 		Mouse.addActionListener(this);
@@ -1900,6 +1902,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		draOchSläpp.addActionListener(e -> {new DraOchSläpp();frame.dispose();});		
 		sök.addActionListener(e -> {new Sök();frame.dispose();});
 		reggplåtar.addActionListener(e -> {new ReggPlåtar();frame.dispose();});
+		Pac.addActionListener(e -> {new Pac();frame.dispose();});
 
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 		frame.setBackground(gray);
@@ -3032,7 +3035,7 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 			}
 		}
 		else if (nr==1) {
-			if(arg0.getKeyChar() == 'o'){
+			if(arg0.getKeyChar() == 'ä'){
 				nr++;
 
 			}
@@ -5313,3 +5316,23 @@ class Kurve implements ActionListener,KeyListener{
 	}
 }
 
+@SuppressWarnings("serial")
+class Pac extends JPanel{
+	
+	int x;
+	GoJbFrame frame = new GoJbFrame("PAC");
+	
+	public Pac(){
+		
+		frame.add(this);
+		
+		x++;
+		
+	}
+	protected void paintComponent(Graphics g) {
+		
+		g.setColor(yellow);
+//		g.fillOval(50, 50, 100, 100);
+		g.fillArc(50, 50, 100, 100, 100, 100);
+	}
+}
