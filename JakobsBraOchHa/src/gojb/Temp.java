@@ -9,8 +9,8 @@ class Temp {
 //		new Snake();
 //		new Ping("192.168.2.131");
 //		new Merit();
-//		new Kurve(); 
-		new FullscreenExample().start();;
+		new Kurve(); 
+//		new FullscreenExample().start();;
 		
 //		for (double i = 0; i < 100; i++) {
 //			System.err.print(i +"*");

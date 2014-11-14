@@ -5228,7 +5228,8 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 }
 @SuppressWarnings("serial")
 class Kurve implements ActionListener,KeyListener{
-	private ArrayList<Pixel> pixels = new ArrayList<Pixel>();
+	private Pixel[] pixels2 = new Pixel[100000];
+	int längd = 0;
 	private final int PIXEL = 10;
 	private double x=20,y=20,riktning;
 	private boolean höger,vänster;
@@ -5249,8 +5250,8 @@ class Kurve implements ActionListener,KeyListener{
 			Graphics2D g2=(Graphics2D)g;
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);		
 			g2.setColor(red);
-			for (Pixel pixel : pixels) {
-				pixel.draw(g2);
+			for (int i = 0; i < längd; i++) {
+				pixels2[i].draw(g2);
 			}
 		}
 	};
@@ -5259,12 +5260,12 @@ class Kurve implements ActionListener,KeyListener{
 	public void actionPerformed(ActionEvent e) {
 		if (höger) riktning +=9;
 		if (vänster) riktning -=9;
-		System.err.println(riktning/180);
+//		System.err.println(riktning/180);
 		double b = riktning/180*Math.atan(1);
 		x += Math.cos(b);
 		y += Math.sin(b);
 		if (i++<200) {
-			pixels.add(new Pixel(x,y));
+			pixels2[längd++]=new Pixel(x,y);
 		}
 		else if (i>230) {
 			i=0;
