@@ -5233,17 +5233,17 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 class Kurve implements ActionListener,KeyListener{
 	private Pixel[] pixels = new Pixel[100000];
 	private int längd = 0,i;
-	private final int PIXEL = 10;
+	private final int PIXEL = 5;
 	private double x=20,y=20,riktning;
 	private boolean höger,vänster;
-	private Timer timer = new Timer(20, this);
+	private Timer timer = new Timer(10, this);
 	boolean ritaom=true;
 	Kurve() {
 		frame.add(label);
 		frame.addKeyListener(this);
 		frame.addWindowListener(autoListener);
 		frame.setResizable(false);
-		frame.setSize((int)(SKÄRM_SIZE.width*0.75),(int)(SKÄRM_SIZE.height*0.75));
+		frame.setSize((int)(SKÄRM_SIZE.width*0.60),(int)(SKÄRM_SIZE.height*0.60));
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		label.setOpaque(true);
@@ -5277,7 +5277,9 @@ class Kurve implements ActionListener,KeyListener{
 			}
 			else {
 				g2.setColor(red);
-				pixels[längd].draw(g2);
+				try {
+					pixels[längd].draw(g2);
+				} catch (Exception e) {}
 			}
 			
 		}
@@ -5292,7 +5294,7 @@ class Kurve implements ActionListener,KeyListener{
 			pixels[++längd]=new Pixel(x,y);
 			label.repaint();
 		}
-		else if (i>230) {
+		else if (i>220) {
 			i=0;
 			ritaom=true;
 		}
