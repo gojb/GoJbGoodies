@@ -5231,52 +5231,73 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 }
 @SuppressWarnings("serial")
 class Kurve implements ActionListener,KeyListener{
-	private Pixel[] pixels2 = new Pixel[100000];
-	int längd = 0;
+	private Pixel[] pixels = new Pixel[100000];
+	private int längd = 0,i;
 	private final int PIXEL = 10;
 	private double x=20,y=20,riktning;
 	private boolean höger,vänster;
-	private Timer timer = new Timer(10, this);
-	private GoJbFrame frame = new GoJbFrame("Kurve",true,DISPOSE_ON_CLOSE);
+	private Timer timer = new Timer(20, this);
+	boolean ritaom=true;
 	Kurve() {
 		frame.add(label);
-		timer.start();
-		frame.revalidate();
 		frame.addKeyListener(this);
 		frame.addWindowListener(autoListener);
+		frame.setResizable(false);
+		frame.setSize((int)(SKÄRM_SIZE.width*0.75),(int)(SKÄRM_SIZE.height*0.75));
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 		label.setOpaque(true);
-		label.setBackground(black);
+		ritaom=true;
+		timer.start();
 	}
-	JLabel label = new JLabel(){
+	private GoJbFrame  frame = new GoJbFrame("Kurve",false,DISPOSE_ON_CLOSE){
+		public void validate() {
+			ritaom=true;
+			super.validate();
+			ritaom=true;
+		}
+		public void repaint() {
+			ritaom=true;
+			super.repaint();
+			ritaom=true;
+		};
+	};
+	private JLabel label = new JLabel(){
 		protected void paintComponent(Graphics g) {
-			super.paintComponent(g);
 			Graphics2D g2=(Graphics2D)g;
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);		
-			g2.setColor(red);
-			for (int i = 0; i < längd; i++) {
-				pixels2[i].draw(g2);
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			if (ritaom){
+				g2.setColor(BLACK);
+				g2.fillRect(0, 0, getWidth(), getHeight());
+				ritaom=false;
+				for (int i = 1; i < längd; i++) {
+					g2.setColor(red);
+					pixels[i].draw(g2);
+				}
 			}
+			else {
+				g2.setColor(red);
+				pixels[längd].draw(g2);
+			}
+			
 		}
 	};
-	int i;
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (höger) riktning +=9;
-		if (vänster) riktning -=9;
-//		System.err.println(riktning/180);
-		double b = riktning/180*Math.atan(1);
-		x += Math.cos(b);
-		y += Math.sin(b);
+		if (höger) riktning +=0.040;
+		if (vänster) riktning -=0.040;
+		x += Math.cos(riktning);
+		y += Math.sin(riktning);
 		if (i++<200) {
-			pixels2[längd++]=new Pixel(x,y);
+			pixels[++längd]=new Pixel(x,y);
+			label.repaint();
 		}
 		else if (i>230) {
 			i=0;
+			ritaom=true;
 		}
-
-		frame.repaint();
 	}
-	@Override
+	@Override 
 	public void keyTyped(KeyEvent e) {}
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -5295,14 +5316,6 @@ class Kurve implements ActionListener,KeyListener{
 		else if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
 			höger=false;
 		}
-
-		else if (e.getKeyCode()==KeyEvent.VK_2) {
-			riktning+=27;
-		}
-		else if (e.getKeyCode()==KeyEvent.VK_1) {
-			riktning-=27;
-		}
-
 	}
 	private class Pixel{
 		private double x,y;
