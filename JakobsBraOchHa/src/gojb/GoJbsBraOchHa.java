@@ -5286,8 +5286,8 @@ class Kurve implements ActionListener,KeyListener{
 	};
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (höger) riktning +=0.040;
-		if (vänster) riktning -=0.040;
+		if (höger) riktning +=0.04;
+		if (vänster) riktning -=0.04;
 		x += Math.cos(riktning);
 		y += Math.sin(riktning);
 		if (i++<200) {
@@ -5326,7 +5326,7 @@ class Kurve implements ActionListener,KeyListener{
 			this.y=y;
 		}
 		void draw(Graphics2D g){
-			g.fillOval((int)x, (int)y, PIXEL,PIXEL);
+			g.fillOval((int)Math.round(x), (int)Math.round(y), PIXEL,PIXEL);
 		}
 	}
 }
