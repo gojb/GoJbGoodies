@@ -166,7 +166,7 @@ class Login implements ActionListener{
 					cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key.getBytes(), "AES"));
 					break;
 				} catch (Exception e) {
-					key = key + "\0";
+					key += "\0";
 				}
 			}
 			if (System.currentTimeMillis()<=Long.parseLong(new String(cipher.doFinal(BASE64DecoderStream.decode(prop.getProperty("pass").getBytes())),"ISO-8859-1"))+3600000) {
