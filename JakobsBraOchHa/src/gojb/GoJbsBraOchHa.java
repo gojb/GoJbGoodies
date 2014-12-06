@@ -4177,7 +4177,6 @@ class DraOchSläpp extends JPanel implements MouseInputListener{
 class OpenGLTest {
 	private double x,z,rx,ry,rz;
 
-	/** is VSync Enabled */
 	private boolean vsync;
 
 	public OpenGLTest() {
@@ -4643,11 +4642,9 @@ class ReggPlåtar implements ActionListener{
 class Snake extends JPanel implements KeyListener, ActionListener, ComponentListener{
 	private enum Spelläge {ONE,TWO,CLIENT,SERVER};
 	Spelläge spelläge;
-	private final int MAXIMUM = 101;
 	private JFrame frame = new JFrame("Snake"), start = new JFrame("Start"),väntframe= new JFrame(),highFrame=new JFrame("Highscore");
-	private final int startlängd=3;
-	private final int pixelstorlek=Math.round(SKÄRM_SIZE.width/140);
-	private int[] x=new int[MAXIMUM],y=new int[MAXIMUM],z=new int[MAXIMUM],q=new int[MAXIMUM];
+	private final int startlängd=3, pixelstorlek=Math.round(SKÄRM_SIZE.width/140), MAXIMUM = 101;
+	private int[] x=new int[MAXIMUM], y=new int[MAXIMUM], z=new int[MAXIMUM], q=new int[MAXIMUM];
 	private int snakelängdx,snakelängdz=-1,pluppX,pluppY,s=1,a=1,svartPoäng,cyanPoäng,yLoc;
 	private Timer timer = new Timer(100, this);
 	private static String riktning = "ner",riktningz = "upp";
@@ -4686,6 +4683,10 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 				try {
 					socket.close();
 				} catch (Exception e1) {}
+				try {
+					highFrame.dispose();
+					timer.stop();
+				} catch (Exception e1) {}
 			}
 		});
 
@@ -4703,7 +4704,8 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 			spelläge=Spelläge.TWO;
 			start.dispose();
 			frame.setVisible(true);
-			paused=true;Restart();
+			paused=true;
+			Restart();
 			timer.stop();
 			frame.revalidate();
 			frame.repaint();

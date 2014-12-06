@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="create_run_jar" name="Create Runnable Jar for Project GoJbsBraOchHa and upload to ftp">
     <target name="create_run_jar">
-    	<input message="Skriv lösenord:" addproperty="inputvalue"/><jar destfile="GoJb.jar" filesetmanifest="mergewithoutmain">
+    	<input message="Skriv lösenord:" addproperty="inputvalue"/>
+    	<jar destfile="GoJb.jar" filesetmanifest="mergewithoutmain">
             <manifest>
             	<attribute name="Application-Name" value="GoJbsBraOchHa"/>
             	<attribute name="Permissions" value="all-permissions"/>
@@ -12,6 +13,7 @@
             <zipfileset excludes="META-INF/*.SF" src="C:/Users/Jakob/git/Mouse/JakobsBraOchHa/javax.mail.jar"/>
         	<zipfileset excludes="META-INF/*.SF" src="C:/Users/Jakob/git/Mouse/JakobsBraOchHa/commons-net-3.3.jar"/>
         	<zipfileset excludes="META-INF/*.SF" src="C:/Users/Jakob/git/Mouse/JakobsBraOchHa/lwjgl.jar"/>
+    		<zipfileset excludes="META-INF/*.SF" src="C:/Users/Jakob/git/Mouse/JakobsBraOchHa/lwjgl_util.jar"/>
         </jar>
     	<signjar jar="GoJb.jar" alias="GoJb" keystore=".keystore" storepass="${inputvalue}"/> 
     	<ftp server="gojb.bl.ee" remotedir="/public_html" userid="u608544416" password="${inputvalue}"
