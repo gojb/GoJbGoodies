@@ -32,6 +32,25 @@ import static java.awt.Color.*;
 import static javax.swing.JFrame.*;
 import static javax.swing.JOptionPane.*;
 import static java.awt.Toolkit.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+import static org.lwjgl.opengl.GL11.GL_PROJECTION;
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glColor3d;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glRotated;
+import static org.lwjgl.opengl.GL11.glTranslated;
+import static org.lwjgl.opengl.GL11.glVertex3d;
+import static org.lwjgl.util.glu.GLU.gluPerspective;
 
 /**
  * Det här programmet innehåller lite
@@ -364,7 +383,7 @@ class Mouse implements ActionListener,MouseInputListener,KeyListener,WindowListe
 		mandatItem.addActionListener(e -> new Mandat());
 		glosItem.addActionListener(e -> new Glosor());
 		flappyItem.addActionListener(e -> new FlappyGoJb());
-		glItem.addActionListener(e -> new FullscreenExample().start());
+		glItem.addActionListener(e -> new OpenGLTest());
 		kurveItem.addActionListener(e -> new Kurve());
 
 		autoscrollknapp.addActionListener(this);
@@ -4155,25 +4174,30 @@ class DraOchSläpp extends JPanel implements MouseInputListener{
 	}
 }
 
-class FullscreenExample {
-
-	/** position of quad */
-	float x = 400, y = 300;
-	/** angle of quad rotation */
-	float rotation = 0;
-
-	/** time at last frame */
-	long lastFrame;
-
-	/** frames per second */
-	int fps;
-	/** last fps time */
-	long lastFPS;
+class OpenGLTest {
+	private double x,z,rx,ry,rz;
 
 	/** is VSync Enabled */
-	boolean vsync;
+	private boolean vsync;
 
-	public void start() {
+	public OpenGLTest() {
+		unZip();
+		
+		try {
+			if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")){
+				System.setProperty("org.lwjgl.librarypath", new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\windows_dll").getAbsolutePath());
+			}
+			Display.setDisplayMode(new DisplayMode(800, 600));
+			Display.setTitle("GoJbGame");
+			Display.create();
+		} catch (LWJGLException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+		gameLoop();
+		Display.destroy();
+	}
+	private void unZip(){
 		try {
 			System.err.println(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()+"windows_dll");
 			ZipInputStream zipIn = new ZipInputStream(getClass().getProtectionDomain().getCodeSource().getLocation().openStream());
@@ -4183,7 +4207,6 @@ class FullscreenExample {
 				if (entry.toString().startsWith("windows_dll/")) {
 					System.err.println(entry.toString());
 					if (!entry.isDirectory()) {
-						
 						ByteArrayOutputStream out = new ByteArrayOutputStream();
 						byte[] bytesIn = new byte[4096];
 						int read = 0;
@@ -4201,71 +4224,125 @@ class FullscreenExample {
 				}
 				zipIn.closeEntry();
 				entry = zipIn.getNextEntry();
-	
 			}
 			zipIn.close();
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
-	
-		try {
-			if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:"))
-				System.setProperty("org.lwjgl.librarypath", new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\windows_dll").getAbsolutePath());
-			Display.setDisplayMode(new DisplayMode(800, 600));
-			Display.setTitle("_GoJbGame");
-			//			Display.setIcon(new ByteBuffer[20]);
-			Display.create();
-		} catch (LWJGLException e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
-
-		initGL(); // init OpenGL
-		getDelta(); // call once before loop to initialise lastFrame
-		lastFPS = getTime(); // call before loop to initialise fps timer
-
-		while (!Display.isCloseRequested()) {
-			int delta = getDelta();
-
-			update(delta);
-			renderGL();
-
-			Display.update();
-			Display.sync(60); // cap fps to 60fps
-		}
-
-		Display.destroy();
 	}
+	private void gameLoop(){
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		gluPerspective(70,(float)Display.getWidth()/Display.getHeight(),0.3f,1000);
+		glMatrixMode(GL_MODELVIEW);
+		glEnable(GL_DEPTH_TEST);
+		double x=0,y=0,z=0;
 
-	public void update(int delta) {
-		// rotate quad
-		rotation += 0.15f * delta;
-
-		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) x -= 0.35f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) x += 0.35f * delta;
-
-		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) y += 0.35f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) y -= 0.35f * delta;
-
-		while (Keyboard.next()) {
-			if (Keyboard.getEventKeyState()) {
-				if (Keyboard.getEventKey() == Keyboard.KEY_F) {
-					setDisplayMode(800, 600, !Display.isFullscreen());
-				}
-				else if (Keyboard.getEventKey() == Keyboard.KEY_V) {
-					vsync = !vsync;
-					Display.setVSyncEnabled(vsync);
-				}
+		while(!Display.isCloseRequested()){
+			if (Keyboard.isKeyDown(Keyboard.KEY_F))
+				setDisplayMode(800, 600, !Display.isFullscreen());
+			if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
+				vsync = !vsync;
+				Display.setVSyncEnabled(vsync);
 			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_W))
+				move(0.01,1);
+			if (Keyboard.isKeyDown(Keyboard.KEY_S))
+				move(-0.01,1);
+			if (Keyboard.isKeyDown(Keyboard.KEY_A))
+				move(0.01,0);
+			if (Keyboard.isKeyDown(Keyboard.KEY_D))
+				move(-0.01,0);
+			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
+				rotateY(-0.1);
+			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+				rotateY(0.1);
+			if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+				rotateX(-0.1);
+			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
+				rotateX(0.1);
+			if (Keyboard.isKeyDown(Keyboard.KEY_Z)) 
+				x+=0.5;
+			if (Keyboard.isKeyDown(Keyboard.KEY_X)) 
+				y+=0.5;
+			if (Keyboard.isKeyDown(Keyboard.KEY_C)) 
+				z+=0.5;
+			if (Keyboard.isKeyDown(Keyboard.KEY_V)) 
+				x-=0.5;
+			if (Keyboard.isKeyDown(Keyboard.KEY_B))
+				y-=0.5;
+			if (Keyboard.isKeyDown(Keyboard.KEY_N))
+				z-=0.5;
+
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glLoadIdentity();
+			useView();
+
+			glPushMatrix();
+
+			glColor3d(1.0,0.5,0);
+			glTranslated(0,0,-10);
+
+			glRotated(x,1,0,0);
+			glRotated(y,0,1,0);
+			glRotated(z,0,0,1);
+
+			glBegin(GL_QUADS);
+
+			//FrontFace
+			glColor3d(1,0,0);
+			glVertex3d(-1,-1,1);
+			glVertex3d(1,-1,1);
+			glVertex3d(1,1,1);
+			glVertex3d(-1,1,1);
+
+			//BackFace
+			glColor3d(0,1,0);
+			glVertex3d(-1,-1,-1);
+			glVertex3d(-1,1,-1);
+			glVertex3d(1,1,-1);
+			glVertex3d(1,-1,-1);
+
+			//BottomFace
+			glColor3d(0,0,1);
+			glVertex3d(-1,-1,-1);
+			glVertex3d(-1,-1,1);
+			glVertex3d(-1,1,1);
+			glVertex3d(-1,1,-1);
+
+			//Topdace
+			glColor3d(1,1,0);
+			glVertex3d(1,-1,-1);
+			glVertex3d(1,-1,1);
+			glVertex3d(1,1,1);
+			glVertex3d(1,1,-1);
+
+			//LeftFace
+			glColor3d(0,1,1);
+			glVertex3d(-1,-1,-1);
+			glVertex3d(1,-1,-1);
+			glVertex3d(1,-1,1);
+			glVertex3d(-1,-1,1);
+
+			//Right Face
+			glColor3d(1,0,1);
+			glVertex3d(-1,1,-1);
+			glVertex3d(1,1,-1);
+			glVertex3d(1,1,1);
+			glVertex3d(-1,1,1);
+
+			glEnd();
+
+			glPopMatrix();
+			Display.update();
+
 		}
-
-		// keep quad on the screen
-		if (x < 0) x = 0;
-		if (x > 800) x = 800;
-		if (y < 0) y = 0;
-		if (y > 600) y = 600;
-
-		updateFPS(); // update FPS Counter
+	}
+	private void useView(){
+		glRotated(rx,1,0,0);
+		glRotated(ry,0,1,0);
+		glRotated(rz,0,0,1);
+		glTranslated(x,0,z);
 	}
 
 	/**
@@ -4275,14 +4352,8 @@ class FullscreenExample {
 	 * @param height The height of the display required
 	 * @param fullscreen True if we want fullscreen mode
 	 */
-	public void setDisplayMode(int width, int height, boolean fullscreen) {
-
-		// return if requested DisplayMode is already set
-		if ((Display.getDisplayMode().getWidth() == width) && 
-				(Display.getDisplayMode().getHeight() == height) && 
-				(Display.isFullscreen() == fullscreen)) {
-			return;
-		}
+	
+	private void setDisplayMode(int width, int height, boolean fullscreen) {
 
 		try {
 			DisplayMode targetDisplayMode = null;
@@ -4328,69 +4399,15 @@ class FullscreenExample {
 			System.out.println("Unable to setup mode "+width+"x"+height+" fullscreen="+fullscreen + e);
 		}
 	}
-
-	/** 
-	 * Calculate how many milliseconds have passed 
-	 * since last frame.
-	 * 
-	 * @return milliseconds passed since last frame 
-	 */
-	public int getDelta() {
-		long time = getTime();
-		int delta = (int) (time - lastFrame);
-		lastFrame = time;
-
-		return delta;
+	private void move(double amt, double dir){
+		z += amt * Math.sin(Math.toRadians(ry + 90 * dir));
+		x += amt * Math.cos(Math.toRadians(ry + 90 * dir));
 	}
-
-	/**
-	 * Get the accurate system time
-	 * 
-	 * @return The system time in milliseconds
-	 */
-	public long getTime() {
-		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+	private void rotateX(double amt){
+		rx += amt;
 	}
-
-	/**
-	 * Calculate the FPS and set it in the title bar
-	 */
-	public void updateFPS() {
-		if (getTime() - lastFPS > 1000) {
-			//			Display.setTitle("FPS: " + fps);
-			fps = 0;
-			lastFPS += 1000;
-		}
-		fps++;
-	}
-
-	public void initGL() {
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glLoadIdentity();
-		GL11.glOrtho(0, 800, 0, 600, 1, -1);
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-	}
-
-	public void renderGL() {
-		// Clear The Screen And The Depth Buffer
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-
-		// R,G,B,A Set The Color To Blue One Time Only
-		GL11.glColor3f(0.5f, 0.5f, 1.0f);
-
-		// draw quad
-		GL11.glPushMatrix();
-		GL11.glTranslatef(x, y, 0);
-		GL11.glRotatef(rotation, 0f, 0f, 1f);
-		GL11.glTranslatef(-x, -y, 0);
-
-		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glVertex2f(x - 50, y - 50);
-		GL11.glVertex2f(x + 50, y - 50);
-		GL11.glVertex2f(x + 50, y + 50);
-		GL11.glVertex2f(x - 50, y + 50);
-		GL11.glEnd();
-		GL11.glPopMatrix();
+	private void rotateY(double amt){
+		ry += amt;
 	}
 }
 
