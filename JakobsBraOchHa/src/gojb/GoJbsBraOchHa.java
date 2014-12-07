@@ -28,29 +28,14 @@ import com.sun.mail.util.*;
 
 import static gojb.GoJbsBraOchHa.*;
 import static gojb.Mouse.*;
+
 import static javax.swing.SwingConstants.*;
 import static java.awt.Color.*;
 import static javax.swing.JFrame.*;
 import static javax.swing.JOptionPane.*;
 import static java.awt.Toolkit.*;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
-import static org.lwjgl.opengl.GL11.GL_PROJECTION;
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glColor3d;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glLoadIdentity;
-import static org.lwjgl.opengl.GL11.glMatrixMode;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glRotated;
-import static org.lwjgl.opengl.GL11.glTranslated;
-import static org.lwjgl.opengl.GL11.glVertex3d;
+
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.gluPerspective;
 
 /**
@@ -2551,7 +2536,7 @@ class Merit implements  ActionListener{
 	String [] ämnen ={"Biologi", "Fysik", "Kemi", "Teknik","Matte", 
 			"Historia", "Geografi", "Sammhällskunskap", "Religon", 
 			"Slöjd", "ModernaSpråk", "Idrott", "HemOchKonsumentkunskap",
-			"Musik", "Bild","Svenska","Enelska"};
+			"Musik", "Bild","Svenska","Engelska"};
 
 	JFrame frame = new JFrame(),Resultat = new JFrame("Resultat"),betygFrame  = new JFrame();
 
@@ -4229,7 +4214,7 @@ class OpenGLTest {
 
 		try {
 			if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")){
-				System.setProperty("org.lwjgl.librarypath", new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\windows_dll").getAbsolutePath());
+				System.setProperty("forg.lwjgl.librarypath", new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\windows_dll").getAbsolutePath());
 			}
 			Display.setDisplayMode(new DisplayMode(800, 600));
 			Display.setTitle("GoJbGame");
@@ -4695,7 +4680,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 	private static String riktning = "ner",riktningz = "upp";
 	private BufferedReader in;
 	private PrintWriter out;
-	private boolean förlust, paused=false,gameover;
+	private boolean förlust, paused,gameover;
 	private JButton local = new JButton("Play two on this computer"),
 			online = new JButton("Play online"),
 			one = new JButton("Single Player");
