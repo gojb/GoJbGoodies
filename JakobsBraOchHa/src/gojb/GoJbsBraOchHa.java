@@ -4867,8 +4867,21 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 							else if (string.equals("C")) {
 								snakelängdz=0;
 							}
+							else if (string.equals("A")) {
+								paused=false;
+								gameover=false;
+							}
 							while (scanner.hasNext()) {
-								if (string.equals("B")) {
+								if (string.equals("A")) {
+									String string2 = scanner.next();
+									if (string2.equals("paus")) {
+										paused=true;
+									}
+									else if (string2.equals("gameover")) {
+										gameover=true;
+									}
+								}
+								else if (string.equals("B")) {
 									x[++snakelängdx]=Integer.parseInt(scanner.next())*pixelstorlek;
 									y[snakelängdx]=Integer.parseInt(scanner.next())*pixelstorlek;
 								}
@@ -5054,6 +5067,14 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 		}
 		else if (spelläge==Spelläge.SERVER) {
 			try {
+				out.print("A ");
+				if (paused) {
+					out.print("paus ");
+				}
+				if (gameover) {
+					out.print("gameover ");
+				}
+				out.println();
 				out.print("B ");
 				for (int i = 1; i <= snakelängdx; i++) {
 					out.print(x[i] / pixelstorlek + " " + y[i] / pixelstorlek + " ");
