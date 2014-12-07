@@ -22,9 +22,10 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.*;
 import org.lwjgl.opengl.DisplayMode;
 
+import GoJbFrame.GoJbFrame;
+
 import com.sun.mail.util.*;
 
-import GoJbFrame.GoJbFrame;
 import static gojb.GoJbsBraOchHa.*;
 import static gojb.Mouse.*;
 import static javax.swing.SwingConstants.*;
@@ -92,15 +93,59 @@ public class GoJbsBraOchHa{
 		new Thread(new Update()).start();
 		try {
 			argString = arg[0];
-			if (argString.equals("Glosor")) {
-				new Glosor();
+			if (argString.equals("snabb")) {
+				GoJbFrame frame = new GoJbFrame();
+				JComboBox<Class<?>> box = new JComboBox<Class<?>>();
+				JButton button = new JButton("kör");
+				frame.setLayout(new GridLayout(0, 1));
+				frame.add(box);
+				frame.add(button);
+				frame.pack();
+				frame.setSize(500, frame.getHeight());
+				button.addActionListener(e -> {
+					frame.dispose();
+					try {
+						((Class<?>) box.getSelectedItem()).newInstance();
+					} catch (Exception e1) {
+						e1.printStackTrace();
+						 
+					}});
+				try {
+					for (Class<?> class1 : ClassFinder.find("gojb")) {
+						if (!class1.getName().contains("$")) {
+							box.addItem(class1);
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					box.setSelectedIndex(Integer.parseInt(prop.getProperty("temp")));
+				} catch (Exception e2) {}
+				box.addItemListener(e -> {
+					box.addItemListener(e1 -> {
+						prop.setProperty("temp", Integer.toString(box.getSelectedIndex()));
+						sparaProp("123");
+						frame.dispose();
+						try {
+							((Class<?>) e1.getItem()).newInstance();
+						} catch (Exception e2) {
+							e2.printStackTrace();
+						}
+					});
+				});
 				return;
 			}
-			else if (argString.equals("Mail")) {
-				new Mailkorg();
-				return;
+			Class<?> cls = Class.forName(argString);
+			try {
+				cls.newInstance();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {argString ="";}
+			return;
+		} catch (Exception e) {
+			argString ="";
+		}
 		new Login();
 	}
 	public static void spelaLjud(String filnamn){
@@ -4181,7 +4226,7 @@ class OpenGLTest {
 
 	public OpenGLTest() {
 		unZip();
-		
+
 		try {
 			if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")){
 				System.setProperty("org.lwjgl.librarypath", new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\windows_dll").getAbsolutePath());
@@ -4351,7 +4396,7 @@ class OpenGLTest {
 	 * @param height The height of the display required
 	 * @param fullscreen True if we want fullscreen mode
 	 */
-	
+
 	private void setDisplayMode(int width, int height, boolean fullscreen) {
 
 		try {
@@ -4481,7 +4526,7 @@ class Sök implements ActionListener{
 
 class Mailkorg implements ActionListener{
 
-	static GoJbFrame frame = new GoJbFrame();
+	private GoJbFrame frame = new GoJbFrame();
 
 	static JTextField Mottagare = new JTextField("gojb@gojb.bl.ee"),
 			Ämne = new JTextField();
@@ -5300,7 +5345,7 @@ class Kurve implements ActionListener,KeyListener{
 					pixels[längd].draw(g2);
 				} catch (Exception e) {}
 			}
-			
+
 		}
 	};
 	@Override
@@ -5352,21 +5397,21 @@ class Kurve implements ActionListener,KeyListener{
 
 @SuppressWarnings("serial")
 class Pac extends JPanel{
-	
+
 	int x;
 	GoJbFrame frame = new GoJbFrame("PAC");
-	
+
 	public Pac(){
-		
+
 		frame.add(this);
-		
+
 		x++;
-		
+
 	}
 	protected void paintComponent(Graphics g) {
-		
+
 		g.setColor(yellow);
-//		g.fillOval(50, 50, 100, 100);
+		//		g.fillOval(50, 50, 100, 100);
 		g.fillArc(50, 50, 100, 100, 100, 100);
 	}
 }

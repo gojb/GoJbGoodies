@@ -1,10 +1,7 @@
 package GoJbFrame;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.Timer;
+import javax.swing.*;
 
 /**
  * GoJbFrame är en vanlig JFrame fast med några inställningar förkonfigurerade 
@@ -23,16 +20,17 @@ import javax.swing.Timer;
  */
 
 public class GoJbFrame extends JFrame implements WindowListener{
-	
+
 	Timer timer = new Timer(1000*60*2, e -> System.exit(3));
-	
-private static final long serialVersionUID = 1L;
-	
-	
+
+	private static final long serialVersionUID = 168746L;
+
+
 	public GoJbFrame() {
 		this("", true,3);
 	}
 	public GoJbFrame(String title){
+		
 		this(title,true,3);
 	}
 	public GoJbFrame(String title,Boolean visible, int close){
@@ -51,12 +49,12 @@ private static final long serialVersionUID = 1L;
 	@Override
 	public void windowActivated(WindowEvent e) {
 		timer.stop();
-		
+
 	}
 	@Override
 	public void windowClosed(WindowEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	@Override
 	public void windowClosing(WindowEvent e) {
@@ -66,7 +64,7 @@ private static final long serialVersionUID = 1L;
 	public void windowDeactivated(WindowEvent e) {
 
 		timer.start();
-		
+
 	}
 	@Override
 	public void windowDeiconified(WindowEvent e) {
@@ -77,7 +75,7 @@ private static final long serialVersionUID = 1L;
 	public void windowIconified(WindowEvent e) {
 		// TODO Auto-generated method stub
 		timer.start();
-		
+
 	}
 	@Override
 	public void windowOpened(WindowEvent e) {
@@ -89,7 +87,7 @@ class Standard{
 	public Standard(JFrame frame) {
 		frame.setSize(500, 500);
 		frame.setLocationRelativeTo(null);
-		
+
 		try {
 			frame.setIconImage(new ImageIcon(getClass().getResource("/images/Java-icon.png")).getImage());
 		} catch (Exception e) {

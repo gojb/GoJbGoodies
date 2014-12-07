@@ -10,7 +10,9 @@ import javax.swing.*;
 import static gojb.GoJbsBraOchHa.*;
 
 class GoJbMail{
-
+	public GoJbMail() {
+	System.err.println("kjgu.");
+	}
 	public static void Starta(String starta){		
 
 		if(starta.toLowerCase().equals("hämta")){

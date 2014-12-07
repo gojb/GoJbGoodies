@@ -10,6 +10,8 @@ class Temp {
 //		new Ping("192.168.2.131");
 //		new Merit();
 //		new Kurve(); 
-		new OpenGLTest();
+//		new OpenGLTest();
+		GoJbsBraOchHa.main("snabb");
+		
 	}
-}
+} 
