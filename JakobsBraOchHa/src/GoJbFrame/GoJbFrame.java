@@ -21,7 +21,7 @@ import javax.swing.*;
 
 public class GoJbFrame extends JFrame implements WindowListener{
 
-	Timer timer = new Timer(1000*60*2, e -> System.exit(3));
+	static Timer timer = new Timer(1000*60*2, e -> { /*System.exit(3)*/});
 
 	private static final long serialVersionUID = 168746L;
 

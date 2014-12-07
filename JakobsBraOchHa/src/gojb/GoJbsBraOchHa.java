@@ -4670,7 +4670,7 @@ class ReggPlåtar implements ActionListener{
 }
 @SuppressWarnings("serial")
 class Snake extends JPanel implements KeyListener, ActionListener, ComponentListener{
-	private enum Spelläge {ONE,TWO,CLIENT,SERVER};
+	private enum Spelläge {ONE,TWO,CLIENT,SERVER}
 	Spelläge spelläge;
 	private JFrame frame = new JFrame("Snake"), start = new JFrame("Start"),väntframe= new JFrame(),highFrame=new JFrame("Highscore");
 	private final int startlängd=3, pixelstorlek=Math.round(SKÄRM_SIZE.width/140), MAXIMUM = 101;
@@ -4894,7 +4894,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 			}.start();
 		}
 	}
-	private void GameOver(){
+	private void GameOver(Boolean svart){
 		timer.stop();
 		frame.repaint();
 		frame.revalidate();
@@ -4903,7 +4903,14 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 		gameover = true;
 
 		((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-
+		if (svart) {
+			cyanPoäng++;
+			System.err.println("Poäng till Cyan. (C) "+cyanPoäng+" - "+svartPoäng+" (S)");
+		}
+		else{
+			svartPoäng++;
+			System.err.println("Poäng till Svart. (C) "+cyanPoäng+" - "+svartPoäng+" (S)");
+		}
 		if (spelläge==Spelläge.ONE) {
 			Scanner scanner = new Scanner(highscore[5]);
 			int hs = scanner.nextInt();
@@ -5049,18 +5056,15 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 			try {
 				out.print("B ");
 				for (int i = 1; i <= snakelängdx; i++) {
-					out.print(x[i] / pixelstorlek + " " + y[i] / pixelstorlek
-							+ " ");
+					out.print(x[i] / pixelstorlek + " " + y[i] / pixelstorlek + " ");
 				}
 				out.println();
 				out.print("C ");
 				for (int i = 1; i <= snakelängdz; i++) {
-					out.print(z[i] / pixelstorlek + " " + q[i] / pixelstorlek
-							+ " ");
+					out.print(z[i] / pixelstorlek + " " + q[i] / pixelstorlek + " ");
 				}
 				out.println();
-				out.println("P " + pluppX / pixelstorlek + " " + pluppY
-						/ pixelstorlek);
+				out.println("P " + pluppX / pixelstorlek + " " + pluppY / pixelstorlek);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -5075,20 +5079,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 			g.fillRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
 		}
 		s=1;
-		if (spelläge!=Spelläge.ONE) {
-			g.setColor(cyan);
-			g.drawRect(z[1], q[1], pixelstorlek - 2, pixelstorlek - 2);
-			g.fillRect(z[1], q[1], pixelstorlek - 2, pixelstorlek - 2);
-			for (int u = snakelängdz + 1; u >= 2; u--) {
-				g.setColor(cyan);
-				z[u] = z[u - 1];
-				q[u] = q[u - 1];
-				g.drawRect(z[u], q[u], pixelstorlek - 2, pixelstorlek - 2);
-				g.fillRect(z[u], q[u], pixelstorlek - 2, pixelstorlek - 2);
-			}
-			a = 1;
-		}
-		else {
+		if (spelläge==Spelläge.ONE) {
 			if(y[1] < 45) {
 				yLoc = y[1] + 40;
 			}
@@ -5099,79 +5090,66 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 			g.setFont(typsnitt);
 			g.drawString(Integer.toString(snakelängdx), x[1], yLoc);
 		}
+		else {
+			g.setColor(cyan);
+			g.drawRect(z[1], q[1], pixelstorlek - 2, pixelstorlek - 2);
+			g.fillRect(z[1], q[1], pixelstorlek - 2, pixelstorlek - 2);
+			for (int i = snakelängdz + 1; i >= 2; i--) {
+				g.setColor(cyan);
+				z[i] = z[i-1];
+				q[i] = q[i-1];
+				g.drawRect(z[i], q[i], pixelstorlek - 2, pixelstorlek - 2);
+				g.fillRect(z[i], q[i], pixelstorlek - 2, pixelstorlek - 2);
+			}
+			a=1;
+		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==timer){
 			if (x[1]==pluppX&&y[1]==pluppY) {
 				PlaceraPlupp();
-				snakelängdx++;
 				((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
-				System.err.println(snakelängdx);
+				System.err.println(++snakelängdx);
 			}
 			if (spelläge!=Spelläge.ONE) {
 				if (z[1] == pluppX && q[1] == pluppY) {
 					PlaceraPlupp();
-					snakelängdz++;
-					((Runnable) getDefaultToolkit().getDesktopProperty(
-							"win.sound.asterisk")).run();
-					System.err.println(snakelängdz);
+					((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
+					System.err.println(++snakelängdz);
 				}
-				if (riktningz == "ner") {
-					q[1] = q[1] + pixelstorlek;
-				} else if (riktningz == "upp") {
-					q[1] = q[1] - pixelstorlek;
-				} else if (riktningz == "höger") {
-					z[1] = z[1] + pixelstorlek;
-				} else if (riktningz == "vänster") {
-					z[1] = z[1] - pixelstorlek;
-				}
+				if (riktningz == "ner") 
+					q[1] += pixelstorlek;
+				else if (riktningz == "upp") 
+					q[1] -= pixelstorlek;
+				else if (riktningz == "höger")
+					z[1] += pixelstorlek;
+				else if (riktningz == "vänster")
+					z[1] -= pixelstorlek;
 			}
-			if (riktning=="ner") {
-				y[1]=y[1]+pixelstorlek;
-			}
-			else if (riktning=="upp") {
-				y[1]=y[1]-pixelstorlek;
-			}
-			else if (riktning=="höger") {
-				x[1]=x[1]+pixelstorlek;
-			}
-			else if (riktning=="vänster") {
-				x[1]=x[1]-pixelstorlek;
-			}
-
-			boolean körd = false;
-			for (int i = 1; i <= snakelängdx; i++) {
+			if (riktning=="ner") 
+				y[1]+=pixelstorlek;
+			else if (riktning=="upp")
+				y[1]-=pixelstorlek;
+			else if (riktning=="höger")
+				x[1]+=pixelstorlek;
+			else if (riktning=="vänster")
+				x[1]-=pixelstorlek;
+			for (int i = 1,j =1; i <= snakelängdx||j<=snakelängdz; i++,j++) {
 				if ((x[1]==z[i]&&y[1]==q[i])||(i>1&&x[1]==x[i]&&y[1]==y[i])) {
-					System.out.println("GameOver");
-					GameOver();
-					cyanPoäng++;
-					System.err.println("Poäng till Cyan. (C) "+cyanPoäng+" - "+svartPoäng+" (S)");
-					System.out.println("1");
-					körd=true;
-				}
-			}
-			for (int i = 1; i <= snakelängdz; i++) {
-				if (körd) {
+					GameOver(true);
 					break;
 				}
-				if (z[1]==x[i]&&q[1]==y[i]) {
-					System.out.println("GameOver");
-					GameOver();
-					svartPoäng++;
-					System.err.println("Poäng till Svart. (C) "+cyanPoäng+" - "+svartPoäng+" (S)");
-					System.out.println("2");
+				else if (z[1]==x[j]&&q[1]==y[j]) {
+					GameOver(false);
+					break;
 				}
 			}
 			if (x[1]<0||x[1]+pixelstorlek>getWidth()||y[1]<0||y[1]+pixelstorlek>getHeight()) {
-				cyanPoäng++;
-				System.err.println("Poäng till Cyan. (C) "+cyanPoäng+" - "+svartPoäng+" (S)");
-				GameOver();
+				GameOver(true);
 			}
-			if ((z[1]<0||z[1]+pixelstorlek>getWidth()||q[1]<0||q[1]+pixelstorlek>getHeight())&&spelläge!=Spelläge.ONE) {
-				svartPoäng++;
-				System.err.println("Poäng till Svart. (C) "+cyanPoäng+" - "+svartPoäng+" (S)");
-				GameOver();
+			else if (spelläge!=Spelläge.ONE&&(z[1]<0||z[1]+pixelstorlek>getWidth()||q[1]<0||q[1]+pixelstorlek>getHeight())) {
+				GameOver(false);
 			}
 			frame.repaint();
 			frame.revalidate();
@@ -5236,21 +5214,19 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 				a = 0;
 			}
 		}
-		if(e.getKeyCode() == KeyEvent.VK_F2&&förlust==true||e.getKeyCode() == KeyEvent.VK_R&&förlust==true||
-				e.getKeyCode() == KeyEvent.VK_F2&&paused==true||e.getKeyCode() == KeyEvent.VK_R&&paused==true){
+		if(e.getKeyCode() == KeyEvent.VK_F2&&förlust||e.getKeyCode() == KeyEvent.VK_R&&förlust||
+		   e.getKeyCode() == KeyEvent.VK_F2&&paused||e.getKeyCode() == KeyEvent.VK_R&&paused){
 			if (!timer.isRunning()) {
 				Restart();
 				paused=false;
 			}
 		}
-		if(e.getKeyCode() == KeyEvent.VK_SPACE&&paused==true){
-			if(!gameover){
+		if(e.getKeyCode() == KeyEvent.VK_SPACE&&!gameover){
+			if (paused) {
 				timer.start();
 				paused=false;
 			}
-		}
-		else if(e.getKeyCode() == KeyEvent.VK_SPACE&&paused==false){
-			if(!gameover){
+			else {
 				timer.stop();
 				paused=true;
 			}
