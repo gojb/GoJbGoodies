@@ -28,13 +28,11 @@ import com.sun.mail.util.*;
 
 import static gojb.GoJbsBraOchHa.*;
 import static gojb.Mouse.*;
-
 import static javax.swing.SwingConstants.*;
 import static java.awt.Color.*;
 import static javax.swing.JFrame.*;
 import static javax.swing.JOptionPane.*;
 import static java.awt.Toolkit.*;
-
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.gluPerspective;
 
@@ -175,6 +173,12 @@ public class GoJbsBraOchHa{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	public static void errPrint(Exception e){
+		Writer writer = new StringWriter();
+		e.printStackTrace(new PrintWriter(writer));
+		e.printStackTrace();
+		skrivHändelsetext(writer.toString());
 	}
 	public GoJbsBraOchHa() {
 		main("");
@@ -4210,21 +4214,26 @@ class OpenGLTest {
 	private boolean vsync;
 
 	public OpenGLTest() {
-		unZip();
-
 		try {
-			if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")){
-				System.setProperty("forg.lwjgl.librarypath", new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\windows_dll").getAbsolutePath());
+			unZip();
+
+			try {
+				if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")){
+					System.setProperty("forg.lwjgl.librarypath", new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\windows_dll").getAbsolutePath());
+				}
+				Display.setDisplayMode(new DisplayMode(800, 600));
+				Display.setTitle("GoJbGame");
+				Display.create();
+			} catch (LWJGLException e) {
+				e.printStackTrace();
+				System.exit(0);
 			}
-			Display.setDisplayMode(new DisplayMode(800, 600));
-			Display.setTitle("GoJbGame");
-			Display.create();
-		} catch (LWJGLException e) {
-			e.printStackTrace();
-			System.exit(0);
+			gameLoop();
+			Display.destroy();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			errPrint(e);
 		}
-		gameLoop();
-		Display.destroy();
 	}
 	private void unZip(){
 		try {
