@@ -28,6 +28,7 @@ import com.sun.mail.util.*;
 
 import static gojb.GoJbsBraOchHa.*;
 import static gojb.Mouse.*;
+import static gojb.Snake.Spelläge.*;
 
 import static javax.swing.SwingConstants.*;
 import static java.awt.Color.*;
@@ -93,7 +94,7 @@ public class GoJbsBraOchHa{
 						((Class<?>) box.getSelectedItem()).newInstance();
 					} catch (Exception e1) {
 						e1.printStackTrace();
-						 
+
 					}});
 				try {
 					for (Class<?> class1 : ClassFinder.find("gojb")) {
@@ -4670,17 +4671,17 @@ class ReggPlåtar implements ActionListener{
 }
 @SuppressWarnings("serial")
 class Snake extends JPanel implements KeyListener, ActionListener, ComponentListener{
-	private enum Spelläge {ONE,TWO,CLIENT,SERVER}
+	enum Spelläge {ONE,TWO,CLIENT,SERVER}
 	Spelläge spelläge;
 	private JFrame frame = new JFrame("Snake"), start = new JFrame("Start"),väntframe= new JFrame(),highFrame=new JFrame("Highscore");
 	private final int startlängd=3, pixelstorlek=Math.round(SKÄRM_SIZE.width/140), MAXIMUM = 101;
 	private int[] x=new int[MAXIMUM], y=new int[MAXIMUM], z=new int[MAXIMUM], q=new int[MAXIMUM];
 	private int snakelängdx,snakelängdz=-1,pluppX,pluppY,s=1,a=1,svartPoäng,cyanPoäng,yLoc;
 	private Timer timer = new Timer(100, this);
-	private static String riktning = "ner",riktningz = "upp";
+	private String riktning = "ner",riktningz = "upp",vem;
 	private BufferedReader in;
 	private PrintWriter out;
-	private boolean förlust, paused,gameover;
+	private boolean paused,gameover=true;
 	private JButton local = new JButton("Play two on this computer"),
 			online = new JButton("Play online"),
 			one = new JButton("Single Player");
@@ -4690,21 +4691,20 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 	public Snake(){
 		setOpaque(true);
 		setBackground(white);
-		setPreferredSize(new Dimension(pixelstorlek*50, pixelstorlek*50));
-		setMaximumSize(new Dimension(pixelstorlek*50, pixelstorlek*50));
-		setMinimumSize(new Dimension(pixelstorlek*50, pixelstorlek*50));
-
+		setPreferredSize(new Dimension(pixelstorlek*50+1, pixelstorlek*50+1));
+		setMaximumSize(new Dimension(pixelstorlek*50+1, pixelstorlek*50+1));
+		setMinimumSize(new Dimension(pixelstorlek*50+1, pixelstorlek*50+1));
 		frame.setLayout(new BorderLayout());
 		frame.add(this,BorderLayout.CENTER);		
 		frame.setIconImage(fönsterIcon);
 		frame.setResizable(false);		
 		frame.addKeyListener(this);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
 		frame.addWindowListener(autoListener);
 		frame.getContentPane().setBackground(black);
 		frame.addComponentListener(this);	
 		frame.setDefaultCloseOperation(2);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
 		frame.addWindowListener(new WindowListener() {
 			public void windowOpened(WindowEvent e) {}public void windowIconified(WindowEvent e) {}
 			public void windowDeiconified(WindowEvent e) {}public void windowDeactivated(WindowEvent e) {}
@@ -4731,17 +4731,16 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 		start.setVisible(true);
 
 		local.addActionListener(e -> {
-			spelläge=Spelläge.TWO;
+			spelläge=TWO;
 			start.dispose();
 			frame.setVisible(true);
-			paused=true;
 			Restart();
-			timer.stop();
+			Pausa();
 			frame.revalidate();
 			frame.repaint();
 		});
 		one.addActionListener(e -> {
-			spelläge=Spelläge.ONE;
+			spelläge=ONE;
 			start.dispose();
 			frame.setVisible(true);
 			Restart();
@@ -4770,8 +4769,8 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 		String[]strings={"Server", "Klient"};
 		int i = showOptionDialog(frame, "Server eller klient?", "Multiplayer", DEFAULT_OPTION, QUESTION_MESSAGE, null, strings, 0);
 		if (i==0) {
-			spelläge=Spelläge.SERVER;
-
+			spelläge=SERVER;
+			frame.setTitle(frame.getTitle() + " SERVER");
 			start.dispose();
 			väntframe.add(new JLabel("Väntar på anslutning...",Bild("/images/loading.gif"),CENTER));
 			väntframe.setLocationRelativeTo(null);
@@ -4796,11 +4795,10 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 						e.printStackTrace();
 					}
 					väntframe.dispose();
-					paused=true;
 					Restart();
-					timer.stop();
+					Pausa();
 					frame.setVisible(true);	
-					frame.revalidate();
+					frame.pack();
 					frame.repaint();
 					while (true) {
 						try {
@@ -4830,6 +4828,12 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 										a=0;
 									}
 								}
+								else if (string.equals("restart")) {
+									Restart();
+								}
+								else if (string.equals("pause")) {
+									Pausa();
+								}
 							}
 							System.out.println(riktningz);
 
@@ -4843,7 +4847,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 		}
 		else if (i==1) {
 			start.dispose();
-			spelläge=Spelläge.CLIENT;
+			spelläge=CLIENT;
 			try {
 				socket = new Socket(showInputDialog("Adress till server"), 11622);
 				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -4852,8 +4856,8 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 				e.printStackTrace();
 			}
 			frame.setVisible(true);
+			frame.pack();
 			paused=false;
-			förlust=false;
 			new Thread(){
 				public void run() {
 					Scanner scanner = null;
@@ -4879,6 +4883,9 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 									}
 									else if (string2.equals("gameover")) {
 										gameover=true;
+									}
+									else {
+										vem = string2;
 									}
 								}
 								else if (string.equals("B")) {
@@ -4911,20 +4918,12 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 		timer.stop();
 		frame.repaint();
 		frame.revalidate();
-		förlust = true;
 
 		gameover = true;
 
 		((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
-		if (svart) {
-			cyanPoäng++;
-			System.err.println("Poäng till Cyan. (C) "+cyanPoäng+" - "+svartPoäng+" (S)");
-		}
-		else{
-			svartPoäng++;
-			System.err.println("Poäng till Svart. (C) "+cyanPoäng+" - "+svartPoäng+" (S)");
-		}
-		if (spelläge==Spelläge.ONE) {
+		if (spelläge==ONE) {
+			vem="Du";
 			Scanner scanner = new Scanner(highscore[5]);
 			int hs = scanner.nextInt();
 			scanner.close();
@@ -4964,6 +4963,16 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 			skrivHändelsetext(highscore[5]);
 		}
 		else {
+			if (svart) {
+				cyanPoäng++;
+				System.err.println("Poäng till Cyan. (C) "+cyanPoäng+" - "+svartPoäng+" (S)");
+				vem="Svart";
+			}
+			else{
+				svartPoäng++;
+				System.err.println("Poäng till Svart. (C) "+cyanPoäng+" - "+svartPoäng+" (S)");
+				vem="Cyan";
+			}
 			if(svartPoäng==10){
 				JOptionPane.showMessageDialog(null, "Svart vann!");
 				frame.dispose();
@@ -4974,61 +4983,67 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 			}
 		}
 	}
-	private void Restart() {
-		gameover=false;
-		for (int i = 0; i < x.length; i++) {
-			x[i]=0;
-			q[i]=0;
-			y[i]=0;
-			z[i]=0;
-		}
-		repaint();
-
-		int posx = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
-		int posy = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
-
-		int posyz = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
-		int posyq = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
-
-		if (posx>getWidth()*0.8||posx<getWidth()*0.2||posy>getHeight()*0.8||posy<getHeight()*0.2) {
-			Restart();
-		}
-		else if (posyz>getWidth()*0.8||posyz<getWidth()*0.2||posyq>getHeight()*0.8||posyq<getHeight()*0.2) {
-			Restart();
-		}
-		else{		
-			String [] arr = {"upp", "ner", "höger", "vänster"};
-
-			riktning=arr[random.nextInt(arr.length)];
-			snakelängdx = startlängd;
-			x[1]=posx;
-			y[1]=posy;
-			s=1;
-			for (int i = 2; i < MAXIMUM; i++) {
-				x[i]=-2;
-				q[i]=-2;
-				y[i]=-2;
-				z[i]=-2;
-			}
-			if (spelläge!=Spelläge.ONE) {
-				riktningz=arr[random.nextInt(arr.length)];
-				snakelängdz = startlängd;
-				z[1] = posyz;
-				q[1] = posyq;
-				a=1;
+	private void Pausa(){
+		if(!gameover){
+			if (paused) {
+				timer.start();
+				paused=false;
 			}
 			else {
-				z[1]=-2;
+				timer.stop();
+				paused=true;
+				frame.repaint();
 			}
-			PlaceraPlupp();
-			förlust= false;
+		}
+	}
+	private void Restart() {
+		if (paused||gameover){
+			for (int i = 1; i < x.length; i++) {
+				x[i]=-15;
+				q[i]=-15;
+				y[i]=-15;
+				z[i]=-15;
+			}
 			repaint();
-			timer.start();
 
+			int posx = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
+			int posy = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
+
+			int posyz = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
+			int posyq = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
+
+			if (posx>getWidth()*0.8||posx<getWidth()*0.2||posy>getHeight()*0.8||posy<getHeight()*0.2||
+				posyz>getWidth()*0.8||posyz<getWidth()*0.2||posyq>getHeight()*0.8||posyq<getHeight()*0.2) {
+				Restart();
+			}
+			else{		
+				String [] arr = {"upp", "ner", "höger", "vänster"};
+
+				riktning=arr[random.nextInt(arr.length)];
+				snakelängdx = startlängd;
+				x[1]=posx;
+				y[1]=posy;
+				s=1;
+
+				if (spelläge!=ONE) {
+					riktningz=arr[random.nextInt(arr.length)];
+					snakelängdz = startlängd;
+					z[1] = posyz;
+					q[1] = posyq;
+					a=1;
+				}
+				else {
+					z[1]=-2;
+				}
+				PlaceraPlupp();
+				gameover=false;
+				paused=false;
+				repaint();
+				timer.start();
+			}
 		}
 	}
 	private void PlaceraPlupp(){
-
 		pluppX = random.nextInt(getWidth()/pixelstorlek)*pixelstorlek;
 		pluppY = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
 	}
@@ -5036,43 +5051,43 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 		super.paintComponent(g1);
 		Graphics2D g = (Graphics2D)g1;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		
+		g.setColor(red);
+		g.drawOval(pluppX+1, pluppY+1, pixelstorlek-2, pixelstorlek-2);
+		g.fillOval(pluppX+1, pluppY+1, pixelstorlek-2, pixelstorlek-2);
+		g.setColor(black);
+		for (int i = 1; i <= snakelängdx; i++) {
+			g.drawRect(x[i]+1, y[i]+1, pixelstorlek-2, pixelstorlek-2);
+			g.fillRect(x[i]+1, y[i]+1, pixelstorlek-2, pixelstorlek-2);
+		}
+		s=1;
+		if (spelläge!=ONE) {
+			g.setColor(cyan);
+			for (int i = 1; i <= snakelängdz; i++) {
+				g.drawRect(z[i] + 1, q[i] + 1, pixelstorlek - 2,pixelstorlek - 2);
+				g.fillRect(z[i] + 1, q[i] + 1, pixelstorlek - 2,pixelstorlek - 2);
+			}
+			a = 1;
+		}
 		if(paused){
 			g.setColor(blue);
 			g.setFont(new Font(null, 0, 25));
 			g.drawString("Spelet pausat. Tryck på mellanslag för att fortsätta.", 10, getHeight()/2);
 		}
-		if (förlust) {
+		if (gameover) {
 			g.setColor(red);
 			g.setFont(new Font(null, 0, 25));
-			g.drawString("Du förlorade!",10 , getHeight()/2-25);
+			g.drawString(vem+" förlorade!",10 , getHeight()/2-25);
 			g.drawString("Tryck F2 eller \"R\" för \natt spela igen",10 , getHeight()/2);
 		}
-		g.setColor(red);
-		g.drawOval(pluppX, pluppY, pixelstorlek-2, pixelstorlek-2);
-		g.fillOval(pluppX, pluppY, pixelstorlek-2, pixelstorlek-2);
-		if (spelläge==Spelläge.CLIENT) {
-			for (int i = 1; i <= snakelängdx; i++) {
-				g.setColor(black);
-
-				g.drawRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
-				g.fillRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
-			}
-			for (int i = 1; i <= snakelängdz; i++) {
-				g.setColor(cyan);
-
-				g.drawRect(z[i], q[i], pixelstorlek-2, pixelstorlek-2);
-				g.fillRect(z[i], q[i], pixelstorlek-2, pixelstorlek-2);
-			}
-			return;
-		}
-		else if (spelläge==Spelläge.SERVER) {
+		if (spelläge==SERVER) {
 			try {
 				out.print("A ");
 				if (paused) {
 					out.print("paus ");
 				}
 				if (gameover) {
-					out.print("gameover ");
+					out.print("gameover " + vem);
 				}
 				out.println();
 				out.print("B ");
@@ -5090,17 +5105,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 				e.printStackTrace();
 			}
 		}
-		g.setColor(black);
-		g.drawRect(x[1], y[1], pixelstorlek-2, pixelstorlek-2);
-		g.fillRect(x[1], y[1], pixelstorlek-2, pixelstorlek-2);
-		for (int i = snakelängdx+1; i >= 2; i--) {
-			x[i]=x[i-1];
-			y[i]=y[i-1];
-			g.drawRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
-			g.fillRect(x[i], y[i], pixelstorlek-2, pixelstorlek-2);
-		}
-		s=1;
-		if (spelläge==Spelläge.ONE) {
+		else if (spelläge==ONE) {
 			if(y[1] < 45) {
 				yLoc = y[1] + 40;
 			}
@@ -5111,70 +5116,63 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 			g.setFont(typsnitt);
 			g.drawString(Integer.toString(snakelängdx), x[1], yLoc);
 		}
-		else {
-			g.setColor(cyan);
-			g.drawRect(z[1], q[1], pixelstorlek - 2, pixelstorlek - 2);
-			g.fillRect(z[1], q[1], pixelstorlek - 2, pixelstorlek - 2);
-			for (int i = snakelängdz + 1; i >= 2; i--) {
-				g.setColor(cyan);
-				z[i] = z[i-1];
-				q[i] = q[i-1];
-				g.drawRect(z[i], q[i], pixelstorlek - 2, pixelstorlek - 2);
-				g.fillRect(z[i], q[i], pixelstorlek - 2, pixelstorlek - 2);
-			}
-			a=1;
-		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource()==timer){
-			if (x[1]==pluppX&&y[1]==pluppY) {
+		if (x[1]==pluppX&&y[1]==pluppY) {
+			PlaceraPlupp();
+			((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
+			System.err.println(++snakelängdx);
+		}
+		if (spelläge!=ONE) {
+			if (z[1] == pluppX && q[1] == pluppY) {
 				PlaceraPlupp();
 				((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
-				System.err.println(++snakelängdx);
+				System.err.println(++snakelängdz);
 			}
-			if (spelläge!=Spelläge.ONE) {
-				if (z[1] == pluppX && q[1] == pluppY) {
-					PlaceraPlupp();
-					((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
-					System.err.println(++snakelängdz);
-				}
-				if (riktningz == "ner") 
-					q[1] += pixelstorlek;
-				else if (riktningz == "upp") 
-					q[1] -= pixelstorlek;
-				else if (riktningz == "höger")
-					z[1] += pixelstorlek;
-				else if (riktningz == "vänster")
-					z[1] -= pixelstorlek;
+			for (int i = snakelängdz + 1; i >= 2; i--) {
+				z[i] = z[i-1];
+				q[i] = q[i-1];
 			}
-			if (riktning=="ner") 
-				y[1]+=pixelstorlek;
-			else if (riktning=="upp")
-				y[1]-=pixelstorlek;
-			else if (riktning=="höger")
-				x[1]+=pixelstorlek;
-			else if (riktning=="vänster")
-				x[1]-=pixelstorlek;
-			for (int i = 1,j =1; i <= snakelängdx||j<=snakelängdz; i++,j++) {
-				if ((x[1]==z[i]&&y[1]==q[i])||(i>1&&x[1]==x[i]&&y[1]==y[i])) {
-					GameOver(true);
-					break;
-				}
-				else if (z[1]==x[j]&&q[1]==y[j]) {
-					GameOver(false);
-					break;
-				}
-			}
-			if (x[1]<0||x[1]+pixelstorlek>getWidth()||y[1]<0||y[1]+pixelstorlek>getHeight()) {
-				GameOver(true);
-			}
-			else if (spelläge!=Spelläge.ONE&&(z[1]<0||z[1]+pixelstorlek>getWidth()||q[1]<0||q[1]+pixelstorlek>getHeight())) {
-				GameOver(false);
-			}
-			frame.repaint();
-			frame.revalidate();
+			if (riktningz == "ner") 
+				q[1] += pixelstorlek;
+			else if (riktningz == "upp") 
+				q[1] -= pixelstorlek;
+			else if (riktningz == "höger")
+				z[1] += pixelstorlek;
+			else if (riktningz == "vänster")
+				z[1] -= pixelstorlek;
 		}
+		for (int i = snakelängdx +1 ; i >= 2; i--) {
+			x[i]=x[i-1];
+			y[i]=y[i-1];
+		}
+		if (riktning=="ner") 
+			y[1]+=pixelstorlek;
+		else if (riktning=="upp")
+			y[1]-=pixelstorlek;
+		else if (riktning=="höger")
+			x[1]+=pixelstorlek;
+		else if (riktning=="vänster")
+			x[1]-=pixelstorlek;
+
+		for (int i = 1; i <= snakelängdx||i<=snakelängdz; i++) {
+			if((i>1&&x[1]==x[i]&&y[1]==y[i])||(x[1]==z[i]&&y[1]==q[i])) {
+				GameOver(true);
+				break;
+			}
+			else if ((i>1&&z[1]==z[i]&&q[1]==q[i])||(z[1]==x[i]&&q[1]==y[i])) {
+				GameOver(false);
+				break;
+			}
+		}
+		if (x[1]<0||x[1]+pixelstorlek>getWidth()||y[1]<0||y[1]+pixelstorlek>getHeight())
+			GameOver(true);
+		else if (spelläge!=ONE&&(z[1]<0||z[1]+pixelstorlek>getWidth()||q[1]<0||q[1]+pixelstorlek>getHeight()))
+			GameOver(false);
+
+		frame.repaint();
+		frame.revalidate();
 	}
 	public void keyTyped(KeyEvent e) {}
 	public void keyReleased(KeyEvent e) {}
@@ -5182,21 +5180,21 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 	public void componentShown(ComponentEvent e) {}
 	public void componentHidden(ComponentEvent e) {}
 	public void keyPressed(KeyEvent e) {
-		if (spelläge==Spelläge.CLIENT) {
+		if (spelläge==CLIENT) {
 			System.err.println(riktningz);
 			System.err.println(e.getKeyCode());
-			if(e.getKeyCode() == KeyEvent.VK_LEFT){
+			if(e.getKeyCode() == KeyEvent.VK_LEFT)
 				out.println("vänster");
-			}
-			else if(e.getKeyCode() == KeyEvent.VK_RIGHT){
+			else if(e.getKeyCode() == KeyEvent.VK_RIGHT)
 				out.println("höger");
-			}
-			else if(e.getKeyCode() == KeyEvent.VK_UP){
+			else if(e.getKeyCode() == KeyEvent.VK_UP)
 				out.println("upp");
-			}
-			else if(e.getKeyCode() == KeyEvent.VK_DOWN){
+			else if(e.getKeyCode() == KeyEvent.VK_DOWN)
 				out.println("ner");
-			}
+			else if (e.getKeyCode() == KeyEvent.VK_R||e.getKeyCode() == KeyEvent.VK_F2)
+				out.println("restart");
+			else if(e.getKeyCode() == KeyEvent.VK_SPACE)
+				out.println("pause");
 			return;
 		}
 		if (s==1) {
@@ -5217,7 +5215,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 				s=0;
 			}
 		}
-		if (a == 1&&spelläge==Spelläge.TWO) {
+		if (a == 1&&spelläge==TWO) {
 			if (e.getKeyCode() ==  KeyEvent.VK_A&&riktningz != "höger"&&riktningz!="vänster") {
 				riktningz = "vänster";
 				a = 0;
@@ -5235,22 +5233,11 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 				a = 0;
 			}
 		}
-		if(e.getKeyCode() == KeyEvent.VK_F2&&förlust||e.getKeyCode() == KeyEvent.VK_R&&förlust||
-		   e.getKeyCode() == KeyEvent.VK_F2&&paused||e.getKeyCode() == KeyEvent.VK_R&&paused){
-			if (!timer.isRunning()) {
-				Restart();
-				paused=false;
-			}
+		if(e.getKeyCode() == KeyEvent.VK_F2||e.getKeyCode() == KeyEvent.VK_R){
+			Restart();
 		}
-		if(e.getKeyCode() == KeyEvent.VK_SPACE&&!gameover){
-			if (paused) {
-				timer.start();
-				paused=false;
-			}
-			else {
-				timer.stop();
-				paused=true;
-			}
+		if(e.getKeyCode() == KeyEvent.VK_SPACE){
+			Pausa();
 		}
 	}
 	public void componentMoved(ComponentEvent e) {
