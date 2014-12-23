@@ -78,7 +78,7 @@ public class GoJbsBraOchHa{
 		try {
 			argString = arg[0];
 			if (argString.equals("snabb")) {
-				GoJbFrame frame = new GoJbFrame();
+				GoJbFrame frame = new GoJbFrame("Snabbstart",false,3);
 				JComboBox<Class<?>> box = new JComboBox<Class<?>>();
 				JButton button = new JButton("kör");
 				frame.setLayout(new GridLayout(0, 1));
@@ -118,6 +118,7 @@ public class GoJbsBraOchHa{
 						}
 					});
 				});
+				frame.setVisible(true);
 				return;
 			}
 			Class<?> cls = Class.forName(argString);
