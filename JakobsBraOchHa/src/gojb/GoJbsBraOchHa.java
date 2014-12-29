@@ -1882,7 +1882,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			draOchSläpp = new JMenuItem("Dra & Släpp"),
 			sök = new JMenuItem("Sök"),
 			reggplåtar = new JMenuItem("Reggplåtar"),
-			Pac = new JMenuItem("Pac");
+			Pac = new JMenuItem("Pac"),
+			memo = new JMenuItem("Memory");
 	JMenuBar bar = new JMenuBar();
 
 	Clip clip;
@@ -1933,6 +1934,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		ÖppnaProgram.add(reggplåtar);
 		ÖppnaProgram.add(Snake);
 		ÖppnaProgram.add(Pac);
+		ÖppnaProgram.add(memo);
 
 
 		Mouse.addActionListener(this);
@@ -1958,6 +1960,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		sök.addActionListener(e -> {new Sök();frame.dispose();});
 		reggplåtar.addActionListener(e -> {new ReggPlåtar();frame.dispose();});
 		Pac.addActionListener(e -> {new Pac();frame.dispose();});
+		memo.addActionListener(e -> {new Memory();frame.dispose();});
 
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 		frame.setBackground(gray);
@@ -5023,7 +5026,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 			int posyq = random.nextInt(getHeight()/pixelstorlek)*pixelstorlek;
 
 			if (posx>getWidth()*0.8||posx<getWidth()*0.2||posy>getHeight()*0.8||posy<getHeight()*0.2||
-				posyz>getWidth()*0.8||posyz<getWidth()*0.2||posyq>getHeight()*0.8||posyq<getHeight()*0.2) {
+					posyz>getWidth()*0.8||posyz<getWidth()*0.2||posyq>getHeight()*0.8||posyq<getHeight()*0.2) {
 				Restart();
 			}
 			else{		
@@ -5061,7 +5064,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 		super.paintComponent(g1);
 		Graphics2D g = (Graphics2D)g1;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
+
 		g.setColor(red);
 		g.drawOval(pluppX+1, pluppY+1, pixelstorlek-2, pixelstorlek-2);
 		g.fillOval(pluppX+1, pluppY+1, pixelstorlek-2, pixelstorlek-2);
@@ -5393,4 +5396,153 @@ class Pac extends JPanel{
 		//		g.fillOval(50, 50, 100, 100);
 		g.fillArc(50, 50, 100, 100, 100, 100);
 	}
+}
+
+class Memory implements MouseInputListener{
+
+	GoJbFrame frame = new GoJbFrame();
+
+	JLabel label1 = new JLabel(),
+			label2 = new JLabel(),
+			label3 = new JLabel(),
+			label4 = new JLabel(),
+			label5 = new JLabel(),
+			label6 = new JLabel(),
+			label7 = new JLabel(),
+			label8 = new JLabel(),
+			label9 = new JLabel();
+
+
+	public Memory(){
+
+		frame.addMouseListener(this);
+
+		frame.setLayout(new GridLayout(3,3));	
+
+		label1.addMouseListener(this);
+		label2.addMouseListener(this);
+		label3.addMouseListener(this);
+		label4.addMouseListener(this);
+		label5.addMouseListener(this);
+		label6.addMouseListener(this);
+		label7.addMouseListener(this);
+		label8.addMouseListener(this);
+		label9.addMouseListener(this);
+
+		frame.add(label1);
+		frame.add(label2);
+		frame.add(label3);
+		frame.add(label4);
+		frame.add(label5);
+		frame.add(label6);
+		frame.add(label7);
+		frame.add(label8);
+		frame.add(label9);
+
+		label1.setBackground(blue);
+		label1.setOpaque(true);
+
+		label2.setBackground(red);
+		label2.setOpaque(true);
+
+		label3.setBackground(green);
+		label3.setOpaque(true);
+
+		label4.setBackground(cyan);
+		label4.setOpaque(true);
+
+		label5.setBackground(black);
+		label5.setOpaque(true);
+
+		label6.setBackground(white);
+		label6.setOpaque(true);
+
+		label7.setBackground(orange);
+		label7.setOpaque(true);
+
+		label8.setBackground(magenta);
+		label8.setOpaque(true);
+
+		label9.setBackground(yellow);
+		label9.setOpaque(true);
+
+
+	}
+
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
+		if(e.getSource()==label1){
+			System.err.println("1");
+		}
+		if(e.getSource()==label2){
+			System.err.println("2");
+		}
+		if(e.getSource()==label3){
+			System.err.println("3");
+		}
+		if(e.getSource()==label4){
+			System.err.println("4");
+		}
+		if(e.getSource()==label5){
+			System.err.println("5");
+		}
+		if(e.getSource()==label6){
+			System.err.println("6");
+		}
+		if(e.getSource()==label7){
+			System.err.println("7");
+		}
+		if(e.getSource()==label8){
+			System.err.println("8");
+		}
+		if(e.getSource()==label9){
+			System.err.println("9");
+		}
+
+	}
+
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// FIXME Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// FIXME Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// FIXME Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// FIXME Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// FIXME Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// FIXME Auto-generated method stub
+
+	}
+
 }
