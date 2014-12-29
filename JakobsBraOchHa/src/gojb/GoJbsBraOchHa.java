@@ -4215,31 +4215,36 @@ class DraOchSläpp extends JPanel implements MouseInputListener{
 
 class OpenGLTest {
 	private double x,z,rx,ry,rz;
-
+	private int fps;
+	long lastFPS= getTime();
 	private boolean vsync;
 
 	public OpenGLTest() {
-		try {
-			unZip();
-
-			try {
-				if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")){
-					System.setProperty("forg.lwjgl.librarypath", new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\windows_dll").getAbsolutePath());
-				}
-				Display.setDisplayMode(new DisplayMode(800, 600));
-				Display.setTitle("GoJbGame");
-				Display.create();
-			} catch (LWJGLException e) {
-				e.printStackTrace();
-				System.exit(0);
-			}
-			gameLoop();
-			Display.destroy();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			errPrint(e);
-		}
+		thread.start();
 	}
+	private Thread thread = new Thread(){
+		public void run() {
+			try {
+				unZip();
+
+				try {
+					if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")){
+						System.setProperty("forg.lwjgl.librarypath", new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\windows_dll").getAbsolutePath());
+					}
+					Display.setDisplayMode(new DisplayMode(800, 600));
+					Display.setTitle("GoJbGame");
+					Display.create();
+				} catch (LWJGLException e) {
+					e.printStackTrace();
+				}
+				gameLoop();
+				Display.destroy();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				errPrint(e);
+			}
+		};
+	};
 	private void unZip(){
 		try {
 			System.err.println(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()+"windows_dll");
@@ -4273,6 +4278,17 @@ class OpenGLTest {
 			e2.printStackTrace();
 		}
 	}
+	public void updateFPS() {
+		if (getTime() - lastFPS > 1000) {
+			Display.setTitle("FPS: " + fps);
+			fps = 0;
+			lastFPS += 1000;
+		}
+		fps++;
+	}
+	public long getTime() {
+	    return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+	}
 	private void gameLoop(){
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
@@ -4280,7 +4296,6 @@ class OpenGLTest {
 		glMatrixMode(GL_MODELVIEW);
 		glEnable(GL_DEPTH_TEST);
 		double x=0,y=0,z=0;
-
 		while(!Display.isCloseRequested()){
 			if (Keyboard.isKeyDown(Keyboard.KEY_F))
 				setDisplayMode(800, 600, !Display.isFullscreen());
@@ -4378,7 +4393,10 @@ class OpenGLTest {
 
 			glPopMatrix();
 			Display.update();
-
+			updateFPS();
+			Display.sync(200);
+			
+			
 		}
 	}
 	private void useView(){
