@@ -3633,7 +3633,21 @@ class SkapaFärg extends JPanel implements ActionListener{
 	}
 }
 
-class Avsluta implements ActionListener{
+class Avsluta implements ActionListener, WindowListener{
+
+	JMenuBar tid = new JMenuBar();
+
+	JMenuItem setTime = new JMenuItem("Tidsbestämd");
+
+	JTextField hours = new JTextField(),
+			minutes = new JTextField(),
+			seconds = new JTextField();
+	
+	JPanel övre = new JPanel(),
+			mellan = new JPanel(),
+			nedre = new JPanel();
+
+	GoJbFrame frame = new GoJbFrame("Tidsbestämning", false, 0);
 
 	JButton b1 = new JButton("Stäng av", Bild("/images/icon.png"));
 	JButton b2 = new JButton("Logga ut", Bild("/images/icon2.png"));
@@ -3662,6 +3676,7 @@ class Avsluta implements ActionListener{
 		b2.addActionListener(this);
 		b3.addActionListener(this);
 		b4.addActionListener(this);
+		setTime.addActionListener(this);
 
 		b1.setHorizontalTextPosition(JButton.CENTER);
 		b2.setHorizontalTextPosition(JButton.CENTER);
@@ -3675,20 +3690,44 @@ class Avsluta implements ActionListener{
 
 		b1.setToolTipText("Stänger av datorn");
 
+		f1.add(tid);
+		tid.add(setTime);
+
 		f1.add(p1);
 		f1.add(s1);
 		f1.setResizable(true);
-		f1.setAlwaysOnTop(true);
 		f1.setDefaultCloseOperation(3);
 		f1.getContentPane().setLayout(new BoxLayout(f1.getContentPane(),BoxLayout.Y_AXIS));
 		f1.setIconImage(fönsterIcon);
 		f1.pack();
 		f1.setLocationRelativeTo(null);
 		f1.setVisible(true);
-	}
-
+		
+		//Tidsbestämning
+		
+		frame.getContentPane().setLayout(new BoxLayout(f1.getContentPane(),BoxLayout.Y_AXIS));
+		frame.add(övre);
+		frame.add(mellan);
+		frame.add(nedre);
+		
+		nedre.setLayout(new GridLayout(0,3));
+		nedre.add(hours);
+		nedre.add(minutes);
+		nedre.add(seconds);
+		minutes.setSize(166, 30);
+		
+		}
 
 	public void actionPerformed(ActionEvent e) {
+
+		if(e.getSource() == setTime){
+
+			f1.dispose();
+			frame.setVisible(true);
+			frame.addWindowListener(this);
+
+		}
+
 		if (e.getSource() == b1){ 
 			try {
 				Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -s -t " + s1.getValue() + " -c \"Hejdå\"");
@@ -3723,6 +3762,58 @@ class Avsluta implements ActionListener{
 				e1.printStackTrace();
 			}
 		}	
+	}
+
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// FIXME Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+
+		if (JOptionPane.showConfirmDialog(null,"Do you really want to quit?\nThe countdown will be disposed",
+				"Are you sure?", YES_NO_OPTION)==YES_OPTION){
+			System.exit(3);
+		}
+	}
+
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// FIXME Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// FIXME Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// FIXME Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// FIXME Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// FIXME Auto-generated method stub
+
 	}
 }
 class Morse implements KeyListener,ActionListener, MouseListener {
@@ -4287,7 +4378,7 @@ class OpenGLTest {
 		fps++;
 	}
 	public long getTime() {
-	    return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
 	}
 	private void gameLoop(){
 		glMatrixMode(GL_PROJECTION);
@@ -4348,7 +4439,7 @@ class OpenGLTest {
 			glBegin(GL_QUADS);
 
 			//FrontFace
-			glColor3d(1,0,0);
+			glColor3d(1,0.5,0);
 			glVertex3d(-1,-1,1);
 			glVertex3d(1,-1,1);
 			glVertex3d(1,1,1);
@@ -4395,8 +4486,8 @@ class OpenGLTest {
 			Display.update();
 			updateFPS();
 			Display.sync(200);
-			
-			
+
+
 		}
 	}
 	private void useView(){
