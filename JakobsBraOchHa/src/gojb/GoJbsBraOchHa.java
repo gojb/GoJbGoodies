@@ -4143,8 +4143,6 @@ class ToBinary implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
-
-
 		try {
 			Integer.parseInt(text.getText());
 			text.setForeground(black);
@@ -4308,7 +4306,6 @@ class OpenGLTest {
 	private double x,z,rx,ry,rz;
 	private int fps;
 	long lastFPS= getTime();
-	private boolean vsync;
 
 	public OpenGLTest() {
 		thread.start();
@@ -4390,10 +4387,6 @@ class OpenGLTest {
 		while(!Display.isCloseRequested()){
 			if (Keyboard.isKeyDown(Keyboard.KEY_F))
 				setDisplayMode(800, 600, !Display.isFullscreen());
-			if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
-				vsync = !vsync;
-				Display.setVSyncEnabled(vsync);
-			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_W))
 				move(0.01,1);
 			if (Keyboard.isKeyDown(Keyboard.KEY_S))
@@ -5387,9 +5380,9 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 @SuppressWarnings("serial")
 class Kurve implements ActionListener,KeyListener{
 	private Pixel[] pixels = new Pixel[100000];
-	private int längd = 0,i;
+	private int längd,i;
 	private final int PIXEL = 5;
-	private double x=20,y=20,riktning;
+	private double x,y,riktning;
 	private boolean höger,vänster;
 	private Timer timer = new Timer(10, this);
 	boolean ritaom=true;
@@ -5402,8 +5395,7 @@ class Kurve implements ActionListener,KeyListener{
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		label.setOpaque(true);
-		ritaom=true;
-		timer.start();
+		Restart();
 	}
 	private GoJbFrame  frame = new GoJbFrame("Kurve",false,DISPOSE_ON_CLOSE){
 		public void validate() {
@@ -5436,6 +5428,11 @@ class Kurve implements ActionListener,KeyListener{
 					pixels[längd].draw(g2);
 				} catch (Exception e) {}
 			}
+			if (!timer.isRunning()) {
+				g2.setColor(MAGENTA);
+				g2.setFont(typsnitt);
+				g2.drawString("Game over!", label.getWidth()/2-g2.getFontMetrics().stringWidth("Game over!")/2, label.getHeight()/2);
+			}
 
 		}
 	};
@@ -5447,12 +5444,32 @@ class Kurve implements ActionListener,KeyListener{
 		y += Math.sin(riktning);
 		if (i++<200) {
 			pixels[++längd]=new Pixel(x,y);
+			for (int i = 1; i < längd-10; i++) {
+				if (pixels[längd].touch(pixels[i])) {
+					GameOver();
+					break;
+				}
+			}
 			label.repaint();
 		}
 		else if (i>220) {
 			i=0;
 			ritaom=true;
 		}
+	}
+	private void GameOver(){
+		timer.stop();
+		frame.repaint();
+	}
+	private void Restart() {
+		längd=0;
+		x=20;
+		y=20;
+		riktning=0;
+		i=0;
+		ritaom=true;
+		frame.repaint();
+		timer.start();
 	}
 	@Override 
 	public void keyTyped(KeyEvent e) {}
@@ -5463,6 +5480,9 @@ class Kurve implements ActionListener,KeyListener{
 		}
 		else if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
 			höger=true;
+		}
+		else if (e.getKeyCode()==KeyEvent.VK_R) {
+			Restart();
 		}
 	}
 	@Override
@@ -5482,6 +5502,9 @@ class Kurve implements ActionListener,KeyListener{
 		}
 		void draw(Graphics2D g){
 			g.fillOval((int)Math.round(x), (int)Math.round(y), PIXEL,PIXEL);
+		}
+		boolean touch(Pixel pixel){
+			return Math.sqrt(Math.pow(x-pixel.x,2)+Math.pow(y-pixel.y,2))<PIXEL;
 		}
 	}
 }
