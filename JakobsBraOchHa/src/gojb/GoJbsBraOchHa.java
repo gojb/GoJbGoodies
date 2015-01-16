@@ -822,7 +822,8 @@ class Update implements Runnable{
 }
 class Mandat{
 	private JFrame frame = new JFrame("Mandatsimulator för riksdagen");
-	private String[] partiNamn = {	"",
+	private String[] partiNamn = {
+			"",
 			"Socialdemokraterna",
 			"Vänsterpartiet",
 			"Miljöpartiet",
@@ -832,7 +833,8 @@ class Mandat{
 			"Kristdemokraterna",
 			"Sverigedemokraterna",
 			"Feministiskt initiativ",
-	"Övriga"};
+			"Övriga"
+	};
 	private final int i = partiNamn.length;
 	private JTextField[] värden = new JTextField[i];
 	private JLabel[] mandat = new JLabel[i],
@@ -1000,7 +1002,7 @@ class Mandat{
 						ja=true;
 						if (checkBoxes[j].isSelected()) {
 							g.setColor(färger[j]);
-							int partFilled  = (int) (Math.round(antalmandat[j]*1.0315186246418338108882521489971));    
+							int partFilled  = (int) Math.round(antalmandat[j]*1.0315186246418338108882521489971);    
 							g.fillArc(x, y, diam, diam, a, partFilled);
 							g.drawArc(x, y, diam, diam, a, partFilled);
 							a=a+partFilled;
@@ -4724,7 +4726,7 @@ class OpenGLTest {
 			Display.setFullscreen(fullscreen);
 
 		} catch (LWJGLException e) {
-			System.out.println("Unable to setup mode "+width+"x"+height+" fullscreen="+fullscreen + e);
+			System.out.println("Eror "+width+"x"+height+" fullscreen="+fullscreen + e);
 		}
 	}
 	private void move(double amt, double dir){
