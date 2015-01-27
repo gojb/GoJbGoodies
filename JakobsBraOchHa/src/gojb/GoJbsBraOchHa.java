@@ -3666,10 +3666,10 @@ class Avsluta implements ActionListener, WindowListener, MouseInputListener{
 			rminutes = new JButton(),
 			start = new JButton("Start");
 
-	int timerTime;
+	int x;
 
 	Timer timer1 = new Timer(10, this),
-			timer2 = new Timer(timerTime, this);
+			timer2 = new Timer(9, this);
 
 
 
@@ -3726,6 +3726,8 @@ class Avsluta implements ActionListener, WindowListener, MouseInputListener{
 		frame.add(tminutes);
 		frame.add(thours);
 		frame.add(start);
+		
+//		frame.setOpacity(0.55f);
 
 		timer1.start();
 
@@ -3785,14 +3787,17 @@ class Avsluta implements ActionListener, WindowListener, MouseInputListener{
 		if (e.getSource()==timer2){
 			
 			System.err.println("Shutdown");
-			
-			//Running the Shutdown command
-//			try {
-//				Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -s -t 1 -c \"Shutting Down\"");
-//			} catch (IOException e1) {
-//				
-//			}
-			
+			x++;
+			if(x==2){
+				
+		
+//			Running the Shutdown command
+			try {
+				Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -s -t 1 -c \"Shutting Down\"");
+			} catch (IOException e1) {
+				
+			}
+				}
 		}
 		
 		if(e.getSource()==timer1){
@@ -3835,7 +3840,9 @@ class Avsluta implements ActionListener, WindowListener, MouseInputListener{
 						System.err.println(minutes.getText() + " minutes");
 						//Setting the time for timer2, with the number of minutes that "minutes" has written in it
 
-						timerTime = (1000*60)*Integer.parseInt(minutes.getText());
+						timer2.setDelay((1000*60)*Integer.parseInt(minutes.getText()));
+						System.out.println(((1000*60)*60)*Integer.parseInt(minutes.getText()));
+						
 						timer2.start();
 
 					}
@@ -3844,14 +3851,10 @@ class Avsluta implements ActionListener, WindowListener, MouseInputListener{
 
 						//Setting the time for timer2, with the number of hours that "hours" has written in it
 
-						timerTime = ((1000*60)*60)*Integer.parseInt(hours.getText());
+						timer2.setDelay(((1000*60)*60)*Integer.parseInt(hours.getText()));
 						System.out.println(((1000*60)*60)*Integer.parseInt(hours.getText()));
-						try {
-							Thread.sleep(200);
-						} catch (InterruptedException e1) {
-							
-						}
-//						timer2.start();
+						
+						timer2.start();
 						
 					}
 					else{
