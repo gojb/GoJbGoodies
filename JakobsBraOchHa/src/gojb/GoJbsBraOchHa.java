@@ -4305,7 +4305,7 @@ class DraOchSläpp extends JPanel implements MouseInputListener{
 }
 
 class OpenGLTest {
-	private double x,z,rx,ry,rz;
+	private double xx,zz,rx,ry,rz;
 	private int fps;
 	long lastFPS= getTime();
 
@@ -4386,6 +4386,7 @@ class OpenGLTest {
 		glMatrixMode(GL_MODELVIEW);
 		glEnable(GL_DEPTH_TEST);
 		double x=0,y=0,z=0;
+		final double SPEED = 0.1;
 		while(!Display.isCloseRequested()){
 			if (Keyboard.isKeyDown(Keyboard.KEY_F))
 				setDisplayMode(800, 600, !Display.isFullscreen());
@@ -4398,13 +4399,13 @@ class OpenGLTest {
 			if (Keyboard.isKeyDown(Keyboard.KEY_D))
 				move(-0.01,0);
 			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
-				rotateY(-0.1);
+				ry -= SPEED;
 			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
-				rotateY(0.1);
+				ry += SPEED;
 			if (Keyboard.isKeyDown(Keyboard.KEY_UP))
-				rotateX(-0.1);
+				rx -= SPEED;
 			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
-				rotateX(0.1);
+				rx += SPEED;
 			if (Keyboard.isKeyDown(Keyboard.KEY_Z)) 
 				x+=0.5;
 			if (Keyboard.isKeyDown(Keyboard.KEY_X)) 
@@ -4419,65 +4420,21 @@ class OpenGLTest {
 				z-=0.5;
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			
 			glLoadIdentity();
-			useView();
+			
+			glRotated(rx,1,0,0);
+			glRotated(ry,0,1,0);
+			glRotated(rz,0,0,1);
+			glTranslated(xx,0,zz);
 
-			glPushMatrix();
+//			glPushMatrix();
 
-			glColor3d(1.0,0.5,0);
-			glTranslated(0,0,-10);
-
-			glRotated(x,1,0,0);
-			glRotated(y,0,1,0);
-			glRotated(z,0,0,1);
-
-			glBegin(GL_QUADS);
-
-			//FrontFace
-			glColor3d(1,0.5,0);
-			glVertex3d(-1,-1,1);
-			glVertex3d(1,-1,1);
-			glVertex3d(1,1,1);
-			glVertex3d(-1,1,1);
-
-			//BackFace
-			glColor3d(0,1,0);
-			glVertex3d(-1,-1,-1);
-			glVertex3d(-1,1,-1);
-			glVertex3d(1,1,-1);
-			glVertex3d(1,-1,-1);
-
-			//BottomFace
-			glColor3d(0,0,1);
-			glVertex3d(-1,-1,-1);
-			glVertex3d(-1,-1,1);
-			glVertex3d(-1,1,1);
-			glVertex3d(-1,1,-1);
-
-			//Topdace
-			glColor3d(1,1,0);
-			glVertex3d(1,-1,-1);
-			glVertex3d(1,-1,1);
-			glVertex3d(1,1,1);
-			glVertex3d(1,1,-1);
-
-			//LeftFace
-			glColor3d(0,1,1);
-			glVertex3d(-1,-1,-1);
-			glVertex3d(1,-1,-1);
-			glVertex3d(1,-1,1);
-			glVertex3d(-1,-1,1);
-
-			//Right Face
-			glColor3d(1,0,1);
-			glVertex3d(-1,1,-1);
-			glVertex3d(1,1,-1);
-			glVertex3d(1,1,1);
-			glVertex3d(-1,1,1);
-
-			glEnd();
-
-			glPopMatrix();
+			draw3d(x,y,z,2,2,2);
+			
+//			draw3d(x,y,z,2,2,2);
+			
+//			glPopMatrix();
 			Display.update();
 			updateFPS();
 			Display.sync(200);
@@ -4485,11 +4442,64 @@ class OpenGLTest {
 
 		}
 	}
-	private void useView(){
-		glRotated(rx,1,0,0);
-		glRotated(ry,0,1,0);
-		glRotated(rz,0,0,1);
-		glTranslated(x,0,z);
+	private void draw3d(double rotX,double rotY,double rotZ,int längd,int höjd,int bredd){
+		
+		längd/=2;
+		höjd/=2;
+		bredd/=2;
+		
+		glTranslated(0,0,-10);
+
+		glRotated(rotX,1,0,0);
+		glRotated(rotY,0,1,0);
+		glRotated(rotZ,0,0,1);
+
+		glBegin(GL_QUADS);
+
+		//Fram
+		glColor3d(1,0.5,0);
+		
+		glVertex3d(-bredd,-höjd,längd);
+		glVertex3d(-bredd,höjd,längd);
+		glVertex3d(bredd,höjd,längd);
+		glVertex3d(bredd,-höjd,längd);
+
+		//Bak
+		glColor3d(0,1,0);
+		glVertex3d(-bredd,-höjd,-längd);
+		glVertex3d(-bredd,höjd,-längd);
+		glVertex3d(bredd,höjd,-längd);
+		glVertex3d(bredd,-höjd,-längd);
+
+		//Under
+		glColor3d(0,0,1);
+		glVertex3d(-bredd,-höjd,längd);
+		glVertex3d(-bredd,-höjd,-längd);
+		glVertex3d(bredd,-höjd,-längd);
+		glVertex3d(bredd,-höjd,längd);
+
+		//Över
+		glColor3d(1,1,0);
+		glVertex3d(-bredd,höjd,-längd);
+		glVertex3d(-bredd,höjd,längd);
+		glVertex3d(bredd,höjd,längd);
+		glVertex3d(bredd,höjd,-längd);
+
+		//LeftFace
+		glColor3d(0,1,1);
+		glVertex3d(-bredd,-höjd,längd);
+		glVertex3d(-bredd,-höjd,-längd);
+		glVertex3d(-bredd,höjd,-längd);
+		glVertex3d(-bredd,höjd,längd);
+
+//		//Right Face
+		glColor3d(1,0,1);
+		glVertex3d(bredd,-höjd,längd);
+		glVertex3d(bredd,höjd,längd);
+		glVertex3d(bredd,höjd,-längd);
+		glVertex3d(bredd,-höjd,-längd);
+
+		glEnd();
 	}
 
 	/**
@@ -4547,14 +4557,8 @@ class OpenGLTest {
 		}
 	}
 	private void move(double amt, double dir){
-		z += amt * Math.sin(Math.toRadians(ry + 90 * dir));
-		x += amt * Math.cos(Math.toRadians(ry + 90 * dir));
-	}
-	private void rotateX(double amt){
-		rx += amt;
-	}
-	private void rotateY(double amt){
-		ry += amt;
+		zz += amt * Math.sin(Math.toRadians(ry + 90 * dir));
+		xx += amt * Math.cos(Math.toRadians(ry + 90 * dir));
 	}
 }
 
