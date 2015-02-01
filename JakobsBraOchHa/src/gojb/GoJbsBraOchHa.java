@@ -3635,7 +3635,7 @@ class SkapaFärg extends JPanel implements ActionListener{
 	}
 }
 
-class Avsluta implements ActionListener, WindowListener{
+class Avsluta implements ActionListener, WindowListener, MouseInputListener{
 
 	JMenuBar tid = new JMenuBar();
 
@@ -3643,8 +3643,9 @@ class Avsluta implements ActionListener, WindowListener{
 
 	JTextField hours = new JTextField(),
 			minutes = new JTextField(),
-			seconds = new JTextField();
-	
+			thours = new JTextField("Hours"),
+			tminutes = new JTextField("Minutes");
+
 	JPanel övre = new JPanel(),
 			mellan = new JPanel(),
 			nedre = new JPanel();
@@ -3660,6 +3661,17 @@ class Avsluta implements ActionListener, WindowListener{
 	JFrame f1 = new JFrame("GoJbs Shutdown");
 
 	JPanel p1 = new JPanel();
+
+	JButton rhours = new JButton(),
+			rminutes = new JButton(),
+			start = new JButton("Start");
+
+	int x;
+
+	Timer timer1 = new Timer(10, this),
+			timer2 = new Timer(9, this);
+
+
 
 	public Avsluta(){	
 
@@ -3704,23 +3716,188 @@ class Avsluta implements ActionListener, WindowListener{
 		f1.pack();
 		f1.setLocationRelativeTo(null);
 		f1.setVisible(true);
+
+		//For the long time timer below	
+		frame.setLayout(null);
+		frame.add(minutes);
+		frame.add(hours);
+		frame.add(rminutes);
+		frame.add(rhours);
+		frame.add(tminutes);
+		frame.add(thours);
+		frame.add(start);
 		
-		//Tidsbestämning
-		
-		frame.getContentPane().setLayout(new BoxLayout(f1.getContentPane(),BoxLayout.Y_AXIS));
-		frame.add(övre);
-		frame.add(mellan);
-		frame.add(nedre);
-		
-		nedre.setLayout(new GridLayout(0,3));
-		nedre.add(hours);
-		nedre.add(minutes);
-		nedre.add(seconds);
+//		frame.setOpacity(0.55f);
+
+		timer1.start();
+
+
+		//JTextFields for minutes and hours to be entered
 		minutes.setSize(166, 30);
-		
-		}
+		minutes.setLocation(100, 50);
+		minutes.setFont(new Font("wd",Font.BOLD, 15));
+		//Sets the text to an int, so the int tester does work
+		minutes.setText("0");
+
+		hours.setSize(166, 30);
+		hours.setLocation(100, 120);
+		hours.setFont(new Font("wd",Font.BOLD, 15));
+
+		//Disables hours, so both aren't activated at first
+		hours.setEditable(false);
+		hours.setOpaque(false);
+
+		//Text above the JTextFields
+		tminutes.setSize(150, 30);
+		tminutes.setLocation(110, 25);
+		tminutes.setFont(new Font("wd",Font.BOLD, 15));
+		tminutes.setOpaque(false);
+		tminutes.setBorder(null);
+		tminutes.setEditable(false);
+
+
+		thours.setSize(150, 30);
+		thours.setLocation(110, 95);
+		thours.setFont(new Font("wd",Font.BOLD, 15));
+		thours.setOpaque(false);
+		thours.setBorder(null);
+		thours.setEditable(false);
+
+		//JButtons on the left of the JTextFields
+		//rminutes shall disable minutes, and vice versa 
+		rminutes.setSize(30, 30);
+		rminutes.setLocation(50, 120);
+		rminutes.addActionListener(this);
+
+		rhours.setSize(30, 30);
+		rhours.setLocation(50, 50);
+		rhours.addActionListener(this);
+
+		frame.addMouseMotionListener(this);
+
+		//Settings for Start button
+		start.addActionListener(this);
+		start.setLocation(180, 200);
+		start.setSize(150,50);
+
+	}
 
 	public void actionPerformed(ActionEvent e) {
+
+		if (e.getSource()==timer2){
+			
+			System.err.println("Shutdown");
+			x++;
+			if(x==2){
+				
+		
+//			Running the Shutdown command
+			try {
+				Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -s -t 1 -c \"Shutting Down\"");
+			} catch (IOException e1) {
+				
+			}
+				}
+		}
+		
+		if(e.getSource()==timer1){
+			//Checks every 10 millisecond that the text in the JTextFields are int
+			try {
+				Integer.parseInt(minutes.getText());
+				minutes.setForeground(black);
+				minutes.setBackground(white);
+
+			} catch (NumberFormatException e1) {
+				minutes.setForeground(red);
+				minutes.setBackground(black);
+			}
+
+			try {
+				Integer.parseInt(hours.getText());
+				hours.setForeground(black);
+				hours.setBackground(white);
+
+			} catch (NumberFormatException e1) {
+				hours.setForeground(red);
+				hours.setBackground(black);
+			}
+
+
+
+		}
+
+		if(e.getSource()==start){
+			if(start.getText()=="Cancel"){
+				System.err.println("Cancel");
+				timer2.stop();
+				System.out.println("Stopped");
+				start.setText("Start");
+			}
+			else{
+				if(minutes.getBackground()!=black||hours.getBackground()!=black){
+
+					if(minutes.isEditable()){
+						System.err.println(minutes.getText() + " minutes");
+						//Setting the time for timer2, with the number of minutes that "minutes" has written in it
+
+						timer2.setDelay((1000*60)*Integer.parseInt(minutes.getText()));
+						System.out.println(((1000*60)*60)*Integer.parseInt(minutes.getText()));
+						
+						timer2.start();
+
+					}
+					else if(hours.isEditable()){
+						System.out.println(hours.getText() + " hours");
+
+						//Setting the time for timer2, with the number of hours that "hours" has written in it
+
+						timer2.setDelay(((1000*60)*60)*Integer.parseInt(hours.getText()));
+						System.out.println(((1000*60)*60)*Integer.parseInt(hours.getText()));
+						
+						timer2.start();
+						
+					}
+					else{
+						System.err.println("WAT?!");
+					}
+					start.setText("Cancel");
+				}
+			}
+		}
+
+		if(e.getSource()==rminutes){
+			//Disables minutes
+			minutes.setEditable(false);
+			minutes.setOpaque(false);
+			minutes.setText(null);
+
+			//Enables hours
+			hours.setEditable(true);
+			hours.setOpaque(true);
+			hours.setText("0");
+
+			//Resets Start button
+			start.setText("Start");
+
+			System.err.println("Minutes Disabled");
+		}
+		if(e.getSource()==rhours){
+			//Enables minutes
+			minutes.setEditable(true);
+			minutes.setOpaque(true);
+			minutes.setText("0");
+
+			//Disables hours
+			hours.setEditable(false);
+			hours.setOpaque(false);
+			hours.setText(null);
+			hours.setText(null);
+
+			//Resets Start button
+			start.setText("Start");
+
+			System.err.println("Hours Disabled");
+		}
 
 		if(e.getSource() == setTime){
 
@@ -3768,13 +3945,7 @@ class Avsluta implements ActionListener, WindowListener{
 
 
 	@Override
-	public void windowOpened(WindowEvent e) {
-		// FIXME Auto-generated method stub
-
-	}
-
-
-	@Override
+	public void windowOpened(WindowEvent e) {}
 	public void windowClosing(WindowEvent e) {
 
 		if (JOptionPane.showConfirmDialog(null,"Do you really want to quit?\nThe countdown will be disposed",
@@ -3785,37 +3956,52 @@ class Avsluta implements ActionListener, WindowListener{
 
 
 	@Override
-	public void windowClosed(WindowEvent e) {
+	public void windowClosed(WindowEvent e) {}
+	public void windowIconified(WindowEvent e) {}
+	public void windowDeiconified(WindowEvent e) {}
+	public void windowActivated(WindowEvent e) {}
+	public void windowDeactivated(WindowEvent e) {}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
 		// FIXME Auto-generated method stub
 
 	}
 
-
 	@Override
-	public void windowIconified(WindowEvent e) {
+	public void mousePressed(MouseEvent e) {
 		// FIXME Auto-generated method stub
 
 	}
 
-
 	@Override
-	public void windowDeiconified(WindowEvent e) {
+	public void mouseReleased(MouseEvent e) {
 		// FIXME Auto-generated method stub
 
 	}
 
-
 	@Override
-	public void windowActivated(WindowEvent e) {
+	public void mouseEntered(MouseEvent e) {
 		// FIXME Auto-generated method stub
 
 	}
 
-
 	@Override
-	public void windowDeactivated(WindowEvent e) {
+	public void mouseExited(MouseEvent e) {
 		// FIXME Auto-generated method stub
 
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// FIXME Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		System.err.println("x = " + e.getX());
+		System.out.println("y = " + e.getY());
 	}
 }
 class Morse implements KeyListener,ActionListener, MouseListener {
