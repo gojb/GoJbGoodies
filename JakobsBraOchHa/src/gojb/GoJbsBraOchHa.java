@@ -17,6 +17,10 @@ import javax.swing.Timer;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.lwjgl.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.*;
@@ -352,7 +356,8 @@ class Mouse implements ActionListener,MouseInputListener,KeyListener,WindowListe
 			glosItem = new JMenuItem("Träna på glosor"),
 			flappyItem = new JMenuItem("Spela FlappyGojb"),
 			glItem = new JMenuItem("3d"),
-			kurveItem = new JMenuItem("Kurve");
+			kurveItem = new JMenuItem("Kurve"),
+			fondItem = new JMenuItem("GoJbs Fondkoll");
 
 	private JButton knapp1 = new JButton("Blå"),
 			knapp2 = new JButton("Grön"),
@@ -421,6 +426,7 @@ class Mouse implements ActionListener,MouseInputListener,KeyListener,WindowListe
 		flappyItem.addActionListener(e -> new FlappyGoJb());
 		glItem.addActionListener(e -> new OpenGLTest());
 		kurveItem.addActionListener(e -> new Kurve());
+		fondItem.addActionListener(e -> new FondKoll());
 
 		autoscrollknapp.addActionListener(this);
 		loggaUtItem.addActionListener(this);
@@ -458,6 +464,7 @@ class Mouse implements ActionListener,MouseInputListener,KeyListener,WindowListe
 		arkivMeny.add(flappyItem);
 		arkivMeny.add(glItem);
 		arkivMeny.add(kurveItem);
+		arkivMeny.add(fondItem);
 		arkivMeny.addSeparator();
 		arkivMeny.add(loggaUtItem);
 		arkivMeny.add(avslutaItem);
@@ -1842,6 +1849,157 @@ class Glosor{
 		Collections.shuffle(ettList,new Random(seed));
 		Collections.shuffle(tvåList,new Random(seed));
 	}
+}
+@SuppressWarnings("unchecked")
+class FondKoll implements Serializable{
+	private static final long serialVersionUID = -2547083481485451726L;
+	GoJbFrame frame = new GoJbFrame("GoJbs Fondkoll", true, DISPOSE_ON_CLOSE);
+
+	JButton button = new JButton("+");
+	ArrayList<Fond> arrayList = new ArrayList<Fond>();
+	JComboBox<Fond> comboBox;
+	JPanel panel = new JPanel(new GridLayout(0, 3, 1, 1)),
+			panel2 = new JPanel(new GridLayout(1, 0, 0, 0));
+	JScrollPane scrollPane = new JScrollPane(panel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+	public FondKoll() {
+
+		try {
+			ByteArrayInputStream bis = new ByteArrayInputStream(BASE64DecoderStream.decode(prop.getProperty("Fonder").getBytes()));
+			ObjectInputStream oInputStream = new ObjectInputStream(bis);
+			arrayList = (ArrayList<Fond>) oInputStream.readObject();
+		} catch (Exception e1) {
+			System.err.println("inget sparat");
+			e1.printStackTrace();
+		}
+		comboBox = new JComboBox<Fond>(arrayList.toArray(new Fond[0]));
+
+
+		panel.setBackground(BLACK);
+		panel.setOpaque(true);
+
+
+		scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+		frame.add(scrollPane,BorderLayout.CENTER);
+		frame.add(panel2,BorderLayout.NORTH);
+		panel2.add(comboBox);
+		panel2.add(button);
+
+		button.addActionListener(e -> nyFond());
+		comboBox.addActionListener(e -> läs());
+		
+		frame.setVisible(true);
+	}
+	private void läs() {
+		try {
+			panel.removeAll();
+			Fond fond = (Fond)comboBox.getSelectedItem();
+			Scanner scanner = new Scanner(fond.getID());
+			Document doc = Jsoup.parse(new URL("http://web.msse.se/shb/sv/history/onefund.print?company="+scanner.next()+"&fundid="+scanner.next()+"&startdate=2010-03-09"), 3000);
+			Elements elements = doc.select("td:last-child"), elements2 = doc.select("td.positive");
+			for (int i = 0; i < elements.size(); i++) {
+				Element element = elements.get(i);
+				Element element2 = elements2.get(i);
+				JLabel label = new JLabel(element.html()),
+						label2  = new JLabel(element2.html()),
+						label3 = new JLabel(Long.toString(Math.round(Double.parseDouble(label2.getText().replace(",", "."))*fond.getAndelar()-fond.getBelopp())));
+				label.setOpaque(true);
+				label2.setOpaque(true);
+				label3.setOpaque(true);
+				label.setBackground(white);
+				label2.setBackground(white);
+				label3.setBackground(GREEN);
+				
+				panel.add(label);
+				panel.add(label2);
+				panel.add(label3);
+				if (label3.getText().startsWith("-")) {
+					label3.setBackground(red);
+				}
+				
+			}
+			scanner.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+
+		}
+		frame.repaint();
+		frame.revalidate();
+
+	}
+	private void nyFond() {
+		GoJbFrame frame = new GoJbFrame("Lägg till ny fond",false,DISPOSE_ON_CLOSE);
+		JLabel label = new JLabel("Namn"),
+				label2 = new JLabel("ID"),
+				label3 = new JLabel("Belopp"),
+				label4 = new JLabel("Andelar"),
+				label5 = new JLabel();
+		JTextField field = new JTextField(), 
+				field2 = new JTextField(), 
+				field3 = new JTextField(), 
+				field4 = new JTextField();
+		JButton button = new JButton("Spara");
+		frame.setLayout(new GridLayout(0,2,1,1));
+		frame.getContentPane().setBackground(black);
+		label.setOpaque(true);
+		label2.setOpaque(true);
+		label3.setOpaque(true);
+		label4.setOpaque(true);
+		label5.setOpaque(true);
+		frame.add(label);
+		frame.add(field);
+		frame.add(label2);
+		frame.add(field2);
+		frame.add(label3);
+		frame.add(field3);
+		frame.add(label4);
+		frame.add(field4);
+		frame.add(label5);
+		frame.add(button);
+		frame.pack();
+		frame.setVisible(true);
+		button.addActionListener(e -> {new Fond(field.getText(), field2.getText(), Integer.parseInt(field3.getText()), Double.parseDouble(field4.getText()));frame.dispose();});
+	}
+	private void spara(){
+		try {
+			ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+			ObjectOutputStream objectOut = new ObjectOutputStream(byteOut);
+			objectOut.writeObject(arrayList);
+			prop.setProperty("Fonder", new String(BASE64EncoderStream.encode(byteOut.toByteArray())));
+			sparaProp("Fond");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	class Fond implements Serializable{
+		private static final long serialVersionUID = 6413880318626101061L;
+		private String name,ID;
+		int belopp;
+		double andelar;
+
+		public Fond(String name, String ID, int belopp, double andelar) {
+			this.name = name;
+			this.ID = ID;
+			this.belopp = belopp;
+			this.andelar = andelar;
+			arrayList.add(this);
+			spara();
+		}
+		@Override
+		public String toString() {
+			return name; 
+		}
+		public int getBelopp() {
+			return belopp;
+		}
+		public double getAndelar(){
+			return andelar;
+		}
+		public String getID() {
+			return ID;
+		}
+	}
+
 }
 
 @SuppressWarnings("serial")
@@ -3726,8 +3884,8 @@ class Avsluta implements ActionListener, WindowListener, MouseInputListener{
 		frame.add(tminutes);
 		frame.add(thours);
 		frame.add(start);
-		
-//		frame.setOpacity(0.55f);
+
+		//		frame.setOpacity(0.55f);
 
 		timer1.start();
 
@@ -3785,21 +3943,21 @@ class Avsluta implements ActionListener, WindowListener, MouseInputListener{
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource()==timer2){
-			
+
 			System.err.println("Shutdown");
 			x++;
 			if(x==2){
-				
-		
-//			Running the Shutdown command
-			try {
-				Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -s -t 1 -c \"Shutting Down\"");
-			} catch (IOException e1) {
-				
-			}
+
+
+				//			Running the Shutdown command
+				try {
+					Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -s -t 1 -c \"Shutting Down\"");
+				} catch (IOException e1) {
+
 				}
+			}
 		}
-		
+
 		if(e.getSource()==timer1){
 			//Checks every 10 millisecond that the text in the JTextFields are int
 			try {
@@ -3842,7 +4000,7 @@ class Avsluta implements ActionListener, WindowListener, MouseInputListener{
 
 						timer2.setDelay((1000*60)*Integer.parseInt(minutes.getText()));
 						System.out.println(((1000*60)*60)*Integer.parseInt(minutes.getText()));
-						
+
 						timer2.start();
 
 					}
@@ -3853,9 +4011,9 @@ class Avsluta implements ActionListener, WindowListener, MouseInputListener{
 
 						timer2.setDelay(((1000*60)*60)*Integer.parseInt(hours.getText()));
 						System.out.println(((1000*60)*60)*Integer.parseInt(hours.getText()));
-						
+
 						timer2.start();
-						
+
 					}
 					else{
 						System.err.println("WAT?!");
@@ -4606,21 +4764,21 @@ class OpenGLTest {
 				z-=0.5;
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			
+
 			glLoadIdentity();
-			
+
 			glRotated(rx,1,0,0);
 			glRotated(ry,0,1,0);
 			glRotated(rz,0,0,1);
 			glTranslated(xx,0,zz);
 
-//			glPushMatrix();
+			//			glPushMatrix();
 
 			draw3d(x,y,z,2,2,2);
-			
-//			draw3d(x,y,z,2,2,2);
-			
-//			glPopMatrix();
+
+			//			draw3d(x,y,z,2,2,2);
+
+			//			glPopMatrix();
 			Display.update();
 			updateFPS();
 			Display.sync(200);
@@ -4629,11 +4787,11 @@ class OpenGLTest {
 		}
 	}
 	private void draw3d(double rotX,double rotY,double rotZ,int längd,int höjd,int bredd){
-		
+
 		längd/=2;
 		höjd/=2;
 		bredd/=2;
-		
+
 		glTranslated(0,0,-10);
 
 		glRotated(rotX,1,0,0);
@@ -4644,7 +4802,7 @@ class OpenGLTest {
 
 		//Fram
 		glColor3d(1,0.5,0);
-		
+
 		glVertex3d(-bredd,-höjd,längd);
 		glVertex3d(-bredd,höjd,längd);
 		glVertex3d(bredd,höjd,längd);
@@ -4678,7 +4836,7 @@ class OpenGLTest {
 		glVertex3d(-bredd,höjd,-längd);
 		glVertex3d(-bredd,höjd,längd);
 
-//		//Right Face
+		//		//Right Face
 		glColor3d(1,0,1);
 		glVertex3d(bredd,-höjd,längd);
 		glVertex3d(bredd,höjd,längd);

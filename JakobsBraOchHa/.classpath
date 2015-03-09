@@ -38,5 +38,6 @@
 	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/tomcat-websocket.jar"/>
 	<classpathentry kind="lib" path="apache-tomcat-8.0.14/lib/websocket-api.jar"/>
 	<classpathentry kind="lib" path="lwjgl_util.jar"/>
+	<classpathentry kind="lib" path="jsoup-1.8.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
