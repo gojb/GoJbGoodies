@@ -1858,10 +1858,11 @@ class FondKoll implements Serializable{
 	JButton button = new JButton("+");
 	ArrayList<Fond> arrayList = new ArrayList<Fond>();
 	JComboBox<Fond> comboBox;
-	JPanel panel = new JPanel(new GridLayout(0, 3, 1, 1)),
+	JPanel panel = new JPanel(new GridLayout(0, 4, 1, 1)),
 			panel2 = new JPanel(new GridLayout(1, 0, 0, 0));
 	JScrollPane scrollPane = new JScrollPane(panel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
+	JMenuBar bar = new JMenuBar();
+	JMenuItem edit = new JMenuItem("Ändra");
 	public FondKoll() {
 
 		try {
@@ -1874,11 +1875,11 @@ class FondKoll implements Serializable{
 		}
 		comboBox = new JComboBox<Fond>(arrayList.toArray(new Fond[0]));
 
-
+		bar.add(edit);
 		panel.setBackground(BLACK);
 		panel.setOpaque(true);
 
-
+		frame.setJMenuBar(bar);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(20);
 		frame.add(scrollPane,BorderLayout.CENTER);
 		frame.add(panel2,BorderLayout.NORTH);
@@ -1887,36 +1888,80 @@ class FondKoll implements Serializable{
 
 		button.addActionListener(e -> nyFond());
 		comboBox.addActionListener(e -> läs());
-		
+		edit.addActionListener(e -> ändra());
+
 		frame.setVisible(true);
 	}
+	private void ändra() {
+		GoJbFrame frame = new GoJbFrame("Ändra", true, DISPOSE_ON_CLOSE);
+		JButton button = new JButton("Spara");
+		frame.setLayout(new GridLayout(0,4,1,1));
+		int a = arrayList.size();
+		JTextField[] nameFields = new JTextField[100];
+		JTextField[] IDFields = new JTextField[100];
+		JTextField[] beloppFields = new JTextField[100];
+		JTextField[] andelarFields = new JTextField[100];
+
+		for (int i = 0; i < a; i++) {
+			Fond fond = arrayList.get(i);
+			nameFields[i]=new JTextField(fond.toString());
+			IDFields[i]=new JTextField(fond.getID());
+			beloppFields[i]=new JTextField(fond.getBelopp()+"");
+			andelarFields[i]=new JTextField(fond.getAndelar()+"");
+
+			frame.add(nameFields[i]);
+			frame.add(IDFields[i]);
+			frame.add(beloppFields[i]);
+			frame.add(andelarFields[i]);
+		}
+		frame.add(button);
+		frame.pack();
+		button.addActionListener(e ->{
+			arrayList.clear();
+			for (int i = 0; i < a; i++) {
+				new Fond(nameFields[i].getText(), IDFields[i].getText(), Integer.parseInt(beloppFields[i].getText()), Double.parseDouble(andelarFields[i].getText()));
+			}
+
+			frame.dispose();
+		});
+
+	}	
 	private void läs() {
 		try {
 			panel.removeAll();
 			Fond fond = (Fond)comboBox.getSelectedItem();
 			Scanner scanner = new Scanner(fond.getID());
-			Document doc = Jsoup.parse(new URL("http://web.msse.se/shb/sv/history/onefund.print?company="+scanner.next()+"&fundid="+scanner.next()+"&startdate=2010-03-09"), 3000);
+			Document doc = Jsoup.parse(new URL("http://web.msse.se/shb/sv/history/onefund.print?company="+scanner.next()+"&fundid="+scanner.next()+"&startdate=2014-03-09"), 3000);
 			Elements elements = doc.select("td:last-child"), elements2 = doc.select("td.positive");
 			for (int i = 0; i < elements.size(); i++) {
 				Element element = elements.get(i);
 				Element element2 = elements2.get(i);
+				long ökn = Math.round(Double.parseDouble(element2.html().replace(",", "."))*fond.getAndelar()-fond.getBelopp());
+				
 				JLabel label = new JLabel(element.html()),
 						label2  = new JLabel(element2.html()),
-						label3 = new JLabel(Long.toString(Math.round(Double.parseDouble(label2.getText().replace(",", "."))*fond.getAndelar()-fond.getBelopp())));
+						label3 = new JLabel(Long.toString(ökn)),
+						label4  = new JLabel(Double.toString(Math.round(ökn*1000d/fond.getBelopp())/10d)+"%");
+				
+				
 				label.setOpaque(true);
 				label2.setOpaque(true);
 				label3.setOpaque(true);
+				label4.setOpaque(true);
 				label.setBackground(white);
 				label2.setBackground(white);
 				label3.setBackground(GREEN);
-				
+				label4.setBackground(GREEN);
+
 				panel.add(label);
 				panel.add(label2);
 				panel.add(label3);
+				panel.add(label4);
 				if (label3.getText().startsWith("-")) {
 					label3.setBackground(red);
+					label4.setBackground(red);
 				}
-				
+
 			}
 			scanner.close();
 		} catch (IOException e1) {
