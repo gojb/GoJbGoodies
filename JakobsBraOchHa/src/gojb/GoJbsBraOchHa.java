@@ -1,5 +1,7 @@
 package gojb;
 
+import gojb.FondKoll.Fond.Fondkurs;
+
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
@@ -1853,7 +1855,7 @@ class Glosor{
 @SuppressWarnings("unchecked")
 class FondKoll implements Serializable{
 	private static final long serialVersionUID = -2547083481485451726L;
-	GoJbFrame frame = new GoJbFrame("GoJbs Fondkoll", true, DISPOSE_ON_CLOSE);
+	private GoJbFrame frame = new GoJbFrame("GoJbs Fondkoll", false, DISPOSE_ON_CLOSE);
 
 	JButton button = new JButton("+");
 	ArrayList<Fond> arrayList = new ArrayList<Fond>();
@@ -1927,49 +1929,44 @@ class FondKoll implements Serializable{
 
 	}	
 	private void läs() {
-		try {
-			panel.removeAll();
-			Fond fond = (Fond)comboBox.getSelectedItem();
-			Scanner scanner = new Scanner(fond.getID());
-			Document doc = Jsoup.parse(new URL("http://web.msse.se/shb/sv/history/onefund.print?company="+scanner.next()+"&fundid="+scanner.next()+"&startdate=2014-03-09"), 3000);
-			Elements elements = doc.select("td:last-child"), elements2 = doc.select("td.positive");
-			for (int i = 0; i < elements.size(); i++) {
-				Element element = elements.get(i);
-				Element element2 = elements2.get(i);
-				long ökn = Math.round(Double.parseDouble(element2.html().replace(",", "."))*fond.getAndelar()-fond.getBelopp());
-				
-				JLabel label = new JLabel(element.html()),
-						label2  = new JLabel(element2.html()),
-						label3 = new JLabel(Long.toString(ökn)),
-						label4  = new JLabel(Double.toString(Math.round(ökn*1000d/fond.getBelopp())/10d)+"%");
-				
-				
-				label.setOpaque(true);
-				label2.setOpaque(true);
-				label3.setOpaque(true);
-				label4.setOpaque(true);
-				label.setBackground(white);
-				label2.setBackground(white);
-				label3.setBackground(GREEN);
-				label4.setBackground(GREEN);
+		new Thread(){
+			@Override
+			public void run() {
+				super.run();
+				panel.removeAll();
+				Fond fond = (Fond)comboBox.getSelectedItem();
+				fond.hämta();
+				for (int i = 0; i < fond.getKursLängd(); i++) {
+					Fondkurs fondkurs = fond.getFondkurs(i);
+					long ökn = Math.round(fondkurs.getKurs()*fond.getAndelar()-fond.getBelopp());
 
-				panel.add(label);
-				panel.add(label2);
-				panel.add(label3);
-				panel.add(label4);
-				if (label3.getText().startsWith("-")) {
-					label3.setBackground(red);
-					label4.setBackground(red);
+					JLabel label = new JLabel(fondkurs.getDate()),
+							label2 = new JLabel(fondkurs.getKurs()+""),
+							label3 = new JLabel(ökn+""),
+							label4 = new JLabel((Math.round(ökn*10000d/fond.getBelopp())/100d)+"%");
+
+					label.setOpaque(true);
+					label2.setOpaque(true);
+					label3.setOpaque(true);
+					label4.setOpaque(true);
+					label.setBackground(white);
+					label2.setBackground(white);
+					label3.setBackground(GREEN);
+					label4.setBackground(GREEN);
+					panel.add(label);
+					panel.add(label2);
+					panel.add(label3);
+					panel.add(label4);
+					if (label3.getText().startsWith("-")) {
+						label3.setBackground(red);
+						label4.setBackground(red);
+					}
+					panel.revalidate();
 				}
-
+				
 			}
-			scanner.close();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-
-		}
-		frame.repaint();
-		frame.revalidate();
+		}.start();;
+		
 
 	}
 	private void nyFond() {
@@ -2019,14 +2016,16 @@ class FondKoll implements Serializable{
 	class Fond implements Serializable{
 		private static final long serialVersionUID = 6413880318626101061L;
 		private String name,ID;
-		int belopp;
-		double andelar;
+		private int belopp;
+		private double andelar;
+		private ArrayList<Fondkurs> kurser;
 
 		public Fond(String name, String ID, int belopp, double andelar) {
 			this.name = name;
 			this.ID = ID;
 			this.belopp = belopp;
 			this.andelar = andelar;
+			kurser = new ArrayList<Fondkurs>();
 			arrayList.add(this);
 			spara();
 		}
@@ -2043,7 +2042,59 @@ class FondKoll implements Serializable{
 		public String getID() {
 			return ID;
 		}
+		public int getKursLängd(){
+			return kurser.size();
+		}
+		public Fondkurs getFondkurs(int i){
+			return kurser.get(i);
+		}
+		public void addKurs(int index,String datum,double kurs){
+			System.err.println(index+", "+datum+", "+kurs);
+			Fondkurs fondkurs = new Fondkurs(datum, kurs);
+			kurser.add(index,fondkurs);
+		}
+		public void hämta(){
+			String startdatum;
+			Scanner scanner;
+			try {
+				try {
+					startdatum=kurser.get(0).getDate();
+				} catch (Exception e) {
+					System.err.println(521);
+					startdatum="2012-01-01";
+				}
+				System.err.println(startdatum);
+				scanner = new Scanner(getID());
+				Document doc = Jsoup.parse(new URL("http://web.msse.se/shb/sv/history/onefund.print?company="+scanner.next()+"&fundid="+scanner.next()+"&startdate="+startdatum), 10000);
+				Elements elements = doc.select("td:last-child"), 
+						elements2 = doc.select("td.positive");
+				for (int i = 0; i < elements.size()-1; i++) {
+					Element element = elements.get(i);
+					Element element2 = elements2.get(i);
+					addKurs(i, element.html(), Double.parseDouble(element2.html().replace(",", ".")));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			spara();
+		}
+		class Fondkurs implements Serializable{
+			private static final long serialVersionUID = 14565464644654646L;
+			private String date;
+			private double kurs;
+			Fondkurs(String date, double kurs){
+				this.date = date;
+				this.kurs = kurs;
+			}
+			public String getDate() {
+				return date;
+			}
+			public double getKurs() {
+				return kurs;
+			}
+		}
 	}
+
 
 }
 
