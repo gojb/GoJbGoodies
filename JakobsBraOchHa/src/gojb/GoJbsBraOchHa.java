@@ -1893,6 +1893,7 @@ class FondKoll implements Serializable{
 		edit.addActionListener(e -> ändra());
 
 		frame.setVisible(true);
+		läs();
 	}
 	private void ändra() {
 		GoJbFrame frame = new GoJbFrame("Ändra", true, DISPOSE_ON_CLOSE);
@@ -1965,9 +1966,7 @@ class FondKoll implements Serializable{
 				}
 				
 			}
-		}.start();;
-		
-
+		}.start();
 	}
 	private void nyFond() {
 		GoJbFrame frame = new GoJbFrame("Lägg till ny fond",false,DISPOSE_ON_CLOSE);
@@ -4747,19 +4746,21 @@ class DraOchSläpp extends JPanel implements MouseInputListener{
 class OpenGLTest {
 	private double xx,zz,rx,ry,rz;
 	private int fps;
-	long lastFPS= getTime();
+	long lastFPS;
 
 	public OpenGLTest() {
+		System.out.println("Starting");
 		thread.start();
 	}
 	private Thread thread = new Thread(){
 		public void run() {
+			System.out.println("Running");
 			try {
 				unZip();
 
 				try {
 					if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")){
-						System.setProperty("forg.lwjgl.librarypath", new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\windows_dll").getAbsolutePath());
+						System.setProperty("org.lwjgl.librarypath", new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\windows_dll").getAbsolutePath());
 					}
 					Display.setDisplayMode(new DisplayMode(800, 600));
 					Display.setTitle("GoJbGame");
@@ -4767,23 +4768,29 @@ class OpenGLTest {
 				} catch (LWJGLException e) {
 					e.printStackTrace();
 				}
+				lastFPS= getTime();
 				gameLoop();
 				Display.destroy();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				errPrint(e);
+				e.printStackTrace();
+				try {
+					thread.wait();
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+					 
+				}
 			}
 		};
 	};
 	private void unZip(){
 		try {
-			System.err.println(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()+"windows_dll");
+			System.err.println(getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
 			ZipInputStream zipIn = new ZipInputStream(getClass().getProtectionDomain().getCodeSource().getLocation().openStream());
 			ZipEntry entry = zipIn.getNextEntry();
 			while (entry != null) {
-				String filePath =  System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa"+File.separator + entry.getName();
 				if (entry.toString().startsWith("windows_dll/")) {
-					System.err.println(entry.toString());
+					String filePath =  System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa"+File.separator + entry.getName();
+					System.err.println(entry);
 					if (!entry.isDirectory()) {
 						ByteArrayOutputStream out = new ByteArrayOutputStream();
 						byte[] bytesIn = new byte[4096];
