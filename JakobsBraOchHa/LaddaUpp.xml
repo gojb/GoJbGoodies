@@ -21,6 +21,7 @@
     	       passive="yes" depends="yes" binary="yes">
     	    <fileset dir="${basedir}">
     	    	<include name="GoJb.jar"/>
+    	    	<include name="GoJb.jnlp"/>
     	    </fileset>
 		</ftp>
     </target>

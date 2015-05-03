@@ -5,6 +5,8 @@
 		<vendor>GoJbs Javaprogrammering</vendor>
 		<homepage href="http://gojb.bl.ee/" />
 		<description>GoJb</description>
+		<offline-allowed/>
+		<update check="background" />
 	</information>
 	<security>
 		<all-permissions/>
