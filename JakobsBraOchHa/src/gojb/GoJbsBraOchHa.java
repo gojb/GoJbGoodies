@@ -70,8 +70,9 @@ public class GoJbsBraOchHa{
 			((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 			showMessageDialog(null, "Den angivna LookAndFeel hittades inte!","Error",ERROR_MESSAGE);
 		}
+		setErrPrint();
 		try {
-			robot = new Robot();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -137,6 +138,7 @@ public class GoJbsBraOchHa{
 		} catch (Exception e) {
 			argString ="";
 		}
+		
 		new Login();
 	}
 	public static void spelaLjud(String filnamn){
@@ -182,12 +184,26 @@ public class GoJbsBraOchHa{
 			e.printStackTrace();
 		}
 	}
-	public static void errPrint(Exception e){
-		Writer writer = new StringWriter();
-		e.printStackTrace(new PrintWriter(writer));
-		e.printStackTrace();
-		skrivHändelsetext(writer.toString());
+	public static void setErrPrint(){
+		PrintStream error = new PrintStream(System.err);
+		PrintStream stream = new PrintStream(new OutputStream() {
+			@Override
+			public void write(int b) throws IOException {
+				error.write(b);
+				try {
+					text.append(String.valueOf((char)b));
+					((DefaultCaret) text.getCaret()).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+					if (autoscroll == true) {
+						text.setCaretPosition(text.getDocument().getLength());
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		System.setErr(stream);
 	}
+
 	public GoJbsBraOchHa() {
 		main("");
 	}
@@ -388,8 +404,9 @@ class Mouse implements ActionListener,MouseInputListener,KeyListener,WindowListe
 	private Color färg = new Color(0, 0, 255);
 	private String texten = "Dra eller använd piltangenterna";
 
-	private static JTextArea text = new JTextArea();
-	private static boolean autoscroll = true;
+	static JTextArea text = new JTextArea();
+	static boolean autoscroll = true;
+	
 	public static int antalFönster = 0;
 
 	Mouse(){
@@ -1964,7 +1981,7 @@ class FondKoll implements Serializable{
 					}
 					panel.revalidate();
 				}
-				
+
 			}
 		}.start();
 	}
@@ -4777,7 +4794,7 @@ class OpenGLTest {
 					thread.wait();
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
-					 
+
 				}
 			}
 		};
