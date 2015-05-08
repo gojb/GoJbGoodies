@@ -72,7 +72,7 @@ public class GoJbsBraOchHa{
 		}
 		setErrPrint();
 		try {
-			
+			robot = new Robot();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
