@@ -9,9 +9,8 @@
                 <attribute name="Main-Class" value="gojb.GoJbsBraOchHa"/>
             	<attribute name="Class-Path" value="."/>
             </manifest>
-        	<fileset dir="${basedir}/bin"/>
+        	<fileset dir="${basedir}/bin" excludes="test"/>
             <zipfileset excludes="META-INF/*.SF" src="C:/Users/Jakob/git/Mouse/JakobsBraOchHa/javax.mail.jar"/>
-        	<zipfileset excludes="META-INF/*.SF" src="C:/Users/Jakob/git/Mouse/JakobsBraOchHa/commons-net-3.3.jar"/>
         	<zipfileset excludes="META-INF/*.SF" src="C:/Users/Jakob/git/Mouse/JakobsBraOchHa/lwjgl.jar"/>
     		<zipfileset excludes="META-INF/*.SF" src="C:/Users/Jakob/git/Mouse/JakobsBraOchHa/lwjgl_util.jar"/>
     		<zipfileset excludes="META-INF/*.SF" src="C:/Users/Jakob/git/Mouse/JakobsBraOchHa/jsoup-1.8.1.jar"/>
