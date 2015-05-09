@@ -1,6 +1,6 @@
 package gojb;
 
-import gojb.FondKoll.Fond.Fondkurs;
+
 
 import java.awt.*;
 import java.awt.datatransfer.*;
@@ -1960,7 +1960,7 @@ class FondKoll implements Serializable{
 
 					JLabel label = new JLabel(fondkurs.getDate()),
 							label2 = new JLabel(fondkurs.getKurs()+""),
-							label3 = new JLabel(ökn+""),
+							label3 = new JLabel(ökn+":-"),
 							label4 = new JLabel((Math.round(ökn*10000d/fond.getBelopp())/100d)+"%");
 
 					label.setOpaque(true);
@@ -1978,6 +1978,9 @@ class FondKoll implements Serializable{
 					if (label3.getText().startsWith("-")) {
 						label3.setBackground(red);
 						label4.setBackground(red);
+					}
+					else {
+						label3.setText("+"+label3.getText());
 					}
 					panel.revalidate();
 				}
@@ -2025,6 +2028,7 @@ class FondKoll implements Serializable{
 			objectOut.writeObject(arrayList);
 			prop.setProperty("Fonder", new String(BASE64EncoderStream.encode(byteOut.toByteArray())));
 			sparaProp("Fond");
+			System.out.println("Sparat");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -2035,7 +2039,7 @@ class FondKoll implements Serializable{
 		private int belopp;
 		private double andelar;
 		private ArrayList<Fondkurs> kurser;
-
+	
 		public Fond(String name, String ID, int belopp, double andelar) {
 			this.name = name;
 			this.ID = ID;
@@ -2076,6 +2080,7 @@ class FondKoll implements Serializable{
 				try {
 					startdatum=kurser.get(0).getDate();
 				} catch (Exception e) {
+					e.printStackTrace();
 					System.err.println(521);
 					startdatum="2012-01-01";
 				}
@@ -2093,21 +2098,22 @@ class FondKoll implements Serializable{
 				e.printStackTrace();
 			}
 			spara();
+			
 		}
-		class Fondkurs implements Serializable{
-			private static final long serialVersionUID = 14565464644654646L;
-			private String date;
-			private double kurs;
-			Fondkurs(String date, double kurs){
-				this.date = date;
-				this.kurs = kurs;
-			}
-			public String getDate() {
-				return date;
-			}
-			public double getKurs() {
-				return kurs;
-			}
+	}
+	class Fondkurs implements Serializable{
+		private static final long serialVersionUID = 14565464644654646L;
+		private String date;
+		private double kurs;
+		Fondkurs(String date, double kurs){
+			this.date = date;
+			this.kurs = kurs;
+		}
+		public String getDate() {
+			return date;
+		}
+		public double getKurs() {
+			return kurs;
 		}
 	}
 
