@@ -12,6 +12,5 @@ class Temp {
 //		new Kurve(); 
 //		new OpenGLTest();
 		GoJbsBraOchHa.main("snabb");
-		
 	}
 } 
