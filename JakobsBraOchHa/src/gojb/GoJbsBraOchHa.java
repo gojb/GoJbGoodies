@@ -1,7 +1,5 @@
 package gojb;
 
-
-
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
