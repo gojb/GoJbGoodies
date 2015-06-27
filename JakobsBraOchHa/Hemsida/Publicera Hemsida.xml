@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project GoJb">
+    <target name="create_run_jar">
+		<input message="Skriv lösenord:" addproperty="inputvalue"/>
+		<echo message="${basedir}"/>
+		<echo message="${inputvalue}"/>
+    	<ftp server="gojb.x10host.com" remotedir="/public_html" userid="gojbx10h" password="${inputvalue}" 
+    	   	   passive="yes" depends="yes" binary="yes">
+			<fileset dir="${basedir}">
+			    <exclude name="Publicera Hemsida.xml"/>
+			    </fileset>
+		</ftp>
+	</target>
+</project>
