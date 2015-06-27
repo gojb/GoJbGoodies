@@ -1626,34 +1626,45 @@ class Ping{
 		JScrollPane scrollPane = new JScrollPane(textArea);
 
 		frame.add(scrollPane);
-		for(int i = 10000;0<i;i--){
-			try {
+//		for(int i = 10000;0<i;i--){
+//			try {
+//
+//				new Thread(){
+//					public void run() {
+//
+//						System.err.println(x++);
+//
+//						try {
+//							Runtime.getRuntime().exec("ping " + string + " -l 65500 -n 1000").getInputStream();
+//
+//						} catch (IOException e) {
+//							e.printStackTrace();
+//						}
+//
+//					};
+//				}.start();
 
-				new Thread(){
-					public void run() {
+							BufferedReader inputStream = null;
+							try {
+								inputStream = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("ping " + string + " -l 65500 -n 1000").getInputStream()));
+							} catch (IOException e1) {
+								e1.printStackTrace();
+								 
+							}
+				
+							String s;
+							// reading output stream of the command
+							try {
+								while ((s = inputStream.readLine()) != null) {
+									System.out.println(s);
+								}
+							} catch (IOException e) {
+								e.printStackTrace();
+								 
+							}
 
-						System.err.println(x++);
-
-						try {
-							Runtime.getRuntime().exec("ping " + string + " -l 65500 -n 1000").getInputStream();
-
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-
-					};
-				}.start();
-
-				////			BufferedReader inputStream = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("ping " + string + " -l 65500 -n 1000").getInputStream()));
-				//
-				//			String s;
-				//			// reading output stream of the command
-				//			while ((s = inputStream.readLine()) != null) {
-				//				System.out.println(s);
-				//			}
-
-			} catch (Exception e) {e.printStackTrace();}
-		}
+//			} catch (Exception e) {e.printStackTrace();}
+		
 	}
 }
 class Glosor{
@@ -2087,6 +2098,7 @@ class FondKoll implements Serializable{
 				Document doc = Jsoup.parse(new URL("http://web.msse.se/shb/sv/history/onefund.print?company="+scanner.next()+"&fundid="+scanner.next()+"&startdate="+startdatum), 10000);
 				Elements elements = doc.select("td:last-child"), 
 						elements2 = doc.select("td.positive");
+				
 				for (int i = 0; i < elements.size()-1; i++) {
 					Element element = elements.get(i);
 					Element element2 = elements2.get(i);
