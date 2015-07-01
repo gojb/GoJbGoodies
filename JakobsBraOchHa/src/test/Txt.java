@@ -17,7 +17,7 @@ public class Txt implements ActionListener {
 	
 	Properties prop = new Properties();
 	
-	String string;
+	String string = "";
 	
 	Timer timer = new Timer(1,this);
 	
@@ -116,7 +116,7 @@ public class Txt implements ActionListener {
 				
 				
 				
-				string = prop.getProperty("Språk");
+				string = prop.getProperty("Språk"," ");
 				
 				if (string.equals("Svenska")){
 					text.setText("Hej!");
@@ -129,6 +129,7 @@ public class Txt implements ActionListener {
 			} catch (Exception e) {
 				text.setText("ERROR!");
 				text.setFont(new Font("odfh", Font.ITALIC, 50));
+				e.printStackTrace();
 			}
 			
 		}

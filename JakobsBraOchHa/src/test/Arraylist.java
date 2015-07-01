@@ -7,7 +7,7 @@ import java.util.List;
 public class Arraylist {
 
 	public Arraylist() {
-		ArrayList<String> strings = new ArrayList<>();
+		List<String> strings = new ArrayList<>();
 		strings.add("hej");
 		strings.add("på");
 		strings.add("dig");
@@ -16,7 +16,7 @@ public class Arraylist {
 		strings.add("tja");
 		System.err.println(strings.toString());
 		
-		List<String> arrayList = Arrays.asList(strings.toString().substring(1,strings.toString().length()-1).split(","));
+		List<String> arrayList = Arrays.asList(strings.toString().substring(1,strings.toString().length()-1).split(", "));
 		System.err.println(arrayList);
 		System.err.println(arrayList.get(1));
 		
