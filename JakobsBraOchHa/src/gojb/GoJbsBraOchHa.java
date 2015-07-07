@@ -1,3 +1,4 @@
+
 package gojb;
 
 import java.awt.*;
@@ -147,7 +148,6 @@ public class GoJbsBraOchHa{
 	public static void sparaProp(String kommentar) {
 		try {
 			prop.store(new FileWriter(new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")),kommentar);
-
 		} catch (Exception e) {
 			System.err.println("ga");
 			try {

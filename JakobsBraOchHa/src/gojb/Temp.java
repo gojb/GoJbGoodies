@@ -11,7 +11,9 @@ class Temp {
 //		new Merit();
 //		new Kurve(); 
 //		new OpenGLTest();
-		GoJbsBraOchHa.main("snabb");
+//		GoJbsBraOchHa.main("snabb");
+		new Ping("gojb.bl.ee");
 		
 	}
+
 } 

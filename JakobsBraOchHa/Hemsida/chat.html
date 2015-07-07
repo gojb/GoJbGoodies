@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<html>
+<head>
+<title>GoJbs Chatt</title>
+<style type="text/css">
+input#chat {
+	width: 410px;
+}
+
+#console-container {
+	width: 400px;
+}
+
+#console {
+	border: 1px solid #CCCCCC;
+	border-right-color: #999999;
+	border-bottom-color: #999999;
+	height: 170px;
+	overflow-y: scroll;
+	padding: 5px;
+	width: 100%;
+	background-color: white;
+}
+
+#console p {
+	padding: 0;
+	margin: 0;
+}
+</style>
+<script type="application/javascript">
+	
+        var Chat = {};
+
+        Chat.socket = null;
+
+        Chat.connect = (function(host) {
+            if ('WebSocket' in window) {
+                Chat.socket = new WebSocket(host);
+            } else if ('MozWebSocket' in window) {
+                Chat.socket = new MozWebSocket(host);
+            } else {
+                Console.log('Error: WebSocket stöds inte.');
+                return;
+            }
+
+            Chat.socket.onopen = function () {
+            	var person = prompt("Vad heter du?", "");
+            	Chat.socket.send(person);
+                Console.log('Info: Anslutning Öppnad');
+                document.getElementById('knapp').setAttribute('disabled','disabled');
+                document.getElementById('chat').onkeydown = function(event) {
+                    if (event.keyCode == 13) {
+                        Chat.sendMessage();
+                    }
+                };
+            };
+
+            Chat.socket.onclose = function () {
+                document.getElementById('chat').onkeydown = null;
+                Console.log('Info: WebSocket stängd.');
+                document.getElementById('knapp').removeAttribute('disabled');
+            };
+
+            Chat.socket.onmessage = function (message) {
+                Console.log(message.data);
+                
+            };
+        });
+
+        Chat.initialize = function() {
+            if (window.location.protocol == 'http:') {
+                Chat.connect('ws://chat.gojb.bl.ee:8000/chat');
+            } else {
+                Chat.connect('wss://chat.gojb.bl.ee/chat');
+            }
+        };
+
+        Chat.sendMessage = (function() {
+            var message = document.getElementById('chat').value;
+            if (message != '') {
+                Chat.socket.send(message);
+                document.getElementById('chat').value = '';
+            }
+        });
+
+        var Console = {};
+
+        Console.log = (function(message) {	
+            var console = document.getElementById('console');
+            var p = document.createElement('p');
+            p.style.wordWrap = 'break-word';
+            p.innerHTML = message;
+            console.appendChild(p);
+            while (console.childNodes.length > 25) {
+                console.removeChild(console.firstChild);
+            }
+            console.scrollTop = console.scrollHeight;
+            var title = document.title;
+            document.title = "Nytt meddelande";
+            playSound();
+            setTimeout(function(){document.title = title},3000);
+            
+        });
+        
+	function playSound(){   
+        	
+		document.getElementById('ljud').play();
+		}
+	function sound(){
+		if(document.getElementById('ljud').muted == false){
+			document.getElementById('knapp2').innerText = "Ljudet är av";
+			document.getElementById('ljud').muted = true;
+		}
+		else{
+			document.getElementById('knapp2').innerText = "Ljudet är på";
+			document.getElementById('ljud').muted = false;
+		}
+	}
+
+
+</script>
+</head>
+<body>
+	<div>
+		<p>
+			<input type="text"
+				placeholder="Skriv meddelande och tryck på enter för att skicka"
+				id="chat" />
+			<button type="button" onclick="Chat.initialize()" id="knapp">Anslut</button><button type="button" onclick="sound()" id="knapp2">Ljudet är på</button>
+			
+		</p>
+		<div id="console-container">
+			<div id="console" />
+		</div>
+	</div>
+	<audio id="ljud">
+		<source src="http://gojb.bl.ee/bing.mp3"/>
+	</audio>
+</body>
+</html>
