@@ -6,16 +6,15 @@
 <div class="menu">
 <ul>
 <li>
-<a href="http://gojb.x10host.com">Heyqwew</a>
+<a  id="default" class="highlite" onclick="highlite(this);" href="http://gojb.x10host.com">Home</a>
 </li>
 
 <li>
-<a href="index.html">Jo</a>
-</li>
 
+</li>
 <li>
+<a onclick="highlite(this);" href="/contact">Contact</a>
 </li>
-
 </ul>
 </div>
 <div class="middle">
@@ -24,6 +23,19 @@ Heyy
 </p>
 </div>
 
+<script type="text/javascript">
+var current = document.getElementById('default');
+
+  function highlite(el)
+  {
+     if (current != null)
+     {
+         current.className = "";
+     }
+     el.className = "highlite";
+     current = el;
+  }
+</script> 
 
 </body>
 </html>
