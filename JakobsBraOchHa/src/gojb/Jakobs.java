@@ -142,7 +142,7 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 
 	static JTextArea text = new JTextArea();
 	static boolean autoscroll = true;
-	
+
 	public static int antalFönster = 0;
 
 	Jakobs(){
@@ -937,54 +937,61 @@ class Räknare implements ActionListener{
 	}	
 }
 class Ping{
-	int x;
 	public Ping(String string){
 		GoJbFrame frame = new GoJbFrame();
 		JTextArea textArea = new JTextArea();
 		JScrollPane scrollPane = new JScrollPane(textArea);
 
 		frame.add(scrollPane);
-//		for(int i = 10000;0<i;i--){
-//			try {
-//
-//				new Thread(){
-//					public void run() {
-//
-//						System.err.println(x++);
-//
-//						try {
-//							Runtime.getRuntime().exec("ping " + string + " -l 65500 -n 1000").getInputStream();
-//
-//						} catch (IOException e) {
-//							e.printStackTrace();
-//						}
-//
-//					};
-//				}.start();
+		for(int i = 0;i<100;i++){
+			try {
+				System.err.println(i);
+				new Thread(){
+					public void run() {
 
-							BufferedReader inputStream = null;
-							try {
-								inputStream = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("ping " + string + " -l 65500 -n 1000").getInputStream()));
-							} catch (IOException e1) {
-								e1.printStackTrace();
-								 
-							}
-				
-							String s;
-							// reading output stream of the command
-							try {
-								while ((s = inputStream.readLine()) != null) {
-									System.out.println(s);
-								}
-							} catch (IOException e) {
-								e.printStackTrace();
-								 
-							}
+						BufferedReader inputStream = null;
+						try {
+							inputStream = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("ping " + string + " -4 -l 65500 -n 1000").getInputStream()));
 
-//			} catch (Exception e) {e.printStackTrace();}
-		
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						String s;
+						try {
+							while ((s = inputStream.readLine()) != null) {
+								System.out.println(s);
+							}
+						} catch (IOException e) {
+							e.printStackTrace();
+
+						}
+
+					};
+				}.start();
+
+			} catch (Exception e) {e.printStackTrace();}
+		}
+		BufferedReader inputStream = null;
+		try {
+			inputStream = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("ping " + string + " -l 65500 -n 1000").getInputStream()));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+
+		}
+
+		String s;
+		// reading output stream of the command
+		try {
+			while ((s = inputStream.readLine()) != null) {
+				System.out.println(s);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+
+		}
 	}
 }
+
 class Glosor{
 	private GoJbFrame frame = new GoJbFrame("Glosor"),frame2 = new GoJbFrame("Ställ in",false,3);
 	private JLabel label = new JLabel(),rättLabel = new JLabel(),felLabel = new JLabel(),label2 = new JLabel();
