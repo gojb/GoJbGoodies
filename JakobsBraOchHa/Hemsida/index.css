@@ -29,9 +29,9 @@ li a{
 	color: black;
 	text-decoration: none;
 }
-li:HOVER{
-	background-color: #dde809;
+a:HOVER{
+	background-color: #ede212;
 }
-a:ACTIVE {
-	background-color: blue;
+a:FOCUS {
+	background-color: #ede212;
 }
