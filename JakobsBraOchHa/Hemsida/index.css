@@ -32,6 +32,6 @@ li a{
 a:HOVER{
 	background-color: #ede212;
 }
-a:FOCUS {
+a:focus {
 	background-color: #ede212;
 }
