@@ -1,1 +1,2 @@
 ErrorDocument 404 http://www.gojb.x10host.com/404
+DirectoryIndex index.shtml
