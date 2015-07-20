@@ -3,31 +3,7 @@
 <html>
 <head>
 <title>GoJbs Chatt</title>
-<style type="text/css">
-input#chat {
-	width: 410px;
-}
-
-#console-container {
-	width: 400px;
-}
-
-#console {
-	border: 1px solid #CCCCCC;
-	border-right-color: #999999;
-	border-bottom-color: #999999;
-	height: 170px;
-	overflow-y: scroll;
-	padding: 5px;
-	width: 100%;
-	background-color: white;
-}
-
-#console p {
-	padding: 0;
-	margin: 0;
-}
-</style>
+<link href=index.css rel=stylesheet type=text/css>
 <script type="application/javascript">
 	
         var Chat = {};
@@ -122,19 +98,20 @@ input#chat {
 </script>
 </head>
 <body>
+<!--#include virtual="/menu.html" -->
 	<div>
 		<p>
 			<input type="text"
 				placeholder="Skriv meddelande och tryck på enter för att skicka"
 				id="chat" />
-			<button type="button" onclick="Chat.initialize()" id="knapp">Anslut</button><button type="button" onclick="sound()" id="knapp2">Ljudet är på</button>
+			<button type="button" onclick="Chat.initialize()" id="knapp">Anslut</button><button type="button" onclick="sound()" id="knapp2">Ljudet är av</button>
 			
 		</p>
 		<div id="console-container">
 			<div id="console" />
 		</div>
 	</div>
-	<audio id="ljud">
+	<audio muted id="ljud" >
 		<source src="http://gojb.bl.ee/bing.mp3"/>
 	</audio>
 </body>
