@@ -42,7 +42,6 @@ header {
         header > div#logo > h1 {
             color: white;
             font-weight: 300;
-            text-transform: lowercase;
         }
         
         header > div#logo > div#navToggle {
@@ -141,7 +140,7 @@ header {
                     }
 
 /* Medium screens */
-@media all and (min-width: 600px) {
+@media all and (min-width:** 600px) {
     header > div#logo > div#navToggle {
         display: none;    
     }
@@ -198,14 +197,14 @@ header {
                         display: inline-block;
                         height: 0;
                         margin: 0 0 0 .25rem;
-                        transition: 250ms all ease;
+                        transition: 1000ms all ease;
                         width: 0;
                         vertical-align: middle;
                     }
                     
                         header nav > ul > li:hover > a span.caret {
                             border-top-color: rgb(140, 193, 193);
-                            transform: rotate(270deg); 
+                            transform: rotate(990deg); 
                         }
     
     header > nav > ul > li:hover > nav {
