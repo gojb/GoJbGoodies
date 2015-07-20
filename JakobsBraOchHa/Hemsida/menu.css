@@ -164,7 +164,10 @@ header>nav>ul>li>nav>ul>li:hover>a {
 		line-height: 90px;
 	}
 	header>div#logo>h1 {
-	tex
+		color: rgb(140, 193, 193);
+		text-decoration: none;
+	}
+	header>div#logo>h1>a {
 		color: rgb(140, 193, 193);
 		text-decoration: none;
 	}
