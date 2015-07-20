@@ -13,7 +13,6 @@ body {
 		"Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	
 }
-
 header {
 	background-color: rgb(140, 193, 193);
 	border-bottom: 1px solid rgba(0, 0, 0, .15);
@@ -200,14 +199,14 @@ header>nav>ul>li>nav>ul>li:hover>a {
 		display: inline-block;
 		height: 0;
 		margin: 0 0 0 .25rem;
-		transition: 70000ms all ease;
+		transition: 700ms all ease;
 		width: 0;
 		vertical-align: middle;
 		transform: rotate(0);
 	}
 	header nav>ul>li:hover>a span.Plus {
 		border-right-color: rgba(0, 0, 0, .65);
-		transform: rotate(27000deg);
+		transform: rotate(270deg);
 	}
 	header>nav>ul>li:hover>nav {
 		background-color: rgb(51, 51, 51);
