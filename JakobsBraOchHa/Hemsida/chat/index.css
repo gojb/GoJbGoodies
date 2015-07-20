@@ -21,3 +21,15 @@ input#chat {
 	padding: 0;
 	margin: 0;
 }
+.middle {
+	background-color: white;
+	width: 75%;
+	height: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 15px;
+	padding-top: 5px;
+	padding-left: 10px;
+	z-index: 1;
+	
+}

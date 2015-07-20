@@ -99,7 +99,7 @@
 </head>
 <body>
 <!--#include virtual="/menu.html" -->
-	<div>
+	<div class="middle">
 		<p>
 			<input type="text"
 				placeholder="Skriv meddelande och tryck på enter för att skicka"
