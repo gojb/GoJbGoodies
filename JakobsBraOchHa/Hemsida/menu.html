@@ -44,10 +44,10 @@ $(document).ready(function() {
 		<ul>
             <li><a href="/">Hem</a></li>
             <li>
-                <a href="#">Program <span class="toggle">Expand</span><span class="Plus"></span></a>
+                <a href="#" onclick="return false;">Program <span class="toggle">Expand</span><span class="Plus"></span></a>
                 <nav>
                     <ul>
-                        <li><a href="/chat">Chat</a></li>
+                        <li><a href="/chat/">Chat</a></li>
                         <li><a href="#">GoJbGuide</a></li>
                         <li><a href="#">GoJbsBraOchHa</a></li>
                     </ul>
@@ -59,3 +59,22 @@ $(document).ready(function() {
 </header>
 <div>
 </div>
+<script type="text/javascript">
+    $(function() {
+        // this will get the full URL at the address bar
+        var url = window.location.href;
+
+        // passes on every "a" tag
+        $("a").each(function() {
+        	console.log("Put a message here.");
+            // checks if its the same on the address bar
+            console.log(url +" == " + (this.href))
+            if (url == (this.href)) {
+                $(this).closest("li").addClass("active");
+                console.log("active");
+            }
+        });
+    });   
+
+
+</script>
