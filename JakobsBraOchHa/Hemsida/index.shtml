@@ -4,21 +4,13 @@
 </head>
 
 <body>
-<div class="menu" id="menu">
-<!--#include virtual="menu.html" -->
-</div>
-<div class="middle">
-<p>
-Heyy
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-Heyy
-</p>
-</div>
+	<div class="menu" id="menu">
+		<!--#include virtual="menu.html" -->
+	</div>
+	<div class="middle">
+		<p>
+			Heyy <br /> <br /> <br /> <br /> <br /> <br /> <br /> Heyy
+		</p>
+	</div>
 </body>
 </html>
