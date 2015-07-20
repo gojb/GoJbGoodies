@@ -1,0 +1,18 @@
+<html>
+<head>
+<link href=index.css rel=stylesheet type=text/css>
+</head>
+<body>
+<div class="menu">
+<!--#include virtual="a.html" -->
+</div>
+<div class="middle">
+<p>
+
+</p>
+</div>
+
+
+
+</body>
+</html>
