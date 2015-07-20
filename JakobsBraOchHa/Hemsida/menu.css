@@ -154,9 +154,9 @@ header>nav>ul>li>nav>ul>li:hover>a {
 		flex-direction: row;
 		line-height: 90px;
 		padding: 0 3rem;
-
 		text-align: left;
 		width: 100%;
+		height: inherit;
 	}
 	header>div#logo {
 		background-color: transparent;
