@@ -72,7 +72,7 @@ header {
                 }
 
     header > nav {
-        background-color: white;
+        background-color: black;
         display: none;
         flex: 1;
         transform: 300ms all ease;
@@ -101,6 +101,7 @@ header {
                 }
                 
                     header nav > ul > li > a span.toggle {
+                    /*Expand button*/
                         background-color: rgba(0,0,0,.05);
                         border-radius: 3rem;
                         color: rgba(0,0,0,.25);
@@ -110,12 +111,13 @@ header {
                         text-transform: lowercase;    
                     }
                     
-                    header nav > ul > li > a span.caret {
+                    header nav > ul > li > a span.Plus {
                         display: none;
                     }
                 
                     header > nav > ul > li:hover > a {
                         color: rgb(140, 193, 193);  
+                        /*Hover color*/
                     }
                 
             header > nav > ul > li > nav {
@@ -128,16 +130,19 @@ header {
                 right: 5%;
                 width: 90%;
                 z-index: 100;
+                /*Dropdown menu small background*/
             }
             
                 header > nav > ul > li > nav > ul > li > a {
                     color: rgba(255,255,255,.85);
-                    transition: 300ms all ease;
+                    transition: 700ms all ease;
+                    /*Dropdown text*/
                 }
                 
                     header > nav > ul > li > nav > ul > li:hover > a {
                         background-color: rgba(0,0,0,.6);
-                        color: rgba(255,255,255,1);
+                        color: rgba(2,255,255,1);
+                        /*color at hover dropdown menu*/
                     }
 
 /* Medium screens */
@@ -188,7 +193,7 @@ header {
                         display: none;    
                     }
                     
-                    header nav > ul > li > a span.caret {
+                    header nav > ul > li > a span.Plus {
                         border-bottom: 4px solid transparent;
                         border-top: 4px solid rgba(0,0,0,.65);
                         border-right: 4px solid transparent;
@@ -198,14 +203,14 @@ header {
                         display: inline-block;
                         height: 0;
                         margin: 0 0 0 .25rem;
-                        transition: 250ms all ease;
+                        transition: 1000ms all ease;
                         width: 0;
                         vertical-align: middle;
                     }
                     
-                        header nav > ul > li:hover > a span.caret {
+                        header nav > ul > li:hover > a span.Plus {
                             border-top-color: rgb(140, 193, 193);
-                            transform: rotate(270deg); 
+                            transform: rotate(990deg); 
                         }
     
     header > nav > ul > li:hover > nav {
