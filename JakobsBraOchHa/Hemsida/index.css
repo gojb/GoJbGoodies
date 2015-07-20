@@ -1,37 +1,23 @@
-body{
+body {
 	background-color: #DFF0D8;
 }
-.middle{
+
+.middle {
 	background-color: white;
 	width: 1000px;
 	height: 1000px;
 	margin-left: auto;
 	margin-right: auto;
 }
-.menu{
-	width: 1000px;
-	height: 40px;
-	margin-left: auto;
-	margin-right: auto;
-	background-color: #FAF20A;
-}
-li{
-	list-style-type: none;
-	margin-left: 10px;
-	margin-right: 10px;
-	display: inline;
-	height: 10px;
-	font-size: 34px;
-	font-weight: bold;
+.menuframe{
+	height: 69px;
+	width: 1050px;
+	border: none;
+	margin-left: -20px;
 
 }
-li a{
-	color: black;
-	text-decoration: none;
-}
-a:HOVER{
-	background-color: #ede212;
-}
-a:focus {
-	background-color: #ede212;
+.menu{
+	margin-left: auto;
+	margin-right: auto;
+
 }
