@@ -4,6 +4,7 @@
 </head>
 
 <body>
+<div>
 	<div class="menu" id="menu">
 		<!--#include virtual="menu.html" -->
 	</div>
@@ -11,6 +12,7 @@
 		<p>
 			Heyy <br /> <br /> <br /> <br /> <br /> <br /> <br /> Heyy
 		</p>
+	</div>
 	</div>
 </body>
 </html>
