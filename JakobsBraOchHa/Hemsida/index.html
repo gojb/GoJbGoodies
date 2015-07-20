@@ -4,18 +4,7 @@
 </head>
 <body>
 <div class="menu">
-<ul>
-<li>
-<a  id="default" class="highlite" onclick="highlite(this);" href="http://gojb.x10host.com">Home</a>
-</li>
-
-<li>
-
-</li>
-<li>
-<a onclick="highlite(this);" href="/contact">Contact</a>
-</li>
-</ul>
+<iframe src="menu.html" class="menuframe"></iframe>
 </div>
 <div class="middle">
 <p>
@@ -23,19 +12,7 @@ Heyy
 </p>
 </div>
 
-<script type="text/javascript">
-var current = document.getElementById('default');
 
-  function highlite(el)
-  {
-     if (current != null)
-     {
-         current.className = "";
-     }
-     el.className = "highlite";
-     current = el;
-  }
-</script> 
 
 </body>
 </html>
