@@ -1,0 +1,66 @@
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1">
+<link href=menutest.css rel=stylesheet type=text/css>
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.3.min.js"></script>
+<script>
+$(document).ready(function() {
+    $("#navToggle a").click(function(e){
+        e.preventDefault();
+        
+        $("header > nav").slideToggle();
+        $("#logo").toggleClass("menuUp menuDown");
+    });
+    
+    $(window).resize(function() {
+        if($( window ).width() >= "600") {
+            $("header > nav").css("display", "block");
+            
+            if($("#logo").attr('class') == "menuDown") {
+                $("#logo").toggleClass("menuUp menuDown");
+            }
+        }
+        else {
+            $("header > nav").css("display", "none");
+        }
+    });
+    
+    $("header > nav > ul > li > a").click(function(e) {
+        if($( window ).width() <= "600") {
+            if($(this).siblings().size() > 0 ) {
+			    e.preventDefault();
+                $(this).siblings().slideToggle("fast")
+                $(this).children(".toggle").html($(this).children(".toggle").html() == 'close' ? 'expand' : 'close');
+            }
+        }
+    });
+});
+</script>
+</head>
+<body>
+<header>
+    <div id="logo" class="menuUp">
+        <h1>GoJb</h1>
+        <div id="navToggle"><a href="#">Meny</a></div>
+    </div>
+    <nav>
+		<ul>
+            <li><a href="#">Hem</a></li>
+            <li>
+                <a href="#">Blog <span class="toggle">Expand</span><span class="caret"></span></a>
+                <nav>
+                    <ul>
+                        <li><a href="#">Articles</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">Humour</a></li>
+                        <li><a href="#">Gaming</a></li>
+                        <li><a href="#">Music</a></li>
+                    </ul>
+                </nav>
+            </li>
+        </ul>
+	</nav>
+</header>
+</body>
+
+</html>
