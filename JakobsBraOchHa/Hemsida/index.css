@@ -4,11 +4,15 @@ body {
 
 .middle {
 	background-color: white;
-	width: 1000px;
+	width: 75%;
 	height: 1000px;
 	margin-left: auto;
 	margin-right: auto;
-	float: 
+	border-radius: 15px;
+	padding-top: 5px;
+	padding-left: 10px;
+	z-index: 1;
+	
 }
 .below{
 	height: 70px;

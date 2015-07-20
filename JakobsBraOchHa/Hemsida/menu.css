@@ -70,7 +70,7 @@ header>div#logo>div#navToggle:hover>a {
 }
 
 header>nav {
-	background-color: white;
+	background-color: #a6a6a6;
 	display: none;
 	flex: 1;
 	transform: 300ms all ease;
@@ -96,6 +96,7 @@ header nav>ul>li>a {
 	padding: 1.5rem 0;
 	text-decoration: none;
 	transition: 500ms all ease;
+	background-color: white;
 }
 
 header nav>ul>li>a span.toggle {
@@ -153,7 +154,7 @@ header>nav>ul>li>nav>ul>li:hover>a {
 		flex-direction: row;
 		line-height: 90px;
 		padding: 0 3rem;
-		position: fixed;
+
 		text-align: left;
 		width: 100%;
 	}
