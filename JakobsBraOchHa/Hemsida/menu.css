@@ -136,7 +136,7 @@ header>nav>ul>li>nav {
 header>nav>ul>li>nav>ul>li>a {
 	color: rgba(2, 2, 55, .85);
 	transition: 700ms all ease;
-	/*Dropdown text*/
+	/*Dropdown textyyu*/
 }
 
 header>nav>ul>li>nav>ul>li:hover>a {
@@ -220,10 +220,8 @@ header>nav>ul>li>nav>ul>li:hover>a {
 		right: -50%;
 		width: 196px;
 	}
-	li.active {
-    color: rgb(140, 193, 193);
-    font: bold;
-    
-}
 	
+}
+	a.active {
+    color: rgb(140, 193, 193);
 }
