@@ -170,6 +170,7 @@ header>nav>ul>li>nav>ul>li:hover>a {
 	header>div#logo>h1>a {
 		color: rgb(140, 193, 193);
 		text-decoration: none;
+		white-space: nowrap;
 	}
 	header>nav {
 		background-color: transparent;
