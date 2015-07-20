@@ -42,7 +42,6 @@ header {
         header > div#logo > h1 {
             color: white;
             font-weight: 300;
-            text-transform: lowercase;
         }
         
         header > div#logo > div#navToggle {
@@ -146,7 +145,7 @@ header {
                     }
 
 /* Medium screens */
-@media all and (min-width: 600px) {
+@media all and (min-width:** 600px) {
     header > div#logo > div#navToggle {
         display: none;    
     }
