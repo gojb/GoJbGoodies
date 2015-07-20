@@ -165,6 +165,7 @@ header>nav>ul>li>nav>ul>li:hover>a {
 	}
 	header>div#logo>h1 {
 		color: rgb(140, 193, 193);
+		text-decoration: none;
 	}
 	header>nav {
 		background-color: transparent;
