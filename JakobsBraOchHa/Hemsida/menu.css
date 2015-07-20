@@ -8,7 +8,7 @@
 body {
 	background: #eee;
 	color: #444;
-
+	
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light",
 		"Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	
@@ -20,7 +20,7 @@ header {
 	display: flex;
 	flex-direction: column;
 	text-align: center;
-	height: 100px;
+	height: 70px;
 	position: relative;
 }
 
@@ -44,7 +44,7 @@ header>div#logo>h1 {
 
 header>div#logo>div#navToggle {
 	background-color: rgba(0, 0, 0, .15);
-	 
+	position: absolute;
 	right: 0;
 	top: 0;
 	transition: 300ms all ease;
@@ -123,7 +123,7 @@ header>nav>ul>li>nav {
 	box-shadow: 0 2px 8px rgba(255, 0, 0, .6);
 	display: none;
 	overflow: hidden;
-	 
+	position: absolute;
 	right: 5%;
 	width: 90%;
 	z-index: 100;
