@@ -20,7 +20,11 @@ header {
 	display: flex;
 	flex-direction: column;
 	text-align: center;
+<<<<<<< HEAD
 	height: 70px;
+=======
+	height: 70;
+>>>>>>> branch 'master' of https://github.com/gojb/GoJbsBraOchHa.git
 	position: relative;
 }
 
@@ -48,6 +52,7 @@ header>div#logo>div#navToggle {
 	right: 0;
 	top: 0;
 	transition: 300ms all ease;
+	position: absolute;
 }
 
 header>div#logo>div#navToggle:hover {
