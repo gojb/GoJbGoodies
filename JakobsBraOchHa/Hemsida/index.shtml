@@ -1,18 +1,15 @@
 <html>
 <head>
+<script src="menu.json"></script>
 <link href=index.css rel=stylesheet type=text/css>
 </head>
 <body>
-<div class="menu">
-<!--#include virtual="a.html" -->
-</div>
+<div class="menu" id="menu">
+<!--#include virtual="menu.html" -->
 <div class="middle">
 <p>
-
+Heyy
 </p>
 </div>
-
-
-
 </body>
 </html>
