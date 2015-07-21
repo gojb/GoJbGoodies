@@ -4,6 +4,10 @@
 	outline: none;
 	box-sizing: border-box;
 }
+img {
+  height: 60px;
+  vertical-align: middle;
+}
 body {
 	background: #eee;
 	color: #444;
