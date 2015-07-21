@@ -1,0 +1,13 @@
+.middle {
+	background-color: white;
+	width: 75%;
+	height: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 5px;
+	border-radius: 15px;
+	padding-top: 5px;
+	padding-left: 10px;
+	z-index: 1;
+	
+}

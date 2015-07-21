@@ -1,0 +1,17 @@
+<html>
+<heah> </heah>
+
+<body>
+	<div class="menu" id="menu">
+		<!--#include virtual="/menu.html" -->
+	</div>
+		<div class="middle">
+		<p>
+			Välkommen till GoJbs Programmerings officiella hemsida! Den här
+			sidan är kodad från grunden, inget fuskigt hemsideverktyg har användts!
+			
+			
+		</p>
+	</div> 
+</body>
+</html>
