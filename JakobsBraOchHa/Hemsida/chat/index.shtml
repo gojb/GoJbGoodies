@@ -100,6 +100,12 @@
 <body>
 <!--#include virtual="/menu.html" -->
 	<div class="middle">
+	<H1>Live Chat</H1>
+	<BR />
+		<p>
+		Här kan du ansluta dig till GoJbs chat. Programmet använder websocket för att kommunicera med våra servrar så att du kan chatta med alla som är online för tillfället. 
+		</p>
+		<BR />
 		<p>
 			<input type="text"
 				placeholder="Skriv meddelande och tryck på enter för att skicka"
