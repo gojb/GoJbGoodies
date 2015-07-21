@@ -5,6 +5,7 @@
 <title>GoJbs Chatt</title>
 <link href=chat.css rel=stylesheet type=text/css>
 <link href=/index.css rel=stylesheet type=text/css>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.3.min.js"></script>
 <script type="application/javascript">
 	
         var Chat = {};
@@ -94,6 +95,13 @@
 			document.getElementById('ljud').muted = false;
 		}
 	}
+	function start(){
+		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+			document.getElementById('ljud').controls = true;
+		}
+	}
+	start();
+	
 
 
 </script>
@@ -121,7 +129,7 @@
 			<div id="console" />
 		</div>
 	</div>
-	<audio muted controls id="ljud" >
+	<audio muted id="ljud" >
 		<source src="http://gojb.bl.ee/bing.mp3"/>
 	</audio>
 	<script type="text/javascript">

@@ -4,7 +4,7 @@
 		<loadfile srcfile="C:/GoJb.txt" property="result"/>
 		<echo message="${result}"/>
 		<ftp server="gojb.x10host.com" remotedir="/public_html" userid="gojbx10h"
-			password="${result}"  depends="yes" binary="no">
+			password="${result}" passive="yes" depends="yes" binary="yes">
 			<fileset dir="${basedir}">
 				<exclude name="Publicera Hemsida.xml" />
 			</fileset>
