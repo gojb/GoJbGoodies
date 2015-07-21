@@ -21,19 +21,3 @@ input#chat {
 	padding: 0;
 	margin: 0;
 }
-.middle {
-	background-color: white;
-	width: 75%;
-	min-height: calc(100% - 105px);
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 5px;
-	margin-bottom: 5px;
-	border-radius: 15px;
-	padding-top: 5px;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-bottom: 5px;
-	z-index: 1;
-	
-}
