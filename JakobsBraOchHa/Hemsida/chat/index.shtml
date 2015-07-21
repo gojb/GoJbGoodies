@@ -3,7 +3,7 @@
 <html>
 <head>
 <title>GoJbs Chatt</title>
-<link href=index.css rel=stylesheet type=text/css>
+<link href=chat.css rel=stylesheet type=text/css>
 <script type="application/javascript">
 	
         var Chat = {};
@@ -117,7 +117,7 @@
 			<div id="console" />
 		</div>
 	</div>
-	<audio muted id="ljud" >
+	<audio muted controls id="ljud" >
 		<source src="http://gojb.bl.ee/bing.mp3"/>
 	</audio>
 	<script type="text/javascript">
