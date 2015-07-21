@@ -2,7 +2,6 @@ html {
 	height: 100%;
 }
 body {
-	background-color: #DFF0D8;
 	height: 100%;
 }
 
@@ -21,10 +20,6 @@ body {
 	padding-bottom: 5px;
 	z-index: 1;
 	
-}
-.below{
-	height: 70px;
-	background-color: black;
 }
 .menu{
 	margin-left: auto;
