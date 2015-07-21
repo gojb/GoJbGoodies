@@ -100,7 +100,7 @@
 </head>
 <body>
 	<div class="menu" id="menu">
-		<!--#include virtual="menu.html" -->
+		<!--#include virtual="/menu.html" -->
 	</div>
 	<div class="middle">
 	<H1>Live Chat</H1>
