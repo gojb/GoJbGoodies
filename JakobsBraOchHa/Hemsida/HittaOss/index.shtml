@@ -1,5 +1,7 @@
 <html>
-<heah> </heah>
+<head>
+<link  href="index.css" rel=stylesheet type="text/css">
+</head>
 
 <body>
 	<div class="menu" id="menu">
@@ -7,7 +9,7 @@
 	</div>
 		<div class="middle">
 		<p>
-			GoJb, <span class=blod>G</span>lenn <span class=blod>o</span>lsson, <span class=blod>J</span>akob <span class=blod>b</span>jörns
+			GoJb, <span id="bold">G</span>lenn <span id="bold">o</span>lsson, <span id="bold">J</span>akob <span id="bold">b</span>jörns
 			
 			
 		</p>
