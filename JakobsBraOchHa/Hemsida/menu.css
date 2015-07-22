@@ -222,7 +222,7 @@ header>nav>ul>li>nav>ul>li:hover>a {
 		border-bottom: 4px solid transparent;
 		border-top: 4px solid transparent;
 		border-right: 4px solid rgba(0, 0, 0, .65);
-		border-left: 4px solid transparent;
+		border-left: 4px solid rgba(0, 0, 0, .65);
 		border-radius: 3px;
 		content: "afdsdsf";
 		display: inline-block;
