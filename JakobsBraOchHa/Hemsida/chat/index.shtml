@@ -132,11 +132,5 @@
 	<audio muted id="ljud" >
 		<source src="http://gojb.bl.ee/bing.mp3"/>
 	</audio>
-	<script type="text/javascript">
-	
-<!--
-
-//-->
-</script>
 </body>
 </html>
