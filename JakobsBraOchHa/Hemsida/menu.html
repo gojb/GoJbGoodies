@@ -34,6 +34,23 @@ $(document).ready(function() {
             }
         }
     });
+    $(function() {
+        $("a").each(function() {
+            if (window.location.href == (this.href)) {
+                $(this).addClass("active");
+                $(this).parents("nav").siblings("a").addClass("active");
+            }
+        });
+    });   
+    var $width = 0;
+	$(this).find('ul li').each(function() {
+		$width += $(this).outerWidth();
+		$(this).css('max-width' , $width*1.05+'px');
+	});
+
+
+
+	
 });
 </script>
 <header>
@@ -58,14 +75,4 @@ $(document).ready(function() {
         </ul>
 	</nav>
 </header>
-<script type="text/javascript">
-    $(function() {
-        $("a").each(function() {
-            if (window.location.href == (this.href)) {
-                $(this).addClass("active");
-                $(this).parents("nav").siblings("a").addClass("active");
-            }
-        });
-    });   
-</script>
 <!-- syns detta?!-->
