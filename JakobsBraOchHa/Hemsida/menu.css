@@ -69,7 +69,7 @@ header>.menuUp {
 }
 
 header>div#logo>h1 {
-	color: white;
+	color: blck;
 	font-weight: 300;
 }
 
@@ -188,6 +188,7 @@ header>nav>ul>li>nav>ul>li:hover>a {
 		text-align: left;
 		width: 100%;
 		height: inherit;
+
 	}
 	header>div#logo {
 		background-color: transparent;
@@ -273,6 +274,7 @@ header>div#logo>h1>a {
 	color: rgb(140, 193, 193);
 	text-decoration: none;
 	white-space: nowrap;
+	font-size: 0px;
 }
 
 a.active {
