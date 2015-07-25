@@ -22,11 +22,12 @@
 	</div>
 	<!--<div class="below"></div>-->
 	<div class="middle">
+		<h1>Välkommen till GoJbs Programmerings officiella hemsida!</h1>
 		<p>
-			Välkommen till GoJbs Programmerings officiella hemsida! Den här
-			sidan är kodad från grunden, inget fuskigt hemsideverktyg har använts!
-			
-			
+			Den härsidan är kodad från grunden, inget fuskigt hemsideverktyg har använts!
+			<br/>
+			Vi kan programmera Java och Web (CSS, JS, HTML). 
+			Vi är inte utbildade, vi har lärt oss allting genom böcker och hemsidor. 
 		</p>
 	</div>
 </body>
