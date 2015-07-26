@@ -2,7 +2,8 @@
 <meta name="viewport" content="initial-scale=1">
 <link href="/menu.css" rel=stylesheet type="text/css">
 <link href="menu.css" rel=stylesheet type="text/css">
-<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.3.min.js"></script>
+<script type="text/javascript"
+	src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $("#navToggle a").click(function(e){
@@ -34,28 +35,61 @@ $(document).ready(function() {
             }
         }
     });
+<!--	Resize font h1-ish	-->
+    $(document).ready(function(){
+    	var i = 0;
+    $(window).resize(function(){
+    	console.log($('.top').width()+"  top");
+    	console.log($(window).width()+"  doc");
+    	if($(document).width()>$('top').width()&&$(document).width()<500){
+    		var docWidth = $(window).width();
+    		//var topWidth = document.getElementById('top');
+     		//var Width = (topWidth.clientWidth()+1);
+     		
+     		var topWidth = document.getElementById('top').clientWidth;
+     		
+     		console.log(topWidth + "  top-----------");
+    		if(docWidth-topWidth<100){
+/*     		document.getElementById('top').style.fontSize = '75%';
+ */    		$('.top').css('font-size','75%');
+    		}
+    		else{
+/*     		document.getElementById('top').style.fontSize = '100%';
+  $('.top').css('font-size','100%');*/
+  $('.top').css('font-size','');
+	$('.top').css('font-size','100%');
+    		}
+    	}
+    	});
+    });
+
 });
 </script>
 <header>
-    <div id="logo" class="menuUp">
-        <h1 class="top"><a href="/"><img src="/images/rect8147.png"/> GoJbs Programmering</a></h1>
-        <div id="navToggle"><a href="#">Meny</a></div>
-    </div>
-    <nav>
+	<div id="logo" class="menuUp">
+		<h1 id="top" class="top">
+			<a href="/"><img src="/images/rect8147.png" /> GoJbs
+				Programmering</a>
+		</h1>
+		<div id="navToggle">
+			<a href="#">Meny</a>
+		</div>
+	</div>
+	<nav>
 		<ul>
-            <li><a href="/">Hem</a></li>
-            <li>
-                <a href="#" onclick="return false;">Program <span class="toggle">Expand</span><span class="Plus"></span><span class="Plus1"></span></a>
-                <nav>
-                    <ul>
-                        <li><a href="/chat/">Chat</a></li>
-                        <li><a href="#">GoJbGuide</a></li>
-                        <li><a href="#">GoJbsBraOchHa</a></li>
-                    </ul>
-                </nav>
-            </li>
-            <li><a href="/HittaOss/">Hitta Oss</a></li>
-        </ul>
+			<li><a href="/">Hem</a></li>
+			<li><a href="#" onclick="return false;">Program <span
+					class="toggle">Expand</span><span class="Plus"></span><span
+					class="Plus1"></span></a>
+				<nav>
+					<ul>
+						<li><a href="/chat/">Chat</a></li>
+						<li><a href="#">GoJbGuide</a></li>
+						<li><a href="#">GoJbsBraOchHa</a></li>
+					</ul>
+				</nav></li>
+			<li><a href="/HittaOss/">Hitta Oss</a></li>
+		</ul>
 	</nav>
 </header>
 <script type="text/javascript">

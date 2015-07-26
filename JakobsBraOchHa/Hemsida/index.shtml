@@ -11,17 +11,6 @@
   ga('send', 'pageview');
  
 </script>
-<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.3.min.js"></script>
-<script type="text/javascript" src="index.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	var i = 0;
-$(window).resize(function(){
-	console.log($('.top').width());
-	i++;
-	});
-});
-</script>
 <title>GoJbs Programmering</title>
 <link href=index.css rel=stylesheet type="text/css">
 </head>
