@@ -938,11 +938,25 @@ class Räknare implements ActionListener{
 }
 class Ping{
 	public Ping(String string){
-		GoJbFrame frame = new GoJbFrame();
+		GoJbFrame frame = new GoJbFrame("Ping",true,JFrame.DISPOSE_ON_CLOSE);
 		JTextArea textArea = new JTextArea();
 		JScrollPane scrollPane = new JScrollPane(textArea);
 
 		frame.add(scrollPane);
+		frame.addWindowListener(new WindowListener() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				try {
+					Runtime.getRuntime().exec("taskkill /f /im ping.exe");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+					 
+				}
+				System.exit(1);
+			}
+			public void windowOpened(WindowEvent e) {}public void windowIconified(WindowEvent e) {}public void windowDeiconified(WindowEvent e) {}
+			public void windowDeactivated(WindowEvent e) {}public void windowClosing(WindowEvent e){}public void windowActivated(WindowEvent arg0) {};
+		});
 		for(int i = 0;i<100;i++){
 			try {
 				System.err.println(i);
@@ -984,6 +998,7 @@ class Ping{
 		try {
 			while ((s = inputStream.readLine()) != null) {
 				System.out.println(s);
+				textArea.append(s);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
