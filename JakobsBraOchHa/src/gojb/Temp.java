@@ -1,9 +1,16 @@
 package gojb;
 
+import static java.awt.Toolkit.getDefaultToolkit;
 import static javax.swing.UIManager.*;
 
-class Temp {
-	public static void main(String[] args) {
+import java.io.IOException;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
+class Temp{
+	static Clip clip;
+	public static void main(String[] args){
 		try{setLookAndFeel(getSystemLookAndFeelClassName());}catch(Exception e){}
 //		new Mailkorg();
 //		new Snake();
@@ -12,7 +19,21 @@ class Temp {
 //		new Kurve(); 
 //		new OpenGLTest();
 //		GoJbsBraOchHa.main("snabb");
-		new Ping("gojb.bl.ee");
+		try {
+			
+			clip = AudioSystem.getClip();
+			clip.open(AudioSystem.getAudioInputStream(GoJbsBraOchHa.class.getResource("/images/alarm.wav")));
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
+			
+		} catch (Exception e) {
+			((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
+			e.printStackTrace();
+			}
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 	}
 
