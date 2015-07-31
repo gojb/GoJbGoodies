@@ -34,6 +34,7 @@ class Temp{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		new Ping("ADAM-HP");
 		
 	}
 

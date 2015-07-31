@@ -1,3 +1,4 @@
+
 package gojb;
 
 import java.awt.*;
@@ -16,6 +17,7 @@ import GoJbFrame.GoJbFrame;
 import com.sun.mail.util.*;
 
 import static gojb.GoJbsBraOchHa.*;
+import static gojb.Jakobs.*;
 import static javax.swing.JFrame.*;
 import static javax.swing.JOptionPane.*;
 import static java.awt.Toolkit.*;
@@ -47,7 +49,6 @@ public class GoJbsBraOchHa{
 			((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 			showMessageDialog(null, "Den angivna LookAndFeel hittades inte!","Error",ERROR_MESSAGE);
 		}
-		setErrPrint();
 		try {
 			robot = new Robot();
 		} catch (Exception e) {
@@ -115,7 +116,6 @@ public class GoJbsBraOchHa{
 		} catch (Exception e) {
 			argString ="";
 		}
-		
 		new Login();
 	}
 	public static void spelaLjud(String filnamn){
@@ -161,18 +161,12 @@ public class GoJbsBraOchHa{
 			e.printStackTrace();
 		}
 	}
-	public static void setErrPrint(){
-		PrintStream error = new PrintStream(System.err);
-		PrintStream stream = new PrintStream(new OutputStream() {
-			@Override
-			public void write(int b) throws IOException {
-				error.write(b);
-				Jakobs.skrivError(b);
-			}
-		});
-		System.setErr(stream);
+	public static void errPrint(Exception e){
+		Writer writer = new StringWriter();
+		e.printStackTrace(new PrintWriter(writer));
+		e.printStackTrace();
+		skrivHändelsetext(writer.toString());
 	}
-
 	public GoJbsBraOchHa() {
 		main("");
 	}
@@ -346,5 +340,3 @@ class Update implements Runnable{
 		}
 	}
 }
-
-
