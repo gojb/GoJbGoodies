@@ -12,7 +12,7 @@ class Temp {
 //		new Kurve(); 
 //		new OpenGLTest();
 //		GoJbsBraOchHa.main("snabb");
-		new Ping("ADAM-HP");
+		new Ping("JAKOB-DATOR");
 		
 	}
 
