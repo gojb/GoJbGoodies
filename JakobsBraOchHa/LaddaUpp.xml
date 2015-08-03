@@ -23,6 +23,5 @@
     	    	<include name="GoJb.jar"/>
     	    </fileset>
 		</ftp>
-    	<input message="Pusha Hemsidan"/>
     </target>
 </project>
