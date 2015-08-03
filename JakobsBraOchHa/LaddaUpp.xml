@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="create_run_jar" name="Create Runnable Jar for Project GoJbsBraOchHa and upload to ftp">
     <target name="create_run_jar">
+    	<echo message="${user.home}\git\Hemsida\jar"/>
     	<loadfile srcfile="C:/GoJb.txt" property="inputvalue"/>
-    	<jar destfile="GoJb.jar" filesetmanifest="mergewithoutmain">
+    	<jar destfile="${user.home}\git\Hemsida\jar\GoJb.jar" filesetmanifest="mergewithoutmain">
             <manifest>
             	<attribute name="Application-Name" value="GoJbsBraOchHa"/>
             	<attribute name="Permissions" value="all-permissions"/>
@@ -15,13 +16,13 @@
     		<zipfileset excludes="META-INF/*.SF" src="lwjgl_util.jar"/>
     		<zipfileset excludes="META-INF/*.SF" src="jsoup-1.8.1.jar"/>
         </jar>
-    	<signjar jar="GoJb.jar" alias="GoJb" keystore=".keystore" storepass="${inputvalue}"/> 
-    	<ftp server="gojb.bl.ee" remotedir="/public_html" userid="u608544416" password="${inputvalue}"
+    	<signjar jar="${user.home}\git\Hemsida\jar\GoJb.jar" alias="GoJb" keystore=".keystore" storepass="${inputvalue}"/> 
+    	<ftp server="gojb.tk" remotedir="/public_html" userid="gojbx10h" password="${inputvalue}"
     	       passive="yes" depends="yes" binary="yes">
-    	    <fileset dir="${basedir}">
+    	   <fileset dir="${user.home}\git\Hemsida\jar">
     	    	<include name="GoJb.jar"/>
-    	    	<include name="GoJb.jnlp"/>
     	    </fileset>
 		</ftp>
+    	<input message="Pusha Hemsidan"/>
     </target>
 </project>
