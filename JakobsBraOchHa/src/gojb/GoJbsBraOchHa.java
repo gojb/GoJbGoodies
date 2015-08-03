@@ -293,6 +293,7 @@ class Update implements Runnable{
 			try {
 				URLConnection connection = new URL("http://gojb.tk/jar/GoJb.jar").openConnection();
 				File file = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
+				System.out.println(connection.getURL());
 				System.out.println("Online: " + connection.getLastModified());
 				System.out.println("File: " + file);
 				System.out.println("Lokal:  "+ file.lastModified());

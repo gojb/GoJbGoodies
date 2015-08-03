@@ -20,7 +20,6 @@
     	<ftp server="gojb.tk" remotedir="/public_html/jar" userid="gojbx10h" password="${inputvalue}"
     	       passive="yes" depends="yes" binary="yes">
     	   <fileset dir="${user.home}\git\Hemsida\jar">
-    	    	<include name="GoJb.jar"/>
     	    </fileset>
 		</ftp>
     </target>
