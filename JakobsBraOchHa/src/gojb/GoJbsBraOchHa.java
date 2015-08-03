@@ -30,7 +30,7 @@ import static java.awt.Toolkit.*;
  * 
  * @author GoJb - Glenn Olsson & Jakob Björns
  * 
- * @see <a href="http://gojb.bl.ee/">http://gojb.bl.ee/</a>
+ * @see <a href="http://gojb.tk/">http://gojb.tk/</a>
  * @version 1.0
  */
 public class GoJbsBraOchHa{
