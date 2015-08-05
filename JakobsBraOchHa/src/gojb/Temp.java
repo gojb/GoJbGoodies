@@ -21,8 +21,10 @@ class Temp{
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
 
 		} catch (Exception e) {
+
 			e.printStackTrace();
-		}
+			}
+	
 		new Ping("ADAM-HP");
 
 	}
