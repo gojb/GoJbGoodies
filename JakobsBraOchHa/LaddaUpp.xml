@@ -3,7 +3,7 @@
     <target name="create_run_jar">
     	<echo message="${user.home}\git\Hemsida\jar"/>
     	<loadfile srcfile="C:/GoJb.txt" property="inputvalue"/>
-    	<jar destfile="${basedir}/GoJb.jar" filesetmanifest="mergewithoutmain">
+    	<jar destfile="${user.home}\git\Hemsida\jar\GoJb.jar" filesetmanifest="mergewithoutmain">
             <manifest>
             	<attribute name="Application-Name" value="GoJbsBraOchHa"/>
             	<attribute name="Permissions" value="all-permissions"/>
