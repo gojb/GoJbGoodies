@@ -61,7 +61,7 @@ import static org.lwjgl.util.glu.GLU.gluPerspective;
 
 public class Jakobs implements ActionListener,MouseInputListener,KeyListener,WindowListener{
 
-	private JFrame huvudfönster = new JFrame("Hej Hej :D"), 
+	private JFrame huvudfönster = new JFrame("Jakob Hej Hej :D"), 
 			händelsefönster = new JFrame("Händelser"),
 			hastighetsfönster =  new JFrame("Ändra hastighet"),
 			om = new JFrame("Om"),
