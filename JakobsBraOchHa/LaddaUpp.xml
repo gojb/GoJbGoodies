@@ -3,7 +3,7 @@
     <target name="create_run_jar">
     	<echo message="${user.home}\git\Hemsida\jar"/>
     	<loadfile srcfile="C:/GoJb.txt" property="inputvalue"/>
-    	<jar destfile="${user.home}\git\Hemsida\jar\GoJb.jar" filesetmanifest="mergewithoutmain">
+    	<jar destfile="${basedir}/GoJb.jar" filesetmanifest="mergewithoutmain">
             <manifest>
             	<attribute name="Application-Name" value="GoJbsBraOchHa"/>
             	<attribute name="Permissions" value="all-permissions"/>
@@ -16,7 +16,7 @@
     		<zipfileset excludes="META-INF/*.SF" src="lwjgl_util.jar"/>
     		<zipfileset excludes="META-INF/*.SF" src="jsoup-1.8.1.jar"/>
         </jar>
-    	<signjar jar="${user.home}\git\Hemsida\jar\GoJb.jar" alias="GoJb" keystore=".keystore" storepass="${inputvalue}"/> 
+    	<signjar jar="${basedir}/GoJb.jar" alias="GoJb" keystore=".keystore" storepass="${inputvalue}"/> 
     	<ftp server="gojb.tk" remotedir="/public_html/jar" userid="gojbx10h" password="${inputvalue}"
     	       passive="yes" depends="yes" binary="yes">
     	   <fileset dir="${user.home}\git\Hemsida\jar">
