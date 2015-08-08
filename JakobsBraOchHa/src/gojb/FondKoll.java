@@ -1,34 +1,18 @@
 package gojb;
 
-import static gojb.GoJbsBraOchHa.prop;
-import static gojb.GoJbsBraOchHa.sparaProp;
-import static java.awt.Color.BLACK;
-import static java.awt.Color.GREEN;
-import static java.awt.Color.black;
-import static java.awt.Color.red;
-import static java.awt.Color.white;
+import static gojb.GoJbsBraOchHa.*;
+import static java.awt.Color.*;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.awt.*;
+import java.io.*;
+
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -53,6 +37,7 @@ class FondKoll implements Serializable{
 	JScrollPane scrollPane = new JScrollPane(panel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	JMenuBar bar = new JMenuBar();
 	JMenuItem edit = new JMenuItem("Ändra");
+	private static Thread currentThread;
 	public FondKoll() {
 
 		try {
@@ -112,27 +97,30 @@ class FondKoll implements Serializable{
 			for (int i = 0; i < a; i++) {
 				new Fond(nameFields[i].getText(), IDFields[i].getText(), Integer.parseInt(beloppFields[i].getText()), Double.parseDouble(andelarFields[i].getText()));
 			}
-
 			frame.dispose();
+			comboBox.setModel(new DefaultComboBoxModel<Fond>(arrayList.toArray(new Fond[0])));
+			läs();
 		});
 
 	}	
 	private void läs() {
-		new Thread(){
+		currentThread = new Thread(){
 			@Override
 			public void run() {
+//				frame.setCursor(Cursor.WAIT_CURSOR);
 				super.run();
-				panel.removeAll();
+				panel.removeAll(); 
 				Fond fond = (Fond)comboBox.getSelectedItem();
 				fond.hämta();
-				for (int i = 0; i < fond.getKursLängd(); i++) {
-					Fondkurs fondkurs = fond.getFondkurs(i);
-					long ökn = Math.round(fondkurs.getKurs()*fond.getAndelar()-fond.getBelopp());
-
+				for (Fondkurs fondkurs:fond.kurser) {
+					if (currentThread!=currentThread()) {
+						System.err.println("Stoppad");
+						return;
+					}
 					JLabel label = new JLabel(fondkurs.getDate()),
 							label2 = new JLabel(fondkurs.getKurs()+""),
-							label3 = new JLabel(ökn+":-"),
-							label4 = new JLabel((Math.round(ökn*10000d/fond.getBelopp())/100d)+"%");
+							label3 = new JLabel(fondkurs.getÖkning()+":-"),
+							label4 = new JLabel(fondkurs.getProcentuellÖkning()+"%");
 
 					label.setOpaque(true);
 					label2.setOpaque(true);
@@ -157,7 +145,8 @@ class FondKoll implements Serializable{
 				}
 
 			}
-		}.start();
+		};
+		currentThread.start();
 	}
 	private void nyFond() {
 		GoJbFrame frame = new GoJbFrame("Lägg till ny fond",false,DISPOSE_ON_CLOSE);
@@ -241,7 +230,7 @@ class FondKoll implements Serializable{
 		}
 		public void addKurs(int index,String datum,double kurs){
 			System.err.println(index+", "+datum+", "+kurs);
-			Fondkurs fondkurs = new Fondkurs(datum, kurs);
+			Fondkurs fondkurs = new Fondkurs(datum, kurs,this);
 			kurser.add(index,fondkurs);
 		}
 		public void hämta(){
@@ -277,9 +266,14 @@ class FondKoll implements Serializable{
 		private static final long serialVersionUID = 14565464644654646L;
 		private String date;
 		private double kurs;
-		Fondkurs(String date, double kurs){
+		private long ökn;
+		private double öknprocent;
+		
+		Fondkurs(String date, double kurs, Fond fond){
 			this.date = date;
 			this.kurs = kurs;
+			ökn=Math.round(kurs*fond.getAndelar()-fond.getBelopp());
+			öknprocent=Math.round(ökn*10000d/fond.getBelopp())/100d;
 		}
 		public String getDate() {
 			return date;
@@ -287,7 +281,15 @@ class FondKoll implements Serializable{
 		public double getKurs() {
 			return kurs;
 		}
+		public long getÖkning() {
+			return ökn;
+		}
+		public double getProcentuellÖkning() {
+			return öknprocent;
+		}
 	}
-
+	public static void main(String[] args) {
+		GoJbsBraOchHa.main("gojb.FondKoll");
+	}
 
 }
