@@ -107,7 +107,7 @@ class FondKoll implements Serializable{
 		currentThread = new Thread(){
 			@Override
 			public void run() {
-//				frame.setCursor(Cursor.WAIT_CURSOR);
+				frame.getRootPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				super.run();
 				panel.removeAll(); 
 				Fond fond = (Fond)comboBox.getSelectedItem();
@@ -143,6 +143,7 @@ class FondKoll implements Serializable{
 					}
 					panel.revalidate();
 				}
+				frame.getRootPane().setCursor(Cursor.getDefaultCursor());
 
 			}
 		};
