@@ -30,7 +30,7 @@ import static java.awt.Toolkit.*;
  * 
  * @author GoJb - Glenn Olsson & Jakob Björns
  * 
- * @see <a href="http://gojb.tk/">http://gojb.tk/</a>
+ * @see <a href="http://gojb.ml/">http://gojb.ml/</a>
  * @version 1.0
  */
 public class GoJbsBraOchHa{
@@ -291,7 +291,7 @@ class Update implements Runnable{
 		vänta(10000);
 		if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")) {
 			try {
-				URLConnection connection = new URL("http://gojb.tk/jar/GoJb.jar").openConnection();
+				URLConnection connection = new URL("http://gojb.ml/jar/GoJb.jar").openConnection();
 				File file = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
 				System.out.println(connection.getURL());
 				System.out.println("Online: " + connection.getLastModified());

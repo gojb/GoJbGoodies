@@ -17,7 +17,7 @@
     		<zipfileset excludes="META-INF/*.SF" src="jsoup-1.8.1.jar"/>
         </jar>
     	<signjar jar="${user.home}\git\Hemsida\jar\GoJb.jar" alias="GoJb" keystore=".keystore" storepass="${inputvalue}"/> 
-    	<ftp server="gojb.tk" remotedir="/public_html/jar" userid="gojbx10h" password="${inputvalue}"
+    	<ftp server="gojb.ml" remotedir="/public_html/jar" userid="gojbx10h" password="${inputvalue}"
     	       binary="yes" passive="yes" depends="yes">
     	   <fileset dir="${user.home}\git\Hemsida\jar">
     	    </fileset>
