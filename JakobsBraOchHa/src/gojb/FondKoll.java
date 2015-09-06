@@ -114,6 +114,7 @@ class FondKoll implements Serializable{
 				for (Fondkurs fondkurs:fond.kurser) {
 					if (currentThread!=currentThread()) {
 						System.err.println("Stoppad");
+						panel.revalidate();
 						return;
 					}
 					JLabel label = new JLabel(fondkurs.getDate()),
@@ -129,10 +130,6 @@ class FondKoll implements Serializable{
 					label2.setBackground(white);
 					label3.setBackground(GREEN);
 					label4.setBackground(GREEN);
-					panel.add(label);
-					panel.add(label2);
-					panel.add(label3);
-					panel.add(label4);
 					if (label3.getText().startsWith("-")) {
 						label3.setBackground(red);
 						label4.setBackground(red);
@@ -140,9 +137,13 @@ class FondKoll implements Serializable{
 					else {
 						label3.setText("+"+label3.getText());
 					}
-					panel.revalidate();
+					panel.add(label);
+					panel.add(label2);
+					panel.add(label3);
+					panel.add(label4);
 				}
 				frame.getRootPane().setCursor(Cursor.getDefaultCursor());
+				panel.revalidate();
 
 			}
 		};
