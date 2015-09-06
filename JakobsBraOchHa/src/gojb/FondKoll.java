@@ -84,7 +84,6 @@ class FondKoll implements Serializable{
 			IDFields[i]=new JTextField(fond.getID());
 			beloppFields[i]=new JTextField(fond.getBelopp()+"");
 			andelarFields[i]=new JTextField(fond.getAndelar()+"");
-
 			frame.add(nameFields[i]);
 			frame.add(IDFields[i]);
 			frame.add(beloppFields[i]);
@@ -200,7 +199,7 @@ class FondKoll implements Serializable{
 		private int belopp;
 		private double andelar;
 		private ArrayList<Fondkurs> kurser;
-	
+
 		public Fond(String name, String ID, int belopp, double andelar) {
 			this.name = name;
 			this.ID = ID;
@@ -250,7 +249,7 @@ class FondKoll implements Serializable{
 				Document doc = Jsoup.parse(new URL("http://web.msse.se/shb/sv/history/onefund.print?company="+scanner.next()+"&fundid="+scanner.next()+"&startdate="+startdatum), 10000);
 				Elements elements = doc.select("td:last-child"), 
 						elements2 = doc.select("td.positive");
-				
+
 				for (int i = 0; i < elements.size()-1; i++) {
 					Element element = elements.get(i);
 					Element element2 = elements2.get(i);
@@ -260,7 +259,7 @@ class FondKoll implements Serializable{
 				e.printStackTrace();
 			}
 			spara();
-			
+
 		}
 	}
 	class Fondkurs implements Serializable{
@@ -269,7 +268,7 @@ class FondKoll implements Serializable{
 		private double kurs;
 		private long ökn;
 		private double öknprocent;
-		
+
 		Fondkurs(String date, double kurs, Fond fond){
 			this.date = date;
 			this.kurs = kurs;
