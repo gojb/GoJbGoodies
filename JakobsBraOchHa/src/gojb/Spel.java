@@ -95,7 +95,7 @@ class FlappyGoJb extends JPanel implements KeyListener,WindowListener{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
 
-		g2.drawImage(fönsterIcon, 20,y,null);
+		g2.drawImage(Bild("/images/logga100.png").getImage(), 20,y,null);
 		g2.fillRect(x, a, bredd,getHeight());
 		g2.drawRect(x, a, bredd,getHeight());
 		g2.fillRect(x, a+164+getHeight(), bredd,getHeight());
