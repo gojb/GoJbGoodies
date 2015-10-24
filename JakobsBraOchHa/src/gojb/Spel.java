@@ -937,7 +937,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 @SuppressWarnings("serial")
 class Kurve implements ActionListener,KeyListener{
 	private Pixel[] pixels = new Pixel[100000];
-	private int längd,i;
+	private int längd,i,poäng;
 	private final int PIXEL = 5;
 	private double x,y,riktning;
 	private boolean höger,vänster;
@@ -978,6 +978,8 @@ class Kurve implements ActionListener,KeyListener{
 					g2.setColor(red);
 					pixels[i].draw(g2);
 				}
+				g2.setColor(GREEN);
+				g2.drawString(poäng+"", 50, getWidth()/2);
 			}
 			else {
 				g2.setColor(red);
@@ -1012,6 +1014,7 @@ class Kurve implements ActionListener,KeyListener{
 		else if (i>220) {
 			i=0;
 			ritaom=true;
+			poäng++;
 		}
 	}
 	private void GameOver(){
@@ -1019,6 +1022,7 @@ class Kurve implements ActionListener,KeyListener{
 		frame.repaint();
 	}
 	private void Restart() {
+		poäng=0;
 		längd=0;
 		x=20;
 		y=20;
