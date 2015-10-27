@@ -10,7 +10,7 @@ import GoJbFrame.GoJbFrame;
 
 public class Tetris {
 	private GoJbFrame frame = new GoJbFrame("Tetris",false,JFrame.EXIT_ON_CLOSE);
-	private int size=20,fönsterbredd=12,fönsterhöjd=20;
+	private int size=20,fönsterbredd=12,fönsterhöjd=20,poäng;
 	private Timer timer = new Timer(500, e-> uppdatera());
 	private boolean snabb;
 	private ArrayList<Block> aktuella = new ArrayList<>(), fasta = new ArrayList<>();
@@ -25,6 +25,7 @@ public class Tetris {
 			for (Block fast : fasta) {
 				fast.rita(g2);
 			}
+			g2.drawString(poäng+"", 20, 20);
 		};
 	};
 
@@ -58,6 +59,12 @@ public class Tetris {
 					aktuella.clear();
 					aktuella.addAll(old);
 				}
+			}
+			else if (e.getKeyCode()==KeyEvent.VK_R) {
+				fasta.clear();
+				aktuella.clear();
+				timer.start();
+				poäng=0;
 			}
 			frame.repaint();
 		}
@@ -172,6 +179,7 @@ public class Tetris {
 						block.flyttaNer();
 					}
 				}
+				poäng++;
 			}
 
 		}
