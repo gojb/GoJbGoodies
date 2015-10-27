@@ -9,7 +9,7 @@ import javax.swing.*;
 import GoJbFrame.GoJbFrame;
 
 public class Tetris {
-	private GoJbFrame frame = new GoJbFrame("Tetris");
+	private GoJbFrame frame = new GoJbFrame("Tetris",false,JFrame.EXIT_ON_CLOSE);
 	private int size=20,fönsterbredd=12,fönsterhöjd=20;
 	private Timer timer = new Timer(500, e-> uppdatera());
 	private boolean snabb;
@@ -147,18 +147,26 @@ public class Tetris {
 		}
 		if (aktuella.isEmpty()&&!snabb) {
 			blockskap();
+			for (Block aktuell : aktuella) {
+				for (Block fast : fasta) {
+					if (aktuell.y+1==fast.y&&aktuell.x==fast.x) {	
+						gameover();
+						frame.repaint();
+						return;
+					}
+				}
+			}
 		}
 		int[] y = new int[fönsterhöjd];
 		for (Block block : fasta) {
 			y[block.y]++;
 		}
-		ArrayList<Block> blocks = new ArrayList<>();
+		ArrayList<Block> bort = new ArrayList<>();
 		for (int j = 0; j < y.length; j++) {
-			int i = y[j];
-			if (i==fönsterbredd) {
+			if (y[j]==fönsterbredd) {
 				for (Block block : fasta) {
 					if (block.y==j) {
-						blocks.add(block);
+						bort.add(block);
 					}
 					if (block.y<j) {
 						block.flyttaNer();
@@ -167,25 +175,27 @@ public class Tetris {
 			}
 
 		}
-		fasta.removeAll(blocks);
+		fasta.removeAll(bort);
 		if (!snabb) {
 			frame.repaint();
 		}
 
 	}
+	private void gameover() {
+		timer.stop();
+		System.err.println("gameover");
+	}
 	public Tetris() {
 		frame.setResizable(false);
 		frame.add(label);
 		frame.setLayout(new GridLayout(1,1));
-		blockskap();
-		frame.repaint();
-		frame.revalidate();
-		timer.start();
 		frame.addKeyListener(listener);
 		label.setPreferredSize(new Dimension(size*fönsterbredd, size*fönsterhöjd));
+		frame.revalidate();
 		frame.pack();
 		frame.setLocationRelativeTo(null);
-
+		frame.setVisible(true);
+		timer.start();
 	}
 	public static void main(String[] args) {
 		new Tetris();
@@ -227,7 +237,7 @@ public class Tetris {
 		else if (i==5) {
 			aktuella.add(new Block(fönsterbredd/2, 0, Color.orange));
 			aktuella.add(new Block(fönsterbredd/2, 1, Color.orange));
-			
+
 			aktuella.add(new Block(fönsterbredd/2+1, 0, Color.orange));
 			aktuella.add(new Block(fönsterbredd/2+1, -1, Color.orange));
 		}
@@ -241,9 +251,9 @@ public class Tetris {
 	class Block implements Cloneable{
 		Color c;
 		int x,y;
+		
 		@Override
 		protected Block clone() throws CloneNotSupportedException {
-			// TODO Auto-generated method stub
 			return (Block) super.clone();
 		}
 		public Block(int x,int y, Color c) {
