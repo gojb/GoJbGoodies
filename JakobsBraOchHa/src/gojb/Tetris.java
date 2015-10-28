@@ -1,0 +1,364 @@
+package gojb;
+
+import static gojb.GoJbsBraOchHa.*;
+import static javax.swing.JOptionPane.showInputDialog;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
+import java.util.Scanner;
+
+import javax.swing.*;
+
+import GoJbFrame.GoJbFrame;
+
+public class Tetris {
+	private GoJbFrame frame = new GoJbFrame("Tetris",false,JFrame.EXIT_ON_CLOSE), 
+			highFrame=new GoJbFrame("Tetris Highscore",false,JFrame.EXIT_ON_CLOSE);
+	private int size=20,fönsterbredd=12,fönsterhöjd=20,poäng;
+	private Timer timer = new Timer(500, e-> uppdatera());
+	private boolean snabb;
+	private ArrayList<Block> aktuella = new ArrayList<>(), fasta = new ArrayList<>();
+	private ArrayList<String> highscore=new ArrayList<>();
+	private JPanel scorepanel = new JPanel(){
+		private static final long serialVersionUID = 1L;
+
+		public void paintComponent(Graphics g){
+			super.paintComponent(g);
+			setBackground(Color.white);
+			Graphics2D g2 = (Graphics2D)g;
+			int pos = 50;
+
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2.setColor(Color.red);
+			g2.setFont(new Font(null, 0, 25));
+			g.drawString("Highscore:",10 , pos);
+
+			for (String string : highscore) {
+				pos=pos+25;
+				g.drawString(string,10 , pos);
+			}
+			g2.setColor(Color.green);
+			g2.setFont(GoJbsBraOchHa.typsnitt);
+			g2.drawString("Poäng: "+poäng, 10, pos+100);
+		}
+	};
+	private JLabel label = new JLabel(){
+		private static final long serialVersionUID = 1;
+		public void paintComponent(Graphics g) {
+			Graphics2D g2 = (Graphics2D)g;
+			for (Block block : aktuella) {
+				block.rita(g2);
+			}
+			for (Block fast : fasta) {
+				fast.rita(g2);
+			}
+		};
+	};
+
+	private KeyListener listener = new KeyListener() {
+		public void keyReleased(KeyEvent e) {}
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
+				höger();
+			}
+			else if (e.getKeyCode()==KeyEvent.VK_LEFT) {
+				vänster();
+			}
+			else if (e.getKeyCode()==KeyEvent.VK_DOWN) {
+				snabb=true;
+				for (int i = 0; i < fönsterhöjd; i++) {
+					uppdatera();
+				}
+				snabb=false;
+			}
+			else if (e.getKeyCode()==KeyEvent.VK_UP) {
+				ArrayList<Block> old = new ArrayList<>();
+				for (Block block : aktuella) {
+					old.add(block.clone());
+				}
+				if (upp().equals("fel")) {
+					aktuella.clear();
+					aktuella.addAll(old);
+				}
+			}
+			else if (e.getKeyCode()==KeyEvent.VK_R) {
+				fasta.clear();
+				aktuella.clear();
+				timer.start();
+				poäng=0;
+			}
+			frame.repaint();
+		}
+		public void keyTyped(KeyEvent e) {}
+	};
+	public boolean vänster() {
+		for (Block block : aktuella) {
+			if (block.x-1<0) {
+				return false;
+			}
+			for (Block block2 : fasta) {
+				if (block.x-1==block2.x&&block.y==block2.y) {
+					return false;
+				}
+			}
+		}
+		for (Block block : aktuella) {
+			block.flyttaVänster();
+		}
+		return true;
+	}
+	public boolean höger() {
+		for (Block block : aktuella) {
+			if (block.x+1==fönsterbredd) {
+				return false;
+			}
+			for (Block block2 : fasta) {
+				if (block.x+1==block2.x&&block.y==block2.y) {
+					return false;
+				}
+			}
+		}
+		for (Block block : aktuella) {
+			block.flyttaHöger();
+		}
+		return true;
+	}
+	public String upp(){
+		if (aktuella.isEmpty()) {
+			return "";
+		}
+		String ret="ok";
+		int xMin,yMin;
+		xMin=aktuella.get(0).x-2;
+		yMin=aktuella.get(0).y-2;
+		for (Block block : aktuella) {
+			int x = block.x-xMin;
+			int y = block.y-yMin;
+			block.x=4-y+xMin;
+			block.y=x+yMin;
+		}
+		for (Block block : aktuella) {
+			while (block.x<0) {
+				höger();
+				System.out.println("höger");
+			}
+			while (block.x>=fönsterbredd) {
+				vänster();
+				System.out.println("vänst");
+			}
+			for (Block block2 : fasta) {
+				if (block.x==block2.x&&block.y==block2.y) {
+					ret="fel";
+					System.err.println("err");
+				}
+			}
+		}
+		return ret;
+	}
+	public void uppdatera() {
+		boolean b = false;
+		for (Block aktuell : aktuella) {
+			for (Block fast : fasta) {
+				if (aktuell.y+1==fast.y&&aktuell.x==fast.x) {	
+					b=true;
+				}
+			}
+			if (aktuell.y+1==fönsterhöjd) {
+				b=true;
+			}
+		}
+		if (b) {
+			fasta.addAll(aktuella);
+			aktuella.clear();
+		}
+		else {
+			for (Block block : aktuella) {
+				block.flyttaNer();
+			}
+		}
+		if (aktuella.isEmpty()&&!snabb) {
+			blockskap();
+			for (Block aktuell : aktuella) {
+				for (Block fast : fasta) {
+					if (aktuell.y+1==fast.y&&aktuell.x==fast.x) {	
+						gameover();
+						frame.repaint();
+						return;
+					}
+				}
+			}
+		}
+		int[] y = new int[fönsterhöjd];
+		for (Block block : fasta) {
+			y[block.y]++;
+		}
+		ArrayList<Block> bort = new ArrayList<>();
+		for (int j = 0; j < y.length; j++) {
+			if (y[j]==fönsterbredd) {
+				for (Block block : fasta) {
+					if (block.y==j) {
+						bort.add(block);
+					}
+					if (block.y<j) {
+						block.flyttaNer();
+					}
+				}
+				poäng++;
+				scorepanel.repaint();
+			}
+
+		}
+		fasta.removeAll(bort);
+		if (!snabb) {
+			frame.repaint();
+		}
+
+	}
+	private void gameover() {
+		timer.stop();
+		frame.repaint();
+		System.err.println("gameover");
+		Scanner scanner = new Scanner(highscore.get(4));
+		int hs = scanner.nextInt();
+		scanner.close();
+		if (poäng > hs) {
+			highscore.set(4, poäng + " " + showInputDialog("Skriv ditt namn"));
+			if (poäng < 100) {
+				highscore.set(4,"0" + highscore.get(4));
+			}
+			if (poäng < 10) {
+				highscore.set(4,"0" + highscore.get(4));
+			}
+
+
+			Collections.sort(highscore);
+			Collections.reverse(highscore);
+			for (int j = 0; j < highscore.size(); j++) {
+				prop.setProperty("Tetris"+(j+1), highscore.get(j));
+			}
+			highFrame.repaint();
+		}
+		sparaProp("Highscore i Tetris");
+	}
+	public Tetris() {
+		frame.setResizable(false);
+		frame.add(label);
+		frame.setLayout(new GridLayout(1,1));
+		frame.addKeyListener(listener);
+		label.setPreferredSize(new Dimension(size*fönsterbredd, size*fönsterhöjd));
+		frame.revalidate();
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.addComponentListener(new ComponentListener() {
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				highFrame.setLocation(frame.getX()-highFrame.getWidth(),frame.getY());
+			}
+			@Override
+			public void componentShown(ComponentEvent e) {}
+			@Override
+			public void componentResized(ComponentEvent e) {}
+			@Override
+			public void componentHidden(ComponentEvent e) {}
+		});
+
+		highFrame.add(scorepanel);
+		highFrame.setSize(200,frame.getHeight());
+		highFrame.setIconImage(fönsterIcon);
+		highFrame.setUndecorated(true);
+		highFrame.setLocation(frame.getX()-highFrame.getWidth(),frame.getY());
+		highFrame.setVisible(true);
+		for (int i = 1; i < 6; i++) {
+			highscore.add(prop.getProperty("Tetris"+i,"0"));
+		}
+		frame.setVisible(true);
+		timer.start();
+	}
+	public static void main(String[] args) {
+		GoJbsBraOchHa.main("gojb.Tetris");
+	}
+	public void blockskap() {
+		int i =	new Random().nextInt(7);
+		if (i==0) {
+			aktuella.add(new Block(0, 0, Color.red));
+			aktuella.add(new Block(-2, 0, Color.red));
+			aktuella.add(new Block(-1, 0, Color.red));
+			aktuella.add(new Block(1, 0, Color.red));
+		}                          
+		else if (i==1) {           
+			aktuella.add(new Block(0, 0, Color.green));
+			aktuella.add(new Block(0, -1, Color.green));
+			aktuella.add(new Block(0, 1, Color.green));
+			aktuella.add(new Block(1, 1, Color.green));    
+		}                         
+		else if (i==2) {          
+			aktuella.add(new Block(0, 1, Color.magenta));
+			aktuella.add(new Block(0, 0, Color.magenta));
+			aktuella.add(new Block(0, 2, Color.magenta));
+			aktuella.add(new Block(-1, 2, Color.magenta));
+		}
+		else if (i==3) {
+			aktuella.add(new Block(0, 0, Color.BLUE));
+			aktuella.add(new Block(0, 1, Color.BLUE));
+			aktuella.add(new Block(1, 0, Color.BLUE));
+			aktuella.add(new Block(1, 1, Color.BLUE));
+		}                          
+		else if (i==4) {           
+			aktuella.add(new Block(0, 1, Color.CYAN));
+			aktuella.add(new Block(0, 0, Color.CYAN));
+			aktuella.add(new Block(1, 1, Color.CYAN));
+			aktuella.add(new Block(1, 2, Color.cyan));
+		}                         
+		else if (i==5) {           
+			aktuella.add(new Block(0, 0, Color.orange));
+			aktuella.add(new Block(0, 1, Color.orange));
+			aktuella.add(new Block(1, 0, Color.orange));
+			aktuella.add(new Block(1, -1, Color.orange));
+		}
+		else if (i==6) {
+			aktuella.add(new Block(0, 0, Color.YELLOW));
+			aktuella.add(new Block(0, -1, Color.yellow));
+			aktuella.add(new Block(0, 1, Color.yellow));
+			aktuella.add(new Block(+1, 0, Color.yellow));
+		}
+	}
+	class Block implements Cloneable{
+		Color c;
+		int x,y;
+
+		@Override
+		protected Block clone() {
+			try {
+				return (Block) super.clone();
+			} catch (CloneNotSupportedException e) {
+				e.printStackTrace();
+				return null;
+			}
+
+		}
+		public Block(int x,int y, Color c) {
+			this.x=x+fönsterbredd/2;
+			this.y=y;
+			this.c=c;
+		}
+		public void flyttaVänster() {
+			x-=1;
+		}
+		public void flyttaHöger() {
+			x+=1;
+		}
+		public void rita(Graphics2D g) {
+			g.setColor(c);
+			g.fillRect(x*size, y*size, size, size);
+			g.setColor(Color.black);
+			g.drawRect(x*size, y*size, size, size);
+
+		}
+		public void flyttaNer() {
+			y+=1;
+		}
+	}
+}

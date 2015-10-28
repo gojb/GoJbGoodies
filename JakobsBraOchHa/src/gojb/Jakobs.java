@@ -99,7 +99,8 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 			flappyItem = new JMenuItem("Spela FlappyGojb"),
 			glItem = new JMenuItem("3d"),
 			kurveItem = new JMenuItem("Kurve"),
-			fondItem = new JMenuItem("GoJbs Fondkoll");
+			fondItem = new JMenuItem("GoJbs Fondkoll"),
+			tetrisItem = new JMenuItem("GoJbs Tetris");
 
 	private JButton knapp1 = new JButton("Blå"),
 			knapp2 = new JButton("Grön"),
@@ -170,6 +171,7 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 		glItem.addActionListener(e -> new OpenGLTest());
 		kurveItem.addActionListener(e -> new Kurve());
 		fondItem.addActionListener(e -> new FondKoll());
+		tetrisItem.addActionListener(e -> new Tetris());
 
 		autoscrollknapp.addActionListener(this);
 		loggaUtItem.addActionListener(this);
@@ -208,6 +210,7 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 		arkivMeny.add(glItem);
 		arkivMeny.add(kurveItem);
 		arkivMeny.add(fondItem);
+		arkivMeny.add(tetrisItem);
 		arkivMeny.addSeparator();
 		arkivMeny.add(loggaUtItem);
 		arkivMeny.add(avslutaItem);
