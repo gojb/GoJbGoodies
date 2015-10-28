@@ -1,7 +1,6 @@
 package gojb;
 
 import static gojb.GoJbsBraOchHa.*;
-import static javax.swing.JOptionPane.showInputDialog;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -20,7 +19,7 @@ public class Tetris {
 	private int size=20,fönsterbredd=12,fönsterhöjd=20,poäng;
 	private Timer timer = new Timer(500, e-> uppdatera());
 	private boolean snabb;
-	private ArrayList<Block> aktuella = new ArrayList<>(), fasta = new ArrayList<>();
+	private ArrayList<Block> aktuella = new ArrayList<>(), fasta = new ArrayList<>(),nästa= new ArrayList<>();
 	private ArrayList<String> highscore=new ArrayList<>();
 	private JPanel scorepanel = new JPanel(){
 		private static final long serialVersionUID = 1L;
@@ -37,12 +36,20 @@ public class Tetris {
 			g.drawString("Highscore:",10 , pos);
 
 			for (String string : highscore) {
-				pos=pos+25;
+				pos+=25;
 				g.drawString(string,10 , pos);
 			}
 			g2.setColor(Color.green);
 			g2.setFont(GoJbsBraOchHa.typsnitt);
 			g2.drawString("Poäng: "+poäng, 10, pos+100);
+			g2.setColor(Color.cyan);
+			g2.drawString("Nästa:", 10, pos+150);
+			for (Block block : nästa) {
+				g.setColor(block.c);
+				g.fillRect(block.x*size-50,block.y*size+360, size, size);
+				g.setColor(Color.black);
+				g.drawRect(block.x*size-50, block.y*size+360, size, size);
+			}
 		}
 	};
 	private JLabel label = new JLabel(){
@@ -219,13 +226,14 @@ public class Tetris {
 	}
 	private void gameover() {
 		timer.stop();
+		nästa.clear();
 		frame.repaint();
 		System.err.println("gameover");
 		Scanner scanner = new Scanner(highscore.get(4));
 		int hs = scanner.nextInt();
 		scanner.close();
 		if (poäng > hs) {
-			highscore.set(4, poäng + " " + showInputDialog("Skriv ditt namn"));
+			highscore.set(4, poäng + " " + JOptionPane.showInputDialog("Skriv ditt namn"));
 			if (poäng < 100) {
 				highscore.set(4,"0" + highscore.get(4));
 			}
@@ -239,8 +247,8 @@ public class Tetris {
 			for (int j = 0; j < highscore.size(); j++) {
 				prop.setProperty("Tetris"+(j+1), highscore.get(j));
 			}
-			highFrame.repaint();
 		}
+		highFrame.repaint();
 		sparaProp("Highscore i Tetris");
 	}
 	public Tetris() {
@@ -281,49 +289,59 @@ public class Tetris {
 		GoJbsBraOchHa.main("gojb.Tetris");
 	}
 	public void blockskap() {
+		if (!nästa.isEmpty()) {
+			aktuella.addAll(nästa);
+			nästa.clear();
+		}
+
 		int i =	new Random().nextInt(7);
+
 		if (i==0) {
-			aktuella.add(new Block(0, 0, Color.red));
-			aktuella.add(new Block(-2, 0, Color.red));
-			aktuella.add(new Block(-1, 0, Color.red));
-			aktuella.add(new Block(1, 0, Color.red));
+			nästa.add(new Block(0, 0, Color.red));
+			nästa.add(new Block(-2, 0, Color.red));
+			nästa.add(new Block(-1, 0, Color.red));
+			nästa.add(new Block(1, 0, Color.red));
 		}                          
 		else if (i==1) {           
-			aktuella.add(new Block(0, 0, Color.green));
-			aktuella.add(new Block(0, -1, Color.green));
-			aktuella.add(new Block(0, 1, Color.green));
-			aktuella.add(new Block(1, 1, Color.green));    
+			nästa.add(new Block(0, 0, Color.green));
+			nästa.add(new Block(0, -1, Color.green));
+			nästa.add(new Block(0, 1, Color.green));
+			nästa.add(new Block(1, 1, Color.green));    
 		}                         
 		else if (i==2) {          
-			aktuella.add(new Block(0, 1, Color.magenta));
-			aktuella.add(new Block(0, 0, Color.magenta));
-			aktuella.add(new Block(0, 2, Color.magenta));
-			aktuella.add(new Block(-1, 2, Color.magenta));
+			nästa.add(new Block(0, 1, Color.magenta));
+			nästa.add(new Block(0, 0, Color.magenta));
+			nästa.add(new Block(0, 2, Color.magenta));
+			nästa.add(new Block(-1, 2, Color.magenta));
 		}
 		else if (i==3) {
-			aktuella.add(new Block(0, 0, Color.BLUE));
-			aktuella.add(new Block(0, 1, Color.BLUE));
-			aktuella.add(new Block(1, 0, Color.BLUE));
-			aktuella.add(new Block(1, 1, Color.BLUE));
+			nästa.add(new Block(0, 0, Color.BLUE));
+			nästa.add(new Block(0, 1, Color.BLUE));
+			nästa.add(new Block(1, 0, Color.BLUE));
+			nästa.add(new Block(1, 1, Color.BLUE));
 		}                          
 		else if (i==4) {           
-			aktuella.add(new Block(0, 1, Color.CYAN));
-			aktuella.add(new Block(0, 0, Color.CYAN));
-			aktuella.add(new Block(1, 1, Color.CYAN));
-			aktuella.add(new Block(1, 2, Color.cyan));
+			nästa.add(new Block(0, 1, Color.CYAN));
+			nästa.add(new Block(0, 0, Color.CYAN));
+			nästa.add(new Block(1, 1, Color.CYAN));
+			nästa.add(new Block(1, 2, Color.cyan));
 		}                         
 		else if (i==5) {           
-			aktuella.add(new Block(0, 0, Color.orange));
-			aktuella.add(new Block(0, 1, Color.orange));
-			aktuella.add(new Block(1, 0, Color.orange));
-			aktuella.add(new Block(1, -1, Color.orange));
+			nästa.add(new Block(0, 0, Color.orange));
+			nästa.add(new Block(0, 1, Color.orange));
+			nästa.add(new Block(1, 0, Color.orange));
+			nästa.add(new Block(1, -1, Color.orange));
 		}
 		else if (i==6) {
-			aktuella.add(new Block(0, 0, Color.YELLOW));
-			aktuella.add(new Block(0, -1, Color.yellow));
-			aktuella.add(new Block(0, 1, Color.yellow));
-			aktuella.add(new Block(+1, 0, Color.yellow));
+			nästa.add(new Block(0, 0, Color.YELLOW));
+			nästa.add(new Block(0, -1, Color.yellow));
+			nästa.add(new Block(0, 1, Color.yellow));
+			nästa.add(new Block(+1, 0, Color.yellow));
 		}
+		if (aktuella.isEmpty()) {
+			blockskap();
+		}
+		highFrame.repaint();
 	}
 	class Block implements Cloneable{
 		Color c;
@@ -352,10 +370,9 @@ public class Tetris {
 		}
 		public void rita(Graphics2D g) {
 			g.setColor(c);
-			g.fillRect(x*size, y*size, size, size);
+			g.fillRect(this.x*size, this.y*size, size, size);
 			g.setColor(Color.black);
-			g.drawRect(x*size, y*size, size, size);
-
+			g.drawRect(this.x*size, this.y*size, size, size);
 		}
 		public void flyttaNer() {
 			y+=1;
