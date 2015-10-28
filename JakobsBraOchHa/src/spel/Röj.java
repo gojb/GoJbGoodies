@@ -1,282 +1,406 @@
 package spel;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Arrays;
+import java.util.Random;
+
 import javax.swing.*;
 import GoJbFrame.GoJbFrame;
 
-public class Röj {
+public class Röj implements ActionListener {
 
 	GoJbFrame frame = new GoJbFrame("Röj"), customFrame = new GoJbFrame(false);
-	JButton[] button = new JButton[16*16];
+	JButton[] button;
 	JMenu menu = new JMenu("Hey");
 	JMenuBar mBar = new JMenuBar();
-	JMenuItem res = new JMenuItem("Restart"), validate = new JMenuItem("Validate field"), customItem = new JMenuItem("Custom Game");
+	JMenuItem res = new JMenuItem("Restart"), validate = new JMenuItem("Validate field"), customItem = new JMenuItem("Board set-up");
 	int[] a,a1,a2,revInt,redButton;
 	double b,b1,x1,x,y1;
 	boolean customBoolean = false;
 	int c, d, e, i, y, z, q, runOnce, nrRed, bomb;
-	
-	JRadioButton easy = new JRadioButton("Easy"), medium = new JRadioButton("Medium"), hard = new JRadioButton("Hard"), custom = new JRadioButton("Custom");
+
+	JRadioButton easy = new JRadioButton("Easy"), standard = new JRadioButton("Standard"), hard = new JRadioButton("Hard"), custom = new JRadioButton("Custom");
 	ButtonGroup gameOptions = new ButtonGroup();
-	JTextField width = new JTextField(), height = new JTextField(), mines = new JTextField();
+	JTextField[] width = new JTextField[5], height = new JTextField[5], mines = new JTextField[5];
 	Container pane = customFrame.getContentPane();
 	JPanel panel = new JPanel();
-	
-	
+	JButton go = new JButton("Go!");
+	int heightInt, widthInt, minesInt;
+	String gameType = new String();
+
 	public static void main(String[] args) {
 		new Röj();
 	}
 
 	public Röj() {
-		
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-            	createGame();
-            }
-        });
-		
+		createGame();
 	}
 
 	public void customGame(){
-//		if(customBoolean==true){
-			customFrame.setVisible(true);
-//		}
-			
-//		createGame();
+		//		if(customBoolean==true){
+		customFrame.setVisible(true);
+
+		//GUI customGame ###########################################################################
+		gameOptions.add(easy);
+		gameOptions.add(standard);
+		gameOptions.add(hard);
+		gameOptions.add(custom);
+
+		easy.addActionListener(this);
+		standard.addActionListener(this);
+		hard.addActionListener(this);
+		custom.addActionListener(this);
+		go.addActionListener(this);
+
+		pane.setLayout(null);
+
+		panel.setSize(300, 300);
+
+		pane.add(easy);
+		pane.add(standard);
+		pane.add(hard);
+		pane.add(custom);
+
+
+		easy.setLocation(5, 50);
+		easy.setSize(100, 30);
+
+		standard.setLocation(5, 90);
+		standard.setSize(100, 30);
+
+		hard.setLocation(5, 130);
+		hard.setSize(100, 30);
+
+		custom.setLocation(5, 170);
+		custom.setSize(100, 30);
+
+		for(int i = 0; i != 5;i++){
+			height[i] = new JTextField();
+			width[i] = new JTextField();
+			mines[i] = new JTextField();
+
+			pane.add(height[i]);
+			pane.add(width[i]);
+			pane.add(mines[i]);
+
+			height[i].setSize(100, 30);
+			width[i].setSize(100, 30);
+			mines[i].setSize(100, 30);
+
+			if(i!=4){
+				height[i].setEditable(false);
+				height[i].setBorder(null);
+				height[i].setFont(new Font("Arial", 0, 15));
+
+				width[i].setEditable(false);
+				width[i].setBorder(null);	
+				width[i].setFont(new Font("Arial", 0, 15));
+
+				mines[i].setEditable(false);
+				mines[i].setBorder(null);
+				mines[i].setFont(new Font("Arial", 0, 15));
+
+				if(i==0){
+					height[i].setFont(new Font("Arial", Font.BOLD, 15));
+					width[i].setFont(new Font("Arial", Font.BOLD, 15));
+					mines[i].setFont(new Font("Arial", Font.BOLD, 15));
+
+					height[i].setLocation(130, 10+(i*40));
+					width[i].setLocation(240, 10+(i*40));
+					mines[i].setLocation(350, 10+(i*40));
+				}
+				else{
+					height[i].setLocation(115, 10+(i*40));
+					width[i].setLocation(225, 10+(i*40));
+					mines[i].setLocation(335, 10+(i*40));
+				}
+			}
+			if(i>0){
+				height[i].setLocation(130, 10+(i*40));
+				width[i].setLocation(240, 10+(i*40));
+				mines[i].setLocation(350, 10+(i*40));
+			}
+			if(i==4){
+				height[i].setBackground(Color.white);
+				width[i].setBackground(Color.white);
+				mines[i].setBackground(Color.white);
+
+				height[i].setLocation(115, 10+(i*40));
+				width[i].setLocation(225, 10+(i*40));
+				mines[i].setLocation(335, 10+(i*40));
+
+				height[i].setEditable(false);
+				width[i].setEditable(false);
+				mines[i].setEditable(false);
+			}
+
+		}
+		mines[0].setText("Mines");
+		mines[1].setText("10");
+		mines[2].setText("40");
+		mines[3].setText("99");
+
+		width[0].setText("Width");
+		width[1].setText("9");
+		width[2].setText("16");
+		width[3].setText("24");
+
+		height[0].setText("Height");
+		height[1].setText("9");
+		height[2].setText("16");
+		height[3].setText("24");
+
+		standard.setSelected(true);
+
+
+		pane.add(go);
+		go.setLocation(5, 220);
+		go.setSize(70, 40);
+
+		//		#########################################################################################################
+		//		}
+
+		//		createGame();
 	}
 
 
 	private void createGame() {
-		
-		customGame();
-		
-		gameOptions.add(easy);
-		gameOptions.add(medium);
-		gameOptions.add(hard);
-		gameOptions.add(custom);
-		
-		pane.setLayout(null);
-		
-		panel.setSize(300, 300);
-		
-		pane.add(easy);
-		pane.add(medium);
-		pane.add(hard);
-		pane.add(custom);
-		pane.add(height);
-		pane.add(width);
-		pane.add(mines);
 
 		
 		
-		 SpringUtilities.makeCompactGrid(pane, 5, 1, 5, 7, 10, 6);
+		if(gameType=="easy"){
+			widthInt=9;
+			heightInt=9;
+			minesInt=10;
+		}
 		
+		else if (gameType=="hard") {
+			widthInt=24;
+			heightInt=24;
+			minesInt=100;
+		}
+		else if (gameType=="custom") {
+
+		}
+		else if (gameType=="") {
+			gameType="standard";
+		}else{
+			widthInt=16;
+			heightInt=16;
+			minesInt=40;
+		}
+
+		a = new int[widthInt*heightInt];
+		a1= new int [widthInt*heightInt];
+		a2= new int[minesInt];
+		revInt= new int[widthInt*heightInt];
+		redButton = new int[widthInt*heightInt];
+		button = new JButton[widthInt*heightInt];
 		
-//		a = new int[(16*16)];
-//		a1= new int [16*16];
-//		a1= new int[40];
-//		revInt= new int[16*16];
-//		redButton = new int[16*16];
-//		
-//		frame.setVisible(true);
-		frame.setVisible(false);
-//		frame.setLayout(new GridLayout(16,16));
-//		frame.setSize(700, 700);
-//		frame.setLocationRelativeTo(null);
-//		frame.setJMenuBar(mBar);
-//		mBar.add(res);
-//		mBar.add(customItem);
-//		System.err.println("oiöj");
-//		customItem.addActionListener(e -> {
-//			
-//			System.err.println("AASDDSADSA");
-//			customBoolean=true;
-//			frame.dispose();
-//			customGame();
-//			
-//		});
-//		res.addActionListener(e ->{
-//			new Röj();
-//			frame.dispose();
-//		});
-//
-//		validate.addActionListener(e -> {
-//			mBar.remove(validate);
-//			for(int i = 0; i <button.length;i++){
-//				if(button[i].getBackground()==Color.red){
-//					button[i].setBackground(new Color(200,20,20,100));
-//				}
-//				else if(revInt[i]!=10){
-//					button[i].setBackground(new Color(200,200,200));
-//				}
-//				else if(revInt[i]==10){
-//					button[i].setBackground(new Color(230,230,230));
-//				}
-//				button[i].setText(a[i]+"");
-//				if(a[i]==0){
-//					button[i].setText(null);
-//				}
-//				if(a[i]==1){
-//					button[i].setForeground(new Color(255, 0, 0));
-//				}
-//				if(a[i]==2){
-//					button[i].setForeground(new Color(255, 0, 150));
-//				}
-//				if(a[i]==3){
-//					button[i].setForeground(new Color(255, 150, 0));
-//				}
-//				if(a[i]==4){
-//					button[i].setForeground(new Color(0, 100, 255));
-//				}
-//				if(a[i]==5){
-//					button[i].setForeground(new Color(0, 150, 90));
-//				}
-//				if(a[i]==6){
-//					button[i].setForeground(new Color(150, 0, 255));
-//				}
-//				if(a[i]==7){
-//					button[i].setForeground(new Color(120, 50, 100));
-//				}
-//				if(a[i]==8){
-//					button[i].setForeground(new Color(255, 255, 255));
-//				}
-//				if(a[i]>50){
-//					button[i].setText("B");
-//				}
-//			}
-//			button[bomb].setBackground(new Color(50, 50, 50));
-//		});
-//		for (int i = 0; i < button.length; i++) {
-//			redButton[i]=50;
-//			button[i]=new JButton();
-//			button[i].setSize(8,8);
-//			button[i].setBackground(new Color(166, 166, 166));
-//			button[i].setFocusPainted(false);
-//			button[i].addMouseListener(new MouseListener() {
-//
-//				@Override
-//				public void mouseReleased(MouseEvent e) {
-//					// FIXME Auto-generated method stub
-//
-//				}
-//
-//				@Override
-//				public void mousePressed(MouseEvent e) {
-//					// FIXME Auto-generated method stub
-//					if(SwingUtilities.isRightMouseButton(e)){
-//
-//						if(runOnce==10&&a1[Arrays.asList(button).indexOf((JButton)e.getSource())]!=10){
-//							if(redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]==-50){
-//								redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]*=-1;
-//								button[Arrays.asList(button).indexOf((JButton)e.getSource())].setBackground(new Color(166, 166, 166));
-//							}
-//							else if(redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]==50){
-//								redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]*=-1;
-//
-//
-//
-//								System.err.println(("RIGHT"));
-//								button[Arrays.asList(button).indexOf((JButton)e.getSource())].setBackground(Color.red);
-//								for(int i = 0;i<button.length;i++){
-//									if(button[i].getBackground()== Color.red){
-//										nrRed++;
-//										if(nrRed<=41){
-//											a2[nrRed--]=i;
-//										}
-//									}
-//								}
-//								if(nrRed==41){
-//									nrRed=0;
-//									for(int i = 0; i < 41;i++){	
-//										if(a[a2[i]]==100){
-//											nrRed++;
-//										}
-//									}
-//									if(nrRed==40){
-//										Win();
-//									}
-//								}
-//							}
-//						}
-//					}
-//					else if(button[Arrays.asList(button).indexOf((JButton)e.getSource())].getBackground() != Color.red){
-//
-//						if(runOnce!=10){
-//							runOnce=10;
-//							for (int i = 0; i <= 40; i++) {
-//								int x = new Random().nextInt(16*16);
-//								if(a[x]!=100&&x!=Arrays.asList(button).indexOf((JButton)e.getSource())&&(x-17!=Arrays.asList(button).indexOf((JButton)e.getSource())
-//										&&x-16!=Arrays.asList(button).indexOf((JButton)e.getSource())&&x-15!=Arrays.asList(button).indexOf((JButton)e.getSource())
-//										&&x-1!=Arrays.asList(button).indexOf((JButton)e.getSource())&&x+1!=Arrays.asList(button).indexOf((JButton)e.getSource())
-//										&&x+15!=Arrays.asList(button).indexOf((JButton)e.getSource())&&x+16!=Arrays.asList(button).indexOf((JButton)e.getSource())
-//										&&x+17!=Arrays.asList(button).indexOf((JButton)e.getSource()))){
-//									a[x]=100;
-//								}
-//								else{
-//									i--;
-//								}
-//							}
-//							for (int i=0;i<a.length;i++) {
-//								if(a[i]>50){
-//									//Om bomb
-//									b=(i+16)/16;
-//									y = (int)b; //y = radnummer, alltså 1 - 16
-//									x = i+1-(((int)i/16)*16); //x = kolumnnummer, alltså 0 - 15
-//									if(y > 1){
-//										a[i-16]+=1;
-//										if(x>1){
-//											a[i-17]+=1;
-//										}
-//										if(x<16){
-//											a[i-15]+=1;
-//										}
-//									}
-//									if(y < 16){
-//										a[i+16]+=1;
-//										if(x>1){
-//											a[i+15]+=1;
-//										}
-//										if(x<16){
-//											a[i+17]+=1;
-//										}
-//									}
-//									if(x>1){
-//										a[i-1]+=1;
-//									}
-//									if(x<16){
-//										a[i+1]+=1;
-//									}
-//
-//								}
-//							}
-//						}
-//						click(Arrays.asList(button).indexOf((JButton)e.getSource()));
-//
-//					}
-//
-//				}
-//
-//				@Override
-//				public void mouseExited(MouseEvent e) {
-//					// FIXME Auto-generated method stub
-//
-//				}
-//
-//				@Override
-//				public void mouseEntered(MouseEvent e) {
-//					// FIXME Auto-generated method stub
-//
-//				}
-//
-//				@Override
-//				public void mouseClicked(MouseEvent e) {
-//					// FIXME Auto-generated method stub
-//
-//				}
-//			});
-//			frame.add(button[i]);
-//		}
-//		frame.revalidate();
+		try {
+			for(int i = 0; i < button.length;i++){
+			frame.remove(button[8]);
+			}
+		} catch (Exception e) {
+			// FIXME: handle exception
+		}
+		
+
+		frame.setVisible(true);
+		frame.setLayout(new GridLayout(heightInt,widthInt));
+		frame.setSize(700, 700);
+		frame.setLocationRelativeTo(null);
+		frame.setJMenuBar(mBar);
+		mBar.add(res);
+		mBar.add(customItem);
+		customItem.addActionListener(e -> {
+
+			customBoolean=true;
+			frame.dispose();
+			customGame();
+
+		});
+		res.addActionListener(e ->{
+			new Röj();
+			frame.dispose();
+		});
+
+		validate.addActionListener(e -> {
+			mBar.remove(validate);
+			for(int i = 0; i <button.length;i++){
+				if(button[i].getBackground()==Color.red){
+					button[i].setBackground(new Color(200,20,20,100));
+				}
+				else if(revInt[i]!=10){
+					button[i].setBackground(new Color(200,200,200));
+				}
+				else if(revInt[i]==10){
+					button[i].setBackground(new Color(230,230,230));
+				}
+				button[i].setText(a[i]+"");
+				if(a[i]==0){
+					button[i].setText(null);
+				}
+				if(a[i]==1){
+					button[i].setForeground(new Color(255, 0, 0));
+				}
+				if(a[i]==2){
+					button[i].setForeground(new Color(255, 0, 150));
+				}
+				if(a[i]==3){
+					button[i].setForeground(new Color(255, 150, 0));
+				}
+				if(a[i]==4){
+					button[i].setForeground(new Color(0, 100, 255));
+				}
+				if(a[i]==5){
+					button[i].setForeground(new Color(0, 150, 90));
+				}
+				if(a[i]==6){
+					button[i].setForeground(new Color(150, 0, 255));
+				}
+				if(a[i]==7){
+					button[i].setForeground(new Color(120, 50, 100));
+				}
+				if(a[i]==8){
+					button[i].setForeground(new Color(255, 255, 255));
+				}
+				if(a[i]>50){
+					button[i].setText("B");
+				}
+			}
+			button[bomb].setBackground(new Color(50, 50, 50));
+		});
+		for (int i = 0; i < button.length; i++) {
+			redButton[i]=50;
+			button[i]=new JButton();
+			button[i].setSize(8,8);
+			button[i].setBackground(new Color(166, 166, 166));
+			button[i].setFocusPainted(false);
+			button[i].addMouseListener(new MouseListener() {
+
+				public void mouseReleased(MouseEvent e) {
+					// FIXME Auto-generated method stub
+
+				}
+
+				public void mousePressed(MouseEvent e) {
+					// FIXME Auto-generated method stub
+					if(SwingUtilities.isRightMouseButton(e)){
+
+						if(runOnce==10&&a1[Arrays.asList(button).indexOf((JButton)e.getSource())]!=10){
+							if(redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]==-50){
+								redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]*=-1;
+								button[Arrays.asList(button).indexOf((JButton)e.getSource())].setBackground(new Color(166, 166, 166));
+							}
+							else if(redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]==50){
+								redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]*=-1;
+
+								button[Arrays.asList(button).indexOf((JButton)e.getSource())].setBackground(Color.red);
+								for(int i = 0;i<button.length;i++){
+									if(button[i].getBackground()== Color.red){
+										nrRed++;
+										if(nrRed<=41){
+											a2[nrRed--]=i;
+										}
+									}
+								}
+								if(nrRed==41){
+									nrRed=0;
+									for(int i = 0; i < 41;i++){	
+										if(a[a2[i]]==100){
+											nrRed++;
+										}
+									}
+									if(nrRed==minesInt){
+										Win();
+									}
+								}
+							}
+						}
+					}
+					else if(button[Arrays.asList(button).indexOf((JButton)e.getSource())].getBackground() != Color.red){
+
+						if(runOnce!=10){
+							runOnce=10;
+							for (int i = 0; i <= minesInt; i++) {
+								int x = new Random().nextInt(widthInt*heightInt);
+								if(a[x]!=100&&x!=Arrays.asList(button).indexOf((JButton)e.getSource())&&(x-(widthInt+1)!=Arrays.asList(button).indexOf((JButton)e.getSource())
+										&&x-widthInt!=Arrays.asList(button).indexOf((JButton)e.getSource())&&x-(widthInt-1)!=Arrays.asList(button).indexOf((JButton)e.getSource())
+										&&x-1!=Arrays.asList(button).indexOf((JButton)e.getSource())&&x+1!=Arrays.asList(button).indexOf((JButton)e.getSource())
+										&&x+(widthInt-1)!=Arrays.asList(button).indexOf((JButton)e.getSource())&&x+widthInt!=Arrays.asList(button).indexOf((JButton)e.getSource())
+										&&x+(widthInt+1)!=Arrays.asList(button).indexOf((JButton)e.getSource()))){
+									a[x]=100;
+								}
+								else{
+									i--;
+								}
+							}
+							for (int i=0;i<a.length;i++) {
+								if(a[i]>50){
+									//Om bomb
+									b=(i+widthInt)/widthInt;
+									y = (int)b; //y = radnummer, alltså 1 - 16...
+									x = i+1-(((int)i/widthInt)*widthInt); //x = kolumnnummer, alltså 0 - 15...
+									if(y > 1){
+										a[i-widthInt]+=1;
+										if(x>1){
+											a[i-(widthInt+1)]+=1;
+										}
+										if(x<widthInt){
+											a[i-(widthInt-1)]+=1;
+										}
+									}
+									if(y < widthInt){
+										a[i+widthInt]+=1;
+										if(x>1){
+											a[i+(widthInt-1)]+=1;
+										}
+										if(x<widthInt){
+											a[i+(widthInt+1)]+=1;
+										}
+									}
+									if(x>1){
+										a[i-1]+=1;
+									}
+									if(x<widthInt){
+										a[i+1]+=1;
+									}
+
+								}
+							}
+						}
+						click(Arrays.asList(button).indexOf((JButton)e.getSource()));
+
+					}
+
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					// FIXME Auto-generated method stub
+
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					// FIXME Auto-generated method stub
+
+				}
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					// FIXME Auto-generated method stub
+
+				}
+			});
+			frame.add(button[i]);
+		}
+		frame.revalidate();
 
 	}
 
@@ -507,14 +631,14 @@ public class Röj {
 
 		a1[i]=10;
 
-		b=(i+16)/16d;
+		b=(i+widthInt)/widthInt;
 		y =(int)b; //y = radnummer, alltså 1 - 16
-		x = (((double)b-(double)y)*16d)+1d; //x = kolumnnummer, alltså 0 - 15
+		x = (((double)b-(double)y)*widthInt)+1d; //x = kolumnnummer, alltså 0 - 15
 
-		for(int q = -17; q<18;){
-			if(i+q>=0&&i+q<=16*16-1){
+		for(int q = -(widthInt+1); q<(widthInt+2);){
+			if(i+q>=0&&i+q<=widthInt*heightInt-1){
 
-				b1=(((double)i+q)+16)/16d;
+				b1=(((double)i+q)+widthInt)/widthInt;
 				y1 = Math.floor(b1); //y = radnummer, alltså 1 - 16
 				x1 = (((double)b1-(double)y1)*16d)+1d; //x = kolumnnummer, alltså 0 - 15
 
@@ -523,7 +647,6 @@ public class Röj {
 				//				System.out.println(y1);
 
 				if(((x-x1<7)&&(x-x1>-7))) {
-					System.out.println(q);
 
 
 					if(!button[i+q].getBackground().equals(new Color(230, 230, 230))){
@@ -573,8 +696,8 @@ public class Röj {
 				}
 			}
 
-			if(q==-15||q==1){
-				q+=14;
+			if(q==-(widthInt-1)||q==1){
+				q+=(widthInt-2);
 			}
 			else{
 				q++;
@@ -583,4 +706,63 @@ public class Röj {
 
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// FIXME Auto-generated method stub
+		if(e.getSource()==custom||e.getSource()==easy||e.getSource()==standard||e.getSource()==hard){
+			if(!custom.isSelected()){
+				height[4].setEditable(false);
+				width[4].setEditable(false);
+				mines[4].setEditable(false);
+
+			}
+			if(custom.isSelected()){
+				height[4].setBackground(new Color(255, 255, 255));
+				height[4].setEditable(true);
+				height[4].requestFocusInWindow();
+
+				width[4].setBackground(new Color(255, 255, 255));
+				width[4].setEditable(true);
+
+				mines[4].setBackground(new Color(255, 255, 255));
+				mines[4].setEditable(true);
+
+			}
+		}
+		if(e.getSource()==go){
+			if(custom.isSelected()){
+				try {
+
+					heightInt=Integer.parseInt(height[4].getText());
+					widthInt=Integer.parseInt(width[4].getText());
+					minesInt=Integer.parseInt(mines[4].getText());
+
+					System.out.println("HURRAY");
+
+					gameType="custom";
+
+					if((heightInt*widthInt)>minesInt){
+						minesInt=(heightInt*widthInt);
+					}
+
+				} catch (Exception e2) {
+					System.err.println("ERROR IN TEXT FIELDS. NOT ONLY INTEGERS");
+					System.out.println(e2);
+					gameType="standard";
+				}
+
+			}
+			else if(easy.isSelected()){
+				gameType="easy";
+			}
+			else if (standard.isSelected()) {
+				gameType="standard";
+			}
+			else if (hard.isSelected()) {
+				gameType="hard";
+			}
+			createGame();
+		}
+		
+	}
 }
