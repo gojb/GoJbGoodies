@@ -19,6 +19,7 @@ import org.lwjgl.opengl.DisplayMode;
 
 import GoJbFrame.GoJbFrame;
 import spel.Snake;
+import spel.Tetris;
 
 import static gojb.GoJbsBraOchHa.*;
 import static javax.swing.SwingConstants.*;

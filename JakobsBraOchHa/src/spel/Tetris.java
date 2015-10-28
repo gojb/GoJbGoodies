@@ -1,4 +1,4 @@
-package gojb;
+package spel;
 
 import static gojb.GoJbsBraOchHa.*;
 
@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.Timer;
 
 import GoJbFrame.GoJbFrame;
+import gojb.GoJbsBraOchHa;
 
 public class Tetris {
 	private GoJbFrame frame = new GoJbFrame("Tetris",false,JFrame.EXIT_ON_CLOSE), 
