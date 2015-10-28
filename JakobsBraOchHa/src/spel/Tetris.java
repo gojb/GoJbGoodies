@@ -1,4 +1,4 @@
-package gojb;
+package spel;
 
 import static gojb.GoJbsBraOchHa.*;
 
@@ -10,9 +10,10 @@ import javax.swing.*;
 import javax.swing.Timer;
 
 import GoJbFrame.GoJbFrame;
+import gojb.GoJbsBraOchHa;
 
 public class Tetris {
-	private GoJbFrame frame = new GoJbFrame("Tetris",false,JFrame.EXIT_ON_CLOSE), 
+	private GoJbFrame frame = new GoJbFrame("Tetris",false,JFrame.DISPOSE_ON_CLOSE), 
 			highFrame=new GoJbFrame("Tetris Highscore",false,JFrame.EXIT_ON_CLOSE);
 	private int size=20,fönsterbredd=12,fönsterhöjd=20,poäng;
 	private Timer timer = new Timer(500, e-> uppdatera());
@@ -253,6 +254,7 @@ public class Tetris {
 		sparaProp("Highscore i Tetris");
 	}
 	public Tetris() {
+		frame.addWindowListener(autoListener);
 		frame.setResizable(false);
 		frame.add(label);
 		frame.setLayout(new GridLayout(1,1));
@@ -273,9 +275,34 @@ public class Tetris {
 			@Override
 			public void componentHidden(ComponentEvent e) {}
 		});
+		frame.addWindowListener(new WindowListener() {
+			
+			@Override
+			public void windowOpened(WindowEvent e) {}
+			
+			@Override
+			public void windowIconified(WindowEvent e) {}
+			
+			@Override
+			public void windowDeiconified(WindowEvent e) {}
+			
+			@Override
+			public void windowDeactivated(WindowEvent e) {}
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				highFrame.dispose();
+			}
+			
+			@Override
+			public void windowClosed(WindowEvent e) {}
+			
+			@Override
+			public void windowActivated(WindowEvent e) {}
+		});
 
 		highFrame.add(scorepanel);
-		highFrame.setSize(200,frame.getHeight());
+		highFrame.setSize(230,frame.getHeight());
 		highFrame.setIconImage(fönsterIcon);
 		highFrame.setUndecorated(true);
 		highFrame.setLocation(frame.getX()-highFrame.getWidth(),frame.getY());
@@ -287,7 +314,7 @@ public class Tetris {
 		timer.start();
 	}
 	public static void main(String[] args) {
-		GoJbsBraOchHa.main("gojb.Tetris");
+		GoJbsBraOchHa.main("spel.Tetris");
 	}
 	public void blockskap() {
 		if (!nästa.isEmpty()) {
