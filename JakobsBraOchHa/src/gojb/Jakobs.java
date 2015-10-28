@@ -2,12 +2,7 @@ package gojb;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.zip.ZipEntry;
@@ -28,22 +23,7 @@ import static javax.swing.SwingConstants.*;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import static java.awt.Color.*;
 import static javax.swing.JFrame.*;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
-import static org.lwjgl.opengl.GL11.GL_PROJECTION;
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glColor3d;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glLoadIdentity;
-import static org.lwjgl.opengl.GL11.glMatrixMode;
-import static org.lwjgl.opengl.GL11.glRotated;
-import static org.lwjgl.opengl.GL11.glTranslated;
-import static org.lwjgl.opengl.GL11.glVertex3d;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.gluPerspective;
 
 
@@ -56,6 +36,18 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 			laddfönster = new JFrame("Startar..."),
 			avslutningsfönster = new JFrame("Avslutar...");
 
+	JMenuItem avslutaItem = new JMenuItem("Avsluta"), 
+			omItem = new JMenuItem("Om"),
+			visaItem = new JMenuItem("Visa"),
+			döljItem = new JMenuItem("Dölj"),
+			textByteItem = new JMenuItem("Ändra text på remsa"),
+			grönItem = new JMenuItem("Grön"),
+			rödItem = new JMenuItem("Röd"),
+			blåItem = new JMenuItem("Blå"),
+			gulItem = new JMenuItem("Gul"),
+			hastighetItem = new JMenuItem("Ändra hastighet på piltangenterna"),
+			händelseItem = new JMenuItem("Visa Händelsefönster");
+	
 	private JPanel knappPanel = new JPanel(),
 			mittPanel=new JPanel(){ private static final long serialVersionUID = 1L;
 			protected void paintComponent(Graphics g) {
@@ -75,32 +67,6 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 			redigeraMeny = new JMenu("Redigera"),
 			färgbyteMeny = new JMenu("Byt bakgrundsfärg"),
 			textFärgByte = new JMenu("Byt Textfärg");
-
-	private JMenuItem avslutaItem = new JMenuItem("Avsluta"), 
-			omItem = new JMenuItem("Om"),
-			visaItem = new JMenuItem("Visa"),
-			döljItem = new JMenuItem("Dölj"),
-			nyttItem = new JMenuItem("Nytt"),
-			textByteItem = new JMenuItem("Ändra text på remsa"),
-			grönItem = new JMenuItem("Grön"),
-			rödItem = new JMenuItem("Röd"),
-			blåItem = new JMenuItem("Blå"),
-			gulItem = new JMenuItem("Gul"),
-			hastighetItem = new JMenuItem("Ändra hastighet på piltangenterna"),
-			händelseItem = new JMenuItem("Visa Händelsefönster"),
-			räknaItem = new JMenuItem("Öppna Miniräknare"),
-			pongItem = new JMenuItem("Spela Pong"),
-			rörandeItem = new JMenuItem("Öppna RörandeMojäng", Bild("/images/Nopeliten.png")),
-			studsItem = new JMenuItem("Öppna Studsande Objekt"),
-			snakeItem = new JMenuItem("Spela Snake"),
-			loggaUtItem = new JMenuItem("Logga ut"),
-			mandatItem = new JMenuItem("Simulator till riksdagsmandat"),
-			glosItem = new JMenuItem("Träna på glosor"),
-			flappyItem = new JMenuItem("Spela FlappyGojb"),
-			glItem = new JMenuItem("3d"),
-			kurveItem = new JMenuItem("Kurve"),
-			fondItem = new JMenuItem("GoJbs Fondkoll"),
-			tetrisItem = new JMenuItem("GoJbs Tetris");
 
 	private JButton knapp1 = new JButton("Blå"),
 			knapp2 = new JButton("Grön"),
@@ -153,29 +119,7 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 		laddfönster.setUndecorated(true);
 		laddfönster.setVisible(true);		
 
-		omItem.addActionListener(e -> om.setVisible(true));
-		nyttItem.addActionListener(e -> new Jakobs());
-		gulItem.addActionListener(e -> mittPanel.setForeground(YELLOW));
-		rödItem.addActionListener(e -> mittPanel.setForeground(RED));
-		grönItem.addActionListener(e -> mittPanel.setForeground(GREEN));
-		blåItem.addActionListener(e -> mittPanel.setForeground(BLUE));
-		hastighetItem.addActionListener(e -> hastighetsfönster.setVisible(true));
-		räknaItem.addActionListener(e -> new Räknare());
-		rensKnapp.addActionListener(e -> text.setText(null));
-		pongItem.addActionListener(e -> new Pongspel());
-		studsItem.addActionListener(e -> new Studsa());
-		snakeItem.addActionListener(e -> new Snake());
-		mandatItem.addActionListener(e -> new Mandat());
-		glosItem.addActionListener(e -> new Glosor());
-		flappyItem.addActionListener(e -> new FlappyGoJb());
-		glItem.addActionListener(e -> new OpenGLTest());
-		kurveItem.addActionListener(e -> new Kurve());
-		fondItem.addActionListener(e -> new FondKoll());
-		tetrisItem.addActionListener(e -> new Tetris());
-
 		autoscrollknapp.addActionListener(this);
-		loggaUtItem.addActionListener(this);
-		rörandeItem.addActionListener(this);
 		ok.addActionListener(this);
 		visaItem.addActionListener(this);
 		döljItem.addActionListener(this);
@@ -198,21 +142,34 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 		knapp4.addMouseListener(this);
 		knapp4.addKeyListener(this);
 
-		arkivMeny.add(nyttItem);
-		arkivMeny.add(rörandeItem);
-		arkivMeny.add(studsItem);
-		arkivMeny.add(räknaItem);
-		arkivMeny.add(pongItem);
-		arkivMeny.add(snakeItem);
-		arkivMeny.add(mandatItem);
-		arkivMeny.add(glosItem);
-		arkivMeny.add(flappyItem);
-		arkivMeny.add(glItem);
-		arkivMeny.add(kurveItem);
-		arkivMeny.add(fondItem);
-		arkivMeny.add(tetrisItem);
+		omItem.addActionListener(e -> om.setVisible(true));
+		gulItem.addActionListener(e -> mittPanel.setForeground(YELLOW));
+		rödItem.addActionListener(e -> mittPanel.setForeground(RED));
+		grönItem.addActionListener(e -> mittPanel.setForeground(GREEN));
+		blåItem.addActionListener(e -> mittPanel.setForeground(BLUE));
+		hastighetItem.addActionListener(e -> hastighetsfönster.setVisible(true));
+		rensKnapp.addActionListener(e -> text.setText(null));
+
+		menu(arkivMeny, "Nytt", e -> new Jakobs());
+		menu(arkivMeny, "Öppna RörandeMojäng", Bild("/images/Nopeliten.png"), e -> {new RörandeMojäng();huvudfönster.dispose();});;
+		menu(arkivMeny, "Öppna Studsande Objekt", e -> new Studsa());
+		menu(arkivMeny, "Öppna Miniräknare", e -> new Räknare());
+		menu(arkivMeny, "Spela Pong", e -> new Pongspel());
+		menu(arkivMeny, "Spela Snake", e -> new Snake());
+		menu(arkivMeny, "Simulator till riksdagsmandat", e -> new Mandat());
+		menu(arkivMeny, "Träna på glosor", e -> new Glosor());
+		menu(arkivMeny, "Spela FlappyGojb",  e -> new FlappyGoJb());
+		menu(arkivMeny, "3d", e -> new OpenGLTest());
+		menu(arkivMeny, "Kurve", e -> new Kurve());
+		menu(arkivMeny, "GoJbs Fondkoll", e -> new FondKoll());
+		menu(arkivMeny, "Tetris", e -> new Tetris());
 		arkivMeny.addSeparator();
-		arkivMeny.add(loggaUtItem);
+		menu(arkivMeny, "Logga ut", e -> {
+			Login.logout();
+			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
+			JOptionPane.showMessageDialog(huvudfönster, "Utloggad!");
+			huvudfönster.dispose();
+		});
 		arkivMeny.add(avslutaItem);
 
 		redigeraMeny.add(färgbyteMeny);
@@ -326,6 +283,15 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 		startTimer.start();
 
 	}
+	public void menu(JMenu menu,String text ,Icon icon, ActionListener a){
+		JMenuItem item = new JMenuItem(text,icon);
+		item.addActionListener(a);
+		menu.add(item);
+	}
+	public void menu(JMenu menu,String text, ActionListener a){
+		menu(menu, text, null, a);
+	}
+
 
 	public void actionPerformed(ActionEvent knapp) {
 		skrivHändelsetext(knapp.getSource().toString());
@@ -351,8 +317,7 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 				laddstapelAvslut.setValue(laddstapelAvslut.getValue()-2);
 		}
 		else if (knapp.getSource() == avslutaItem){	
-			avslutningsfönster.setVisible(true);
-			slutTimer.start();
+			
 		}
 		else if(knapp.getSource() == knapp1){
 			färg = blue;
@@ -416,16 +381,6 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 		else if (knapp.getSource()==visaItem) {
 			huvudfönster.add(knappPanel,BorderLayout.SOUTH);
 		}
-		else if (knapp.getSource()==rörandeItem) {
-			new RörandeMojäng();
-			huvudfönster.dispose();
-		}
-		else if (knapp.getSource()==loggaUtItem) {
-			Login.logout();
-			((Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
-			JOptionPane.showMessageDialog(huvudfönster, "Utloggad!");
-			huvudfönster.dispose();
-		}
 		huvudfönster.revalidate();
 		huvudfönster.repaint();
 
@@ -456,16 +411,16 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 		if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Esc"){
 			System.exit(0);
 		}
-		else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Vänsterpil"){
+		else if(arg0.getKeyCode()==KeyEvent.VK_LEFT){
 			posX = posX - flyttHastighet;
 		}
-		else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Högerpil"){
+		else if(arg0.getKeyCode()==KeyEvent.VK_RIGHT){
 			posX = posX + flyttHastighet;
 		}
-		else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Upp"){
+		else if(arg0.getKeyCode()==KeyEvent.VK_UP){
 			posY = posY - flyttHastighet;
 		}
-		else if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Nedpil"){
+		else if(arg0.getKeyCode()==KeyEvent.VK_DOWN){
 			posY = posY + flyttHastighet;
 		}
 		huvudfönster.repaint();
@@ -941,7 +896,7 @@ class Ping{
 					Runtime.getRuntime().exec("taskkill /f /im ping.exe");
 				} catch (IOException e1) {
 					e1.printStackTrace();
-					 
+
 				}
 				System.exit(1);
 			}
