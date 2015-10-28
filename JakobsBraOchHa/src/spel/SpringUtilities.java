@@ -29,7 +29,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */ 
 
-package gojb;
+package spel;
 
 import javax.swing.*;
 import javax.swing.SpringLayout;
