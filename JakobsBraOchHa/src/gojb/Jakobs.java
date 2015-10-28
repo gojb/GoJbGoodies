@@ -18,6 +18,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import GoJbFrame.GoJbFrame;
+import spel.KurvSnake;
 import spel.Snake;
 import spel.Tetris;
 
@@ -166,6 +167,7 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 		menu(arkivMeny, "Kurve", e -> new spel.Kurve());
 		menu(arkivMeny, "GoJbs Fondkoll", e -> new FondKoll());
 		menu(arkivMeny, "Tetris", e -> new Tetris());
+		menu(arkivMeny, "Kurv-Snake", e-> new KurvSnake());
 		arkivMeny.addSeparator();
 		menu(arkivMeny, "Logga ut", e -> {
 			Login.logout();

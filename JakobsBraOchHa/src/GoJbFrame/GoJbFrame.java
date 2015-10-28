@@ -1,5 +1,5 @@
 package GoJbFrame;
-import java.awt.event.*;
+import static gojb.GoJbsBraOchHa.autoListener;
 
 import javax.swing.*;
 
@@ -19,9 +19,7 @@ import javax.swing.*;
  * @version 1.0
  */
 
-public class GoJbFrame extends JFrame implements WindowListener{
-
-	static Timer timer = new Timer(1000*60*2, e -> { /*System.exit(3)*/});
+public class GoJbFrame extends JFrame{
 
 	private static final long serialVersionUID = 168746L;
 
@@ -43,48 +41,12 @@ public class GoJbFrame extends JFrame implements WindowListener{
 		setDefaultCloseOperation(close);
 		setVisible(visible);
 		setTitle(title);
-		addWindowListener(this);
+		addWindowListener(autoListener);
 		try {
 			setIconImage(new ImageIcon(getClass().getResource("/images/Java-icon.png")).getImage());
 		} catch (Exception e) {
 			System.err.println("Ikon saknas");
 		}
-	}
-	@Override
-	public void windowActivated(WindowEvent e) {
-		timer.stop();
-
-	}
-	@Override
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-	@Override
-	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
-	}
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-
-		timer.start();
-
-	}
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		timer.stop();
-	}
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		timer.start();
-
-	}
-	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-		timer.stop();
 	}
 }
 class Standard{
