@@ -11,7 +11,6 @@ import javax.crypto.*;
 import javax.crypto.spec.*;
 import javax.sound.sampled.*;
 import javax.swing.*;
-import javax.swing.Timer;
 import GoJbFrame.GoJbFrame;
 
 import com.sun.mail.util.*;
@@ -42,6 +41,7 @@ public class GoJbsBraOchHa{
 	public static Properties prop = new Properties();
 	public static final Image 	fönsterIcon = Bild("/images/Java-icon.png").getImage();
 	public static final Dimension SKÄRM_SIZE = new Dimension(getDefaultToolkit().getScreenSize());
+	
 	public static void main(String... arg) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -116,7 +116,29 @@ public class GoJbsBraOchHa{
 		} catch (Exception e) {
 			argString ="";
 		}
-		new Login();
+		
+//		new Login();
+		
+		JFrame användare= new JFrame();
+		JButton användareJakob = new JButton("Jakob"), användareGlenn= new JButton("Glenn");
+		användare.add(användareJakob);
+		användare.add(användareGlenn);
+		användare.setIconImage(fönsterIcon);
+		användare.setLayout(new FlowLayout());
+		användare.setDefaultCloseOperation(3);
+		användare.setResizable(false);
+		användare.pack();
+		användare.setLocationRelativeTo(null);
+		användare.setVisible(true);
+		användare.toFront();
+		användareGlenn.addActionListener(e -> {
+			new RörandeMojäng();
+			användare.dispose();
+		});
+		användareJakob.addActionListener(e -> {
+			new Jakobs();
+			användare.dispose();
+		});
 	}
 	public static void spelaLjud(String filnamn){
 		try {
@@ -188,12 +210,10 @@ public class GoJbsBraOchHa{
 		}
 	};
 }
-class Login implements ActionListener{
+class Login{
 	private int x;
-	private Timer timer = new Timer(30, this);	
 	private JPasswordField passwordField = new JPasswordField(10);
-	private JFrame användare= new JFrame(),frame = new JFrame("Verifiera dig!");
-	private JButton användareJakob = new JButton("Jakob"), användareGlenn= new JButton("Glenn");
+	private JFrame frame = new JFrame("Verifiera dig!");
 	private char[] correctPassword = {'U','g','g','e','n','0','6','8','4'};
 	private Cipher cipher;
 	private String key = String.valueOf(correctPassword);
@@ -218,24 +238,6 @@ class Login implements ActionListener{
 			e.printStackTrace();
 			System.err.println("Logga in!");
 		}
-		passwordField.addActionListener(this);
-
-		användare.add(användareJakob);
-		användare.add(användareGlenn);
-		användare.setIconImage(fönsterIcon);
-		användare.setLayout(new FlowLayout());
-		användare.setDefaultCloseOperation(3);
-		användare.setResizable(false);
-		användare.pack();
-		användare.setLocationRelativeTo(null);
-		användareGlenn.addActionListener(e -> {
-			new RörandeMojäng();
-			användare.dispose();
-		});
-		användareJakob.addActionListener(e -> {
-			new Jakobs();
-			användare.dispose();
-		});
 
 		frame.setUndecorated(true);
 		frame.setLayout(new GridLayout(0, 2));
@@ -247,20 +249,10 @@ class Login implements ActionListener{
 		frame.setLocationRelativeTo(null);	
 		frame.setVisible(true);
 		frame.toFront();
-		timer.start();
-	}
-	public static void logout() {
-		prop.setProperty("pass", "0000000000000000");
-		sparaProp("loguot");
-	}
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (timer == e.getSource()) {
+		while (true) {
+			vänta(50);
 			if (Arrays.equals(passwordField.getPassword(),correctPassword)) {
 				frame.dispose();
-				timer.stop();
-				användare.setVisible(true);
-				användare.toFront();
 				if (b) {
 					spelaLjud("/images/Inloggad.wav");
 				}
@@ -279,11 +271,14 @@ class Login implements ActionListener{
 					System.out.println("Lösenord från urklipp");
 				}
 			} catch (Exception e1){}
-			if(x++ == 600){
-				timer.stop();
+			if(x++ == 200){
 				new Impossible("Tiden gick ut!! Datorn spärrad...");
 			}
 		}
+	}
+	public static void logout() {
+		prop.setProperty("pass", "0000000000000000");
+		sparaProp("loguot");
 	}
 }
 class Update implements Runnable{
