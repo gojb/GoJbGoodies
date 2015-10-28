@@ -164,7 +164,7 @@ public class KurvSnake {
 			pixels.remove(0);
 		}
 		for (int i = 0; i < pixels.size()-10; i++) {
-			if (pixels.get(pixels.size()-1).touch(pixels.get(i))) {
+			if (pixels.get(pixels.size()-1).nuddar(pixels.get(i))) {
 				System.err.println("Game Over");
 				timer.stop();
 				Scanner scanner = new Scanner(highscore.get(4));
@@ -193,7 +193,7 @@ public class KurvSnake {
 				break;
 			}
 		}
-		if (pixels.get(pixels.size()-1).touch(plupp)) {
+		if (pixels.get(pixels.size()-1).nuddar(plupp)) {
 			längd++;
 			plupp();
 		}
@@ -213,7 +213,7 @@ public class KurvSnake {
 	void plupp(){
 		plupp=new Pixel(random.nextInt((frame.getWidth()-5*20)+40), random.nextInt((frame.getHeight()-5*20)+40), 20);
 		for (Pixel pixel : pixels) {
-			if (plupp.touch(pixel)) {
+			if (plupp.nuddar(pixel)) {
 				plupp();
 			}
 		}
@@ -268,9 +268,9 @@ public class KurvSnake {
 			this.diameter=diameter;
 		}
 		void draw(Graphics2D g){
-			g.fillOval((int)Math.round(x), (int)Math.round(y), diameter,diameter);
+			g.fillOval((int)Math.round(x)-diameter/2, (int)Math.round(y)-diameter/2, diameter,diameter);
 		}
-		boolean touch(Pixel pixel){
+		boolean nuddar(Pixel pixel){
 			
 			return Math.sqrt(Math.pow(x-pixel.x,2)+Math.pow(y-pixel.y,2))<=diameter/2+pixel.diameter/2;
 		}
