@@ -1,219 +1,281 @@
 package gojb;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-
 import javax.swing.*;
-
 import GoJbFrame.GoJbFrame;
 
 public class Röj {
 
-	GoJbFrame frame = new GoJbFrame("Röj");
+	GoJbFrame frame = new GoJbFrame("Röj"), customFrame = new GoJbFrame(false);
 	JButton[] button = new JButton[16*16];
 	JMenu menu = new JMenu("Hey");
 	JMenuBar mBar = new JMenuBar();
-	JMenuItem res = new JMenuItem("Restart"), validate = new JMenuItem("Validate field");
-	int[] a = new int[(16*16)];
-	int[] a1= new int [16*16];
-	int[] a2= new int[40];
-	int[] revInt= new int[16*16];	
-	int[] redButton = new int[16*16];
+	JMenuItem res = new JMenuItem("Restart"), validate = new JMenuItem("Validate field"), customItem = new JMenuItem("Custom Game");
+	int[] a,a1,a2,revInt,redButton;
 	double b,b1,x1,x,y1;
+	boolean customBoolean = false;
 	int c, d, e, i, y, z, q, runOnce, nrRed, bomb;
+	
+	JRadioButton easy = new JRadioButton("Easy"), medium = new JRadioButton("Medium"), hard = new JRadioButton("Hard"), custom = new JRadioButton("Custom");
+	ButtonGroup gameOptions = new ButtonGroup();
+	JTextField width = new JTextField(), height = new JTextField(), mines = new JTextField();
+	Container pane = customFrame.getContentPane();
+	JPanel panel = new JPanel();
+	
+	
 	public static void main(String[] args) {
 		new Röj();
 	}
 
 	public Röj() {
-		frame.setLayout(new GridLayout(16,16));
-		frame.setSize(700, 700);
-		frame.setLocationRelativeTo(null);
-		frame.setJMenuBar(mBar);
-		mBar.add(res);
-		res.addActionListener(e ->{
-			new Röj();
-			frame.dispose();
-		});
+		
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+            	createGame();
+            }
+        });
+		
+	}
 
-		validate.addActionListener(e -> {
-			mBar.remove(validate);
-			for(int i = 0; i <button.length;i++){
-				if(button[i].getBackground()==Color.red){
-					button[i].setBackground(new Color(200,20,20,100));
-				}
-				else if(revInt[i]!=10){
-					button[i].setBackground(new Color(200,200,200));
-				}
-				else if(revInt[i]==10){
-					button[i].setBackground(new Color(230,230,230));
-				}
-				button[i].setText(a[i]+"");
-				if(a[i]==0){
-					button[i].setText(null);
-				}
-				if(a[i]==1){
-					button[i].setForeground(new Color(255, 0, 0));
-				}
-				if(a[i]==2){
-					button[i].setForeground(new Color(255, 0, 150));
-				}
-				if(a[i]==3){
-					button[i].setForeground(new Color(255, 150, 0));
-				}
-				if(a[i]==4){
-					button[i].setForeground(new Color(0, 100, 255));
-				}
-				if(a[i]==5){
-					button[i].setForeground(new Color(0, 150, 90));
-				}
-				if(a[i]==6){
-					button[i].setForeground(new Color(150, 0, 255));
-				}
-				if(a[i]==7){
-					button[i].setForeground(new Color(120, 50, 100));
-				}
-				if(a[i]==8){
-					button[i].setForeground(new Color(255, 255, 255));
-				}
-				if(a[i]>50){
-					button[i].setText("B");
-				}
-			}
-			button[bomb].setBackground(new Color(50, 50, 50));
-		});
-		for (int i = 0; i < button.length; i++) {
-			redButton[i]=50;
-			button[i]=new JButton();
-			button[i].setSize(8,8);
-			button[i].setBackground(new Color(166, 166, 166));
-			button[i].setFocusPainted(false);
-			button[i].addMouseListener(new MouseListener() {
-
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// FIXME Auto-generated method stub
-
-				}
-
-				@Override
-				public void mousePressed(MouseEvent e) {
-					// FIXME Auto-generated method stub
-					if(SwingUtilities.isRightMouseButton(e)){
-
-						if(runOnce==10){
-							if(redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]==-50){
-								redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]*=-1;
-								button[Arrays.asList(button).indexOf((JButton)e.getSource())].setBackground(new Color(166, 166, 166));
-							}
-							else if(redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]==50){
-								redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]*=-1;
+	public void customGame(){
+//		if(customBoolean==true){
+			customFrame.setVisible(true);
+//		}
+			
+//		createGame();
+	}
 
 
-
-								System.err.println(("RIGHT"));
-								button[Arrays.asList(button).indexOf((JButton)e.getSource())].setBackground(Color.red);
-								for(int i = 0;i<button.length;i++){
-									if(button[i].getBackground()== Color.red){
-										nrRed++;
-										if(nrRed<=41){
-											a2[nrRed--]=i;
-										}
-									}
-								}
-								if(nrRed==41){
-									nrRed=0;
-									for(int i = 0; i < 41;i++){	
-										if(a[a2[i]]==100){
-											nrRed++;
-										}
-									}
-									if(nrRed==40){
-										Win();
-									}
-								}
-							}
-						}
-					}
-					else if(button[Arrays.asList(button).indexOf((JButton)e.getSource())].getBackground() != Color.red){
-
-						if(runOnce!=10){
-							runOnce=10;
-							for (int i = 0; i <= 40; i++) {
-								int x = new Random().nextInt(16*16);
-								if(a[x]!=100&&x!=Arrays.asList(button).indexOf((JButton)e.getSource())&&(x-17!=Arrays.asList(button).indexOf((JButton)e.getSource())
-										&&x-16!=Arrays.asList(button).indexOf((JButton)e.getSource())&&x-15!=Arrays.asList(button).indexOf((JButton)e.getSource())
-										&&x-1!=Arrays.asList(button).indexOf((JButton)e.getSource())&&x+1!=Arrays.asList(button).indexOf((JButton)e.getSource())
-										&&x+15!=Arrays.asList(button).indexOf((JButton)e.getSource())&&x+16!=Arrays.asList(button).indexOf((JButton)e.getSource())
-										&&x+17!=Arrays.asList(button).indexOf((JButton)e.getSource()))){
-									a[x]=100;
-								}
-								else{
-									i--;
-								}
-							}
-							for (int i=0;i<a.length;i++) {
-								if(a[i]>50){
-									//Om bomb
-									b=(i+16)/16;
-									y = (int)b; //y = radnummer, alltså 1 - 16
-									x = i+1-(((int)i/16)*16); //x = kolumnnummer, alltså 0 - 15
-									if(y > 1){
-										a[i-16]+=1;
-										if(x>1){
-											a[i-17]+=1;
-										}
-										if(x<16){
-											a[i-15]+=1;
-										}
-									}
-									if(y < 16){
-										a[i+16]+=1;
-										if(x>1){
-											a[i+15]+=1;
-										}
-										if(x<16){
-											a[i+17]+=1;
-										}
-									}
-									if(x>1){
-										a[i-1]+=1;
-									}
-									if(x<16){
-										a[i+1]+=1;
-									}
-
-								}
-							}
-						}
-						click(Arrays.asList(button).indexOf((JButton)e.getSource()));
-
-					}
-
-				}
-
-				@Override
-				public void mouseExited(MouseEvent e) {
-					// FIXME Auto-generated method stub
-
-				}
-
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					// FIXME Auto-generated method stub
-
-				}
-
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// FIXME Auto-generated method stub
-
-				}
-			});
-			frame.add(button[i]);
-		}
-		frame.revalidate();
+	private void createGame() {
+		
+		customGame();
+		
+		gameOptions.add(easy);
+		gameOptions.add(medium);
+		gameOptions.add(hard);
+		gameOptions.add(custom);
+		
+		pane.setLayout(new SpringLayout());
+		
+		panel.setSize(300, 300);
+		
+		pane.add(easy);
+		pane.add(medium);
+		pane.add(hard);
+		pane.add(custom);
+		pane.add(panel);
+		panel.add(height);
+		panel.add(width);
+		panel.add(mines);
+		
+		 SpringUtilities.makeCompactGrid(pane, 5, 1, 5, 7, 10, 6);
+		
+		
+//		a = new int[(16*16)];
+//		a1= new int [16*16];
+//		a1= new int[40];
+//		revInt= new int[16*16];
+//		redButton = new int[16*16];
+//		
+//		frame.setVisible(true);
+		frame.setVisible(false);
+//		frame.setLayout(new GridLayout(16,16));
+//		frame.setSize(700, 700);
+//		frame.setLocationRelativeTo(null);
+//		frame.setJMenuBar(mBar);
+//		mBar.add(res);
+//		mBar.add(customItem);
+//		System.err.println("oiöj");
+//		customItem.addActionListener(e -> {
+//			
+//			System.err.println("AASDDSADSA");
+//			customBoolean=true;
+//			frame.dispose();
+//			customGame();
+//			
+//		});
+//		res.addActionListener(e ->{
+//			new Röj();
+//			frame.dispose();
+//		});
+//
+//		validate.addActionListener(e -> {
+//			mBar.remove(validate);
+//			for(int i = 0; i <button.length;i++){
+//				if(button[i].getBackground()==Color.red){
+//					button[i].setBackground(new Color(200,20,20,100));
+//				}
+//				else if(revInt[i]!=10){
+//					button[i].setBackground(new Color(200,200,200));
+//				}
+//				else if(revInt[i]==10){
+//					button[i].setBackground(new Color(230,230,230));
+//				}
+//				button[i].setText(a[i]+"");
+//				if(a[i]==0){
+//					button[i].setText(null);
+//				}
+//				if(a[i]==1){
+//					button[i].setForeground(new Color(255, 0, 0));
+//				}
+//				if(a[i]==2){
+//					button[i].setForeground(new Color(255, 0, 150));
+//				}
+//				if(a[i]==3){
+//					button[i].setForeground(new Color(255, 150, 0));
+//				}
+//				if(a[i]==4){
+//					button[i].setForeground(new Color(0, 100, 255));
+//				}
+//				if(a[i]==5){
+//					button[i].setForeground(new Color(0, 150, 90));
+//				}
+//				if(a[i]==6){
+//					button[i].setForeground(new Color(150, 0, 255));
+//				}
+//				if(a[i]==7){
+//					button[i].setForeground(new Color(120, 50, 100));
+//				}
+//				if(a[i]==8){
+//					button[i].setForeground(new Color(255, 255, 255));
+//				}
+//				if(a[i]>50){
+//					button[i].setText("B");
+//				}
+//			}
+//			button[bomb].setBackground(new Color(50, 50, 50));
+//		});
+//		for (int i = 0; i < button.length; i++) {
+//			redButton[i]=50;
+//			button[i]=new JButton();
+//			button[i].setSize(8,8);
+//			button[i].setBackground(new Color(166, 166, 166));
+//			button[i].setFocusPainted(false);
+//			button[i].addMouseListener(new MouseListener() {
+//
+//				@Override
+//				public void mouseReleased(MouseEvent e) {
+//					// FIXME Auto-generated method stub
+//
+//				}
+//
+//				@Override
+//				public void mousePressed(MouseEvent e) {
+//					// FIXME Auto-generated method stub
+//					if(SwingUtilities.isRightMouseButton(e)){
+//
+//						if(runOnce==10&&a1[Arrays.asList(button).indexOf((JButton)e.getSource())]!=10){
+//							if(redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]==-50){
+//								redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]*=-1;
+//								button[Arrays.asList(button).indexOf((JButton)e.getSource())].setBackground(new Color(166, 166, 166));
+//							}
+//							else if(redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]==50){
+//								redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]*=-1;
+//
+//
+//
+//								System.err.println(("RIGHT"));
+//								button[Arrays.asList(button).indexOf((JButton)e.getSource())].setBackground(Color.red);
+//								for(int i = 0;i<button.length;i++){
+//									if(button[i].getBackground()== Color.red){
+//										nrRed++;
+//										if(nrRed<=41){
+//											a2[nrRed--]=i;
+//										}
+//									}
+//								}
+//								if(nrRed==41){
+//									nrRed=0;
+//									for(int i = 0; i < 41;i++){	
+//										if(a[a2[i]]==100){
+//											nrRed++;
+//										}
+//									}
+//									if(nrRed==40){
+//										Win();
+//									}
+//								}
+//							}
+//						}
+//					}
+//					else if(button[Arrays.asList(button).indexOf((JButton)e.getSource())].getBackground() != Color.red){
+//
+//						if(runOnce!=10){
+//							runOnce=10;
+//							for (int i = 0; i <= 40; i++) {
+//								int x = new Random().nextInt(16*16);
+//								if(a[x]!=100&&x!=Arrays.asList(button).indexOf((JButton)e.getSource())&&(x-17!=Arrays.asList(button).indexOf((JButton)e.getSource())
+//										&&x-16!=Arrays.asList(button).indexOf((JButton)e.getSource())&&x-15!=Arrays.asList(button).indexOf((JButton)e.getSource())
+//										&&x-1!=Arrays.asList(button).indexOf((JButton)e.getSource())&&x+1!=Arrays.asList(button).indexOf((JButton)e.getSource())
+//										&&x+15!=Arrays.asList(button).indexOf((JButton)e.getSource())&&x+16!=Arrays.asList(button).indexOf((JButton)e.getSource())
+//										&&x+17!=Arrays.asList(button).indexOf((JButton)e.getSource()))){
+//									a[x]=100;
+//								}
+//								else{
+//									i--;
+//								}
+//							}
+//							for (int i=0;i<a.length;i++) {
+//								if(a[i]>50){
+//									//Om bomb
+//									b=(i+16)/16;
+//									y = (int)b; //y = radnummer, alltså 1 - 16
+//									x = i+1-(((int)i/16)*16); //x = kolumnnummer, alltså 0 - 15
+//									if(y > 1){
+//										a[i-16]+=1;
+//										if(x>1){
+//											a[i-17]+=1;
+//										}
+//										if(x<16){
+//											a[i-15]+=1;
+//										}
+//									}
+//									if(y < 16){
+//										a[i+16]+=1;
+//										if(x>1){
+//											a[i+15]+=1;
+//										}
+//										if(x<16){
+//											a[i+17]+=1;
+//										}
+//									}
+//									if(x>1){
+//										a[i-1]+=1;
+//									}
+//									if(x<16){
+//										a[i+1]+=1;
+//									}
+//
+//								}
+//							}
+//						}
+//						click(Arrays.asList(button).indexOf((JButton)e.getSource()));
+//
+//					}
+//
+//				}
+//
+//				@Override
+//				public void mouseExited(MouseEvent e) {
+//					// FIXME Auto-generated method stub
+//
+//				}
+//
+//				@Override
+//				public void mouseEntered(MouseEvent e) {
+//					// FIXME Auto-generated method stub
+//
+//				}
+//
+//				@Override
+//				public void mouseClicked(MouseEvent e) {
+//					// FIXME Auto-generated method stub
+//
+//				}
+//			});
+//			frame.add(button[i]);
+//		}
+//		frame.revalidate();
 
 	}
 
@@ -259,7 +321,7 @@ public class Röj {
 		}
 	}
 	public void Win() {
-		
+
 		for(int i1 = 0; i1 < button.length;i1++){
 			button[i1].setBackground(Color.white);
 			if(a1[i1]==10){
@@ -267,7 +329,7 @@ public class Röj {
 			}
 			a1[i1]=10;
 		}
-		
+
 		//Skriver Smiley
 		//Rad 4
 		button[63+6].setBackground(Color.black);
@@ -300,8 +362,8 @@ public class Röj {
 		button[159+9].setBackground(Color.black);
 		button[159+10].setBackground(Color.black);
 		button[159+11].setBackground(Color.black);
-		
-		
+
+
 	}
 	public void GameOver(int i){
 
@@ -458,7 +520,6 @@ public class Röj {
 				//				if(((x==1&&(q!=-17&&q!=15&&q!=-1))||(x==16&&(q!=-15&&q!=17&&q!=1)))||(x>1&&x<16)){
 				//				System.err.println(x1+" == x1");
 				//				System.out.println(y1);
-				System.out.println("X = "+x +"  x1= "+x1+"  x-x1= "+(int)(x-x1) + "  True? = "+((x-x1<7)&&(x-x1>-7)));
 
 				if(((x-x1<7)&&(x-x1>-7))) {
 					System.out.println(q);

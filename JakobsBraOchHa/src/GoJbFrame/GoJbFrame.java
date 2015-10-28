@@ -33,6 +33,10 @@ public class GoJbFrame extends JFrame implements WindowListener{
 		
 		this(title,true,3);
 	}
+	public GoJbFrame(Boolean visible){
+		
+		this("",visible,3);
+	}
 	public GoJbFrame(String title,Boolean visible, int close){
 		setSize(500, 500);
 		setLocationRelativeTo(null);

@@ -17,6 +17,8 @@ import java.util.Random;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.MouseInputListener;
 
 import GoJbFrame.GoJbFrame;
@@ -903,7 +905,7 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 			try {
 				Runtime.getRuntime().exec("taskkill /f /im Taskmgr.exe");
 			} catch (IOException e) {
-			System.err.println("Nooooo");
+				System.err.println("Nooooo");
 			}
 		}
 	}
@@ -994,11 +996,7 @@ class SkapaFärg extends JPanel implements ActionListener{
 			green = new JLabel("Green"),
 			blue = new JLabel("Blue");
 
-	JSlider r,
-	g,
-	b;
-
-	Timer timer = new Timer(1, this);
+	JSlider r,g,b;
 
 	Color y;
 
@@ -1018,16 +1016,52 @@ class SkapaFärg extends JPanel implements ActionListener{
 		r.setPaintLabels(true);
 		r.setMajorTickSpacing(40);
 		r.setMinorTickSpacing(5);
+		r.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				// FIXME Auto-generated method stub
+				paneliPanel.setBackground(new Color(r.getValue(),g.getValue(), b.getValue()));
+				String hexColour = Integer.toHexString(paneliPanel.getBackground().getRGB() & 0xffffff);
+				hexColour = "000000".substring(0, 6 - hexColour.length()) + hexColour;
+				System.out.println("#" + hexColour);
+				System.out.println(r.getValue()+","+g.getValue()+","+b.getValue());
+			}
+		});
 
 		g.setPaintTicks(true);
 		g.setPaintLabels(true);
 		g.setMajorTickSpacing(40);
 		g.setMinorTickSpacing(5);
+		g.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				// FIXME Auto-generated method stub
+				paneliPanel.setBackground(new Color(r.getValue(),g.getValue(), b.getValue()));
+				String hexColour = Integer.toHexString(paneliPanel.getBackground().getRGB() & 0xffffff);
+				hexColour = "000000".substring(0, 6 - hexColour.length()) + hexColour;
+//				System.out.println("#" + hexColour);
+				System.out.println(r.getValue()+","+g.getValue()+","+b.getValue());
+			}
+		});
 
 		b.setPaintTicks(true);
 		b.setPaintLabels(true);
 		b.setMajorTickSpacing(40);
 		b.setMinorTickSpacing(5);
+		b.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				// FIXME Auto-generated method stub
+				paneliPanel.setBackground(new Color(r.getValue(),g.getValue(), b.getValue()));
+				String hexColour = Integer.toHexString(paneliPanel.getBackground().getRGB() & 0xffffff);
+				hexColour = "000000".substring(0, 6 - hexColour.length()) + hexColour;
+				System.out.println("#" + hexColour);
+				System.out.println(r.getValue()+","+g.getValue()+","+b.getValue());
+			}
+		});
 
 		setForeground(BLUE);
 
@@ -1070,19 +1104,13 @@ class SkapaFärg extends JPanel implements ActionListener{
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 
-		timer.start();
-
 	}
 
 	public void actionPerformed(ActionEvent e) {
 
-		if (timer == e.getSource()){
-			paneliPanel.setBackground(new Color(r.getValue(),g.getValue(), b.getValue()));
-			String hexColour = Integer.toHexString(paneliPanel.getBackground().getRGB() & 0xffffff);
-			hexColour = "000000".substring(0, 6 - hexColour.length()) + hexColour;
-			System.out.println("#" + hexColour);
-			System.out.println(Color.decode("#" + hexColour));
-		}	
+
+
+
 	}
 }
 
