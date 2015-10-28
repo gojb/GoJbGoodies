@@ -18,6 +18,8 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import GoJbFrame.GoJbFrame;
+import spel.Snake;
+
 import static gojb.GoJbsBraOchHa.*;
 import static javax.swing.SwingConstants.*;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
@@ -154,13 +156,13 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 		menu(arkivMeny, "Öppna RörandeMojäng", Bild("/images/Nopeliten.png"), e -> {new RörandeMojäng();huvudfönster.dispose();});;
 		menu(arkivMeny, "Öppna Studsande Objekt", e -> new Studsa());
 		menu(arkivMeny, "Öppna Miniräknare", e -> new Räknare());
-		menu(arkivMeny, "Spela Pong", e -> new Pongspel());
+		menu(arkivMeny, "Spela Pong", e -> new spel.Pongspel());
 		menu(arkivMeny, "Spela Snake", e -> new Snake());
 		menu(arkivMeny, "Simulator till riksdagsmandat", e -> new Mandat());
 		menu(arkivMeny, "Träna på glosor", e -> new Glosor());
-		menu(arkivMeny, "Spela FlappyGojb",  e -> new FlappyGoJb());
+		menu(arkivMeny, "Spela FlappyGojb",  e -> new spel.FlappyGoJb());
 		menu(arkivMeny, "3d", e -> new OpenGLTest());
-		menu(arkivMeny, "Kurve", e -> new Kurve());
+		menu(arkivMeny, "Kurve", e -> new spel.Kurve());
 		menu(arkivMeny, "GoJbs Fondkoll", e -> new FondKoll());
 		menu(arkivMeny, "Tetris", e -> new Tetris());
 		arkivMeny.addSeparator();
@@ -408,7 +410,7 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 
 	public void keyPressed(KeyEvent arg0) {
 		skrivHändelsetext("Du tryckte på: " + KeyEvent.getKeyText(arg0.getKeyCode()));
-		if(KeyEvent.getKeyText(arg0.getKeyCode()) == "Esc"){
+		if(arg0.getKeyCode()==KeyEvent.VK_ESCAPE){
 			System.exit(0);
 		}
 		else if(arg0.getKeyCode()==KeyEvent.VK_LEFT){

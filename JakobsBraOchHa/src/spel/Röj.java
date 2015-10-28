@@ -1,4 +1,4 @@
-package gojb;
+package spel;
 
 import java.awt.*;
 import java.awt.event.*;
