@@ -1,4 +1,4 @@
-package gojb;
+package spel;
 
 import java.awt.Color;
 import java.awt.Graphics;

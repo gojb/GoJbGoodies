@@ -22,6 +22,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.MouseInputListener;
 
 import GoJbFrame.GoJbFrame;
+import spel.Snake;
 
 @SuppressWarnings("serial")
 class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListener, KeyListener, ActionListener{
@@ -135,13 +136,13 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		morse.addActionListener(this);
 		Random.addActionListener(this);
 		klocka.addActionListener(this);
-		Snake.addActionListener(e -> {new Snake();frame.dispose();});
+		Snake.addActionListener(e -> {new spel.Snake();frame.dispose();});
 		binära.addActionListener(e -> {new ToBinary();frame.setVisible(false);});
 		draOchSläpp.addActionListener(e -> {new DraOchSläpp();frame.dispose();});		
 		sök.addActionListener(e -> {new Sök();frame.dispose();});
 		reggplåtar.addActionListener(e -> {new ReggPlåtar();frame.dispose();});
 		Pac.addActionListener(e -> {new Pac();frame.dispose();});
-		memo.addActionListener(e -> {new Memory();frame.dispose();});
+		memo.addActionListener(e -> {new spel.Memory();frame.dispose();});
 
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 		frame.setBackground(gray);
@@ -356,7 +357,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		}
 
 		else if (arg0.getSource() == Maze){
-			new Maze();
+			new spel.Maze();
 			frame.dispose();
 		}
 
@@ -379,7 +380,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		}
 
 		else if (arg0.getSource() == Pong){
-			new Pong();
+			new spel.Pong();
 			frame.dispose();
 
 		}
@@ -392,7 +393,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		}
 
 		else if (arg0.getSource() == ticTacToe){
-			new TicTacToe();
+			new spel.TicTacToe();
 			frame.dispose();
 		}
 
