@@ -4,12 +4,10 @@ import static gojb.GoJbsBraOchHa.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 import javax.swing.*;
+import javax.swing.Timer;
 
 import GoJbFrame.GoJbFrame;
 
@@ -74,12 +72,15 @@ public class Tetris {
 			else if (e.getKeyCode()==KeyEvent.VK_LEFT) {
 				vänster();
 			}
-			else if (e.getKeyCode()==KeyEvent.VK_DOWN) {
+			else if (e.getKeyCode()==KeyEvent.VK_SPACE) {
 				snabb=true;
 				for (int i = 0; i < fönsterhöjd; i++) {
 					uppdatera();
 				}
 				snabb=false;
+			}
+			else if (e.getKeyCode()==KeyEvent.VK_DOWN) {
+				uppdatera();
 			}
 			else if (e.getKeyCode()==KeyEvent.VK_UP) {
 				ArrayList<Block> old = new ArrayList<>();
