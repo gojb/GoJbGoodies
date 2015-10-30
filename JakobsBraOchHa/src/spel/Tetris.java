@@ -4,8 +4,10 @@ import static gojb.GoJbsBraOchHa.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.util.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.Timer;
 
@@ -15,11 +17,13 @@ import gojb.GoJbsBraOchHa;
 public class Tetris {
 	private GoJbFrame frame = new GoJbFrame("Tetris",false,JFrame.DISPOSE_ON_CLOSE), 
 			highFrame=new GoJbFrame("Tetris Highscore",false,JFrame.EXIT_ON_CLOSE);
-	private int size=20,fönsterbredd=12,fönsterhöjd=20,poäng;
+	private int size=40,fönsterbredd=12,fönsterhöjd=15,poäng;
 	private Timer timer = new Timer(500, e-> uppdatera());
 	private boolean snabb;
+	boolean parti;
 	private ArrayList<Block> aktuella = new ArrayList<>(), fasta = new ArrayList<>(),nästa= new ArrayList<>();
 	private ArrayList<String> highscore=new ArrayList<>();
+	private Image v,s,mp,fp,c,m,kd;
 	private JPanel scorepanel = new JPanel(){
 		private static final long serialVersionUID = 1L;
 
@@ -44,10 +48,16 @@ public class Tetris {
 			g2.setColor(Color.cyan);
 			g2.drawString("Nästa:", 10, pos+150);
 			for (Block block : nästa) {
-				g.setColor(block.c);
-				g.fillRect(block.x*size-50,block.y*size+360, size, size);
+				if (parti) {
+					g.drawImage(block.image, block.x*size-140,block.y*size+400, size, size, null);
+				}
+				else {
+					g.setColor(block.c);
+				g.fillRect(block.x*size-140,block.y*size+400, size, size);
+				}
+				
 				g.setColor(Color.black);
-				g.drawRect(block.x*size-50, block.y*size+360, size, size);
+				g.drawRect(block.x*size-140, block.y*size+400, size, size);
 			}
 		}
 	};
@@ -254,6 +264,23 @@ public class Tetris {
 		sparaProp("Highscore i Tetris");
 	}
 	public Tetris() {
+
+		if(JOptionPane.showOptionDialog(frame, "Vill du spela med patrtisymboler?", "Tetris", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, aktuella)==JOptionPane.YES_OPTION){
+			parti=true;
+			try {
+				v=ImageIO.read(new File(getClass().getResource("/images/Partier/Vänsterpartiet.png").toURI()));
+				s = ImageIO.read(new File(getClass().getResource("/images/Partier/Socialdemokraterna.png").toURI()));
+				mp=ImageIO.read(new File(getClass().getResource("/images/Partier/Miljöpartiet.png").toURI()));
+				c=ImageIO.read(new File(getClass().getResource("/images/Partier/Centerpartiet.png").toURI()));
+				fp=ImageIO.read(new File(getClass().getResource("/images/Partier/Folkpartiet.png").toURI()));
+				kd=ImageIO.read(new File(getClass().getResource("/images/Partier/Kristdemokraterna.png").toURI()));
+				m=ImageIO.read(new File(getClass().getResource("/images/Partier/Moderaterna.png").toURI()));
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+
+
 		frame.addWindowListener(autoListener);
 		frame.setResizable(false);
 		frame.add(label);
@@ -276,27 +303,27 @@ public class Tetris {
 			public void componentHidden(ComponentEvent e) {}
 		});
 		frame.addWindowListener(new WindowListener() {
-			
+
 			@Override
 			public void windowOpened(WindowEvent e) {}
-			
+
 			@Override
 			public void windowIconified(WindowEvent e) {}
-			
+
 			@Override
 			public void windowDeiconified(WindowEvent e) {}
-			
+
 			@Override
 			public void windowDeactivated(WindowEvent e) {}
-			
+
 			@Override
 			public void windowClosing(WindowEvent e) {
 				highFrame.dispose();
 			}
-			
+
 			@Override
 			public void windowClosed(WindowEvent e) {}
-			
+
 			@Override
 			public void windowActivated(WindowEvent e) {}
 		});
@@ -325,46 +352,46 @@ public class Tetris {
 		int i =	new Random().nextInt(7);
 
 		if (i==0) {
-			nästa.add(new Block(0, 0, Color.red));
-			nästa.add(new Block(-2, 0, Color.red));
-			nästa.add(new Block(-1, 0, Color.red));
-			nästa.add(new Block(1, 0, Color.red));
+			nästa.add(new Block(0, 0, Color.red,s));
+			nästa.add(new Block(-2, 0, Color.red,s));
+			nästa.add(new Block(-1, 0, Color.red,s));
+			nästa.add(new Block(1, 0, Color.red,s));
 		}                          
 		else if (i==1) {           
-			nästa.add(new Block(0, 0, Color.green));
-			nästa.add(new Block(0, -1, Color.green));
-			nästa.add(new Block(0, 1, Color.green));
-			nästa.add(new Block(1, 1, Color.green));    
+			nästa.add(new Block(0, 0, Color.green,m));
+			nästa.add(new Block(0, -1, Color.green,m));
+			nästa.add(new Block(0, 1, Color.green,m));
+			nästa.add(new Block(1, 1, Color.green,m));    
 		}                         
 		else if (i==2) {          
-			nästa.add(new Block(0, 1, Color.magenta));
-			nästa.add(new Block(0, 0, Color.magenta));
-			nästa.add(new Block(0, 2, Color.magenta));
-			nästa.add(new Block(-1, 2, Color.magenta));
+			nästa.add(new Block(0, 1, Color.magenta,fp));
+			nästa.add(new Block(0, 0, Color.magenta,fp));
+			nästa.add(new Block(0, 2, Color.magenta,fp));
+			nästa.add(new Block(-1, 2, Color.magenta,fp));
 		}
 		else if (i==3) {
-			nästa.add(new Block(0, 0, Color.BLUE));
-			nästa.add(new Block(0, 1, Color.BLUE));
-			nästa.add(new Block(1, 0, Color.BLUE));
-			nästa.add(new Block(1, 1, Color.BLUE));
+			nästa.add(new Block(0, 0, Color.BLUE,v));
+			nästa.add(new Block(0, 1, Color.BLUE,v));
+			nästa.add(new Block(1, 0, Color.BLUE,v));
+			nästa.add(new Block(1, 1, Color.BLUE,v));
 		}                          
 		else if (i==4) {           
-			nästa.add(new Block(0, 1, Color.CYAN));
-			nästa.add(new Block(0, 0, Color.CYAN));
-			nästa.add(new Block(1, 1, Color.CYAN));
-			nästa.add(new Block(1, 2, Color.cyan));
+			nästa.add(new Block(0, 1, Color.CYAN,c));
+			nästa.add(new Block(0, 0, Color.CYAN,c));
+			nästa.add(new Block(1, 1, Color.CYAN,c));
+			nästa.add(new Block(1, 2, Color.cyan,c));
 		}                         
 		else if (i==5) {           
-			nästa.add(new Block(0, 0, Color.orange));
-			nästa.add(new Block(0, 1, Color.orange));
-			nästa.add(new Block(1, 0, Color.orange));
-			nästa.add(new Block(1, -1, Color.orange));
+			nästa.add(new Block(0, 0, Color.orange,mp));
+			nästa.add(new Block(0, 1, Color.orange,mp));
+			nästa.add(new Block(1, 0, Color.orange,mp));
+			nästa.add(new Block(1, -1, Color.orange,mp));
 		}
 		else if (i==6) {
-			nästa.add(new Block(0, 0, Color.YELLOW));
-			nästa.add(new Block(0, -1, Color.yellow));
-			nästa.add(new Block(0, 1, Color.yellow));
-			nästa.add(new Block(+1, 0, Color.yellow));
+			nästa.add(new Block(0, 0, Color.YELLOW,kd));
+			nästa.add(new Block(0, -1, Color.yellow,kd));
+			nästa.add(new Block(0, 1, Color.yellow,kd));
+			nästa.add(new Block(+1, 0, Color.yellow,kd));
 		}
 		if (aktuella.isEmpty()) {
 			blockskap();
@@ -374,6 +401,7 @@ public class Tetris {
 	class Block implements Cloneable{
 		Color c;
 		int x,y;
+		Image image;
 
 		@Override
 		protected Block clone() {
@@ -385,10 +413,11 @@ public class Tetris {
 			}
 
 		}
-		public Block(int x,int y, Color c) {
+		public Block(int x,int y, Color c,Image image) {
 			this.x=x+fönsterbredd/2;
 			this.y=y;
 			this.c=c;
+			this.image=image;
 		}
 		public void flyttaVänster() {
 			x-=1;
@@ -397,10 +426,22 @@ public class Tetris {
 			x+=1;
 		}
 		public void rita(Graphics2D g) {
-			g.setColor(c);
-			g.fillRect(this.x*size, this.y*size, size, size);
+			if (parti) {
+
+				g.drawImage(image, x*size, y*size,size,size, null);
+
+			}
+			else {
+				g.setColor(c);
+				g.fillRect(this.x*size, this.y*size, size, size);
+			}
+			
+
+			
 			g.setColor(Color.black);
 			g.drawRect(this.x*size, this.y*size, size, size);
+
+
 		}
 		public void flyttaNer() {
 			y+=1;
