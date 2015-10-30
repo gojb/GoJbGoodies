@@ -33,16 +33,25 @@ public class Röj implements ActionListener {
 	String gameType = new String();
 
 	public static void main(String[] args) {
+		System.err.println("adssddas");
 		new Röj();
+
 	}
 
 	public Röj() {
+		gameType="standard";
 		createGame();
 	}
 
 	public void customGame(){
 		//		if(customBoolean==true){
 		customFrame.setVisible(true);
+		
+			for(int i = 0; i < button.length;i++){
+			button[i]=new JButton("");
+				frame.remove(button[i]);
+				System.out.println("Yay");
+			}
 
 		//GUI customGame ###########################################################################
 		gameOptions.add(easy);
@@ -186,12 +195,18 @@ public class Röj implements ActionListener {
 		else if (gameType=="custom") {
 
 		}
-		else if (gameType=="") {
+		else if (gameType.toString()=="standard") {
 			gameType="standard";
+			widthInt=16;
+			heightInt=16;
+			minesInt=40;
+
+			
 		}else{
 			widthInt=16;
 			heightInt=16;
 			minesInt=40;
+			System.out.println("dfcgvh");
 		}
 
 		a = new int[widthInt*heightInt];
@@ -201,12 +216,18 @@ public class Röj implements ActionListener {
 		redButton = new int[widthInt*heightInt];
 		button = new JButton[widthInt*heightInt];
 		
+		System.out.println(widthInt + "  Width   ----   Height  "+heightInt);
+		
+		System.err.println(button.length);
+		
 		try {
 			for(int i = 0; i < button.length;i++){
-			frame.remove(button[8]);
+			button[i]=new JButton("");
+				frame.remove(button[i]);
 			}
 		} catch (Exception e) {
-			// FIXME: handle exception
+			System.err.println("sadassd");
+			System.out.println(e);
 		}
 		
 
@@ -218,15 +239,20 @@ public class Röj implements ActionListener {
 		mBar.add(res);
 		mBar.add(customItem);
 		customItem.addActionListener(e -> {
-
-			customBoolean=true;
 			frame.dispose();
 			customGame();
-
 		});
 		res.addActionListener(e ->{
-			new Röj();
 			frame.dispose();
+			a = new int[0];
+			a1= new int [0];
+			a2= new int[0];
+			revInt= new int[0];
+			redButton = new int[0];
+			button = new JButton[0];
+			new Röj();
+//			createGame();
+			
 		});
 
 		validate.addActionListener(e -> {
@@ -398,7 +424,11 @@ public class Röj implements ActionListener {
 
 				}
 			});
+			
+			frame.remove(button[i]);
+			
 			frame.add(button[i]);
+//			System.err.println(i);
 		}
 		frame.revalidate();
 
