@@ -13,6 +13,8 @@ public class RandomBild implements MouseInputListener{
 	Random r = new Random();
 	
 	JLabel label = new JLabel(){
+		private static final long serialVersionUID = 1L;
+
 		protected void paintComponent(java.awt.Graphics g) {
 			long intiger = System.currentTimeMillis();
 			for(int y = 0; y<1080;y++){
