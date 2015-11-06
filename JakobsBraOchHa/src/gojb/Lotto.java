@@ -1,8 +1,6 @@
 package gojb;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
+import java.util.*;
 
 public class Lotto {
 	int[] is = new int[7];
@@ -40,10 +38,8 @@ public class Lotto {
 			System.out.println(i +" rätt " + rätt[i] + " gånger.");
 		}
 	}
-
 	public static void main(String[] args) {
 		new Lotto();
-
 	}
 	public int rand(ArrayList<Integer> list) {
 		int i = random.nextInt(35)+1;
@@ -54,5 +50,4 @@ public class Lotto {
 		}
 		return i;
 	}
-
 }
