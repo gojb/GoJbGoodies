@@ -22,7 +22,7 @@ import spel.KurvSnake;
 import spel.Snake;
 import spel.Tetris;
 
-import static gojb.GoJbsBraOchHa.*;
+import static gojb.GoJbGoodies.*;
 import static javax.swing.SwingConstants.*;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import static java.awt.Color.*;

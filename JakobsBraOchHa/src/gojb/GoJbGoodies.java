@@ -15,7 +15,7 @@ import GoJbFrame.GoJbFrame;
 
 import com.sun.mail.util.*;
 
-import static gojb.GoJbsBraOchHa.*;
+import static gojb.GoJbGoodies.*;
 import static gojb.Jakobs.*;
 import static javax.swing.JFrame.*;
 import static javax.swing.JOptionPane.*;
@@ -32,7 +32,7 @@ import static java.awt.Toolkit.*;
  * @see <a href="http://gojb.ml/">http://gojb.ml/</a>
  * @version 1.0
  */
-public class GoJbsBraOchHa{
+public class GoJbGoodies{
 
 	public static String	argString;
 	public static Font 		typsnitt = new Font("Arial", 0, 40);
@@ -143,7 +143,7 @@ public class GoJbsBraOchHa{
 	public static void spelaLjud(String filnamn){
 		try {
 			Clip clip = AudioSystem.getClip();
-			clip.open(AudioSystem.getAudioInputStream(GoJbsBraOchHa.class.getResource(filnamn)));
+			clip.open(AudioSystem.getAudioInputStream(GoJbGoodies.class.getResource(filnamn)));
 			clip.start();
 
 		} catch (Exception e) {
@@ -169,7 +169,7 @@ public class GoJbsBraOchHa{
 	public static ImageIcon Bild(String filnamn){
 		ImageIcon icon = null;
 		try {
-			icon = new ImageIcon(GoJbsBraOchHa.class.getResource(filnamn));
+			icon = new ImageIcon(GoJbGoodies.class.getResource(filnamn));
 		} catch (Exception e) {
 			((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
 			showMessageDialog(null, "ImageIcon \""+filnamn+"\" hittades inte","Filfel",ERROR_MESSAGE);
@@ -189,7 +189,7 @@ public class GoJbsBraOchHa{
 		e.printStackTrace();
 		skrivHändelsetext(writer.toString());
 	}
-	public GoJbsBraOchHa() {
+	public GoJbGoodies() {
 		main("");
 	}
 	public static WindowListener autoListener = new WindowListener() {

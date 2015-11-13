@@ -1,6 +1,6 @@
 package gojb;
 
-import static gojb.GoJbsBraOchHa.*;
+import static gojb.GoJbGoodies.*;
 import static java.awt.Color.RED;
 import static javax.swing.JOptionPane.*;
 import static javax.swing.SwingConstants.*;
@@ -227,6 +227,6 @@ class Glosor{
 		Collections.shuffle(tvåList,new Random(seed));
 	}
 	public static void main(String[] args) {
-		GoJbsBraOchHa.main("gojb.Glosor");
+		GoJbGoodies.main("gojb.Glosor");
 	}
 }

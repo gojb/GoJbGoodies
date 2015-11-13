@@ -7,7 +7,7 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import javax.swing.*;
 
-import static gojb.GoJbsBraOchHa.*;
+import static gojb.GoJbGoodies.*;
 
 class GoJbMail{
 	public GoJbMail() {

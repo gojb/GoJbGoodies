@@ -1,6 +1,6 @@
 package spel;
 
-import static gojb.GoJbsBraOchHa.Bild;
+import static gojb.GoJbGoodies.Bild;
 import static java.awt.Color.BLACK;
 import static java.awt.Color.WHITE;
 

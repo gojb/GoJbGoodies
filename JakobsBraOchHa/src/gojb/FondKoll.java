@@ -1,6 +1,6 @@
 package gojb;
 
-import static gojb.GoJbsBraOchHa.*;
+import static gojb.GoJbGoodies.*;
 import static java.awt.Color.*;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
@@ -290,7 +290,7 @@ class FondKoll implements Serializable{
 		}
 	}
 	public static void main(String[] args) {
-		GoJbsBraOchHa.main("gojb.FondKoll");
+		GoJbGoodies.main("gojb.FondKoll");
 	}
 
 }

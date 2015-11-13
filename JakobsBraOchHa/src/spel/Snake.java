@@ -1,13 +1,13 @@
 package spel;
 
-import static gojb.GoJbsBraOchHa.Bild;
-import static gojb.GoJbsBraOchHa.SKÄRM_SIZE;
-import static gojb.GoJbsBraOchHa.autoListener;
-import static gojb.GoJbsBraOchHa.fönsterIcon;
-import static gojb.GoJbsBraOchHa.prop;
-import static gojb.GoJbsBraOchHa.random;
-import static gojb.GoJbsBraOchHa.sparaProp;
-import static gojb.GoJbsBraOchHa.typsnitt;
+import static gojb.GoJbGoodies.Bild;
+import static gojb.GoJbGoodies.SKÄRM_SIZE;
+import static gojb.GoJbGoodies.autoListener;
+import static gojb.GoJbGoodies.fönsterIcon;
+import static gojb.GoJbGoodies.prop;
+import static gojb.GoJbGoodies.random;
+import static gojb.GoJbGoodies.sparaProp;
+import static gojb.GoJbGoodies.typsnitt;
 import static java.awt.Color.GREEN;
 import static java.awt.Color.black;
 import static java.awt.Color.blue;

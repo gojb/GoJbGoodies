@@ -1,6 +1,6 @@
 package gojb;
 
-import static gojb.GoJbsBraOchHa.*;
+import static gojb.GoJbGoodies.*;
 import static java.awt.Color.*;
 import static java.awt.Toolkit.getDefaultToolkit;
 import static javax.swing.JFrame.*;

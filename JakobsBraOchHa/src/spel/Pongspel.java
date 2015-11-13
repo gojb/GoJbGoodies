@@ -1,7 +1,7 @@
 package spel;
 
-import static gojb.GoJbsBraOchHa.fönsterIcon;
-import static gojb.GoJbsBraOchHa.random;
+import static gojb.GoJbGoodies.fönsterIcon;
+import static gojb.GoJbGoodies.random;
 import static java.awt.Color.black;
 import static java.awt.Color.green;
 import static java.awt.Color.red;

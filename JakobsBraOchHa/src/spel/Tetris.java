@@ -1,6 +1,6 @@
 package spel;
 
-import static gojb.GoJbsBraOchHa.*;
+import static gojb.GoJbGoodies.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -12,7 +12,7 @@ import javax.swing.*;
 import javax.swing.Timer;
 
 import GoJbFrame.GoJbFrame;
-import gojb.GoJbsBraOchHa;
+import gojb.GoJbGoodies;
 
 public class Tetris {
 	private GoJbFrame frame = new GoJbFrame("Tetris",false,JFrame.DISPOSE_ON_CLOSE), 
@@ -43,7 +43,7 @@ public class Tetris {
 				g.drawString(string,10 , pos);
 			}
 			g2.setColor(Color.green);
-			g2.setFont(GoJbsBraOchHa.typsnitt);
+			g2.setFont(GoJbGoodies.typsnitt);
 			g2.drawString("Poäng: "+poäng, 10, pos+100);
 			g2.setColor(Color.cyan);
 			g2.drawString("Nästa:", 10, pos+150);
@@ -341,7 +341,7 @@ public class Tetris {
 		timer.start();
 	}
 	public static void main(String[] args) {
-		GoJbsBraOchHa.main("spel.Tetris");
+		GoJbGoodies.main("spel.Tetris");
 	}
 	public void blockskap() {
 		if (!nästa.isEmpty()) {

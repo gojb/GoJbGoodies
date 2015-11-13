@@ -1,8 +1,8 @@
 package spel;
 
-import static gojb.GoJbsBraOchHa.fönsterIcon;
-import static gojb.GoJbsBraOchHa.prop;
-import static gojb.GoJbsBraOchHa.sparaProp;
+import static gojb.GoJbGoodies.fönsterIcon;
+import static gojb.GoJbGoodies.prop;
+import static gojb.GoJbGoodies.sparaProp;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -30,7 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import GoJbFrame.GoJbFrame;
-import gojb.GoJbsBraOchHa;
+import gojb.GoJbGoodies;
 
 public class KurvSnake {
 	private GoJbFrame start = new GoJbFrame("Start",false,2),frame = new GoJbFrame("KurvSnake",false,2),highFrame=new GoJbFrame("Tetris Highscore",false,JFrame.EXIT_ON_CLOSE);
@@ -65,6 +65,7 @@ public class KurvSnake {
 		for (int i = 1; i < 6; i++) {
 			highscore.add(prop.getProperty("KurvSnake"+i,"0"));
 		}
+		sort();
 		frame.add(label);
 		frame.setLayout(new GridLayout(1, 0));
 		frame.addKeyListener(key);
@@ -82,19 +83,19 @@ public class KurvSnake {
 			public void componentHidden(ComponentEvent e) {}
 		});
 		frame.addWindowListener(new WindowListener() {
-			
+
 			@Override
 			public void windowOpened(WindowEvent e) {}
-			
+
 			@Override
 			public void windowIconified(WindowEvent e) {}
-			
+
 			@Override
 			public void windowDeiconified(WindowEvent e) {}
-			
+
 			@Override
 			public void windowDeactivated(WindowEvent e) {}
-			
+
 			@Override
 			public void windowClosing(WindowEvent e) {
 				highFrame.dispose();
@@ -125,9 +126,9 @@ public class KurvSnake {
 		});
 	}
 	public static void main(String[] args) {
-		GoJbsBraOchHa.main("spel.KurvSnake");
+		GoJbGoodies.main("spel.KurvSnake");
 	}
-	
+
 	private JPanel scorepanel = new JPanel(){
 		private static final long serialVersionUID = 1L;
 
@@ -147,11 +148,11 @@ public class KurvSnake {
 				g.drawString(string,10 , pos);
 			}
 			g2.setColor(Color.green);
-			g2.setFont(GoJbsBraOchHa.typsnitt);
+			g2.setFont(GoJbGoodies.typsnitt);
 			g2.drawString("Poäng: "+längd, 10, pos+100);
 		}
 	};
-	
+
 	private void update(){
 		if (höger) riktning +=Math.PI/75;
 		if (vänster) riktning -=Math.PI/75;
@@ -174,16 +175,7 @@ public class KurvSnake {
 					highscore.set(4, längd + " " + JOptionPane.showInputDialog("Skriv ditt namn"));
 
 
-					Collections.sort(highscore,new Comparator<String>() {
-						public int compare(String o1, String o2) {
-							Scanner scanner = new Scanner(o1);
-							Scanner scanner2 = new Scanner(o2);
-							int a=scanner.nextInt(),b=scanner2.nextInt();
-							scanner.close();
-							scanner2.close();
-							return a > b ? -1 : a == b ? 0 : 1;
-						}
-					});
+					sort();
 					for (int j = 0; j < highscore.size(); j++) {
 						prop.setProperty("KurvSnake"+(j+1), highscore.get(j));
 					}
@@ -218,6 +210,18 @@ public class KurvSnake {
 			}
 		}
 	}
+	private void sort() {
+		Collections.sort(highscore,new Comparator<String>() {
+			public int compare(String o1, String o2) {
+				Scanner scanner = new Scanner(o1);
+				Scanner scanner2 = new Scanner(o2);
+				int a=scanner.nextInt(),b=scanner2.nextInt();
+				scanner.close();
+				scanner2.close();
+				return a > b ? -1 : a == b ? 0 : 1;
+			}
+		});
+	}
 	private void restart() {
 		x=0;
 		y=0;
@@ -226,7 +230,7 @@ public class KurvSnake {
 		riktning=Math.PI/8;
 		plupp();
 		timer.start();
-		
+
 	}
 	KeyListener key= new KeyListener() {
 
@@ -271,7 +275,7 @@ public class KurvSnake {
 			g.fillOval((int)Math.round(x)-diameter/2, (int)Math.round(y)-diameter/2, diameter,diameter);
 		}
 		boolean nuddar(Pixel pixel){
-			
+
 			return Math.sqrt(Math.pow(x-pixel.x,2)+Math.pow(y-pixel.y,2))<=diameter/2+pixel.diameter/2;
 		}
 	}

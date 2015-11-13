@@ -1,5 +1,5 @@
 package GoJbFrame;
-import static gojb.GoJbsBraOchHa.autoListener;
+import static gojb.GoJbGoodies.autoListener;
 
 import javax.swing.*;
 

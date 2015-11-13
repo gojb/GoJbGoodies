@@ -1,6 +1,6 @@
 package applet;
 
-import gojb.GoJbsBraOchHa;
+import gojb.GoJbGoodies;
 
 import java.awt.Color;
 
@@ -13,6 +13,6 @@ public class GoJbApplet extends JApplet{
 	}
 	public GoJbApplet() {
 		getContentPane().setBackground(Color.WHITE);
-		new GoJbsBraOchHa();
+		new GoJbGoodies();
 	}
 }

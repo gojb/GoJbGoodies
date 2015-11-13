@@ -1,8 +1,8 @@
 package spel;
 
-import static gojb.GoJbsBraOchHa.Bild;
-import static gojb.GoJbsBraOchHa.fönsterIcon;
-import static gojb.GoJbsBraOchHa.spelaLjud;
+import static gojb.GoJbGoodies.Bild;
+import static gojb.GoJbGoodies.fönsterIcon;
+import static gojb.GoJbGoodies.spelaLjud;
 import static java.awt.Color.BLACK;
 import static java.awt.Color.CYAN;
 import static java.awt.Color.RED;

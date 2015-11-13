@@ -1,8 +1,8 @@
 package spel;
 
-import static gojb.GoJbsBraOchHa.SKÄRM_SIZE;
-import static gojb.GoJbsBraOchHa.autoListener;
-import static gojb.GoJbsBraOchHa.typsnitt;
+import static gojb.GoJbGoodies.SKÄRM_SIZE;
+import static gojb.GoJbGoodies.autoListener;
+import static gojb.GoJbGoodies.typsnitt;
 import static java.awt.Color.BLACK;
 import static java.awt.Color.GREEN;
 import static java.awt.Color.MAGENTA;

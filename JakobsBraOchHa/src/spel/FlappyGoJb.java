@@ -1,9 +1,9 @@
 package spel;
 
-import static gojb.GoJbsBraOchHa.Bild;
-import static gojb.GoJbsBraOchHa.fönsterIcon;
-import static gojb.GoJbsBraOchHa.random;
-import static gojb.GoJbsBraOchHa.typsnitt;
+import static gojb.GoJbGoodies.Bild;
+import static gojb.GoJbGoodies.fönsterIcon;
+import static gojb.GoJbGoodies.random;
+import static gojb.GoJbGoodies.typsnitt;
 import static java.awt.Color.green;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.YES_NO_OPTION;

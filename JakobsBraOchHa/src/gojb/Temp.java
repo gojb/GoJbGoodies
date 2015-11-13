@@ -17,7 +17,7 @@ class Temp{
 		//		GoJbsBraOchHa.main("snabb");
 		try {
 			Clip clip = AudioSystem.getClip();
-			clip.open(AudioSystem.getAudioInputStream(GoJbsBraOchHa.class.getResource("/images/alarm.wav")));
+			clip.open(AudioSystem.getAudioInputStream(GoJbGoodies.class.getResource("/images/alarm.wav")));
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
 
 		} catch (Exception e) {
