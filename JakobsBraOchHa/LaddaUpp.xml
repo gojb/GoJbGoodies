@@ -5,9 +5,9 @@
     	<loadfile srcfile="C:/GoJb.txt" property="inputvalue"/>
     	<jar destfile="${user.home}\git\Hemsida\jar\GoJb.jar" filesetmanifest="mergewithoutmain">
             <manifest>
-            	<attribute name="Application-Name" value="GoJbsBraOchHa"/>
+            	<attribute name="Application-Name" value="GoJb Goodies"/>
             	<attribute name="Permissions" value="all-permissions"/>
-                <attribute name="Main-Class" value="gojb.GoJbsBraOchHa"/>
+                <attribute name="Main-Class" value="gojb.GoJbGoodies"/>
             	<attribute name="Class-Path" value="."/>
             </manifest>
         	<fileset dir="${basedir}/bin" excludes="test"/>
