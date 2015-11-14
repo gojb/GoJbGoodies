@@ -268,7 +268,7 @@ public class Tetris {
 		if(JOptionPane.showOptionDialog(frame, "Vill du spela med patrtisymboler?", "Tetris", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, aktuella)==JOptionPane.YES_OPTION){
 			parti=true;
 			try {
-				v=ImageIO.read(new File(getClass().getResource("/images/Partier/Vänsterpartiet.png").toURI()));
+				v=Bild("/images/Partier/Vänsterpartiet.png").getImage();
 				s = ImageIO.read(new File(getClass().getResource("/images/Partier/Socialdemokraterna.png").toURI()));
 				mp=ImageIO.read(new File(getClass().getResource("/images/Partier/Miljöpartiet.png").toURI()));
 				c=ImageIO.read(new File(getClass().getResource("/images/Partier/Centerpartiet.png").toURI()));
