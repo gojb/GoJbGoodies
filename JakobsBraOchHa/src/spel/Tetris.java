@@ -4,10 +4,8 @@ import static gojb.GoJbGoodies.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 import java.util.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.Timer;
 
@@ -269,12 +267,12 @@ public class Tetris {
 			parti=true;
 			try {
 				v=Bild("/images/Partier/Vänsterpartiet.png").getImage();
-				s = ImageIO.read(new File(getClass().getResource("/images/Partier/Socialdemokraterna.png").toURI()));
-				mp=ImageIO.read(new File(getClass().getResource("/images/Partier/Miljöpartiet.png").toURI()));
-				c=ImageIO.read(new File(getClass().getResource("/images/Partier/Centerpartiet.png").toURI()));
-				fp=ImageIO.read(new File(getClass().getResource("/images/Partier/Folkpartiet.png").toURI()));
-				kd=ImageIO.read(new File(getClass().getResource("/images/Partier/Kristdemokraterna.png").toURI()));
-				m=ImageIO.read(new File(getClass().getResource("/images/Partier/Moderaterna.png").toURI()));
+				s = Bild("/images/Partier/Socialdemokraterna.png").getImage();
+				mp=Bild("/images/Partier/Miljöpartiet.png").getImage();
+				c=Bild("/images/Partier/Centerpartiet.png").getImage();
+				fp=Bild("/images/Partier/Folkpartiet.png").getImage();
+				kd=Bild("/images/Partier/Kristdemokraterna.png").getImage();
+				m=Bild("/images/Partier/Moderaterna.png").getImage();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
