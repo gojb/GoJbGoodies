@@ -8,12 +8,17 @@ public class Arraylist {
 
 	public Arraylist() {
 		List<String> strings = new ArrayList<>();
+		String string="dgfgd";
+		strings.add(string);
 		strings.add("hej");
 		strings.add("på");
 		strings.add("dig");
 		strings.add("hej");
 		strings.add("då");
 		strings.add("tja");
+		strings.remove(string);
+		strings.remove(string);
+		strings.remove(string);
 		System.err.println(strings.toString());
 		
 		List<String> arrayList = Arrays.asList(strings.toString().substring(1,strings.toString().length()-1).split(", "));
