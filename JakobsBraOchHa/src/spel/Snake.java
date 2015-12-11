@@ -39,7 +39,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Scanner;
 
 import javax.swing.JButton;
@@ -55,14 +54,13 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
 @SuppressWarnings("serial")
-public
-class Snake extends JPanel implements KeyListener, ActionListener, ComponentListener{
+public class Snake extends JPanel implements KeyListener, ActionListener, ComponentListener{
 	enum Spelläge {ONE,TWO,CLIENT}
 	Spelläge spelläge;
 	private JFrame frame = new JFrame("Snake"), start = new JFrame("Start"),highFrame=new JFrame("Highscore");
 	private final int startlängd=3, pixelstorlek=Math.round(SKÄRM_SIZE.width/140), MAXIMUM = 101;
 	private int[] x=new int[MAXIMUM], y=new int[MAXIMUM], z=new int[MAXIMUM], q=new int[MAXIMUM];
-	private int snakelängdx,snakelängdz=-1,pluppX,pluppY,s=1,a=1,svartPoäng,cyanPoäng,yLoc;
+	private int snakelängdx,snakelängdz=-1,pluppX=-1,pluppY=-1,s=1,a=1,svartPoäng,cyanPoäng,yLoc;
 	private Timer timer = new Timer(100, this);
 	private String riktning = "ner",riktningz = "upp",vem;
 	private boolean paused,gameover=true;
@@ -166,13 +164,17 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 					else if (type.equals("A")) {
 						gameover=false;
 						paused=false;
-						String string = scanner.next();
-						if (string.equals("PAUS")) {
-							paused=true;
-						}
-						else if (string.equals("GAMEOVER")) {
-							vem=scanner.next();
-							gameover =true;
+						try {
+							String string = scanner.next();
+							if (string.equals("PAUS")) {
+								paused=true;
+							}
+							else if (string.equals("GAMEOVER")) {
+								vem=scanner.next();
+								gameover = true;
+							}
+						} catch (Exception e) {
+							
 						}
 					}
 					else if (type.equals("P")) {
@@ -188,7 +190,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 					scanner.close();
 					if (rep) {
 						rep=false;
-						frame.repaint();
+						repaint();
 						
 					}
 
@@ -196,8 +198,12 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 
 				@Override
 				public void onOpen( ServerHandshake handshake ) {
-					System.err.println("OPEN");
-					cc.send("D "+new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)).getRGB()+" "+showInputDialog("Namn?"));
+					System.out.println("OPEN");
+					String namn=showInputDialog("Vad heter du?");
+					if (namn==null||namn.equals("")) {
+						namn="Okänd";
+					}
+					cc.send("INIT "+new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)).getRGB()+" "+namn);
 				}
 
 				@Override
@@ -210,9 +216,8 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
+		System.out.println("Ansluter");
 		cc.connect();
-		System.err.println("oihagl");
-
 		frame.setVisible(true);
 		frame.pack();
 		paused=false;
@@ -435,8 +440,7 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 			g.drawOval(pluppX*pixelstorlek+1, pluppY*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
 			g.fillOval(pluppX*pixelstorlek+1, pluppY*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
 			g.setColor(black);
-			for (Pixel pixel : pixels.clone()) {
-				Collections.
+			for (Pixel pixel :new ArrayList<>(pixels)) {
 				g.setColor(pixel.color);
 				g.drawRect(pixel.x*pixelstorlek+1, pixel.y*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
 				g.fillRect(pixel.x*pixelstorlek+1, pixel.y*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
