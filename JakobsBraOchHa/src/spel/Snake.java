@@ -209,7 +209,6 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 				@Override
 				public void onClose( int code, String reason, boolean remote ) {
 				}
-
 				@Override
 				public void onError( Exception ex ) {
 				}};
