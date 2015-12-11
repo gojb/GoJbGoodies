@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="jsoup-1.8.1.jar"/>
 	<classpathentry kind="lib" path="lwjgl_util.jar"/>
 	<classpathentry kind="lib" path="commons-net-3.3.jar"/>
+	<classpathentry kind="lib" path="TooTallNate-Java-WebSocket.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

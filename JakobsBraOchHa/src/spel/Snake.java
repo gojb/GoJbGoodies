@@ -1,6 +1,5 @@
 package spel;
 
-import static gojb.GoJbGoodies.Bild;
 import static gojb.GoJbGoodies.SKÄRM_SIZE;
 import static gojb.GoJbGoodies.autoListener;
 import static gojb.GoJbGoodies.fönsterIcon;
@@ -15,14 +14,9 @@ import static java.awt.Color.cyan;
 import static java.awt.Color.red;
 import static java.awt.Color.white;
 import static java.awt.Toolkit.getDefaultToolkit;
-import static javax.swing.JOptionPane.DEFAULT_OPTION;
-import static javax.swing.JOptionPane.QUESTION_MESSAGE;
 import static javax.swing.JOptionPane.showInputDialog;
-import static javax.swing.JOptionPane.showOptionDialog;
-import static javax.swing.SwingConstants.CENTER;
 import static spel.Snake.Spelläge.CLIENT;
 import static spel.Snake.Spelläge.ONE;
-import static spel.Snake.Spelläge.SERVER;
 import static spel.Snake.Spelläge.TWO;
 
 import java.awt.BorderLayout;
@@ -41,43 +35,44 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import gojb.GoJbGoodies;
 import gojb.Jakobs;
+
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
 
 @SuppressWarnings("serial")
 public
 class Snake extends JPanel implements KeyListener, ActionListener, ComponentListener{
-	enum Spelläge {ONE,TWO,CLIENT,SERVER}
+	enum Spelläge {ONE,TWO,CLIENT}
 	Spelläge spelläge;
-	private JFrame frame = new JFrame("Snake"), start = new JFrame("Start"),väntframe= new JFrame(),highFrame=new JFrame("Highscore");
+	private JFrame frame = new JFrame("Snake"), start = new JFrame("Start"),highFrame=new JFrame("Highscore");
 	private final int startlängd=3, pixelstorlek=Math.round(SKÄRM_SIZE.width/140), MAXIMUM = 101;
 	private int[] x=new int[MAXIMUM], y=new int[MAXIMUM], z=new int[MAXIMUM], q=new int[MAXIMUM];
 	private int snakelängdx,snakelängdz=-1,pluppX,pluppY,s=1,a=1,svartPoäng,cyanPoäng,yLoc;
 	private Timer timer = new Timer(100, this);
 	private String riktning = "ner",riktningz = "upp",vem;
-	private BufferedReader in;
-	private PrintWriter out;
 	private boolean paused,gameover=true;
 	private JButton local = new JButton("Play two on this computer"),
 			online = new JButton("Play online"),
 			one = new JButton("Single Player");
 	private String[] highscore = new String[6];
-	private Socket socket;
+	private static boolean rep;
+	ArrayList<Pixel> pixels= new ArrayList<>();
+	WebSocketClient cc;
 
 	public Snake(){
 		setOpaque(true);
@@ -101,9 +96,6 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 			public void windowDeiconified(WindowEvent e) {}public void windowDeactivated(WindowEvent e) {}
 			public void windowActivated(WindowEvent e) {}public void windowClosed(WindowEvent e) {}
 			public void windowClosing(WindowEvent e) {
-				try {
-					socket.close();
-				} catch (Exception e1) {}
 				try {
 					highFrame.dispose();
 					timer.stop();
@@ -157,153 +149,127 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 	}
 	void online(){
 
-		String[]strings={"Server", "Klient"};
-		int i = showOptionDialog(frame, "Server eller klient?", "Multiplayer", DEFAULT_OPTION, QUESTION_MESSAGE, null, strings, 0);
-		if (i==0) {
-			spelläge=SERVER;
-			frame.setTitle(frame.getTitle() + " SERVER");
-			start.dispose();
-			väntframe.add(new JLabel("Väntar på anslutning...",Bild("/images/loading.gif"),CENTER));
-			väntframe.setLocationRelativeTo(null);
-			väntframe.setAlwaysOnTop(true);
-			väntframe.repaint();
-			väntframe.getContentPane().setBackground(white);
-			väntframe.setIconImage(fönsterIcon);
-			väntframe.pack();
-			väntframe.addWindowListener(autoListener);
-			väntframe.setDefaultCloseOperation(2);
-			väntframe.setVisible(true);
-			new Thread(){
-				@Override
-				public void run() {
-					try {
-						@SuppressWarnings("resource")
-						ServerSocket listener = new ServerSocket(11622);
-						Socket socket = listener.accept();
-						in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-						out = new PrintWriter(socket.getOutputStream(), true);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					väntframe.dispose();
-					Restart();
-					Pausa();
-					frame.setVisible(true);	
-					frame.pack();
-					frame.repaint();
-					while (true) {
-						try {
-							String string = in.readLine();
-							if(a==1){
-								if(string.equals("vänster")){
-									if (riktningz!="höger"&&riktningz!="vänster"){
-										riktningz="vänster";
-										a=0;
-									}
-								}
-								else if(string.equals("höger")){
-									if (riktningz!="höger"&&riktningz!="vänster"){
-										riktningz="höger";
-										a=0;
-									}
-								}
-								else if(string.equals("upp")){
-									if (riktningz!="ner"&&riktningz!="upp"){
-										riktningz="upp";
-										a=0;
-									}
-								}
-								else if(string.equals("ner")){
-									if (riktningz!="ner"&&riktningz!="upp"){
-										riktningz="ner";
-										a=0;
-									}
-								}
-								else if (string.equals("restart")) {
-									Restart();
-								}
-								else if (string.equals("pause")) {
-									Pausa();
-								}
-							}
-							System.out.println(riktningz);
 
-						} catch (Exception e) {
-							System.err.println("Frånkopplad");
-							break;
+		start.dispose();
+		spelläge=CLIENT;
+		gameover=false;
+		//		WebSocketImpl.DEBUG=true;
+		try {
+			cc = new WebSocketClient( new URI("ws://wildfly-gojb.rhcloud.com:8000/snake")) {
+				@Override
+				public void onMessage( String message ) {
+					Scanner scanner = new Scanner(message);
+					String type = scanner.next();
+					if (type.equals("CLEAR")) {
+						pixels.clear();
+					}
+					else if (type.equals("A")) {
+						gameover=false;
+						paused=false;
+						String string = scanner.next();
+						if (string.equals("PAUS")) {
+							paused=true;
+						}
+						else if (string.equals("GAMEOVER")) {
+							vem=scanner.next();
+							gameover =true;
 						}
 					}
-				}
-			}.start();
-		}
-		else if (i==1) {
-			start.dispose();
-			spelläge=CLIENT;
-			try {
-				socket = new Socket(showInputDialog("Adress till server"), 11622);
-				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				out = new PrintWriter(socket.getOutputStream(), true);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			frame.setVisible(true);
-			frame.pack();
-			paused=false;
-			new Thread(){
-				public void run() {
-					Scanner scanner = null;
-					while (true) {
-						try {
-							scanner = new Scanner(in.readLine());
-							String string = scanner.next();
-							if (string.equals("B")) {
-								snakelängdx=0;
-							}
-							else if (string.equals("C")) {
-								snakelängdz=0;
-							}
-							else if (string.equals("A")) {
-								paused=false;
-								gameover=false;
-							}
-							while (scanner.hasNext()) {
-								if (string.equals("A")) {
-									String string2 = scanner.next();
-									if (string2.equals("paus")) {
-										paused=true;
-									}
-									else if (string2.equals("gameover")) {
-										gameover=true;
-									}
-									else {
-										vem = string2;
-									}
-								}
-								else if (string.equals("B")) {
-									x[++snakelängdx]=Integer.parseInt(scanner.next())*pixelstorlek;
-									y[snakelängdx]=Integer.parseInt(scanner.next())*pixelstorlek;
-								}
-								else if (string.equals("C")) {
-									z[++snakelängdz]=Integer.parseInt(scanner.next())*pixelstorlek;
-									q[snakelängdz]=Integer.parseInt(scanner.next())*pixelstorlek;
-								}
-								else if (string.equals("P")) {
-									pluppX=Integer.parseInt(scanner.next())*pixelstorlek;
-									pluppY=Integer.parseInt(scanner.next())*pixelstorlek;
-								}
-							}
-							synchronized (frame) {
-								frame.repaint();
-							}						
-						}
-						catch (Exception e) {
-							System.err.println("Frånkopplad");
-							break;
+					else if (type.equals("P")) {
+						pluppX=scanner.nextInt();
+						pluppY=scanner.nextInt();
+					}
+					else if (type.equals("B")) {
+						Color color = new Color(scanner.nextInt());
+						while (scanner.hasNext()) {
+							pixels.add(new Pixel(scanner.nextInt(), scanner.nextInt(), color));
 						}
 					}
+					scanner.close();
+					if (rep) {
+						rep=false;
+						frame.repaint();
+						
+					}
+
 				}
-			}.start();
+
+				@Override
+				public void onOpen( ServerHandshake handshake ) {
+					System.err.println("OPEN");
+					cc.send("D "+new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)).getRGB()+" "+showInputDialog("Namn?"));
+				}
+
+				@Override
+				public void onClose( int code, String reason, boolean remote ) {
+				}
+
+				@Override
+				public void onError( Exception ex ) {
+				}};
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
 		}
+		cc.connect();
+		System.err.println("oihagl");
+
+		frame.setVisible(true);
+		frame.pack();
+		paused=false;
+		//		new Thread(){
+		//			public void run() {
+		//				Scanner scanner = null;
+		//				while (true) {
+		//					try {
+		//						scanner = new Scanner(in.readLine());
+		//						String string = scanner.next();
+		//						if (string.equals("B")) {
+		//							snakelängdx=0;
+		//						}
+		//						else if (string.equals("C")) {
+		//							snakelängdz=0;
+		//						}
+		//						else if (string.equals("A")) {
+		//							paused=false;
+		//							gameover=false;
+		//						}
+		//						while (scanner.hasNext()) {
+		//							if (string.equals("A")) {
+		//								String string2 = scanner.next();
+		//								if (string2.equals("paus")) {
+		//									paused=true;
+		//								}
+		//								else if (string2.equals("gameover")) {
+		//									gameover=true;
+		//								}
+		//								else {
+		//									vem = string2;
+		//								}
+		//							}
+		//							else if (string.equals("B")) {
+		//								x[++snakelängdx]=Integer.parseInt(scanner.next())*pixelstorlek;
+		//								y[snakelängdx]=Integer.parseInt(scanner.next())*pixelstorlek;
+		//							}
+		//							else if (string.equals("C")) {
+		//								z[++snakelängdz]=Integer.parseInt(scanner.next())*pixelstorlek;
+		//								q[snakelängdz]=Integer.parseInt(scanner.next())*pixelstorlek;
+		//							}
+		//							else if (string.equals("P")) {
+		//								pluppX=Integer.parseInt(scanner.next())*pixelstorlek;
+		//								pluppY=Integer.parseInt(scanner.next())*pixelstorlek;
+		//							}
+		//						}
+		//						synchronized (frame) {
+		//							frame.repaint();
+		//						}						
+		//					}
+		//					catch (Exception e) {
+		//						System.err.println("Frånkopplad");
+		//						break;
+		//					}
+		//				}
+		//			}}.start();
+
 	}
 	private void GameOver(Boolean svart){
 		timer.stop();
@@ -443,22 +409,39 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 		Graphics2D g = (Graphics2D)g1;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		g.setColor(red);
-		g.drawOval(pluppX+1, pluppY+1, pixelstorlek-2, pixelstorlek-2);
-		g.fillOval(pluppX+1, pluppY+1, pixelstorlek-2, pixelstorlek-2);
-		g.setColor(black);
-		for (int i = 1; i <= snakelängdx; i++) {
-			g.drawRect(x[i]+1, y[i]+1, pixelstorlek-2, pixelstorlek-2);
-			g.fillRect(x[i]+1, y[i]+1, pixelstorlek-2, pixelstorlek-2);
-		}
-		s=1;
-		if (spelläge!=ONE) {
-			g.setColor(cyan);
-			for (int i = 1; i <= snakelängdz; i++) {
-				g.drawRect(z[i] + 1, q[i] + 1, pixelstorlek - 2,pixelstorlek - 2);
-				g.fillRect(z[i] + 1, q[i] + 1, pixelstorlek - 2,pixelstorlek - 2);
+
+		if (spelläge!=CLIENT) {
+			g.setColor(red);
+			g.drawOval(pluppX+1, pluppY+1, pixelstorlek-2, pixelstorlek-2);
+			g.fillOval(pluppX+1, pluppY+1, pixelstorlek-2, pixelstorlek-2);
+			g.setColor(black);
+			for (int i = 1; i <= snakelängdx; i++) {
+				g.drawRect(x[i]+1, y[i]+1, pixelstorlek-2, pixelstorlek-2);
+				g.fillRect(x[i]+1, y[i]+1, pixelstorlek-2, pixelstorlek-2);
 			}
-			a = 1;
+			s=1;
+			if (spelläge!=ONE) {
+				g.setColor(cyan);
+				for (int i = 1; i <= snakelängdz; i++) {
+					g.drawRect(z[i] + 1, q[i] + 1, pixelstorlek - 2,pixelstorlek - 2);
+					g.fillRect(z[i] + 1, q[i] + 1, pixelstorlek - 2,pixelstorlek - 2);
+				}
+				a = 1;
+			}
+		}
+		else {
+			//Client
+			g.setColor(red);
+			g.drawOval(pluppX*pixelstorlek+1, pluppY*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
+			g.fillOval(pluppX*pixelstorlek+1, pluppY*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
+			g.setColor(black);
+			for (Pixel pixel : pixels.clone()) {
+				Collections.
+				g.setColor(pixel.color);
+				g.drawRect(pixel.x*pixelstorlek+1, pixel.y*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
+				g.fillRect(pixel.x*pixelstorlek+1, pixel.y*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
+			}
+			rep=true;
 		}
 		if(paused){
 			g.setColor(blue);
@@ -471,31 +454,31 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 			g.drawString(vem+" förlorade!",10 , getHeight()/2-25);
 			g.drawString("Tryck F2 eller \"R\" för \natt spela igen",10 , getHeight()/2);
 		}
-		if (spelläge==SERVER) {
-			try {
-				out.print("A ");
-				if (paused) {
-					out.print("paus ");
-				}
-				if (gameover) {
-					out.print("gameover " + vem);
-				}
-				out.println();
-				out.print("B ");
-				for (int i = 1; i <= snakelängdx; i++) {
-					out.print(x[i] / pixelstorlek + " " + y[i] / pixelstorlek + " ");
-				}
-				out.println();
-				out.print("C ");
-				for (int i = 1; i <= snakelängdz; i++) {
-					out.print(z[i] / pixelstorlek + " " + q[i] / pixelstorlek + " ");
-				}
-				out.println();
-				out.println("P " + pluppX / pixelstorlek + " " + pluppY / pixelstorlek);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		//		if (spelläge==SERVER) {
+		//			try {
+		//				out.print("A ");
+		//				if (paused) {
+		//					out.print("paus ");
+		//				}
+		//				if (gameover) {
+		//					out.print("gameover " + vem);
+		//				}
+		//				out.println();
+		//				out.print("B ");
+		//				for (int i = 1; i <= snakelängdx; i++) {
+		//					out.print(x[i] / pixelstorlek + " " + y[i] / pixelstorlek + " ");
+		//				}
+		//				out.println();
+		//				out.print("C ");
+		//				for (int i = 1; i <= snakelängdz; i++) {
+		//					out.print(z[i] / pixelstorlek + " " + q[i] / pixelstorlek + " ");
+		//				}
+		//				out.println();
+		//				out.println("P " + pluppX / pixelstorlek + " " + pluppY / pixelstorlek);
+		//			} catch (Exception e) {
+		//				e.printStackTrace();
+		//			}
+		//		}
 		else if (spelläge==ONE) {
 			if(y[1] < 45) {
 				yLoc = y[1] + 40;
@@ -572,20 +555,21 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 	public void componentHidden(ComponentEvent e) {}
 	public void keyPressed(KeyEvent e) {
 		if (spelläge==CLIENT) {
-			System.err.println(riktningz);
-			System.err.println(e.getKeyCode());
 			if(e.getKeyCode() == KeyEvent.VK_LEFT)
-				out.println("vänster");
+				cc.send("R left");
 			else if(e.getKeyCode() == KeyEvent.VK_RIGHT)
-				out.println("höger");
+				cc.send("R right");
 			else if(e.getKeyCode() == KeyEvent.VK_UP)
-				out.println("upp");
+				cc.send("R up");
 			else if(e.getKeyCode() == KeyEvent.VK_DOWN)
-				out.println("ner");
-			else if (e.getKeyCode() == KeyEvent.VK_R||e.getKeyCode() == KeyEvent.VK_F2)
-				out.println("restart");
+				cc.send("R down");
+			else if (e.getKeyCode() == KeyEvent.VK_R||e.getKeyCode() == KeyEvent.VK_F2){
+				cc.send("RES");
+				cc.send("START");
+				rep=true;
+			}
 			else if(e.getKeyCode() == KeyEvent.VK_SPACE)
-				out.println("pause");
+				cc.send("pause");
 			return;
 		}
 		if (s==1) {
@@ -652,4 +636,16 @@ class Snake extends JPanel implements KeyListener, ActionListener, ComponentList
 			}
 		}
 	};
+	class Pixel{
+		int x,y;
+		Color color;
+		public Pixel(int x,int y,Color color) {
+			this.x=x;
+			this.y=y;
+			this.color=color;
+		}
+	}
+	public static void main(String[] args) {
+		GoJbGoodies.main("spel.Snake");
+	}
 }
