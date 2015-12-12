@@ -174,7 +174,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 								gameover = true;
 							}
 						} catch (Exception e) {
-							
+
 						}
 					}
 					else if (type.equals("P")) {
@@ -191,7 +191,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 					if (rep) {
 						rep=false;
 						repaint();
-						
+
 					}
 
 				}
@@ -208,10 +208,14 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 
 				@Override
 				public void onClose( int code, String reason, boolean remote ) {
+					start.setVisible(true);
+					frame.dispose();
 				}
 				@Override
 				public void onError( Exception ex ) {
-				}};
+					ex.printStackTrace();
+				}
+			};
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
