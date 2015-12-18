@@ -4,10 +4,8 @@ import static gojb.GoJbGoodies.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 import java.util.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.Timer;
 
@@ -268,13 +266,13 @@ public class Tetris {
 		if(JOptionPane.showOptionDialog(frame, "Vill du spela med patrtisymboler?", "Tetris", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, aktuella)==JOptionPane.YES_OPTION){
 			parti=true;
 			try {
-				v=ImageIO.read(new File(getClass().getResource("/images/Partier/Vänsterpartiet.png").toURI()));
-				s = ImageIO.read(new File(getClass().getResource("/images/Partier/Socialdemokraterna.png").toURI()));
-				mp=ImageIO.read(new File(getClass().getResource("/images/Partier/Miljöpartiet.png").toURI()));
-				c=ImageIO.read(new File(getClass().getResource("/images/Partier/Centerpartiet.png").toURI()));
-				fp=ImageIO.read(new File(getClass().getResource("/images/Partier/Folkpartiet.png").toURI()));
-				kd=ImageIO.read(new File(getClass().getResource("/images/Partier/Kristdemokraterna.png").toURI()));
-				m=ImageIO.read(new File(getClass().getResource("/images/Partier/Moderaterna.png").toURI()));
+				v=Bild("/images/Partier/Vänsterpartiet.png").getImage();
+				s = Bild("/images/Partier/Socialdemokraterna.png").getImage();
+				mp=Bild("/images/Partier/Miljöpartiet.png").getImage();
+				c=Bild("/images/Partier/Centerpartiet.png").getImage();
+				fp=Bild("/images/Partier/Folkpartiet.png").getImage();
+				kd=Bild("/images/Partier/Kristdemokraterna.png").getImage();
+				m=Bild("/images/Partier/Moderaterna.png").getImage();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
