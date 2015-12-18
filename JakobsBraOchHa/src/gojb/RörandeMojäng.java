@@ -20,8 +20,6 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.MouseInputListener;
-import javax.swing.plaf.basic.BasicProgressBarUI;
-
 import GoJbFrame.GoJbFrame;
 import spel.Snake;
 
@@ -1615,7 +1613,7 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 
 class Randoms implements ActionListener{
 
-	JLabel label = new JLabel();
+	JLabel label = new JLabel(),label1 = new JLabel(),label2 = new JLabel();
 
 	JPanel panel1 = new JPanel(),
 			panel2 = new JPanel();
@@ -1636,7 +1634,7 @@ class Randoms implements ActionListener{
 
 	long z,x,i;
 
-	Timer timer = new Timer(100, this);
+	Timer timer = new Timer(1, this);
 
 
 
@@ -1644,7 +1642,6 @@ class Randoms implements ActionListener{
 
 		//			frame.add(panel2);
 		//			frame.add(panel1);
-		frame.add(label);
 		frame.setLayeredPane(layeredPane);
 		frame.setLayout(null);
 		
@@ -1655,31 +1652,25 @@ class Randoms implements ActionListener{
 		progressBar1.setBorderPainted(false);
 		progressBar1.setStringPainted(true);
 		progressBar1.setFont(new Font("Arial",Font.BOLD,0));
-		progressBar1.setUI(new BasicProgressBarUI(){
-			protected Color getSelectionBackground() {return white;}
-			protected Color getSelectionForeground() {return black;}
-
-		});
 		
-		progressBar2.setLocation(340,150);
+		progressBar2.setLocation(380,150);
 		progressBar2.setSize(40, 200);
-		progressBar2.setForeground(Color.blue);
+		progressBar2.setForeground(Color.red);
 		progressBar2.setBackground(new Color(170, 170, 170, 1));
 		progressBar2.setBorderPainted(false);
 		progressBar2.setStringPainted(true);
 		progressBar2.setFont(new Font("Arial",Font.BOLD,0));
-		progressBar2.setUI(new BasicProgressBarUI(){
-			protected Color getSelectionBackground() {return white;}
-			protected Color getSelectionForeground() {return black;}
-
-		});
 
 		layeredPane.add(progressBar1);
 		layeredPane.add(progressBar2);
 		layeredPane.add(label);
+		layeredPane.add(label1);
+		layeredPane.add(label2);
 		layeredPane.setLayer(progressBar1, 100);
 		layeredPane.setLayer(progressBar2, 100);
 		layeredPane.setLayer(label, 91);
+		layeredPane.setLayer(label1, 91);
+		layeredPane.setLayer(label2, 91);
 		
 		label.setForeground(Color.black);
 		label.setSize(300,34);
@@ -1687,23 +1678,44 @@ class Randoms implements ActionListener{
 		label.setFont(new Font("Arial",Font.BOLD,30));
 		label.setText(Integer.toString(total));
 		
+		label1.setForeground(Color.black);
+		label1.setSize(300,60);
+		label1.setLocation(70, 345);
+		label1.setFont(new Font("Arial",Font.BOLD,20));
+		label1.setText("");
+		
+		label2.setForeground(Color.black);
+		label2.setSize(300,60);
+		label2.setLocation(380, 345);
+		label2.setFont(new Font("Arial",Font.BOLD,20));
+		label2.setText("");
+		
 		frame.revalidate();
 
 		timer.start();
 	}
 	public void actionPerformed(ActionEvent arg0) {
 		Randomize();
-		
 	}
 	public void Randomize() {
+		if(total>=5000){
+			timer.stop();
+			label1.setText("<html><body>"+label1.getText().toString()+"<br>"+Integer.toString(one)+"</body></html>");
+			label2.setText("<html><body>"+label2.getText().toString()+"<br>"+Integer.toString(two)+"</body></html>");
+			return;
+		}
 		int temp = rand.nextInt(2);
 		total++;
 		label.setText(Integer.toString(total));
-		if(temp==1){
-			progressBar2.setValue(progressBar2.getValue()+1);
+		if(temp==0){
+			one++;
+			progressBar1.setValue((int)Math.floor(((double)one/(double)total)*100));
+			label1.setText((double)((Math.round(((double)one/(double)total)*1000))/(double)10)+"%");
 		}
-		else if(temp==0){
-			progressBar1.setValue(progressBar1.getValue()+1);
+		else if(temp==1){
+			two++;
+			progressBar2.setValue((int)Math.floor(((double)two/(double)total)*100));
+			label2.setText((double)((Math.round(((double)two/(double)total)*1000))/(double)10)+"%");
 		}
 	}
 
