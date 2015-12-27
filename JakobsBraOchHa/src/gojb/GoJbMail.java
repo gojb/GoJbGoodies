@@ -53,14 +53,15 @@ class SkickaMail {
 		System.err.println("Påbörjat");
 
 		Properties props = new Properties();
-		props.put("mail.smtp.host", "mx1.hostinger.se");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.port", "2525");
+		props.put("mail.smtp.port", "587");
 
 		Session mailSession = Session.getInstance(props, new Authenticator() {
 
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("gojb@gojb.bl.ee", "uggen0684");
+				return new PasswordAuthentication("gojbmail@gmail.com", "uggen0684");
 			}
 		});
 
@@ -69,12 +70,9 @@ class SkickaMail {
 
 		Message msg = new MimeMessage( mailSession );
 
-		System.out.println(Mailkorg.Mottagare.getText().toLowerCase() +"--" + Mailkorg.Ämne.getText() +"--"+ Mailkorg.Innehåll.getText());
+		System.out.println(Till +"--" + Ämne +"--"+ Meddelande);
 
-
-
-
-		msg.setFrom(new InternetAddress( "GoJb<gojb@gojb.bl.ee>" ) );
+		msg.setFrom(new InternetAddress( "GoJb<gojbmail@gmail.com>" ) );
 		msg.setRecipients(Message.RecipientType.TO,InternetAddress.parse(Till));	
 		msg.setSubject(Ämne);
 		msg.setText(Meddelande);

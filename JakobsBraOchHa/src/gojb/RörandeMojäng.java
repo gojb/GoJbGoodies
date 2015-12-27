@@ -20,7 +20,6 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.MouseInputListener;
-
 import GoJbFrame.GoJbFrame;
 import spel.Snake;
 
@@ -1042,7 +1041,7 @@ class SkapaFärg extends JPanel implements ActionListener{
 				paneliPanel.setBackground(new Color(r.getValue(),g.getValue(), b.getValue()));
 				String hexColour = Integer.toHexString(paneliPanel.getBackground().getRGB() & 0xffffff);
 				hexColour = "000000".substring(0, 6 - hexColour.length()) + hexColour;
-//				System.out.println("#" + hexColour);
+				//				System.out.println("#" + hexColour);
 				System.out.println(r.getValue()+","+g.getValue()+","+b.getValue());
 			}
 		});
@@ -1614,19 +1613,24 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 
 class Randoms implements ActionListener{
 
-	JLabel label = new JLabel();
+	JLabel label = new JLabel(),label1 = new JLabel(),label2 = new JLabel();
 
 	JPanel panel1 = new JPanel(),
 			panel2 = new JPanel();
 
 	JButton button = new JButton("Start");
 
+	JTextField textTotal = new JTextField();
+	
 	GoJbFrame frame = new GoJbFrame("Random");
+	
+	Random rand = new Random();
+	
+	int total=0, one, two;
 
-	JSlider slider = new JSlider();
+	JLayeredPane layeredPane = new JLayeredPane();
 
-	String tid = new SimpleDateFormat("ss : MM").format(new Date());
-
+	JProgressBar progressBar1 = new JProgressBar(VERTICAL), progressBar2 = new JProgressBar(VERTICAL);
 
 	long z,x,i;
 
@@ -1636,66 +1640,83 @@ class Randoms implements ActionListener{
 
 	public Randoms(){
 
-		frame.setLayout(new BorderLayout());
+		//			frame.add(panel2);
+		//			frame.add(panel1);
+		frame.setLayeredPane(layeredPane);
+		frame.setLayout(null);
+		
+		progressBar1.setLocation(70,150);
+		progressBar1.setSize(40, 200);
+		progressBar1.setForeground(Color.blue);
+		progressBar1.setBackground(new Color(170, 170, 170, 1));
+		progressBar1.setBorderPainted(false);
+		progressBar1.setStringPainted(true);
+		progressBar1.setFont(new Font("Arial",Font.BOLD,0));
+		
+		progressBar2.setLocation(380,150);
+		progressBar2.setSize(40, 200);
+		progressBar2.setForeground(Color.red);
+		progressBar2.setBackground(new Color(170, 170, 170, 1));
+		progressBar2.setBorderPainted(false);
+		progressBar2.setStringPainted(true);
+		progressBar2.setFont(new Font("Arial",Font.BOLD,0));
 
-		panel1.setPreferredSize(new Dimension(250,250));
-		panel2.setPreferredSize(new Dimension(250,250));
-
-		frame.add(panel1,BorderLayout.NORTH);
-		frame.add(panel2,BorderLayout.SOUTH);
-
-		panel1.setLayout(new BorderLayout());
-		panel1.add(slider,BorderLayout.WEST);
-		panel1.add(button,BorderLayout.CENTER);
-
-		panel2.setLayout(new BorderLayout());
-		panel2.add(label,BorderLayout.CENTER);
-		label.setVerticalTextPosition(CENTER);
-		label.setHorizontalAlignment(CENTER);
-		label.setFont(typsnitt);
-		button.addActionListener(this);
+		layeredPane.add(progressBar1);
+		layeredPane.add(progressBar2);
+		layeredPane.add(label);
+		layeredPane.add(label1);
+		layeredPane.add(label2);
+		layeredPane.setLayer(progressBar1, 100);
+		layeredPane.setLayer(progressBar2, 100);
+		layeredPane.setLayer(label, 91);
+		layeredPane.setLayer(label1, 91);
+		layeredPane.setLayer(label2, 91);
+		
+		label.setForeground(Color.black);
+		label.setSize(300,34);
+		label.setLocation(230, 30);
+		label.setFont(new Font("Arial",Font.BOLD,30));
+		label.setText(Integer.toString(total));
+		
+		label1.setForeground(Color.black);
+		label1.setSize(300,60);
+		label1.setLocation(70, 345);
+		label1.setFont(new Font("Arial",Font.BOLD,20));
+		label1.setText("");
+		
+		label2.setForeground(Color.black);
+		label2.setSize(300,60);
+		label2.setLocation(380, 345);
+		label2.setFont(new Font("Arial",Font.BOLD,20));
+		label2.setText("");
+		
+		frame.revalidate();
 
 		timer.start();
-
-		System.out.println(tid);
-
 	}
 	public void actionPerformed(ActionEvent arg0) {
-		if (arg0.getSource() == button){
-			ranidom();
-		}
-		if (arg0.getSource() == timer){
-			System.err.println(System.currentTimeMillis());
-		}
+		Randomize();
 	}
-	public void ranidom() {
-		long y = System.currentTimeMillis();
-
-		if (i == 0){
-			z = System.currentTimeMillis();
+	public void Randomize() {
+		if(total>=5000){
+			timer.stop();
+			label1.setText("<html><body>"+label1.getText().toString()+"<br>"+Integer.toString(one)+"</body></html>");
+			label2.setText("<html><body>"+label2.getText().toString()+"<br>"+Integer.toString(two)+"</body></html>");
+			return;
 		}
-		else if (i == 1) {
-			z = 14065;
+		int temp = rand.nextInt(2);
+		total++;
+		label.setText(Integer.toString(total));
+		if(temp==0){
+			one++;
+			progressBar1.setValue((int)Math.floor(((double)one/(double)total)*100));
+			label1.setText((double)((Math.round(((double)one/(double)total)*1000))/(double)10)+"%");
 		}
-		else if (i == 2) {
-			z = 465656;
+		else if(temp==1){
+			two++;
+			progressBar2.setValue((int)Math.floor(((double)two/(double)total)*100));
+			label2.setText((double)((Math.round(((double)two/(double)total)*1000))/(double)10)+"%");
 		}
-		else if (i == 3) {
-			z = 856746;
-		}
-		else if (i == 4) {
-			z = 12876575;
-		}
-		else if (i == 5) {
-			z = 177657690;
-			i = 0;
-		}
-
-		x = y-z;
-		i++;
-
-
-		label.setText(Long.toString(x));
 	}
 
 }
