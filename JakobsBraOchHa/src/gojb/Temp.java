@@ -2,11 +2,6 @@ package gojb;
 
 import static javax.swing.UIManager.*;
 
-<<<<<<< HEAD
-=======
-import java.awt.Color;
->>>>>>> branch 'master' of https://github.com/gojb/GoJbGoodies.git
-
 class Temp{
 	public static void main(String[] args){
 		try{setLookAndFeel(getSystemLookAndFeelClassName());}catch(Exception e){}
