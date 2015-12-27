@@ -188,11 +188,11 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 						}
 					}
 					scanner.close();
-					if (rep) {
+//					if (rep) {
 						rep=false;
 						repaint();
 
-					}
+//					}
 
 				}
 
@@ -444,7 +444,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 			g.fillOval(pluppX*pixelstorlek+1, pluppY*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
 			g.setColor(black);
 			for (Pixel pixel :new ArrayList<>(pixels)) {
-				g.setColor(pixel.color);
+ 
 				g.drawRect(pixel.x*pixelstorlek+1, pixel.y*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
 				g.fillRect(pixel.x*pixelstorlek+1, pixel.y*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
 			}
@@ -461,31 +461,6 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 			g.drawString(vem+" förlorade!",10 , getHeight()/2-25);
 			g.drawString("Tryck F2 eller \"R\" för \natt spela igen",10 , getHeight()/2);
 		}
-		//		if (spelläge==SERVER) {
-		//			try {
-		//				out.print("A ");
-		//				if (paused) {
-		//					out.print("paus ");
-		//				}
-		//				if (gameover) {
-		//					out.print("gameover " + vem);
-		//				}
-		//				out.println();
-		//				out.print("B ");
-		//				for (int i = 1; i <= snakelängdx; i++) {
-		//					out.print(x[i] / pixelstorlek + " " + y[i] / pixelstorlek + " ");
-		//				}
-		//				out.println();
-		//				out.print("C ");
-		//				for (int i = 1; i <= snakelängdz; i++) {
-		//					out.print(z[i] / pixelstorlek + " " + q[i] / pixelstorlek + " ");
-		//				}
-		//				out.println();
-		//				out.println("P " + pluppX / pixelstorlek + " " + pluppY / pixelstorlek);
-		//			} catch (Exception e) {
-		//				e.printStackTrace();
-		//			}
-		//		}
 		else if (spelläge==ONE) {
 			if(y[1] < 45) {
 				yLoc = y[1] + 40;
