@@ -151,11 +151,12 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 		start.dispose();
 		spelläge=CLIENT;
 		gameover=false;
-		//		WebSocketImpl.DEBUG=true;
+//				WebSocketImpl.DEBUG=true;
 		try {
 			cc = new WebSocketClient( new URI("ws://wildfly-gojb.rhcloud.com:8000/snake")) {
 				@Override
 				public void onMessage( String message ) {
+					System.err.println(message);
 					Scanner scanner = new Scanner(message);
 					String type = scanner.next();
 					if (type.equals("CLEAR")) {
@@ -442,9 +443,9 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 			g.setColor(red);
 			g.drawOval(pluppX*pixelstorlek+1, pluppY*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
 			g.fillOval(pluppX*pixelstorlek+1, pluppY*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
-			g.setColor(black);
+			
 			for (Pixel pixel :new ArrayList<>(pixels)) {
- 
+ g.setColor(pixel.color);
 				g.drawRect(pixel.x*pixelstorlek+1, pixel.y*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
 				g.fillRect(pixel.x*pixelstorlek+1, pixel.y*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
 			}
