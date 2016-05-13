@@ -8,7 +8,7 @@ class Temp{
 		new Randoms();
 		//		new Mailkorg();
 		//		new Snake();
-		//		new Ping("192.168.2.131");
+//				new Ping("192.168.115.100");
 		//		new Merit();
 		//		new Kurve(); 
 		//		new OpenGLTest();
