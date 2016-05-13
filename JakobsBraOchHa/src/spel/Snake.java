@@ -70,6 +70,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 	private String[] highscore = new String[6];
 	private static boolean rep;
 	ArrayList<Pixel> pixels= new ArrayList<>();
+	ArrayList<Highscore> highscores = new ArrayList<>();
 	WebSocketClient cc;
 
 	public Snake(){
@@ -89,6 +90,11 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 		frame.setDefaultCloseOperation(2);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
+		highFrame.setSize(frame.getWidth()/2 ,frame.getHeight());
+		highFrame.setIconImage(fönsterIcon);
+		highFrame.setUndecorated(true);
+		highFrame.setLocation(frame.getX()-highFrame.getWidth(),frame.getY());
+		highFrame.setVisible(true);
 		frame.addWindowListener(new WindowListener() {
 			public void windowOpened(WindowEvent e) {}public void windowIconified(WindowEvent e) {}
 			public void windowDeiconified(WindowEvent e) {}public void windowDeactivated(WindowEvent e) {}
@@ -132,11 +138,6 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 			highscore[4]= prop.getProperty("Score4","0");
 			highscore[5]= prop.getProperty("Score5","0");
 			highFrame.add(Scorepanel);
-			highFrame.setSize(frame.getWidth()/2 ,frame.getHeight());
-			highFrame.setIconImage(fönsterIcon);
-			highFrame.setUndecorated(true);
-			highFrame.setLocation(frame.getX()-highFrame.getWidth(),frame.getY());
-			highFrame.setVisible(true);
 			frame.toFront();
 		});
 		online.addActionListener(e -> online());
@@ -151,7 +152,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 		start.dispose();
 		spelläge=CLIENT;
 		gameover=false;
-//				WebSocketImpl.DEBUG=true;
+		//				WebSocketImpl.DEBUG=true;
 		try {
 			cc = new WebSocketClient( new URI("ws://wildfly-gojb.rhcloud.com:8000/snake")) {
 				@Override
@@ -159,10 +160,10 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 					System.err.println(message);
 					Scanner scanner = new Scanner(message);
 					String type = scanner.next();
-					if (type.equals("CLEAR")) {
-						pixels.clear();
-					}
-					else if (type.equals("A")) {
+					//					if (type.equals("CLEAR")) {
+					//						pixels.clear();
+					//					}
+					if (type.equals("A")) {
 						gameover=false;
 						paused=false;
 						try {
@@ -171,14 +172,19 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 								paused=true;
 							}
 							else if (string.equals("GAMEOVER")) {
+								scanner.useDelimiter("\\z"); 
 								vem=scanner.next();
 								gameover = true;
 							}
+							
+							
 						} catch (Exception e) {
 
 						}
+						repaint();
 					}
 					else if (type.equals("P")) {
+						pixels.clear();
 						pluppX=scanner.nextInt();
 						pluppY=scanner.nextInt();
 					}
@@ -187,13 +193,26 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 						while (scanner.hasNext()) {
 							pixels.add(new Pixel(scanner.nextInt(), scanner.nextInt(), color));
 						}
+						repaint();
+					}
+					else if (type.equals("H")) {
+						String mode=scanner.next();
+						if (mode.equals("RESET")) {
+							highscores.clear();
+						}
+						else if (mode.equals("SET")) {
+							highscores.add(new Highscore(scanner));
+						}
+						else if (mode.equals("DONE")) {
+							
+						}
 					}
 					scanner.close();
-//					if (rep) {
-						rep=false;
-						repaint();
+					//					if (rep) {
+					rep=false;
 
-//					}
+
+					//					}
 
 				}
 
@@ -443,9 +462,9 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 			g.setColor(red);
 			g.drawOval(pluppX*pixelstorlek+1, pluppY*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
 			g.fillOval(pluppX*pixelstorlek+1, pluppY*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
-			
+
 			for (Pixel pixel :new ArrayList<>(pixels)) {
- g.setColor(pixel.color);
+				g.setColor(pixel.color);
 				g.drawRect(pixel.x*pixelstorlek+1, pixel.y*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
 				g.fillRect(pixel.x*pixelstorlek+1, pixel.y*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
 			}
@@ -552,7 +571,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 				rep=true;
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_SPACE)
-				cc.send("pause");
+				cc.send("PAUSE");
 			return;
 		}
 		if (s==1) {
@@ -628,6 +647,19 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 			this.color=color;
 		}
 	}
+	class Highscore{
+		Color color;
+		int p;
+		String namn;
+		public Highscore(Scanner scanner){
+			p=scanner.nextInt();
+			
+			color=new Color(scanner.nextInt());
+			scanner.useDelimiter("\\z"); 
+			namn=scanner.next();
+		}
+	}
+	
 	public static void main(String[] args) {
 		GoJbGoodies.main("spel.Snake");
 	}
