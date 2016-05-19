@@ -187,11 +187,13 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 						frame.repaint();
 					}
 					else if (type.equals("P")) {
-						pixels.clear();
 						pluppX=scanner.nextInt();
 						pluppY=scanner.nextInt();
 					}
 					else if (type.equals("B")) {
+						if (scanner.nextInt()==0) {
+							pixels.clear();
+						}
 						Color color = new Color(scanner.nextInt());
 						while (scanner.hasNext()) {
 							pixels.add(new Pixel(scanner.nextInt(), scanner.nextInt(), color));
