@@ -283,7 +283,6 @@ class Login{
 }
 class Update implements Runnable{
 	public synchronized void run(){
-		vänta(10000);
 		if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")) {
 			try {
 				URLConnection connection = new URL("http://gojb.ml/jar/GoJb.jar").openConnection();

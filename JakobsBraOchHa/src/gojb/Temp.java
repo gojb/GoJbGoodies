@@ -9,6 +9,7 @@ class Temp{
 		//		new Mailkorg();
 		//		new Snake();
 				new Ping("Glenns-iphone-2");
+//				new Ping("192.168.115.100");
 		//		new Merit();
 		//		new Kurve(); 
 		//		new OpenGLTest();

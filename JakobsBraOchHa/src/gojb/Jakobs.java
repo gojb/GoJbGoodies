@@ -908,7 +908,7 @@ class Ping{
 			public void windowOpened(WindowEvent e) {}public void windowIconified(WindowEvent e) {}public void windowDeiconified(WindowEvent e) {}
 			public void windowDeactivated(WindowEvent e) {}public void windowClosing(WindowEvent e){}public void windowActivated(WindowEvent arg0) {};
 		});
-		for(int i = 0;i<100;i++){
+		for(int i = 0;i<10;i++){
 			try {
 				System.err.println(i);
 				new Thread(){
