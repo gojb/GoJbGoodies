@@ -5,14 +5,14 @@ import static javax.swing.UIManager.*;
 class Temp{
 	public static void main(String[] args){
 		try{setLookAndFeel(getSystemLookAndFeelClassName());}catch(Exception e){}
-		new Randoms();
+//		new Randoms();
 		//		new Mailkorg();
 		//		new Snake();
-		//		new Ping("192.168.2.131");
+				new Ping("Glenns-iphone-2");
 		//		new Merit();
 		//		new Kurve(); 
 		//		new OpenGLTest();
-				GoJbGoodies.main("snabb");
+//				GoJbGoodies.main("snabb");
 		
 //		try {
 //			new SkickaMail().Skicka("glennholsson@gmail.com", "YO", "hey ehy");
