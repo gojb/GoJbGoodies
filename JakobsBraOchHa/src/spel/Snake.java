@@ -490,7 +490,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 		if (gameover) {
 			g.setColor(red);
 			g.setFont(new Font(null, 0, 25));
-			g.drawString(vem+" förlorade!",10 , getHeight()/2-25);
+			g.drawString(vem+" förlorade!",25 , getHeight()/2-25);
 		}
 		else if (spelläge==ONE) {
 			if(y[1] < 45) {
