@@ -10,6 +10,7 @@ import static javax.swing.SwingConstants.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -20,6 +21,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.MouseInputListener;
+
 import GoJbFrame.GoJbFrame;
 import spel.Snake;
 
@@ -64,7 +66,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 			sök = new JMenuItem("Sök"),
 			reggplåtar = new JMenuItem("Reggplåtar"),
 			Pac = new JMenuItem("Pac"),
-			memo = new JMenuItem("Memory");
+			memo = new JMenuItem("Memory"),
+			personnr = new JMenuItem("Personnummer");
 	JMenuBar bar = new JMenuBar();
 
 	Clip clip;
@@ -116,6 +119,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		ÖppnaProgram.add(Snake);
 		ÖppnaProgram.add(Pac);
 		ÖppnaProgram.add(memo);
+		ÖppnaProgram.add(personnr);
 
 
 		Mouse.addActionListener(this);
@@ -126,7 +130,6 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		Betyg.addActionListener(this);
 		OrginalFönster.addActionListener(this);
 		Maze.addActionListener(this);
-
 		impossible.addActionListener(this);
 		ticTacToe.addActionListener(this);
 		lösenord.addActionListener(this);
@@ -142,6 +145,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		reggplåtar.addActionListener(e -> {new ReggPlåtar();frame.dispose();});
 		Pac.addActionListener(e -> {new Pac();frame.dispose();});
 		memo.addActionListener(e -> {new spel.Memory();frame.dispose();});
+		personnr.addActionListener(e -> {frame.dispose();new Personnr();});
 
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 		frame.setBackground(gray);
@@ -410,14 +414,9 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		}
 
 		else if (arg0.getSource() == item1){
-			try
-			{
-				Runtime.getRuntime().exec("notepad.exe C:\\Users\\Glenn\\GoJb.java\\SourceKod.txt");
-			} catch (Exception ex)
-			{
-				ex.printStackTrace();
-
-			}
+		try {
+			Desktop.getDesktop().browse(new URI("https://github.com/gojb/GoJbGoodies/tree/master/JakobsBraOchHa/src"));
+		} catch (Exception e) {}
 		}
 
 	}
@@ -2179,9 +2178,9 @@ class ReggPlåtar implements ActionListener{
 
 		if (c == 'i'||c == 'v'||c == 'q') {
 		}
-		if (c == 'i'||c == 'v'||c == 'q') {
+		if (c2 == 'i'||c2 == 'v'||c2 == 'q') {
 		}
-		if (c == 'i'||c == 'v'||c == 'q') {
+		if (3 == 'i'||c3 == 'v'||c3 == 'q') {
 		}
 		else {
 

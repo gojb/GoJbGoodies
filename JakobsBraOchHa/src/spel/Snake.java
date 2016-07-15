@@ -650,7 +650,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 
 			for (int i = 1; i < highscore.length; i++) {
 				pos=pos+25;
-				g.drawString(highscore[i],10 , pos);
+
 			}
 		}
 	};

@@ -1,20 +1,23 @@
-package test;
+package gojb;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
 
-import gojb.GoJbGoodies;
-
 public class Personnr {
 
-	static String pers = new String();
-	static ArrayList<Integer> nr = new ArrayList<>();
-	static Boolean bol = false, årBol = false;
-	static int tot,svar;
+	String pers = new String();
+	ArrayList<Integer> nr = new ArrayList<>();
+	Boolean bol = false, årBol = false;
+	int tot,svar;
 
 	public static void main(String[] args) {
-		// FIXME Auto-generated method stub
+		new Personnr();
+	}
+	public Personnr(){
 		Object[] options = {"Testa","Skapa"};
 		int choice=JOptionPane.showOptionDialog(null, "Skapa eller testa personnummer?",
 				"Skapa eller testa?", JOptionPane.YES_NO_CANCEL_OPTION, 
@@ -30,7 +33,7 @@ public class Personnr {
 			System.exit(3);
 		}
 	}
-	public static void Skapa(){
+	public void Skapa(){
 		String år = JOptionPane.showInputDialog("Första 6 siffrorna", "ex 981103");
 		while(!årBol){
 			if(år.length()==6){
@@ -107,9 +110,13 @@ public class Personnr {
 
 		
 		JOptionPane.showMessageDialog(null, "Personnummret är:\n"+år+"-"+rand1+rand2+könNr+svar);
+		StringSelection selection = new StringSelection(pers+svar);
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+	    clipboard.setContents(selection,selection);
+		
 		System.exit(3);
 	}
-	public static void Testa(){
+	public void Testa(){
 		pers=JOptionPane.showInputDialog("Persnnummer:","Personnummer á 10 siffror");
 		while (bol == false){
 			if(pers.length()==10){

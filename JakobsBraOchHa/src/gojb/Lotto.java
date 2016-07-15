@@ -42,7 +42,7 @@ public class Lotto {
 		if (slider.getValue()==0) {
 			System.exit(3);
 		}
-		for (int i = 0; i < Integer.parseInt(field.getText()); i++) {
+		for (int i = 0; i < Integer.parseInt(field.getText().trim()); i++) {
 			list.add(new ArrayList<Integer>());
 			for (int j = 0; j < 7; j++) {
 				list.get(i).add(rand(list.get(i)));

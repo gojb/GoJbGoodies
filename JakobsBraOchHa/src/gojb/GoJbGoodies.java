@@ -38,10 +38,32 @@ public class GoJbGoodies{
 	public static Font 		typsnitt = new Font("Arial", 0, 40);
 	public static Robot		robot;
 	public static Random 	random = new Random();
-	public static Properties prop = new Properties();
+	public static Properties prop = new Properties(){
+
+		private static final long serialVersionUID = -8960247664212445472L;
+
+		public synchronized Object setProperty(String key, String value) {
+			if (prop.isEmpty()) {
+				laddaProp();
+			}
+			return super.setProperty(key, value);
+		};
+		public String getProperty(String key, String defaultValue) {
+			if (prop.isEmpty()) {
+				laddaProp();
+			}
+			return super.getProperty(key,defaultValue);
+		};
+		public String getProperty(String key) {
+			if (prop.isEmpty()) {
+				laddaProp();
+			}
+			return super.getProperty(key);
+		};
+	};
 	public static final Image 	fönsterIcon = Bild("/images/Java-icon.png").getImage();
 	public static final Dimension SKÄRM_SIZE = new Dimension(getDefaultToolkit().getScreenSize());
-	
+
 	public static void main(String... arg) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -54,11 +76,7 @@ public class GoJbGoodies{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		try {
-			prop.load(new FileInputStream(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb"));
-		} catch (Exception e) {
-			System.err.println("Properties saknas");
-		}
+		laddaProp();
 		new Thread(new Update()).start();
 		try {
 			argString = arg[0];
@@ -116,9 +134,9 @@ public class GoJbGoodies{
 		} catch (Exception e) {
 			argString ="";
 		}
-		
-//		new Login();
-		
+
+		//		new Login();
+
 		JFrame användare= new JFrame();
 		JButton användareJakob = new JButton("Jakob"), användareGlenn= new JButton("Glenn");
 		användare.add(användareJakob);
@@ -140,6 +158,13 @@ public class GoJbGoodies{
 			användare.dispose();
 		});
 	}
+	private static void laddaProp() {
+		try {
+			prop.load(new FileInputStream(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb"));
+		} catch (Exception e) {
+			System.err.println("Tidigare properties saknas");
+		}
+	}
 	public static void spelaLjud(String filnamn){
 		try {
 			Clip clip = AudioSystem.getClip();
@@ -152,14 +177,17 @@ public class GoJbGoodies{
 		}
 	}
 	public static void sparaProp(String kommentar) {
+		sparaEgenProp(prop, "data",kommentar);
+	}
+	public static void sparaEgenProp(Properties prop,String filnamn,String kommentar) {
 		try {
-			prop.store(new FileWriter(new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")),kommentar);
+			prop.store(new FileWriter(new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\"+filnamn+".gojb")),kommentar);
 		} catch (Exception e) {
 			System.err.println("ga");
 			try {
 				new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\").mkdir();
 				new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\").mkdir();
-				prop.store(new FileWriter(new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\data.gojb")), kommentar);
+				prop.store(new FileWriter(new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\"+filnamn+".gojb")), kommentar);
 			} catch (Exception e2) {
 				e2.printStackTrace();
 				System.err.println("Problem med åtkomst till disk!");
