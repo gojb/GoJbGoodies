@@ -8,8 +8,12 @@ class Temp{
 //		new Randoms();
 		//		new Mailkorg();
 		//		new Snake();
+<<<<<<< HEAD
+				new Ping("192.168.1.3");
+=======
 		
 				new Ping("malla-hp");
+>>>>>>> branch 'master' of https://github.com/gojb/GoJbGoodies.git
 //				new Ping("192.168.115.100");
 		//		new Merit();
 		//		new Kurve(); 

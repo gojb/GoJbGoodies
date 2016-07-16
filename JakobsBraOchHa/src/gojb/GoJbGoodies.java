@@ -23,7 +23,7 @@ import static java.awt.Toolkit.*;
 
 /**
  * Det här programmet innehåller lite
- * grejer som kan vara "BraOchHa" och även
+ * grejer som kan vara bra och även
  * andra små program vi gjort för att testa
  * olika saker.
  * 

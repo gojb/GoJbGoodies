@@ -194,7 +194,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 						if (scanner.nextInt()==0) {
 							pixels.clear();
 						}
-						Color color = new Color(scanner.nextInt());
+						Color color = Color.decode("#"+scanner.next());
 						while (scanner.hasNext()) {
 							pixels.add(new Pixel(scanner.nextInt(), scanner.nextInt(), color));
 						}
@@ -284,7 +284,8 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 					if (namn==null||namn.equals("")) {
 						namn="Okänd";
 					}
-					cc.send("INIT "+new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)).getRGB()+" "+namn);
+					
+					cc.send("INIT "+Integer.toHexString(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)).getRGB()).substring(2)+" "+namn);
 				}
 
 				@Override
@@ -466,11 +467,11 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 			}
 		}
 		else {
-//			g.setColor(Color.black);
-//			g.drawLine(0, 0, 0, getHeight());
-//			g.drawLine(0, 0, getWidth(), 0);
-//			g.drawLine(0,getHeight(),getWidth(), getHeight());
-//			g.drawLine(getWidth(),0,getWidth(), getHeight());
+			g.setColor(Color.black);
+			g.drawLine(0, 0, 0, getHeight());
+			g.drawLine(0, 0, getWidth(), 0);
+			g.drawLine(0,getHeight(),getWidth(), getHeight());
+			g.drawLine(getWidth(),0,getWidth(), getHeight());
 			//Client
 			g.setColor(red);
 			g.drawOval(pluppX*pixelstorlek+1, pluppY*pixelstorlek+1, pixelstorlek-2, pixelstorlek-2);
@@ -671,7 +672,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 		public Highscore(Scanner scanner){
 			p=scanner.nextInt();
 
-			color=new Color(scanner.nextInt());
+			color=Color.decode("#"+scanner.next());
 			highscore=scanner.nextInt();
 			scanner.useDelimiter("\\z"); 
 			namn=scanner.next().substring(1);
