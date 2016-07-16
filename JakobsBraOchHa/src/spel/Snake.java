@@ -571,6 +571,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 	}
 	public void componentHidden(ComponentEvent e) {}
 	public void keyPressed(KeyEvent e) {
+		
 		if (spelläge==CLIENT) {
 			if(e.getKeyCode() == KeyEvent.VK_LEFT)
 				cc.send("R left");
