@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 import javax.swing.*;
+
 import GoJbFrame.GoJbFrame;
 
 public class Röj implements ActionListener {
@@ -18,10 +19,60 @@ public class Röj implements ActionListener {
 	JMenu menu = new JMenu("Hey");
 	JMenuBar mBar = new JMenuBar();
 	JMenuItem res = new JMenuItem("Restart"), validate = new JMenuItem("Validate field"), customItem = new JMenuItem("Board set-up");
+
+
+	//Kan göra om nedanstående dokumentation med ex, "@param int[] spel.Röj.a" för att bara visa en viss info för listan a
+
+	/** 
+	 * 	<h1>Beskrivning</h1>
+	 * 		<li>
+	 * 			a är antalet rutor, standard är 16*16, alltså 256. Texten på a[n] är nummret på antal minor runt rutan. Är talet dock 100, betyder det 
+	 * att det är en bomb
+	 * 		</li>
+	 * 		<li>
+	 * 			a1[n] beskriver ifall button[n] är klickad, alltså om den är öppen
+	 * 		</li>
+	 * 
+	 * 		<li>
+	 * 			revInt är en lista lika stor som antalet rutor. Den håller reda på vilka rutor som är öppnade, till när man vinner/förlorar
+	 * 		</li>
+	 *		 <li>
+	 * 			redButton är en lista lika stor som antalet rutor. Den håller reda på ifall det är en röd knapp, eller inte
+	 * 		</li>
+	 * 
+	 * 
+	 * @return
+	 * <li>  
+	 * 		 a[n] retunerar ett tal mellan 0-9 ifall det inte är en bomb (representerar bomber runt), eller 100 ifall det är en bomb
+	 *  </li>
+	 *  <li>  
+	 * 		 a1[n] retunerar 10 ifall den är klickad, 0 ifall den inte är klickad 
+	 *  </li>
+	 *  <li>
+	 * 			revInt[n] retunerar 10 ifall den är öppen, och 0 annars
+	 * 		</li>
+	 *  <li>  
+	 * 		 redButton[n] retunerar 50 ifall den inte är röd, och -50 ifall den är röd
+	 *  </li>
+	 */
 	int[] a,a1,a2,revInt,redButton;
+
 	double b,b1,x1,x,y1;
-	boolean customBoolean = false;
-	int c, d, e, i, y, z, q, runOnce, nrRed, bomb;
+	/**
+	 * Aktiveras vid spelslut, så att inga knappar kan användas. Används i if-sats i mouselistener
+	 */
+	boolean unClickable = false;
+	/**
+	 * <li>
+	 *nrRed är antalet röda rutor. Används för att mäta antalet röda, så att man senare kan se ifall alla röda rutor matchar alla bomber
+	 *</li>
+	 *<li>
+	 *nrRed2 avser antalet röda som har samma plats som minor. Används för att se ifall de röda är på alla minor, och bara på minor
+	 *</li>
+	 */
+
+	int c, d, e, i, y, z, q, runOnce, nrRed, nrRed2, bomb;
+
 
 	JRadioButton easy = new JRadioButton("Easy"), standard = new JRadioButton("Standard"), hard = new JRadioButton("Hard"), custom = new JRadioButton("Custom");
 	ButtonGroup gameOptions = new ButtonGroup();
@@ -46,13 +97,19 @@ public class Röj implements ActionListener {
 	public void customGame(){
 		//		if(customBoolean==true){
 		customFrame.setVisible(true);
-		
-			for(int i = 0; i < button.length;i++){
-			button[i]=new JButton("");
-				frame.remove(button[i]);
-				System.out.println("Yay");
-			}
+		unClickable=false;
+		//			for(int i = 0; i < button.length;i++){
+		//			button[i]=new JButton("");
+		//				frame.remove(button[i]);
+		//				System.out.println("Yay");
+		//			}
+		for(int i  = 0; i<button.length;i++){
+			frame.remove(button[i]);
+		}
 
+
+
+		System.out.println(widthInt+ "a --- a1 " + heightInt + " --  a2 " + minesInt + " --- ");
 		//GUI customGame ###########################################################################
 		gameOptions.add(easy);
 		gameOptions.add(standard);
@@ -179,29 +236,30 @@ public class Röj implements ActionListener {
 
 	private void createGame() {
 
-		
-		
-		if(gameType=="easy"){
+
+
+		if(gameType.equals("easy")){
 			widthInt=9;
 			heightInt=9;
 			minesInt=10;
 		}
-		
-		else if (gameType=="hard") {
+
+		else if (gameType.equals("hard")) {
 			widthInt=24;
 			heightInt=24;
 			minesInt=100;
 		}
-		else if (gameType=="custom") {
+		else if (gameType.equals("custom")) {
 
 		}
-		else if (gameType.toString()=="standard") {
-			gameType="standard";
+		else if (gameType.equals("standard")) {
 			widthInt=16;
 			heightInt=16;
 			minesInt=40;
+			System.out.println("s---------------asdsd");
 
-			
+
+
 		}else{
 			widthInt=16;
 			heightInt=16;
@@ -215,21 +273,22 @@ public class Röj implements ActionListener {
 		revInt= new int[widthInt*heightInt];
 		redButton = new int[widthInt*heightInt];
 		button = new JButton[widthInt*heightInt];
-		
+
 		System.out.println(widthInt + "  Width   ----   Height  "+heightInt);
-		
+		System.out.println(a.length+ "a --- a1 " + a1.length + " --  a2 " + a2.length + " --- ");
+
 		System.err.println(button.length);
-		
+
 		try {
 			for(int i = 0; i < button.length;i++){
-			button[i]=new JButton("");
+				button[i]=new JButton("");
 				frame.remove(button[i]);
 			}
 		} catch (Exception e) {
 			System.err.println("sadassd");
 			System.out.println(e);
 		}
-		
+
 
 		frame.setVisible(true);
 		frame.setLayout(new GridLayout(heightInt,widthInt));
@@ -240,19 +299,24 @@ public class Röj implements ActionListener {
 		mBar.add(customItem);
 		customItem.addActionListener(e -> {
 			frame.dispose();
-			customGame();
-		});
-		res.addActionListener(e ->{
-			frame.dispose();
 			a = new int[0];
 			a1= new int [0];
 			a2= new int[0];
 			revInt= new int[0];
 			redButton = new int[0];
-			button = new JButton[0];
+			customGame();
+		});
+		res.addActionListener(e ->{
+			frame.dispose();
+			//			a = new int[0];
+			//			a1= new int [0];
+			//			a2= new int[0];
+			//			revInt= new int[0];
+			//			redButton = new int[0];
+			//			button = new JButton[0];
 			new Röj();
-//			createGame();
-			
+			//			createGame();
+
 		});
 
 		validate.addActionListener(e -> {
@@ -309,128 +373,163 @@ public class Röj implements ActionListener {
 			button[i].setFocusPainted(false);
 			button[i].addMouseListener(new MouseListener() {
 
-				public void mouseReleased(MouseEvent e) {
-					// FIXME Auto-generated method stub
-
-				}
-
 				public void mousePressed(MouseEvent e) {
 					// FIXME Auto-generated method stub
-					if(SwingUtilities.isRightMouseButton(e)){
 
-						if(runOnce==10&&a1[Arrays.asList(button).indexOf((JButton)e.getSource())]!=10){
-							if(redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]==-50){
-								redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]*=-1;
-								button[Arrays.asList(button).indexOf((JButton)e.getSource())].setBackground(new Color(166, 166, 166));
-							}
-							else if(redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]==50){
-								redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]*=-1;
+					//Kollar färgen på punkten där det klickas
+					if(!unClickable){
+						Robot rb = null;
+						try {
+							rb = new Robot();
+						} catch (Exception e1) {System.out.println(436567890);}
+						Color color = (rb.getPixelColor(e.getLocationOnScreen().x, e.getLocationOnScreen().y));
+						//					System.out.println(!(color.getRGB()==(Color.red.getRGB())));
 
-								button[Arrays.asList(button).indexOf((JButton)e.getSource())].setBackground(Color.red);
-								for(int i = 0;i<button.length;i++){
-									if(button[i].getBackground()== Color.red){
-										nrRed++;
-										if(nrRed<=41){
-											a2[nrRed--]=i;
-										}
-									}
-								}
-								if(nrRed==41){
-									nrRed=0;
-									for(int i = 0; i < 41;i++){	
-										if(a[a2[i]]==100){
-											nrRed++;
-										}
-									}
-									if(nrRed==minesInt){
-										Win();
-									}
-								}
-							}
-						}
-					}
-					else if(button[Arrays.asList(button).indexOf((JButton)e.getSource())].getBackground() != Color.red){
 
-						if(runOnce!=10){
-							runOnce=10;
-							for (int i = 0; i <= minesInt; i++) {
-								int x = new Random().nextInt(widthInt*heightInt);
-								if(a[x]!=100&&x!=Arrays.asList(button).indexOf((JButton)e.getSource())&&(x-(widthInt+1)!=Arrays.asList(button).indexOf((JButton)e.getSource())
-										&&x-widthInt!=Arrays.asList(button).indexOf((JButton)e.getSource())&&x-(widthInt-1)!=Arrays.asList(button).indexOf((JButton)e.getSource())
-										&&x-1!=Arrays.asList(button).indexOf((JButton)e.getSource())&&x+1!=Arrays.asList(button).indexOf((JButton)e.getSource())
-										&&x+(widthInt-1)!=Arrays.asList(button).indexOf((JButton)e.getSource())&&x+widthInt!=Arrays.asList(button).indexOf((JButton)e.getSource())
-										&&x+(widthInt+1)!=Arrays.asList(button).indexOf((JButton)e.getSource()))){
-									a[x]=100;
+						if(SwingUtilities.isRightMouseButton(e)){
+							if(runOnce==10&&a1[Arrays.asList(button).indexOf((JButton)e.getSource())]!=10){
+								System.out.println("2443234432qeasdads     " + redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]);
+								if(redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]==-50){
+									redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]*=-1;
+									button[Arrays.asList(button).indexOf((JButton)e.getSource())].setBackground(new Color(166, 166, 166));
+									nrRed--;
+									if(nrRed==minesInt){	
+										for(int i = 0;i<a.length;i++){
+											//Kollar ifall alla röda knappar representerar en bomb
+											if(a[i]>=100&&redButton[i]==-50){
+												nrRed2++;
+												System.out.println(nrRed2 + " red ---- " + minesInt);
+											}
+										}
+										if(nrRed2==minesInt){
+											Win();
+										}
+										else{
+											nrRed2=0;
+										}
+									}
 								}
-								else{
-									i--;
-								}
-							}
-							for (int i=0;i<a.length;i++) {
-								if(a[i]>50){
-									//Om bomb
-									b=(i+widthInt)/widthInt;
-									y = (int)b; //y = radnummer, alltså 1 - 16...
-									x = i+1-(((int)i/widthInt)*widthInt); //x = kolumnnummer, alltså 0 - 15...
-									if(y > 1){
-										a[i-widthInt]+=1;
-										if(x>1){
-											a[i-(widthInt+1)]+=1;
+								else if(redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]==50){
+
+									redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]*=-1;
+
+									button[Arrays.asList(button).indexOf((JButton)e.getSource())].setBackground(Color.red);
+									System.err.println("adasds");
+									nrRed++;
+									System.out.println(a[Arrays.asList(button).indexOf((JButton)e.getSource())]);
+									if(nrRed==minesInt){	
+										for(int i = 0;i<a.length;i++){
+											//Kollar ifall alla röda knappar representerar en bomb
+											if(a[i]>=100&&redButton[i]==-50){
+												nrRed2++;
+												System.out.println(nrRed2 + " red ---- " + minesInt);
+											}
 										}
-										if(x<widthInt){
-											a[i-(widthInt-1)]+=1;
+										if(nrRed2==minesInt){
+											Win();
 										}
-									}
-									if(y < widthInt){
-										a[i+widthInt]+=1;
-										if(x>1){
-											a[i+(widthInt-1)]+=1;
-										}
-										if(x<widthInt){
-											a[i+(widthInt+1)]+=1;
+										else{
+											nrRed2=0;
 										}
 									}
-									if(x>1){
-										a[i-1]+=1;
-									}
-									if(x<widthInt){
-										a[i+1]+=1;
-									}
+
+									//								for(int i = 0;i<button.length;i++){
+									//									if(button[i].getBackground()== Color.red){
+									//
+									//										if(nrRed>=minesInt){
+									//											a2[nrRed--]=i;
+									//										}
+									//									}
+									//								}
+									//								if(nrRed==41){
+									//									nrRed=0;
+									//									for(int i = 0; i < 41;i++){	
+									//										if(a[a2[i]]==100){
+									//											nrRed++;
+									//										}
+									//									}
+									//									if(nrRed==minesInt){
+									//										Win();
+									//									}
+									//								}
 
 								}
 							}
 						}
-						click(Arrays.asList(button).indexOf((JButton)e.getSource()));
 
+
+						else if(!(color.getRGB()==(Color.red.getRGB()))){
+
+							if(runOnce!=10){
+								runOnce=10;
+								//Skapar bana, bomber först. De fyra raderna kollar främst att det inte redan är bomber på a[x], och så att
+								//bomben inte hammnar på rutan där man klickade, eller de 8 runtomkring den
+								for (int i = 0; i < minesInt; i++) {
+									int x = new Random().nextInt(widthInt*heightInt);
+									if(a[x]!=100&&x!=Arrays.asList(button).indexOf((JButton)e.getSource())&&(x-(widthInt+1)!=Arrays.asList(button).indexOf((JButton)e.getSource())
+											&&x-widthInt!=Arrays.asList(button).indexOf((JButton)e.getSource())&&x-(widthInt-1)!=Arrays.asList(button).indexOf((JButton)e.getSource())
+											&&x-1!=Arrays.asList(button).indexOf((JButton)e.getSource())&&x+1!=Arrays.asList(button).indexOf((JButton)e.getSource())
+											&&x+(widthInt-1)!=Arrays.asList(button).indexOf((JButton)e.getSource())&&x+widthInt!=Arrays.asList(button).indexOf((JButton)e.getSource())
+											&&x+(widthInt+1)!=Arrays.asList(button).indexOf((JButton)e.getSource()))){
+										a[x]=100;
+									}
+									else{
+										i--;
+									}
+								}
+								for (int i=0;i<a.length;i++) {
+									if(a[i]>50){
+										//Om bomb
+										b=(i+widthInt)/widthInt;
+										y = (int)b; //y = radnummer, alltså 1 - 16...
+										x = i+1-(((int)i/widthInt)*widthInt); //x = kolumnnummer, alltså 0 - 15...
+										if(y > 1){
+											a[i-widthInt]+=1;
+											if(x>1){
+												a[i-(widthInt+1)]+=1;
+											}
+											if(x<widthInt){
+												a[i-(widthInt-1)]+=1;
+											}
+										}
+										if(y < widthInt){
+											a[i+widthInt]+=1;
+											if(x>1){
+												a[i+(widthInt-1)]+=1;
+											}
+											if(x<widthInt){
+												a[i+(widthInt+1)]+=1;
+											}
+										}
+										if(x>1){
+											a[i-1]+=1;
+										}
+										if(x<widthInt){
+											a[i+1]+=1;
+										}
+
+									}
+								}
+							}
+							click(Arrays.asList(button).indexOf((JButton)e.getSource()));
+
+						}
 					}
-
 				}
 
 				@Override
-				public void mouseExited(MouseEvent e) {
-					// FIXME Auto-generated method stub
-
-				}
-
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					// FIXME Auto-generated method stub
-
-				}
-
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// FIXME Auto-generated method stub
-
-				}
+				public void mouseExited(MouseEvent e) {}
+				public void mouseEntered(MouseEvent e) {}
+				public void mouseClicked(MouseEvent e) {}
+				public void mouseReleased(MouseEvent e) {}
 			});
-			
-			frame.remove(button[i]);
-			
+
 			frame.add(button[i]);
-//			System.err.println(i);
+			//			System.err.println(i);
 		}
 		frame.revalidate();
+		frame.repaint();
+		System.out.println();
 
 	}
 
@@ -476,7 +575,7 @@ public class Röj implements ActionListener {
 		}
 	}
 	public void Win() {
-
+		unClickable=true;
 		for(int i1 = 0; i1 < button.length;i1++){
 			button[i1].setBackground(Color.white);
 			if(a1[i1]==10){
@@ -518,10 +617,12 @@ public class Röj implements ActionListener {
 		button[159+10].setBackground(Color.black);
 		button[159+11].setBackground(Color.black);
 
+		mBar.add(validate);
+		frame.revalidate();
 
 	}
 	public void GameOver(int i){
-
+		unClickable=true;
 		//Skriver Game Over
 		//Rad 2
 		button[15+1].setBackground(Color.black);
@@ -646,7 +747,9 @@ public class Röj implements ActionListener {
 		button[223+16].setBackground(Color.black);
 
 		button[i].setBackground(new Color(50, 50, 50));
+
 		bomb=i;
+		unClickable=true;
 		for(int i1 = 0; i1 < button.length;i1++){
 			if(a1[i1]==10){
 				revInt[i1]=10;
@@ -661,16 +764,18 @@ public class Röj implements ActionListener {
 
 		a1[i]=10;
 
-		b=(i+widthInt)/widthInt;
-		y =(int)b; //y = radnummer, alltså 1 - 16
-		x = (((double)b-(double)y)*widthInt)+1d; //x = kolumnnummer, alltså 0 - 15
+		b=((double)(i+widthInt))/(double)(widthInt);
+		y =((int)b); //y = radnummer, alltså 1 - 16
+		x = ((((double)b)-((double)y))*widthInt)+1d; //x = kolumnnummer, alltså 0 - 15
 
+		System.out.println(x + " x --- b " + b + "  " + y + " y --- i "+i);
+		
 		for(int q = -(widthInt+1); q<(widthInt+2);){
 			if(i+q>=0&&i+q<=widthInt*heightInt-1){
 
-				b1=(((double)i+q)+widthInt)/widthInt;
-				y1 = Math.floor(b1); //y = radnummer, alltså 1 - 16
-				x1 = (((double)b1-(double)y1)*16d)+1d; //x = kolumnnummer, alltså 0 - 15
+				b1=((double)(i+widthInt))/(double)(widthInt);
+				y1 =((int)b1); //y = radnummer, alltså 1 - 16
+				x1 = ((((double)b1)-((double)y1))*widthInt)+1d; //x = kolumnnummer, alltså 0 - 15
 
 				//				if(((x==1&&(q!=-17&&q!=15&&q!=-1))||(x==16&&(q!=-15&&q!=17&&q!=1)))||(x>1&&x<16)){
 				//				System.err.println(x1+" == x1");
@@ -771,7 +876,7 @@ public class Röj implements ActionListener {
 
 					gameType="custom";
 
-					if((heightInt*widthInt)>minesInt){
+					if((heightInt*widthInt)<minesInt){
 						minesInt=(heightInt*widthInt);
 					}
 
@@ -793,6 +898,6 @@ public class Röj implements ActionListener {
 			}
 			createGame();
 		}
-		
+
 	}
 }

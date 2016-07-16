@@ -41,7 +41,10 @@ public class GoJbFrame extends JFrame{
 		setDefaultCloseOperation(close);
 		setVisible(visible);
 		setTitle(title);
+		System.out.println(222);
+		if(close==3){
 		addWindowListener(autoListener);
+		}
 		try {
 			setIconImage(new ImageIcon(getClass().getResource("/images/Java-icon.png")).getImage());
 		} catch (Exception e) {

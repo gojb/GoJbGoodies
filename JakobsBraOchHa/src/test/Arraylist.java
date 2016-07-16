@@ -8,18 +8,11 @@ public class Arraylist {
 	public Arraylist() {
 		List<String> strings = new ArrayList<>();
 		
-		strings.add("Nr:");
-		System.out.println(strings);
-		strings.set(0, strings.get(0)+"1,2,3,4,5,6");
-		System.err.println(strings);
-		strings.set(0, strings.get(0)+",7,8,-9,10");
-		System.out.println(strings);
-		strings.add("sads-Nrr");
-		
-		strings.add("He-j");
-	
-		System.err.println(strings.get(0).toString().split(",")[1]+"    nr");
-		
+//		strings.add("Nr 1 2 3 4 5 6");
+//		strings.add("blah bla blah blah");
+//		strings.add("Nr 1 2 3 4 5 6");
+//		System.out.println(strings.indexOf("Nr 1 2 3 4 5 6"));
+		System.out.println(((int)2.9));
 		
 		
 //		String string="dig";

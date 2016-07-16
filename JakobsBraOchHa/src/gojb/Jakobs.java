@@ -51,7 +51,7 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 			gulItem = new JMenuItem("Gul"),
 			hastighetItem = new JMenuItem("Ändra hastighet på piltangenterna"),
 			händelseItem = new JMenuItem("Visa Händelsefönster");
-	
+
 	private JPanel knappPanel = new JPanel(),
 			mittPanel=new JPanel(){ private static final long serialVersionUID = 1L;
 			protected void paintComponent(Graphics g) {
@@ -322,7 +322,7 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 				laddstapelAvslut.setValue(laddstapelAvslut.getValue()-2);
 		}
 		else if (knapp.getSource() == avslutaItem){	
-			
+
 		}
 		else if(knapp.getSource() == knapp1){
 			färg = blue;
@@ -888,22 +888,54 @@ class Räknare implements ActionListener{
 	}	
 }
 class Ping{
+
+	boolean bol = false;
+
 	public Ping(String string){
 		GoJbFrame frame = new GoJbFrame("Ping",true,JFrame.DISPOSE_ON_CLOSE);
 		JTextArea textArea = new JTextArea();
 		JScrollPane scrollPane = new JScrollPane(textArea);
+
+
 
 		frame.add(scrollPane);
 		frame.addWindowListener(new WindowListener() {
 			@Override
 			public void windowClosed(WindowEvent e) {
 				try {
-					Runtime.getRuntime().exec("taskkill /f /im ping.exe");
-				} catch (IOException e1) {
+					bol = true;
+					System.err.println("asads-ads-ds-asd--d-ads-sd");
+					new Thread(){
+						public void run() {
+						BufferedReader inputStream = null;
+						try {
+							inputStream = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("taskkill /f /im ping.exe").getInputStream()));
+
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+						String s;
+						try {
+							while ((s = inputStream.readLine()) != null) {
+								System.out.println(s);
+							}
+						} catch (IOException e1) {
+							e1.printStackTrace();
+
+						}
+
+
+						//					Runtime.getRuntime().exec("taskkill /f /im ping.exe");
+						//			
+						}
+					}.start();
+				}
+				catch (Exception e1) {
 					e1.printStackTrace();
 
 				}
-				System.exit(1);
+
+				//				System.exit(1);
 			}
 			public void windowOpened(WindowEvent e) {}public void windowIconified(WindowEvent e) {}public void windowDeiconified(WindowEvent e) {}
 			public void windowDeactivated(WindowEvent e) {}public void windowClosing(WindowEvent e){}public void windowActivated(WindowEvent arg0) {};
@@ -913,46 +945,29 @@ class Ping{
 				System.err.println(i);
 				new Thread(){
 					public void run() {
+						if(!bol){
+							BufferedReader inputStream = null;
+							try {
+								inputStream = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("ping " + string + " -4 -l 65500 -n 1000").getInputStream()));
 
-						BufferedReader inputStream = null;
-						try {
-							inputStream = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("ping " + string + " -4 -l 65500 -n 1000").getInputStream()));
-
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-						String s;
-						try {
-							while ((s = inputStream.readLine()) != null) {
-								System.out.println(s);
+							} catch (IOException e) {
+								e.printStackTrace();
 							}
-						} catch (IOException e) {
-							e.printStackTrace();
+							String s;
+							try {
+								while ((s = inputStream.readLine()) != null) {
+									System.out.println(s);
+								}
+							} catch (IOException e) {
+								e.printStackTrace();
+
+							}
 
 						}
-
 					};
 				}.start();
 
 			} catch (Exception e) {e.printStackTrace();}
-		}
-		BufferedReader inputStream = null;
-		try {
-			inputStream = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("ping " + string + " -l 65500 -n 1000").getInputStream()));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-
-		}
-
-		String s;
-		// reading output stream of the command
-		try {
-			while ((s = inputStream.readLine()) != null) {
-				System.out.println(s);
-				textArea.append(s);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
 
 		}
 	}
