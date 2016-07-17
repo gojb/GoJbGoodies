@@ -35,6 +35,9 @@ public class GoJbFrame extends JFrame{
 		
 		this("",visible,3);
 	}
+	public GoJbFrame(String title,Boolean visible){
+		this(title, visible, 3);
+	}
 	public GoJbFrame(String title,Boolean visible, int close){
 		setSize(500, 500);
 		setLocationRelativeTo(null);

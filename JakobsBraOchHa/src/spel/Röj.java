@@ -1,3 +1,5 @@
+//Kolla värden på knapptryck, för att se om det är fel på if-satserna i button0. Alla knappar med 0 värden för inte vidare vid lång kedja
+
 package spel;
 
 import java.awt.*;
@@ -8,13 +10,17 @@ import java.awt.event.MouseListener;
 import java.util.Arrays;
 import java.util.Random;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.swing.*;
 
 import GoJbFrame.GoJbFrame;
+import gojb.GoJbGoodies;
 
 public class Röj implements ActionListener {
 
-	GoJbFrame frame = new GoJbFrame("Röj"), customFrame = new GoJbFrame(false);
+	GoJbFrame frame = new GoJbFrame("Röj", false), customFrame = new GoJbFrame(false);
 	JButton[] button;
 	JMenu menu = new JMenu("Hey");
 	JMenuBar mBar = new JMenuBar();
@@ -34,7 +40,7 @@ public class Röj implements ActionListener {
 	 * 		</li>
 	 * 
 	 * 		<li>
-	 * 			revInt är en lista lika stor som antalet rutor. Den håller reda på vilka rutor som är öppnade, till när man vinner/förlorar
+	 * 			revInt är en lista lika stor som antalet rutor. Den håller reda på vilka rutor som är öppnade, till när man revalidate-ar planen
 	 * 		</li>
 	 *		 <li>
 	 * 			redButton är en lista lika stor som antalet rutor. Den håller reda på ifall det är en röd knapp, eller inte
@@ -85,18 +91,18 @@ public class Röj implements ActionListener {
 
 	public static void main(String[] args) {
 		System.err.println("adssddas");
-		new Röj();
+		new Röj("Standard");
 
 	}
 
-	public Röj() {
-		gameType="standard";
+	public Röj(String gamemode) {
+		gameType=gamemode.toLowerCase();
 		createGame();
 	}
 
 	public void customGame(){
 		//		if(customBoolean==true){
-		customFrame.setVisible(true);
+
 		unClickable=false;
 		//			for(int i = 0; i < button.length;i++){
 		//			button[i]=new JButton("");
@@ -185,12 +191,7 @@ public class Röj implements ActionListener {
 					mines[i].setLocation(335, 10+(i*40));
 				}
 			}
-			if(i>0){
-				height[i].setLocation(130, 10+(i*40));
-				width[i].setLocation(240, 10+(i*40));
-				mines[i].setLocation(350, 10+(i*40));
-			}
-			if(i==4){
+			else if (i==4){
 				height[i].setBackground(Color.white);
 				width[i].setBackground(Color.white);
 				mines[i].setBackground(Color.white);
@@ -202,9 +203,17 @@ public class Röj implements ActionListener {
 				height[i].setEditable(false);
 				width[i].setEditable(false);
 				mines[i].setEditable(false);
+			
 			}
+			if(i>0){
+				height[i].setLocation(130, 10+(i*40));
+				width[i].setLocation(240, 10+(i*40));
+				mines[i].setLocation(350, 10+(i*40));
+			}
+			
 
 		}
+		
 		mines[0].setText("Mines");
 		mines[1].setText("10");
 		mines[2].setText("40");
@@ -226,6 +235,7 @@ public class Röj implements ActionListener {
 		pane.add(go);
 		go.setLocation(5, 220);
 		go.setSize(70, 40);
+		customFrame.setVisible(true);
 
 		//		#########################################################################################################
 		//		}
@@ -236,7 +246,12 @@ public class Röj implements ActionListener {
 
 	private void createGame() {
 
-
+		a = new int[0];
+		a1= new int [0];
+		a2= new int[0];
+		revInt= new int[0];
+		redButton = new int[0];
+		button = new JButton[0];
 
 		if(gameType.equals("easy")){
 			widthInt=9;
@@ -249,14 +264,15 @@ public class Röj implements ActionListener {
 			heightInt=24;
 			minesInt=100;
 		}
-		else if (gameType.equals("custom")) {
-
+		else if (gameType.contains("custom")) {
+			heightInt=Integer.parseInt(gameType.split(" ")[1]);
+			widthInt=Integer.parseInt(gameType.split(" ")[2]);
+			minesInt=Integer.parseInt(gameType.split(" ")[3]);
 		}
 		else if (gameType.equals("standard")) {
 			widthInt=16;
 			heightInt=16;
 			minesInt=40;
-			System.out.println("s---------------asdsd");
 
 
 
@@ -264,7 +280,6 @@ public class Röj implements ActionListener {
 			widthInt=16;
 			heightInt=16;
 			minesInt=40;
-			System.out.println("dfcgvh");
 		}
 
 		a = new int[widthInt*heightInt];
@@ -290,9 +305,9 @@ public class Röj implements ActionListener {
 		}
 
 
-		frame.setVisible(true);
+		
 		frame.setLayout(new GridLayout(heightInt,widthInt));
-		frame.setSize(700, 700);
+		frame.setSize(35*widthInt, 35*heightInt);
 		frame.setLocationRelativeTo(null);
 		frame.setJMenuBar(mBar);
 		mBar.add(res);
@@ -314,7 +329,7 @@ public class Röj implements ActionListener {
 			//			revInt= new int[0];
 			//			redButton = new int[0];
 			//			button = new JButton[0];
-			new Röj();
+			new Röj(gameType);
 			//			createGame();
 
 		});
@@ -359,36 +374,40 @@ public class Röj implements ActionListener {
 				if(a[i]==8){
 					button[i].setForeground(new Color(255, 255, 255));
 				}
+				if(redButton[i]<0){
+					button[i].setBackground(new Color(200,20,20,100));
+				}
 				if(a[i]>50){
+					button[i].setText(null);
 					button[i].setText("B");
 				}
 			}
+			
 			button[bomb].setBackground(new Color(50, 50, 50));
+			unClickable=true;
 		});
 		for (int i = 0; i < button.length; i++) {
 			redButton[i]=50;
 			button[i]=new JButton();
-			button[i].setSize(8,8);
+//			button[i].setSize(8,128);
+			button[i].setMinimumSize(new Dimension(50,50));
+			button[i].setMargin(new Insets(0, 0, 0, 0));
 			button[i].setBackground(new Color(166, 166, 166));
 			button[i].setFocusPainted(false);
 			button[i].addMouseListener(new MouseListener() {
-
 				public void mousePressed(MouseEvent e) {
-					// FIXME Auto-generated method stub
-
 					//Kollar färgen på punkten där det klickas
 					if(!unClickable){
 						Robot rb = null;
 						try {
 							rb = new Robot();
-						} catch (Exception e1) {System.out.println(436567890);}
+						} catch (Exception e1) {}
 						Color color = (rb.getPixelColor(e.getLocationOnScreen().x, e.getLocationOnScreen().y));
 						//					System.out.println(!(color.getRGB()==(Color.red.getRGB())));
 
 
 						if(SwingUtilities.isRightMouseButton(e)){
 							if(runOnce==10&&a1[Arrays.asList(button).indexOf((JButton)e.getSource())]!=10){
-								System.out.println("2443234432qeasdads     " + redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]);
 								if(redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]==-50){
 									redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]*=-1;
 									button[Arrays.asList(button).indexOf((JButton)e.getSource())].setBackground(new Color(166, 166, 166));
@@ -414,9 +433,7 @@ public class Röj implements ActionListener {
 									redButton[Arrays.asList(button).indexOf((JButton)e.getSource())]*=-1;
 
 									button[Arrays.asList(button).indexOf((JButton)e.getSource())].setBackground(Color.red);
-									System.err.println("adasds");
 									nrRed++;
-									System.out.println(a[Arrays.asList(button).indexOf((JButton)e.getSource())]);
 									if(nrRed==minesInt){	
 										for(int i = 0;i<a.length;i++){
 											//Kollar ifall alla röda knappar representerar en bomb
@@ -527,14 +544,19 @@ public class Röj implements ActionListener {
 			frame.add(button[i]);
 			//			System.err.println(i);
 		}
+		
 		frame.revalidate();
 		frame.repaint();
 		System.out.println();
+//		frame.pack();
+		frame.setVisible(true);
 
 	}
 
 	public void click(int i){
 
+
+		
 		if(a1[i]!=10){
 			a1[i]=10;
 			if(a[i]<50){
@@ -544,28 +566,28 @@ public class Röj implements ActionListener {
 				if(a[i]==1){
 					button[i].setForeground(new Color(255, 0, 0));
 				}
-				if(a[i]==2){
+				else if(a[i]==2){
 					button[i].setForeground(new Color(255, 0, 150));
 				}
-				if(a[i]==3){
+				else if(a[i]==3){
 					button[i].setForeground(new Color(255, 150, 0));
 				}
-				if(a[i]==4){
+				else if(a[i]==4){
 					button[i].setForeground(new Color(0, 100, 255));
 				}
-				if(a[i]==5){
+				else if(a[i]==5){
 					button[i].setForeground(new Color(0, 150, 90));
 				}
-				if(a[i]==6){
+				else if(a[i]==6){
 					button[i].setForeground(new Color(150, 0, 255));
 				}
-				if(a[i]==7){
+				else if(a[i]==7){
 					button[i].setForeground(new Color(120, 50, 100));
 				}
-				if(a[i]==8){
+				else if(a[i]==8){
 					button[i].setForeground(new Color(255, 255, 255));
 				}
-				if(a[i]==0){	
+				else if(a[i]==0){	
 					button0(i);
 				}
 			}
@@ -584,173 +606,190 @@ public class Röj implements ActionListener {
 			a1[i1]=10;
 		}
 
-		//Skriver Smiley
-		//Rad 4
-		button[63+6].setBackground(Color.black);
-		button[63+11].setBackground(Color.black);
+		if(gameType.equals("standard")){
+			//Skriver Smiley
+			//Rad 4
+			button[63+6].setBackground(Color.black);
+			button[63+11].setBackground(Color.black);
 
-		//Rad 5
-		button[79+6].setBackground(Color.black);
-		button[79+11].setBackground(Color.black);
+			//Rad 5
+			button[79+6].setBackground(Color.black);
+			button[79+11].setBackground(Color.black);
 
-		//Rad 7
-		button[95+4].setBackground(Color.black);
-		button[95+13].setBackground(Color.black);
+			//Rad 7
+			button[95+4].setBackground(Color.black);
+			button[95+13].setBackground(Color.black);
 
-		//Rad 8
-		button[111+4].setBackground(Color.black);
-		button[111+13].setBackground(Color.black);
+			//Rad 8
+			button[111+4].setBackground(Color.black);
+			button[111+13].setBackground(Color.black);
 
-		//Rad 9
-		button[127+4].setBackground(Color.black);
-		button[127+13].setBackground(Color.black);
+			//Rad 9
+			button[127+4].setBackground(Color.black);
+			button[127+13].setBackground(Color.black);
 
-		//Rad 10
-		button[143+5].setBackground(Color.black);
-		button[143+12].setBackground(Color.black);
+			//Rad 10
+			button[143+5].setBackground(Color.black);
+			button[143+12].setBackground(Color.black);
 
-		//Rad 11
-		button[159+6].setBackground(Color.black);
-		button[159+7].setBackground(Color.black);
-		button[159+8].setBackground(Color.black);
-		button[159+9].setBackground(Color.black);
-		button[159+10].setBackground(Color.black);
-		button[159+11].setBackground(Color.black);
-
+			//Rad 11
+			button[159+6].setBackground(Color.black);
+			button[159+7].setBackground(Color.black);
+			button[159+8].setBackground(Color.black);
+			button[159+9].setBackground(Color.black);
+			button[159+10].setBackground(Color.black);
+			button[159+11].setBackground(Color.black);
+		}
 		mBar.add(validate);
 		frame.revalidate();
+		try {
+			Clip clip = AudioSystem.getClip();
+			clip.open(AudioSystem.getAudioInputStream(GoJbGoodies.class.getResource("/images/tada.wav")));
+			FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(gainControl.getMaximum());
+			clip.start();
 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	public void GameOver(int i){
 		unClickable=true;
-		//Skriver Game Over
-		//Rad 2
-		button[15+1].setBackground(Color.black);
-		button[15+2].setBackground(Color.black);
-		button[15+5].setBackground(Color.black);
-		button[15+6].setBackground(Color.black);
-		button[15+7].setBackground(Color.black);
-		button[15+9].setBackground(Color.black);
-		button[15+10].setBackground(Color.black);
-		button[15+12].setBackground(Color.black);
-		button[15+13].setBackground(Color.black);
-		button[15+15].setBackground(Color.black);
-		button[15+16].setBackground(Color.black);
+		if(gameType.equals("standard")){
+			//Skriver Game Over
+			//Rad 2
+			button[15+1].setBackground(Color.black);
+			button[15+2].setBackground(Color.black);
+			button[15+5].setBackground(Color.black);
+			button[15+6].setBackground(Color.black);
+			button[15+7].setBackground(Color.black);
+			button[15+9].setBackground(Color.black);
+			button[15+10].setBackground(Color.black);
+			button[15+12].setBackground(Color.black);
+			button[15+13].setBackground(Color.black);
+			button[15+15].setBackground(Color.black);
+			button[15+16].setBackground(Color.black);
 
-		//Rad 3
-		button[31+1].setBackground(Color.black);
-		button[31+5].setBackground(Color.black);
-		button[31+7].setBackground(Color.black);
-		button[31+9].setBackground(Color.black);
-		button[31+11].setBackground(Color.black);
-		button[31+13].setBackground(Color.black);
-		button[31+15].setBackground(Color.black);
+			//Rad 3
+			button[31+1].setBackground(Color.black);
+			button[31+5].setBackground(Color.black);
+			button[31+7].setBackground(Color.black);
+			button[31+9].setBackground(Color.black);
+			button[31+11].setBackground(Color.black);
+			button[31+13].setBackground(Color.black);
+			button[31+15].setBackground(Color.black);
 
-		//Rad 4
-		button[47+1].setBackground(Color.black);
-		button[47+5].setBackground(Color.black);
-		button[47+6].setBackground(Color.black);
-		button[47+7].setBackground(Color.black);
-		button[47+9].setBackground(Color.black);
-		button[47+13].setBackground(Color.black);
-		button[47+15].setBackground(Color.black);
-		button[47+16].setBackground(Color.black);
+			//Rad 4
+			button[47+1].setBackground(Color.black);
+			button[47+5].setBackground(Color.black);
+			button[47+6].setBackground(Color.black);
+			button[47+7].setBackground(Color.black);
+			button[47+9].setBackground(Color.black);
+			button[47+13].setBackground(Color.black);
+			button[47+15].setBackground(Color.black);
+			button[47+16].setBackground(Color.black);
 
-		//Rad 5
-		button[63+1].setBackground(Color.black);
-		button[63+3].setBackground(Color.black);
-		button[63+5].setBackground(Color.black);
-		button[63+7].setBackground(Color.black);
-		button[63+9].setBackground(Color.black);
-		button[63+13].setBackground(Color.black);
-		button[63+15].setBackground(Color.black);
+			//Rad 5
+			button[63+1].setBackground(Color.black);
+			button[63+3].setBackground(Color.black);
+			button[63+5].setBackground(Color.black);
+			button[63+7].setBackground(Color.black);
+			button[63+9].setBackground(Color.black);
+			button[63+13].setBackground(Color.black);
+			button[63+15].setBackground(Color.black);
 
-		//Rad 6
-		button[79+1].setBackground(Color.black);
-		button[79+2].setBackground(Color.black);
-		button[79+3].setBackground(Color.black);
-		button[79+5].setBackground(Color.black);
-		button[79+7].setBackground(Color.black);
-		button[79+9].setBackground(Color.black);
-		button[79+13].setBackground(Color.black);
-		button[79+15].setBackground(Color.black);
-		button[79+16].setBackground(Color.black);
+			//Rad 6
+			button[79+1].setBackground(Color.black);
+			button[79+2].setBackground(Color.black);
+			button[79+3].setBackground(Color.black);
+			button[79+5].setBackground(Color.black);
+			button[79+7].setBackground(Color.black);
+			button[79+9].setBackground(Color.black);
+			button[79+13].setBackground(Color.black);
+			button[79+15].setBackground(Color.black);
+			button[79+16].setBackground(Color.black);
 
-		//Rad 7
-		button[95+3].setBackground(Color.black);
+			//Rad 7
+			button[95+3].setBackground(Color.black);
 
-		//Rad 9
-		button[127+2].setBackground(Color.black);
-		button[127+3].setBackground(Color.black);
-		button[127+6].setBackground(Color.black);
-		button[127+8].setBackground(Color.black);
-		button[127+10].setBackground(Color.black);
-		button[127+11].setBackground(Color.black);
-		button[127+13].setBackground(Color.black);
-		button[127+14].setBackground(Color.black);
-		button[127+15].setBackground(Color.black);
+			//Rad 9
+			button[127+2].setBackground(Color.black);
+			button[127+3].setBackground(Color.black);
+			button[127+6].setBackground(Color.black);
+			button[127+8].setBackground(Color.black);
+			button[127+10].setBackground(Color.black);
+			button[127+11].setBackground(Color.black);
+			button[127+13].setBackground(Color.black);
+			button[127+14].setBackground(Color.black);
+			button[127+15].setBackground(Color.black);
 
-		//Rad 10
-		button[143+1].setBackground(Color.black);
-		button[143+4].setBackground(Color.black);
-		button[143+6].setBackground(Color.black);
-		button[143+8].setBackground(Color.black);
-		button[143+10].setBackground(Color.black);
-		button[143+13].setBackground(Color.black);
-		button[143+16].setBackground(Color.black);
+			//Rad 10
+			button[143+1].setBackground(Color.black);
+			button[143+4].setBackground(Color.black);
+			button[143+6].setBackground(Color.black);
+			button[143+8].setBackground(Color.black);
+			button[143+10].setBackground(Color.black);
+			button[143+13].setBackground(Color.black);
+			button[143+16].setBackground(Color.black);
 
-		//Rad 11
-		button[159+1].setBackground(Color.black);
-		button[159+4].setBackground(Color.black);
-		button[159+6].setBackground(Color.black);
-		button[159+8].setBackground(Color.black);
-		button[159+10].setBackground(Color.black);
-		button[159+13].setBackground(Color.black);
-		button[159+16].setBackground(Color.black);
+			//Rad 11
+			button[159+1].setBackground(Color.black);
+			button[159+4].setBackground(Color.black);
+			button[159+6].setBackground(Color.black);
+			button[159+8].setBackground(Color.black);
+			button[159+10].setBackground(Color.black);
+			button[159+13].setBackground(Color.black);
+			button[159+16].setBackground(Color.black);
 
-		//Rad 12
-		button[175+1].setBackground(Color.black);
-		button[175+4].setBackground(Color.black);
-		button[175+6].setBackground(Color.black);
-		button[175+8].setBackground(Color.black);
-		button[175+10].setBackground(Color.black);
-		button[175+13].setBackground(Color.black);
-		button[175+14].setBackground(Color.black);
-		button[175+15].setBackground(Color.black);
-		button[175+11].setBackground(Color.black);
+			//Rad 12
+			button[175+1].setBackground(Color.black);
+			button[175+4].setBackground(Color.black);
+			button[175+6].setBackground(Color.black);
+			button[175+8].setBackground(Color.black);
+			button[175+10].setBackground(Color.black);
+			button[175+13].setBackground(Color.black);
+			button[175+14].setBackground(Color.black);
+			button[175+15].setBackground(Color.black);
+			button[175+11].setBackground(Color.black);
 
-		//Rad 13
-		button[191+1].setBackground(Color.black);
-		button[191+4].setBackground(Color.black);
-		button[191+6].setBackground(Color.black);
-		button[191+8].setBackground(Color.black);
-		button[191+10].setBackground(Color.black);
-		button[191+13].setBackground(Color.black);
-		button[191+14].setBackground(Color.black);
+			//Rad 13
+			button[191+1].setBackground(Color.black);
+			button[191+4].setBackground(Color.black);
+			button[191+6].setBackground(Color.black);
+			button[191+8].setBackground(Color.black);
+			button[191+10].setBackground(Color.black);
+			button[191+13].setBackground(Color.black);
+			button[191+14].setBackground(Color.black);
 
-		//Rad 14
-		button[207+1].setBackground(Color.black);
-		button[207+4].setBackground(Color.black);
-		button[207+6].setBackground(Color.black);
-		button[207+8].setBackground(Color.black);
-		button[207+10].setBackground(Color.black);
-		button[207+13].setBackground(Color.black);
-		button[207+15].setBackground(Color.black);
+			//Rad 14
+			button[207+1].setBackground(Color.black);
+			button[207+4].setBackground(Color.black);
+			button[207+6].setBackground(Color.black);
+			button[207+8].setBackground(Color.black);
+			button[207+10].setBackground(Color.black);
+			button[207+13].setBackground(Color.black);
+			button[207+15].setBackground(Color.black);
 
-		//Rad 15
-		button[223+2].setBackground(Color.black);
-		button[223+3].setBackground(Color.black);
-		button[223+7].setBackground(Color.black);
-		button[223+10].setBackground(Color.black);
-		button[223+11].setBackground(Color.black);
-		button[223+13].setBackground(Color.black);
-		button[223+16].setBackground(Color.black);
+			//Rad 15
+			button[223+2].setBackground(Color.black);
+			button[223+3].setBackground(Color.black);
+			button[223+7].setBackground(Color.black);
+			button[223+10].setBackground(Color.black);
+			button[223+11].setBackground(Color.black);
+			button[223+13].setBackground(Color.black);
+			button[223+16].setBackground(Color.black);
 
-		button[i].setBackground(new Color(50, 50, 50));
-
+			button[i].setBackground(new Color(50, 50, 50));
+		}
+		else{
+			button[i].setBackground(new Color(50, 50, 50));
+			JOptionPane.showMessageDialog(frame, "GAME OVER");
+		}
 		bomb=i;
 		unClickable=true;
+
 		for(int i1 = 0; i1 < button.length;i1++){
+
 			if(a1[i1]==10){
 				revInt[i1]=10;
 			}
@@ -768,12 +807,12 @@ public class Röj implements ActionListener {
 		y =((int)b); //y = radnummer, alltså 1 - 16
 		x = ((((double)b)-((double)y))*widthInt)+1d; //x = kolumnnummer, alltså 0 - 15
 
-		System.out.println(x + " x --- b " + b + "  " + y + " y --- i "+i);
-		
+
+		//Mellan -17 och +18 för att kunna kolla alla rutor runt klickad ruta
 		for(int q = -(widthInt+1); q<(widthInt+2);){
 			if(i+q>=0&&i+q<=widthInt*heightInt-1){
 
-				b1=((double)(i+widthInt))/(double)(widthInt);
+				b1=((double)((i+q)+widthInt))/(double)(widthInt);
 				y1 =((int)b1); //y = radnummer, alltså 1 - 16
 				x1 = ((((double)b1)-((double)y1))*widthInt)+1d; //x = kolumnnummer, alltså 0 - 15
 
@@ -782,7 +821,8 @@ public class Röj implements ActionListener {
 				//				System.out.println(y1);
 
 				if(((x-x1<7)&&(x-x1>-7))) {
-
+					System.out.println(i + " = i ---- i+q = "+(i+q)+" --- a[i] = " + a[i] + " -- a[i+q] = " + a[i+q] + " --- button[i] = " +button[i].getText() + 
+							" --- button[i+q] = " + button[i+q].getText());
 
 					if(!button[i+q].getBackground().equals(new Color(230, 230, 230))){
 						button[i+q].setBackground(new Color(230, 230, 230));
@@ -791,31 +831,31 @@ public class Röj implements ActionListener {
 							button[i+q].setForeground(new Color(255, 0, 0));
 							a1[i+q]=10;
 						}
-						if(a[i+q]==2){
+						else if(a[i+q]==2){
 							button[i+q].setForeground(new Color(255, 0, 150));
 							a1[i+q]=10;
 						}
-						if(a[i+q]==3){
+						else if(a[i+q]==3){
 							button[i+q].setForeground(new Color(255, 150, 0));
 							a1[i+q]=10;
 						}
-						if(a[i+q]==4){
+						else if(a[i+q]==4){
 							button[i+q].setForeground(new Color(0, 100, 255));
 							a1[i+q]=10;
 						}
-						if(a[i+q]==5){
+						else if(a[i+q]==5){
 							button[i+q].setForeground(new Color(0, 150, 90));
 							a1[i+q]=10;
 						}
-						if(a[i+q]==6){
+						else if(a[i+q]==6){
 							button[i+q].setForeground(new Color(150, 0, 255));
 							a1[i+q]=10;
 						}
-						if(a[i+q]==7){
+						else if(a[i+q]==7){
 							button[i+q].setForeground(new Color(120, 50, 100));
 							a1[i+q]=10;
 						}
-						if(a[i+q]==8){
+						else if(a[i+q]==8){
 							button[i+q].setForeground(new Color(255, 255, 255));
 							a1[i+q]=10;
 						}
@@ -825,6 +865,7 @@ public class Röj implements ActionListener {
 						}
 						if(a[i+q]==0){
 							click(q+i);
+							button[i+q].setText(null);
 						}
 					}
 					//					}
@@ -844,14 +885,7 @@ public class Röj implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// FIXME Auto-generated method stub
-		if(e.getSource()==custom||e.getSource()==easy||e.getSource()==standard||e.getSource()==hard){
-			if(!custom.isSelected()){
-				height[4].setEditable(false);
-				width[4].setEditable(false);
-				mines[4].setEditable(false);
-
-			}
-			if(custom.isSelected()){
+		if(e.getSource()==custom){
 				height[4].setBackground(new Color(255, 255, 255));
 				height[4].setEditable(true);
 				height[4].requestFocusInWindow();
@@ -861,24 +895,27 @@ public class Röj implements ActionListener {
 
 				mines[4].setBackground(new Color(255, 255, 255));
 				mines[4].setEditable(true);
-
-			}
+		}
+		else{
+				height[4].setEditable(false);
+				width[4].setEditable(false);
+				mines[4].setEditable(false);	
 		}
 		if(e.getSource()==go){
 			if(custom.isSelected()){
 				try {
 
+					//Lägger de valda enheterna i gameType stringen
 					heightInt=Integer.parseInt(height[4].getText());
 					widthInt=Integer.parseInt(width[4].getText());
-					minesInt=Integer.parseInt(mines[4].getText());
+					minesInt=Integer.parseInt(mines[4].getText());			
 
-					System.out.println("HURRAY");
-
-					gameType="custom";
-
-					if((heightInt*widthInt)<minesInt){
-						minesInt=(heightInt*widthInt);
+					if(((heightInt*widthInt)/2)<minesInt){
+						minesInt=(heightInt*widthInt)/2;
+						JOptionPane.showMessageDialog(customFrame, "To many bombs. Maximum is half as many bombs as there are buttons.\nCorrected to " +minesInt);
 					}
+
+					gameType="custom "+heightInt + " " + widthInt + " "+minesInt;
 
 				} catch (Exception e2) {
 					System.err.println("ERROR IN TEXT FIELDS. NOT ONLY INTEGERS");
@@ -896,7 +933,8 @@ public class Röj implements ActionListener {
 			else if (hard.isSelected()) {
 				gameType="hard";
 			}
-			createGame();
+			customFrame.dispose();
+			new Röj(gameType);
 		}
 
 	}
