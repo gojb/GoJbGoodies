@@ -2,14 +2,12 @@ package gojb;
 
 import static javax.swing.UIManager.*;
 
-<<<<<<< HEAD
-=======
+
 import javax.swing.LookAndFeel;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import spel.Snake;
 
->>>>>>> branch 'master' of https://github.com/gojb/GoJbsBraOchHa.git
 class Temp{
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
 		LookAndFeel s = getLookAndFeel();
