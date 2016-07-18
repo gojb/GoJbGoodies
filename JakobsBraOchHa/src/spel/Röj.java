@@ -87,17 +87,31 @@ public class Röj implements ActionListener {
 	JPanel panel = new JPanel();
 	JButton go = new JButton("Go!");
 	int heightInt, widthInt, minesInt;
-	String gameType = new String();
+	enum Gametype {easy, standard, hard, custom}
+	Gametype gametype;
 
 	public static void main(String[] args) {
 		System.err.println("adssddas");
-		new Röj("Standard");
+		new Röj(Gametype.standard);
 
 	}
 
-	public Röj(String gamemode) {
-		gameType=gamemode.toLowerCase();
+	public Röj(Gametype gamemode) {
+		gametype=gamemode;
 		createGame();
+	}
+	public Röj() {
+		new Röj(Gametype.standard);
+	}
+
+	public Röj(int heightInt2, int widthInt2, int minesInt2) {
+		gametype=Gametype.custom;
+		heightInt=heightInt2;
+		widthInt=widthInt2;
+		minesInt=minesInt2;		
+		createGame();
+		
+		
 	}
 
 	public void customGame(){
@@ -203,17 +217,17 @@ public class Röj implements ActionListener {
 				height[i].setEditable(false);
 				width[i].setEditable(false);
 				mines[i].setEditable(false);
-			
+
 			}
 			if(i>0){
 				height[i].setLocation(130, 10+(i*40));
 				width[i].setLocation(240, 10+(i*40));
 				mines[i].setLocation(350, 10+(i*40));
 			}
-			
+
 
 		}
-		
+
 		mines[0].setText("Mines");
 		mines[1].setText("10");
 		mines[2].setText("40");
@@ -246,6 +260,12 @@ public class Röj implements ActionListener {
 
 	private void createGame() {
 
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+		} catch (Exception e2) {}
+		
+		
+		
 		a = new int[0];
 		a1= new int [0];
 		a2= new int[0];
@@ -253,23 +273,18 @@ public class Röj implements ActionListener {
 		redButton = new int[0];
 		button = new JButton[0];
 
-		if(gameType.equals("easy")){
+		if(gametype.equals("easy")){
 			widthInt=9;
 			heightInt=9;
 			minesInt=10;
 		}
 
-		else if (gameType.equals("hard")) {
+		else if (gametype.equals("hard")) {
 			widthInt=24;
 			heightInt=24;
 			minesInt=100;
 		}
-		else if (gameType.contains("custom")) {
-			heightInt=Integer.parseInt(gameType.split(" ")[1]);
-			widthInt=Integer.parseInt(gameType.split(" ")[2]);
-			minesInt=Integer.parseInt(gameType.split(" ")[3]);
-		}
-		else if (gameType.equals("standard")) {
+		else if (gametype.equals("standard")) {
 			widthInt=16;
 			heightInt=16;
 			minesInt=40;
@@ -305,7 +320,7 @@ public class Röj implements ActionListener {
 		}
 
 
-		
+
 		frame.setLayout(new GridLayout(heightInt,widthInt));
 		frame.setSize(35*widthInt, 35*heightInt);
 		frame.setLocationRelativeTo(null);
@@ -329,7 +344,7 @@ public class Röj implements ActionListener {
 			//			revInt= new int[0];
 			//			redButton = new int[0];
 			//			button = new JButton[0];
-			new Röj(gameType);
+			new Röj(gametype);
 			//			createGame();
 
 		});
@@ -338,7 +353,7 @@ public class Röj implements ActionListener {
 			mBar.remove(validate);
 			for(int i = 0; i <button.length;i++){
 				if(button[i].getBackground()==Color.red){
-					button[i].setBackground(new Color(200,20,20,100));
+					button[i].setBackground(new Color(200,20,20));
 				}
 				else if(revInt[i]!=10){
 					button[i].setBackground(new Color(200,200,200));
@@ -375,21 +390,22 @@ public class Röj implements ActionListener {
 					button[i].setForeground(new Color(255, 255, 255));
 				}
 				if(redButton[i]<0){
-					button[i].setBackground(new Color(200,20,20,100));
+					button[i].setBackground(new Color(240,20,20));
 				}
 				if(a[i]>50){
 					button[i].setText(null);
 					button[i].setText("B");
 				}
 			}
-			
-			button[bomb].setBackground(new Color(50, 50, 50));
-			unClickable=true;
+			if(a[bomb]!=10){
+				button[bomb].setBackground(new Color(50, 50, 50));
+				unClickable=true;
+			}
 		});
 		for (int i = 0; i < button.length; i++) {
 			redButton[i]=50;
 			button[i]=new JButton();
-//			button[i].setSize(8,128);
+			//			button[i].setSize(8,128);
 			button[i].setMinimumSize(new Dimension(50,50));
 			button[i].setMargin(new Insets(0, 0, 0, 0));
 			button[i].setBackground(new Color(166, 166, 166));
@@ -544,11 +560,11 @@ public class Röj implements ActionListener {
 			frame.add(button[i]);
 			//			System.err.println(i);
 		}
-		
+
 		frame.revalidate();
 		frame.repaint();
 		System.out.println();
-//		frame.pack();
+		//		frame.pack();
 		frame.setVisible(true);
 
 	}
@@ -556,7 +572,7 @@ public class Röj implements ActionListener {
 	public void click(int i){
 
 
-		
+
 		if(a1[i]!=10){
 			a1[i]=10;
 			if(a[i]<50){
@@ -606,7 +622,7 @@ public class Röj implements ActionListener {
 			a1[i1]=10;
 		}
 
-		if(gameType.equals("standard")){
+		if(gametype.equals("standard")){
 			//Skriver Smiley
 			//Rad 4
 			button[63+6].setBackground(Color.black);
@@ -655,7 +671,7 @@ public class Röj implements ActionListener {
 	}
 	public void GameOver(int i){
 		unClickable=true;
-		if(gameType.equals("standard")){
+		if(gametype.equals("standard")){
 			//Skriver Game Over
 			//Rad 2
 			button[15+1].setBackground(Color.black);
@@ -886,20 +902,20 @@ public class Röj implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// FIXME Auto-generated method stub
 		if(e.getSource()==custom){
-				height[4].setBackground(new Color(255, 255, 255));
-				height[4].setEditable(true);
-				height[4].requestFocusInWindow();
+			height[4].setBackground(new Color(255, 255, 255));
+			height[4].setEditable(true);
+			height[4].requestFocusInWindow();
 
-				width[4].setBackground(new Color(255, 255, 255));
-				width[4].setEditable(true);
+			width[4].setBackground(new Color(255, 255, 255));
+			width[4].setEditable(true);
 
-				mines[4].setBackground(new Color(255, 255, 255));
-				mines[4].setEditable(true);
+			mines[4].setBackground(new Color(255, 255, 255));
+			mines[4].setEditable(true);
 		}
 		else{
-				height[4].setEditable(false);
-				width[4].setEditable(false);
-				mines[4].setEditable(false);	
+			height[4].setEditable(false);
+			width[4].setEditable(false);
+			mines[4].setEditable(false);	
 		}
 		if(e.getSource()==go){
 			if(custom.isSelected()){
@@ -915,26 +931,28 @@ public class Röj implements ActionListener {
 						JOptionPane.showMessageDialog(customFrame, "To many bombs. Maximum is half as many bombs as there are buttons.\nCorrected to " +minesInt);
 					}
 
-					gameType="custom "+heightInt + " " + widthInt + " "+minesInt;
+					System.out.println("wsddf");
+					new Röj(heightInt,widthInt,minesInt);
+					return;
 
 				} catch (Exception e2) {
 					System.err.println("ERROR IN TEXT FIELDS. NOT ONLY INTEGERS");
-					System.out.println(e2);
-					gameType="standard";
+					e2.printStackTrace();
+					gametype=Gametype.standard;
 				}
 
 			}
 			else if(easy.isSelected()){
-				gameType="easy";
+				gametype=Gametype.easy;
 			}
 			else if (standard.isSelected()) {
-				gameType="standard";
+				gametype=Gametype.standard;
 			}
 			else if (hard.isSelected()) {
-				gameType="hard";
+				gametype=Gametype.hard;
 			}
 			customFrame.dispose();
-			new Röj(gameType);
+			new Röj(gametype);
 		}
 
 	}

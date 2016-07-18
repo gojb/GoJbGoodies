@@ -2,6 +2,7 @@ package gojb;
 
 import static javax.swing.UIManager.*;
 
+
 import javax.swing.LookAndFeel;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -23,6 +24,8 @@ class Temp{
 
 //				new Ping("malla-hp");
 
+		new Randoms();
+		
 //				new Ping("192.168.115.100");
 		//		new Merit();
 		//		new Kurve(); 
@@ -38,7 +41,6 @@ class Temp{
 //			System.err.println("--Fel på Meddelande");
 //			e.printStackTrace();
 //		}
-////		
 //		try {
 //			Clip clip = AudioSystem.getClip();
 //			clip.open(AudioSystem.getAudioInputStream(GoJbGoodies.class.getResource("/images/tada.wav")));
