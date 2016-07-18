@@ -82,8 +82,8 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 		setPreferredSize(new Dimension(pixelstorlek*50+1, pixelstorlek*50+1));
 		setMaximumSize(new Dimension(pixelstorlek*50+1, pixelstorlek*50+1));
 		setMinimumSize(new Dimension(pixelstorlek*50+1, pixelstorlek*50+1));
-//		highPanel.setMinimumSize(new Dimension((pixelstorlek*50+1)/2,(pixelstorlek*50+1)/2));
-//		highPanel.setSize((pixelstorlek*50+1)/2, (pixelstorlek*50+1)/2);
+		//		highPanel.setMinimumSize(new Dimension((pixelstorlek*50+1)/2,(pixelstorlek*50+1)/2));
+		//		highPanel.setSize((pixelstorlek*50+1)/2, (pixelstorlek*50+1)/2);
 		frame.setLayout(new BorderLayout(1,1));
 		frame.add(this,BorderLayout.EAST);	
 		frame.setIconImage(fönsterIcon);
@@ -191,12 +191,16 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 						pluppY=scanner.nextInt();
 					}
 					else if (type.equals("B")) {
-						if (scanner.nextInt()==0) {
-							pixels.clear();
-						}
-						Color color = Color.decode("#"+scanner.next());
-						while (scanner.hasNext()) {
-							pixels.add(new Pixel(scanner.nextInt(), scanner.nextInt(), color));
+						pixels.clear();
+						scanner.useDelimiter("\\z"); 
+						String string=scanner.next();
+						String[] strings = string.split(";");
+						for (int i = 0; i < strings.length; i++) {
+							Scanner scanner2 = new Scanner(strings[i]);
+							Color color = Color.decode("#"+scanner2.next());
+							while (scanner2.hasNext()) {
+								pixels.add(new Pixel(scanner2.nextInt(), scanner2.nextInt(), color));
+							}
 						}
 						repaint();
 					}
@@ -226,7 +230,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 							labe2.setOpaque(true);
 							labe2.setFont(font);
 							panel.add(labe2);
-							
+
 							JLabel labe3 = new JLabel("High score",SwingConstants.CENTER);
 							labe3.setBackground(Color.white);
 							labe3.setOpaque(true);
@@ -239,24 +243,24 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 								public int compare(Highscore o1, Highscore o2) {
 									return o2.highscore-o1.highscore;
 								};
-								
+
 							});
 							for (Highscore highscore : highscores) {
-								
+
 								JLabel label = new JLabel(highscore.namn,SwingConstants.CENTER);
 								label.setBackground(Color.white);
 								label.setForeground(highscore.color);
 								label.setOpaque(true);
 								label.setFont(font);
 								panel.add(label);
-								
+
 								JLabel label2 = new JLabel(Integer.toString(highscore.p),SwingConstants.CENTER);
 								label2.setBackground(Color.white);
 								label2.setForeground(highscore.color);
 								label2.setOpaque(true);
 								label2.setFont(font);
 								panel.add(label2);
-								
+
 								JLabel label3 = new JLabel(Integer.toString(highscore.highscore),SwingConstants.CENTER);
 								label3.setBackground(Color.white);
 								label3.setForeground(highscore.color);
@@ -284,7 +288,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 					if (namn==null||namn.equals("")) {
 						namn="Okänd";
 					}
-					
+
 					cc.send("INIT "+Integer.toHexString(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)).getRGB()).substring(2)+" "+namn);
 				}
 
@@ -571,7 +575,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 	}
 	public void componentHidden(ComponentEvent e) {}
 	public void keyPressed(KeyEvent e) {
-		
+
 		if (spelläge==CLIENT) {
 			if(e.getKeyCode() == KeyEvent.VK_LEFT)
 				cc.send("R left");

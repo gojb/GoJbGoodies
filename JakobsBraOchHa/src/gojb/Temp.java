@@ -2,12 +2,27 @@ package gojb;
 
 import static javax.swing.UIManager.*;
 
+<<<<<<< HEAD
+=======
+import javax.swing.LookAndFeel;
+import javax.swing.UnsupportedLookAndFeelException;
+
+import spel.Snake;
+
+>>>>>>> branch 'master' of https://github.com/gojb/GoJbsBraOchHa.git
 class Temp{
-	public static void main(String[] args){
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+		LookAndFeel s = getLookAndFeel();
 		try{setLookAndFeel(getSystemLookAndFeelClassName());}catch(Exception e){}
-//		new Randoms();
+		try {
+			setLookAndFeel(s);
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//		new Randoms();
 		//		new Mailkorg();
-		//		new Snake();
+				new Snake();
 
 //				new Ping("malla-hp");
 
@@ -28,7 +43,6 @@ class Temp{
 //			System.err.println("--Fel på Meddelande");
 //			e.printStackTrace();
 //		}
-//		
 //		try {
 //			Clip clip = AudioSystem.getClip();
 //			clip.open(AudioSystem.getAudioInputStream(GoJbGoodies.class.getResource("/images/tada.wav")));
