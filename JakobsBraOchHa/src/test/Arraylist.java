@@ -1,18 +1,17 @@
 package test;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.swing.UIManager;
 
 public class Arraylist {
 
 	public Arraylist() {
-		List<String> strings = new ArrayList<>();
+		System.out.println(UIManager.getLookAndFeel());
 		
 //		strings.add("Nr 1 2 3 4 5 6");
 //		strings.add("blah bla blah blah");
 //		strings.add("Nr 1 2 3 4 5 6");
 //		System.out.println(strings.indexOf("Nr 1 2 3 4 5 6"));
-		System.out.println("Custom 234 234 244".toLowerCase().contains("custom"));
+//		System.out.println(((int)2.9));
 		
 		
 //		String string="dig";
