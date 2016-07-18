@@ -2,16 +2,14 @@ package gojb;
 
 import static javax.swing.UIManager.*;
 
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
+import spel.Snake;
 
 class Temp{
 	public static void main(String[] args){
 		try{setLookAndFeel(getSystemLookAndFeelClassName());}catch(Exception e){}
-//		new Randoms();
+		//		new Randoms();
 		//		new Mailkorg();
-		//		new Snake();
+				new Snake();
 
 //				new Ping("malla-hp");
 
@@ -30,17 +28,17 @@ class Temp{
 //			System.err.println("--Fel på Meddelande");
 //			e.printStackTrace();
 //		}
-//		
-		try {
-			Clip clip = AudioSystem.getClip();
-			clip.open(AudioSystem.getAudioInputStream(GoJbGoodies.class.getResource("/images/tada.wav")));
-			FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-			gainControl.setValue(gainControl.getMaximum());
-			clip.start();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+////		
+//		try {
+//			Clip clip = AudioSystem.getClip();
+//			clip.open(AudioSystem.getAudioInputStream(GoJbGoodies.class.getResource("/images/tada.wav")));
+//			FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+//			gainControl.setValue(gainControl.getMaximum());
+//			clip.start();
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 //
 //		new Ping("GLENNSLENOVO");
 		//		GoJbsBraOchHa.main("snabb");
