@@ -201,6 +201,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 							while (scanner2.hasNext()) {
 								pixels.add(new Pixel(scanner2.nextInt(), scanner2.nextInt(), color));
 							}
+							scanner2.close();
 						}
 						repaint();
 					}
