@@ -19,7 +19,6 @@ import static gojb.GoJbGoodies.*;
 import static gojb.Jakobs.*;
 import static javax.swing.JFrame.*;
 import static javax.swing.JOptionPane.*;
-import static javax.swing.UIManager.getLookAndFeel;
 import static java.awt.Toolkit.*;
 
 /**
@@ -64,10 +63,8 @@ public class GoJbGoodies{
 	};
 	public static final Image 	fönsterIcon = Bild("/images/Java-icon.png").getImage();
 	public static final Dimension SKÄRM_SIZE = new Dimension(getDefaultToolkit().getScreenSize());
-	public static LookAndFeel defaultLookAndFeel;
 	public static void main(String... arg) {
 		try {
-			defaultLookAndFeel = getLookAndFeel();
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.hand")).run();
