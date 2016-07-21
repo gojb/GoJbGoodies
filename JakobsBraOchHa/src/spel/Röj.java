@@ -159,6 +159,7 @@ public class Röj implements ActionListener {
 		frame.setLayout(new GridLayout(heightInt, widthInt));
 		frame.setSize(35 * widthInt, 35 * heightInt);
 		frame.setLocationRelativeTo(null);
+		frame.setResizable(false);
 		frame.setJMenuBar(mBar);
 		mBar.add(res);
 		mBar.add(customItem);

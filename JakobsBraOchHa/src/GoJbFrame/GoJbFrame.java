@@ -44,7 +44,6 @@ public class GoJbFrame extends JFrame{
 		setDefaultCloseOperation(close);
 		setVisible(visible);
 		setTitle(title);
-		System.out.println(222);
 		if(close==3){
 		addWindowListener(autoListener);
 		}
