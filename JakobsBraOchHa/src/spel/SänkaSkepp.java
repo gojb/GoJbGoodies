@@ -12,6 +12,9 @@ import GoJbFrame.GoJbFrame;
 public class SänkaSkepp {
 
 	enum båttyp {fem,fyra,treEtt,treTvå,två};
+	enum Riktning {hori,vert}
+
+	Riktning riktning;
 
 	GoJbFrame frame = new GoJbFrame(false);
 	JLabel[] egnaLabels, annanLabels;
@@ -53,7 +56,9 @@ public class SänkaSkepp {
 
 	boolean bol5 = true, bol4 = true, bol3 = true, bol2 = true, bol1 = true, stayInside, error;
 
-	int last1, last2, antalRutor;
+	int last1, last2, antalRutor, y, y1,y3;
+
+	double b, x, b1, x1,b3,x3;
 
 	public static void main(String[] args) {
 		new SänkaSkepp();
@@ -124,17 +129,27 @@ public class SänkaSkepp {
 				}
 
 				public void mousePressed(MouseEvent e) {
-					int clicked = Integer.parseInt(((JLabel) e.getSource()).getText());
-					if(!error){
-						for(int i = 0;i<antalRutor;i++){
-							egnaLabels[clicked+(10*i)].setBackground(Color.green);
+					if (SwingUtilities.isRightMouseButton(e)) {
+						if(riktning==Riktning.hori){
+							riktning=Riktning.vert;
+						}
+						else{
+							riktning=Riktning.hori;
 						}
 					}
+					
+					//					int clicked = Integer.parseInt(((JLabel) e.getSource()).getText());
+					//					if(!error){
+					//						for(int i = 0;i<antalRutor;i++){
+					//							egnaLabels[clicked+(10*i)].setBackground(Color.green);
+					//						}
+					//					}
+					
 				}
 
 				public void mouseExited(MouseEvent e) {
 					// FIXME Auto-generated method stub
-					egnaLabels[last1].setBackground(new Color(207, 217, 220));
+					//					egnaLabels[last1].setBackground(new Color(207, 217, 220));
 				}
 
 				@Override
@@ -152,29 +167,126 @@ public class SänkaSkepp {
 			egnaLabels[i].addMouseMotionListener(new MouseAdapter() {
 				public void mouseMoved(MouseEvent e) {
 					int clicked = Integer.parseInt(((JLabel) e.getSource()).getText());
-					System.out.println(egnaLabels[last1].getBackground()+" --- "+Color.green);
-					if(egnaLabels[last1].getBackground().getRGB()!=Color.green.getRGB()){
-						egnaLabels[last1].setBackground(new Color(207, 217, 220));
-						try {
-							for(int i = 1;i<7;i++){
-								egnaLabels[last1+(10*i)].setBackground(new Color(207, 217, 220));
-							}
-						} catch (Exception e2) {
-							// FIXME: handle exception
-						}
-					}
-					egnaLabels[clicked].setBackground(Color.black);
-					last1 = clicked;
 
 					for(int i = 1;i<antalRutor;i++){
-						try {
-							egnaLabels[clicked+(10*i)].setBackground(Color.black);
-							error=false;
-						} catch (Exception e2) {
-							error=true;
-						}
+						if(riktning==Riktning.vert){
+							try {
+								egnaLabels[clicked+(10*i)].setBackground(Color.black);
+								error=false;
+							} catch (Exception e2) {
+								error=true;
+								System.out.println("daads");
+							}
+							try {
+								for(int i1 = 0;i1<egnaLabels.length;i1++){
+									if(egnaLabels[i1].getBackground()==Color.black){
+										if(antalRutor==5&&i1!=clicked&&i1!=clicked+(10)&&i1!=clicked+(10*2)&&i1!=clicked+(10*3)&&i1!=clicked+(10*4)){
+											egnaLabels[i1].setBackground(new Color(207, 217, 220));
+										}
+										else if(antalRutor==4&&i1!=clicked&&i1!=clicked+(10)&&i1!=clicked+(10*2)&&i1!=clicked+(10*3)){
+											egnaLabels[i1].setBackground(new Color(207, 217, 220));
 
+										}
+										else if(antalRutor==3&&i1!=clicked&&i1!=clicked+(10)&&i1!=clicked+(10*2)){
+											egnaLabels[i1].setBackground(new Color(207, 217, 220));
+
+										}
+										else if(antalRutor==2&&i1!=clicked&&i1!=clicked+(10)){
+											egnaLabels[i1].setBackground(new Color(207, 217, 220));
+
+										}
+									}
+								}
+
+							} catch (Exception e2) {
+								// FIXME: handle exception
+							}
+							egnaLabels[clicked].setBackground(Color.black);
+							last1 = clicked;
+						}
+						else{
+							//Horisontellt
+
+							try {
+								egnaLabels[clicked+(1*i)].setBackground(Color.black);
+								error=false;
+							} catch (Exception e2) {
+								error=true;
+								System.out.println("daads");
+							}
+							try {
+								for(int i1 = 0;i1<egnaLabels.length;i1++){
+									
+									b = ((double) (clicked+ 10)) / (double) (10);
+									y = ((int) b); // y = radnummer, alltså 1 - 16
+									x = ((((double) b) - ((double) y)) * 10) + 1d; // x = kolumnnummer, alltså 1 - 10
+									if(egnaLabels[i1].getBackground()==Color.black){
+										if(antalRutor==5&&i1!=clicked&&i1!=clicked+(1)&&i1!=clicked+(1*2)&&i1!=clicked+(1*3)&&i1!=clicked+(1*4)){
+
+											b1 = ((double) (clicked + 4 + 10)) / (double) (10);
+											y1 = Math.round(((int) b1)); // y = radnummer, alltså 1 - 16
+											x1 = ((((double) b1) - ((double) y1)) * 10) + 1d; // x = kolumnnummer, alltså 1 - 10
+											
+											
+											System.out.println(Math.round(x) + " --- "+Math.round(x1));
+											egnaLabels[i1].setBackground(new Color(207, 217, 220));
+											if(Math.round(x)>Math.round(x1)){
+												System.out.println((Math.floor(b1-1)*10d) + " = x1");
+												for(int i3=(int) Math.floor(((b1-1)*10d));i3<egnaLabels.length;i3++){
+													System.err.println(i3);
+													egnaLabels[i3].setBackground(new Color(207, 217, 220));
+												}
+											}
+										}
+										else if(antalRutor==4&&i1!=clicked&&i1!=clicked+(1)&&i1!=clicked+(1*2)&&i1!=clicked+(1*3)){
+											egnaLabels[i1].setBackground(new Color(207, 217, 220));
+
+										}
+										else if(antalRutor==3&&i1!=clicked&&i1!=clicked+(1)&&i1!=clicked+(1*2)){
+											egnaLabels[i1].setBackground(new Color(207, 217, 220));
+
+										}
+										else if(antalRutor==2&&i1!=clicked&&i1!=clicked+(1)){
+											egnaLabels[i1].setBackground(new Color(207, 217, 220));
+
+										}
+									}
+								}
+
+							} catch (Exception e2) {
+								// FIXME: handle exception
+							}
+							egnaLabels[clicked].setBackground(Color.black);
+							last1 = clicked;
+							
+							
+							
+						}
 					}
+
+
+
+
+
+
+
+
+
+					//					System.out.println(egnaLabels[last1].getBackground()+" --- "+Color.green + " -- True? " + (egnaLabels[last1].getBackground()==Color.green));
+					//					if(egnaLabels[last1+30].getBackground()!=Color.green){
+					//						egnaLabels[last1].setBackground(new Color(207, 217, 220));
+					//						try {
+					//							for(int i = 1;i<7;i++){
+					//								egnaLabels[last1+(10*i)].setBackground(new Color(207, 217, 220));
+					//							}
+					//						} catch (Exception e2) {
+					//							// FIXME: handle exception
+					//						}
+					//					}
+					//					egnaLabels[clicked].setBackground(Color.black);
+					//					last1 = clicked;
+					//
+					//					
 
 				}
 
@@ -198,7 +310,9 @@ public class SänkaSkepp {
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					// FIXME Auto-generated method stub
-
+					for(int i = 0;i<egnaLabels.length;i++){
+						egnaLabels[i].setBackground((new Color(207, 217, 220)));
+					}
 				}
 
 				@Override
@@ -327,8 +441,21 @@ public class SänkaSkepp {
 
 	public void placeraSkepp(båttyp båt) {
 		stayInside=true;
+		riktning=Riktning.vert;
 		if(båt==båttyp.fem){
 			antalRutor=5;
+		}
+		else if(båt==båttyp.fyra){
+			antalRutor=4;
+		}
+		else if(båt==båttyp.treEtt){
+			antalRutor=3;
+		}
+		else if(båt==båttyp.treTvå){
+			antalRutor=3;
+		}
+		else if(båt==båttyp.två){
+			antalRutor=2;
 		}
 
 
