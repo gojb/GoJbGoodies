@@ -206,78 +206,80 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 						repaint();
 					}
 					else if (type.equals("H")) {
-						String mode=scanner.next();
-						if (mode.equals("RESET")) {
-							highscores.clear();
+						highscores.clear();
+						
+						scanner.useDelimiter("\\z"); 
+						String string=scanner.next();
+						String[] strings = string.split(";");
+						for (int i = 0; i < strings.length; i++) {
+							Scanner scanner2 = new Scanner(strings[i]);
+							highscores.add(new Highscore(scanner2,strings[++i]));
+							scanner2.close();
 						}
-						else if (mode.equals("SET")) {
-							highscores.add(new Highscore(scanner));
+						JPanel panel = new JPanel();
+
+						Font font = new Font("", 0, 20);
+
+						panel.setBackground(Color.gray);
+						panel.setOpaque(true);
+						JLabel labe = new JLabel("Spelare",SwingConstants.CENTER);
+						labe.setBackground(Color.white);
+						labe.setOpaque(true);
+						labe.setFont(font);
+						panel.add(labe);
+
+						JLabel labe2 = new JLabel("Poäng",SwingConstants.CENTER);
+						labe2.setBackground(Color.white);
+						labe2.setOpaque(true);
+						labe2.setFont(font);
+						panel.add(labe2);
+
+						JLabel labe3 = new JLabel("High score",SwingConstants.CENTER);
+						labe3.setBackground(Color.white);
+						labe3.setOpaque(true);
+						labe3.setFont(font);
+						panel.add(labe3);
+
+						panel.setLayout(new GridLayout(0, 3, 1, 1));
+
+						highscores.sort(new Comparator<Highscore>() {
+							public int compare(Highscore o1, Highscore o2) {
+								return o2.highscore-o1.highscore;
+							};
+
+						});
+						for (Highscore highscore : highscores) {
+
+							JLabel label = new JLabel(highscore.namn,SwingConstants.CENTER);
+							label.setBackground(Color.white);
+							label.setForeground(highscore.color);
+							label.setOpaque(true);
+							label.setFont(font);
+							panel.add(label);
+
+							JLabel label2 = new JLabel(Integer.toString(highscore.p),SwingConstants.CENTER);
+							label2.setBackground(Color.white);
+							label2.setForeground(highscore.color);
+							label2.setOpaque(true);
+							label2.setFont(font);
+							panel.add(label2);
+
+							JLabel label3 = new JLabel(Integer.toString(highscore.highscore),SwingConstants.CENTER);
+							label3.setBackground(Color.white);
+							label3.setForeground(highscore.color);
+							label3.setOpaque(true);
+							label3.setFont(font);
+							panel.add(label3);
 						}
-						else if (mode.equals("DONE")) {
-							JPanel panel = new JPanel();
+						//							while (panel.getComponents().length<20) {
+						//								panel.add(Box.createGlue());
+						//							}
+						highPanel.removeAll();
+						highPanel.add(panel);
+						highPanel.revalidate();
+						frame.pack();
 
-							Font font = new Font("", 0, 20);
 
-							panel.setBackground(Color.gray);
-							panel.setOpaque(true);
-							JLabel labe = new JLabel("Spelare",SwingConstants.CENTER);
-							labe.setBackground(Color.white);
-							labe.setOpaque(true);
-							labe.setFont(font);
-							panel.add(labe);
-
-							JLabel labe2 = new JLabel("Poäng",SwingConstants.CENTER);
-							labe2.setBackground(Color.white);
-							labe2.setOpaque(true);
-							labe2.setFont(font);
-							panel.add(labe2);
-
-							JLabel labe3 = new JLabel("High score",SwingConstants.CENTER);
-							labe3.setBackground(Color.white);
-							labe3.setOpaque(true);
-							labe3.setFont(font);
-							panel.add(labe3);
-
-							panel.setLayout(new GridLayout(0, 3, 1, 1));
-
-							highscores.sort(new Comparator<Highscore>() {
-								public int compare(Highscore o1, Highscore o2) {
-									return o2.highscore-o1.highscore;
-								};
-
-							});
-							for (Highscore highscore : highscores) {
-
-								JLabel label = new JLabel(highscore.namn,SwingConstants.CENTER);
-								label.setBackground(Color.white);
-								label.setForeground(highscore.color);
-								label.setOpaque(true);
-								label.setFont(font);
-								panel.add(label);
-
-								JLabel label2 = new JLabel(Integer.toString(highscore.p),SwingConstants.CENTER);
-								label2.setBackground(Color.white);
-								label2.setForeground(highscore.color);
-								label2.setOpaque(true);
-								label2.setFont(font);
-								panel.add(label2);
-
-								JLabel label3 = new JLabel(Integer.toString(highscore.highscore),SwingConstants.CENTER);
-								label3.setBackground(Color.white);
-								label3.setForeground(highscore.color);
-								label3.setOpaque(true);
-								label3.setFont(font);
-								panel.add(label3);
-							}
-							//							while (panel.getComponents().length<20) {
-							//								panel.add(Box.createGlue());
-							//							}
-							highPanel.removeAll();
-							highPanel.add(panel);
-							highPanel.revalidate();
-							frame.pack();
-
-						}
 					}
 					scanner.close();
 				}
@@ -673,15 +675,13 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 	class Highscore{
 		Color color;
 		int p;
-		String namn;
 		int highscore;
-		public Highscore(Scanner scanner){
+		String namn;
+		public Highscore(Scanner scanner, String namn){
 			p=scanner.nextInt();
-
 			color=Color.decode("#"+scanner.next());
 			highscore=scanner.nextInt();
-			scanner.useDelimiter("\\z"); 
-			namn=scanner.next().substring(1);
+			this.namn=namn;
 		}
 	}
 
