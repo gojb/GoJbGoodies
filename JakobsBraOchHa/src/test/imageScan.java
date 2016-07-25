@@ -63,7 +63,10 @@ public class imageScan {
 		frame.setVisible(true);
 		frame.setSize(img.getWidth(),img.getHeight());
 		frame.getContentPane().setBackground(Color.blue);
-		JLabel label = new JLabel(){@Override
+		JLabel label = new JLabel(){
+			private static final long serialVersionUID = 1L;
+
+		@Override
 			protected void paintComponent(Graphics g) {
 			// FIXME Auto-generated method stub
 					super.paintComponent(g);
