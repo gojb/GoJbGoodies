@@ -28,6 +28,8 @@ public class SänkaSkepp {
 	JLabel egenLabel = new JLabel(), annanLabel = new JLabel(), egenText = new JLabel("Din ruta"),
 			annanText = new JLabel("Motståndares ruta"), spelruta = new JLabel(), textruta = new JLabel(),
 			inställningar = new JLabel() {
+				private static final long serialVersionUID = -8594618170153840433L;
+
 		protected void paintComponent(java.awt.Graphics g) {
 			super.paintComponent(g);
 			for (int i = 0; i < 22 * 5; i += 22) {
