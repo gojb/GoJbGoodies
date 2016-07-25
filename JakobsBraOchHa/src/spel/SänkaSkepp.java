@@ -5,8 +5,13 @@ package spel;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URI;
+
 import javax.swing.*;
 
+import org.java_websocket.WebSocketImpl;
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
 import GoJbFrame.GoJbFrame;
 
 public class SänkaSkepp {
@@ -14,6 +19,8 @@ public class SänkaSkepp {
 	enum båttyp {fem,fyra,treEtt,treTvå,två};
 	enum Riktning {hori,vert}
 
+	WebSocketClient cc;
+	
 	Riktning riktning;
 
 	GoJbFrame frame = new GoJbFrame(false);
@@ -56,10 +63,10 @@ public class SänkaSkepp {
 
 	boolean bol5 = true, bol4 = true, bol3 = true, bol2 = true, bol1 = true, stayInside, error;
 
-	int last1, last2, antalRutor, y, y1, kollaRutor;
+	int last1, last2, antalRutor, y, y1, kollaRutor, antalPlacerade;
 
 	double b, x, b1, x1;
-	
+
 	int[] båtar;
 
 	public static void main(String[] args) {
@@ -107,9 +114,9 @@ public class SänkaSkepp {
 		annanLabel.setLayout(new GridLayout(10, 10, 3, 3));
 
 		båtar=new int[100];
-		
+
 		for (int i = 0; i < egnaLabels.length; i++) {
-			
+
 			egnaLabels[i] = new JLabel();
 			annanLabels[i] = new JLabel();
 
@@ -147,33 +154,57 @@ public class SänkaSkepp {
 					}
 					else{
 						if(riktning==Riktning.hori){
-							for(int i=0;i<antalRutor;i++){
-								if(båtar[clicked+(i*1)]<50){
-									kollaRutor++;
-								}
-							}
-							System.out.println(antalRutor + "  asddsmds " + kollaRutor);
-							if(kollaRutor==antalRutor){
+							if(!error){
 								for(int i=0;i<antalRutor;i++){
-									båtar[clicked+(i*1)]=100;
-									egnaLabels[clicked+(i*1)].setBackground(new Color(40, 240, 240));
-								System.err.println(i + " --- " + clicked + " --- " + (clicked+i) + " ----- "+båtar[clicked+i] +" ++ "+ egnaLabels[clicked+i].getBackground());
-								
+									if(båtar[clicked+(i*1)]<50){
+										kollaRutor++;
+									}
 								}
+								if(kollaRutor==antalRutor){
+									for(int i=0;i<antalRutor;i++){
+										båtar[clicked+(i*1)]=100;
+										egnaLabels[clicked+(i*1)].setBackground(new Color(70+(antalPlacerade*10),70+(antalPlacerade*10),70+(antalPlacerade*10)));
+									}
+									antalPlacerade++;
+									antalRutor=0;
+									stayInside=false;
+								}
+								kollaRutor=0;
 							}
-							
-							kollaRutor=0;
 						}
 						else if(riktning==Riktning.vert){
-
+	
+							if(!error){
+								for(int i=0;i<antalRutor;i++){
+									if(båtar[clicked+(i*10)]<50){
+										kollaRutor++;
+									}
+								}
+								if(kollaRutor==antalRutor){
+									for(int i=0;i<antalRutor;i++){
+										båtar[clicked+(i*10)]=100;
+										egnaLabels[clicked+(i*10)].setBackground(new Color(70+(antalPlacerade*10),70+(antalPlacerade*10),70+(antalPlacerade*10)));
+									}
+									antalPlacerade++;
+									antalRutor=0;
+									stayInside=false;
+								
+								}
+								kollaRutor=0;
+							}
+							
+							
+							
+						}
+						if(antalPlacerade==5){
+							Klar();
 						}
 					}
-
 				}
 
 				public void mouseExited(MouseEvent e) {
 					// FIXME Auto-generated method stub
-//					egnaLabels[last1].setBackground(new Color(207, 217, 220));
+					//					egnaLabels[last1].setBackground(new Color(207, 217, 220));
 				}
 
 				@Override
@@ -195,17 +226,16 @@ public class SänkaSkepp {
 					for(int i = 1;i<antalRutor;i++){
 						if(riktning==Riktning.vert){
 							try {
-							
-								egnaLabels[clicked+(10*i)].setBackground(Color.black);
-						
+								if(egnaLabels[clicked+(10*i)].getBackground()!=Color.black&&båtar[clicked+(10*i)]<50){
+									egnaLabels[clicked+(10*i)].setBackground(Color.black);
+								}
 								error=false;
 							} catch (Exception e2) {
 								error=true;
-								System.out.println("daads");
 							}
 							try {
 								for(int i1 = 0;i1<egnaLabels.length;i1++){
-									if(egnaLabels[i1].getBackground()==Color.black){
+									if(egnaLabels[i1].getBackground()==Color.black&&båtar[i1]<50){
 										if(antalRutor==5&&i1!=clicked&&i1!=clicked+(10)&&i1!=clicked+(10*2)&&i1!=clicked+(10*3)&&i1!=clicked+(10*4)){
 											egnaLabels[i1].setBackground(new Color(207, 217, 220));
 										}
@@ -227,9 +257,9 @@ public class SänkaSkepp {
 							} catch (Exception e2) {
 								// FIXME: handle exception
 							}
-
-							egnaLabels[clicked].setBackground(Color.black);
-							
+							if(båtar[clicked]<50){
+								egnaLabels[clicked].setBackground(Color.black);
+							}
 							last1 = clicked;
 						}
 						else{
@@ -247,19 +277,21 @@ public class SänkaSkepp {
 
 
 								if(x<x1){
-									if(egnaLabels[clicked+(10*i)].getBackground()!=Color.black&&båtar[clicked+(10*i)]!=100){
-									egnaLabels[clicked+(1*i)].setBackground(Color.black);
+									if(egnaLabels[clicked+i].getBackground()!=Color.black&&båtar[clicked+i]<50){
+										egnaLabels[clicked+(1*i)].setBackground(Color.black);
 									}
 									error=false;
 								}
+								else {
+									error=true;
+								}
 							} catch (Exception e2) {
 								error=true;
-								System.out.println("daads");
 							}
 							try {
 								for(int i1 = 0;i1<egnaLabels.length;i1++){
 
-									if(egnaLabels[i1].getBackground()==Color.black){
+									if(egnaLabels[i1].getBackground()==Color.black&&båtar[i1]<50){
 										if(antalRutor==5&&i1!=clicked&&i1!=clicked+(1)&&i1!=clicked+(1*2)&&i1!=clicked+(1*3)&&i1!=clicked+(1*4)){
 											egnaLabels[i1].setBackground(new Color(207, 217, 220));
 										}
@@ -269,7 +301,6 @@ public class SänkaSkepp {
 										}
 										else if(antalRutor==3&&i1!=clicked&&i1!=clicked+(1)&&i1!=clicked+(1*2)){
 											egnaLabels[i1].setBackground(new Color(207, 217, 220));
-
 										}
 										else if(antalRutor==2&&i1!=clicked&&i1!=clicked+(1)){
 											egnaLabels[i1].setBackground(new Color(207, 217, 220));
@@ -281,8 +312,15 @@ public class SänkaSkepp {
 							} catch (Exception e2) {
 								// FIXME: handle exception
 							}
-							egnaLabels[clicked].setBackground(Color.black);
+							if(båtar[clicked]<50){
+								egnaLabels[clicked].setBackground(Color.black);
+							}
 							last1 = clicked;
+						}
+					}
+					for(int i = 0;i<antalRutor;i++){
+						if(båtar[i]>50){
+							egnaLabels[i].setBackground(new Color(70, 70, 70));
 						}
 					}
 				}
@@ -308,7 +346,9 @@ public class SänkaSkepp {
 				public void mouseEntered(MouseEvent e) {
 					// FIXME Auto-generated method stub
 					for(int i = 0;i<egnaLabels.length;i++){
-						egnaLabels[i].setBackground((new Color(207, 217, 220)));
+						if(båtar[i]<100){
+							egnaLabels[i].setBackground((new Color(207, 217, 220)));
+						}
 					}
 				}
 
@@ -387,7 +427,6 @@ public class SänkaSkepp {
 					if (color.getRed() == 238) {
 						color = rb.getPixelColor(e.getLocationOnScreen().x + 10, e.getLocationOnScreen().y);
 					}
-					System.out.println(color.getRed());
 					if (color.getRed() == 200) {
 						System.err.println(5);
 						bol5=false;
@@ -438,7 +477,7 @@ public class SänkaSkepp {
 
 	public void placeraSkepp(båttyp båt) {
 		stayInside=true;
-		riktning=Riktning.vert;
+		riktning=Riktning.hori;
 		if(båt==båttyp.fem){
 			antalRutor=5;
 		}
@@ -455,6 +494,44 @@ public class SänkaSkepp {
 			antalRutor=2;
 		}
 
+
+	}
+	public void Klar() {
+		System.out.println("sadjsadads");
+		WebSocketImpl.DEBUG=true;
+		try {
+			cc = new WebSocketClient(new URI("ws://wildfly-gojb.rhcloud.com:8000/skepp")){
+
+				@Override
+				public void onClose(int arg0, String arg1, boolean arg2) {
+					// FIXME Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onError(Exception arg0) {
+					// FIXME Auto-generated method stub
+					arg0.printStackTrace();
+				}
+
+				@Override
+				public void onMessage(String arg0) {
+					// FIXME Auto-generated method stub
+					System.out.println(arg0);
+					System.err.println("qwdassd");
+				}
+
+				@Override
+				public void onOpen(ServerHandshake arg0) {
+					// FIXME Auto-generated method stub
+					cc.send("Hello, World");
+				}
+				
+			};
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 }
