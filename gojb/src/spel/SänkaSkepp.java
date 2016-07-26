@@ -21,15 +21,10 @@ public class SänkaSkepp {
 
 	static GoJbFrame frame = new GoJbFrame(false), connectFrame = new GoJbFrame("Connect to...",false,2);
 	JLabel[] egnaLabels, annanLabels;
+	@SuppressWarnings("serial")
 	JLabel egenLabel = new JLabel(), annanLabel = new JLabel(), egenText = new JLabel("Din ruta"),
 			annanText = new JLabel("Motståndares ruta"), spelruta = new JLabel(), textruta = new JLabel(),
 			inställningar = new JLabel() {
-				
-
-		/**
-				 * 
-				 */
-				private static final long serialVersionUID = 1L;
 
 		protected void paintComponent(java.awt.Graphics g) {
 			super.paintComponent(g);
@@ -62,6 +57,8 @@ public class SänkaSkepp {
 		};
 	};
 
+	static JLabel connectLabel = new JLabel();
+	
 	Robot rb;
 
 	static JMenuBar bar = new JMenuBar();
@@ -103,14 +100,15 @@ public class SänkaSkepp {
 					// FIXME Auto-generated method stub
 
 					message=message.toLowerCase();
-
-					connectFrame.setLayout(new GridLayout(0, 1));
+					
 					connectFrame.setTitle("Anslut till motståndare");
 					connectFrame.setJMenuBar(bar);
+					connectFrame.add(connectLabel);
+					connectLabel.setLayout(new GridLayout(0, 1));
 					
 					bar.add(refresh);
 					
-					refresh.addActionListener(e->{cc.send("Namn ettnammsomaldrigskrivs");});
+					refresh.addActionListener(e->{cc.send("Refresh");});
 					
 					scanner = new Scanner(message);
 					String string=scanner.next();
@@ -123,24 +121,44 @@ public class SänkaSkepp {
 						for(int i=0;i<message.split("lla online =")[1].split(";")[0].split(",").length;i++){
 							allaOnline+=message.split("lla online =")[1].split(";")[0].split(",")[i]+", ";
 						}
-						if(!message.split("lla online =")[1].split(";")[1].equals("ettnammsomaldrigskrivs")){
-						JOptionPane.showMessageDialog(null, "Det är "+ allaOnline.split(",").length +" till online : "+allaOnline.substring(0, allaOnline.length()-2));
-						}
-						try {
-							for (int i = 0; i < connectButtons.length; i++) {
-								connectButtons[i] = new JButton("");
-								connectFrame.remove(connectButtons[i]);
-							}
-						} catch (Exception e) {
-							System.err.println("sadassd");
-							System.out.println(e);
-						}
-//						allaOnline.split(", ").length
+						JOptionPane.showMessageDialog(null, "Det är "+ allaOnline.substring(0,allaOnline.length()-2).split(",").length +" till online : "+allaOnline.substring(0, allaOnline.length()-2));
+//						try {
+//							System.out.println(connectFrame.getComponents());
+//							for (int i = 0; i < connectButtons.length; i++) {
+//								connectButtons[i] = new JButton("");
+//								connectFrame.remove(connectButtons[i]);
+//							}
+//
+//						} catch (Exception e) {
+//							System.err.println("sadassd");
+//						e.printStackTrace();
+//						}
 						connectFrame.setVisible(true);
 						connectButtons = new JButton[allaOnline.split(", ").length];
+						connectLabel.removeAll();
 						for(int i =0;i<allaOnline.split(", ").length;i++){
 							connectButtons[i]=new JButton();
-							connectFrame.add(connectButtons[i]);
+							connectLabel.add(connectButtons[i]);
+							connectButtons[i].setText(allaOnline.split(", ")[i]);
+							connectButtons[i].setName(message.split(";")[1].split(",")[i]);
+							connectButtons[i].addActionListener(e->{
+								String clicked =((JButton) e.getSource()).getName();
+								System.out.println(clicked);
+								cc.send("Annan "+clicked);
+								});
+						}
+					}
+					else if (string.equals("refresh")) {
+						String allaOnline ="";	
+						for(int i=0;i<message.split("refresh =")[1].split(";")[0].split(",").length;i++){
+							allaOnline+=message.split("refresh =")[1].split(";")[0].split(",")[i]+", ";
+						}
+						connectFrame.setVisible(true);
+						connectButtons = new JButton[allaOnline.split(", ").length];
+						connectLabel.removeAll();
+						for(int i =0;i<allaOnline.split(", ").length;i++){
+							connectButtons[i]=new JButton();
+							connectLabel.add(connectButtons[i]);
 							connectButtons[i].setText(allaOnline.split(", ")[i]);
 							connectButtons[i].setName(message.split(";")[1].split(",")[i]);
 							connectButtons[i].addActionListener(e->{
