@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<jnlp spec="1.0+" codebase="http://gojb.bl.ee/" href="GoJb.jnlp">
+	<information>
+		<title>GoJb</title>
+		<vendor>GoJbs Javaprogrammering</vendor>
+		<homepage href="http://gojb.bl.ee/" />
+		<description>GoJb</description>
+		<offline-allowed/>
+		<update check="background" />
+	</information>
+	<security>
+		<all-permissions/>
+	</security>
+	<resources>
+		<j2se version="1.8+" />
+		<jar href="GoJb.jar" main="true" />
+	</resources>
+	<application-desc main-class="applet.GoJbApplet.class" />
+</jnlp>

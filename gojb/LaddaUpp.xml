@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project GoJbsBraOchHa and upload to ftp">
+	<target name="create_run_jar">
+		<echo message="${user.home}\git\Hemsida\jar"/>
+		<loadfile srcfile="C:/GoJb.txt" property="inputvalue"/>
+		<jar destfile="${user.home}\git\Hemsida\jar\GoJb.jar" filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Application-Name" value="GoJb Goodies"/>
+				<attribute name="Permissions" value="all-permissions"/>
+				<attribute name="Main-Class" value="gojb.GoJbGoodies"/>
+				<attribute name="Class-Path" value="."/>
+			</manifest>
+			<fileset dir="${basedir}/bin" excludes="test"/>
+			<zipfileset excludes="META-INF/*.SF" src="javax.mail.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lwjgl.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lwjgl_util.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="jsoup-1.8.1.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="TooTallNate-Java-WebSocket.jar"/>
+		</jar>
+		<signjar jar="${user.home}\git\Hemsida\jar\GoJb.jar" alias="GoJb" keystore=".keystore" storepass="${inputvalue}"/>
+		<ftp server="gojb.ml" remotedir="/public_html/jar" userid="gojbx10h" password="${inputvalue}"
+    	       binary="yes" passive="yes" depends="yes">
+			<fileset dir="${user.home}\git\Hemsida\jar">
+			</fileset>
+		</ftp>
+	</target>
+</project>
