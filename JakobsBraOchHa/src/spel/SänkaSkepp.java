@@ -6,10 +6,9 @@ package spel;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URI;
+import java.util.Scanner;
 
 import javax.swing.*;
-
-import org.java_websocket.WebSocketImpl;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import GoJbFrame.GoJbFrame;
@@ -19,7 +18,7 @@ public class SänkaSkepp {
 	enum båttyp {fem,fyra,treEtt,treTvå,två};
 	enum Riktning {hori,vert}
 
-	WebSocketClient cc;
+	static WebSocketClient cc;
 	
 	Riktning riktning;
 
@@ -69,8 +68,54 @@ public class SänkaSkepp {
 
 	int[] båtar;
 
+	static Scanner scanner;
+	
 	public static void main(String[] args) {
-		new SänkaSkepp();
+		try {
+			cc = new WebSocketClient(new URI("ws://wildfly-gojb.rhcloud.com:8000/skepp")){
+
+				@Override
+				public void onClose(int arg0, String arg1, boolean arg2) {
+					// FIXME Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onError(Exception arg0) {
+					// FIXME Auto-generated method stub
+					arg0.printStackTrace();
+				}
+
+				@Override
+				public void onMessage(String message) {
+					// FIXME Auto-generated method stub
+					
+					message=message.toLowerCase();
+					
+					scanner = new Scanner(message);
+					String string=scanner.next();
+					
+					if(message.equals("starta")){
+						new SänkaSkepp();
+					}
+					System.out.println(message + " <-- Message");
+				}
+				@Override
+				public void onOpen(ServerHandshake arg0) {
+					// FIXME Auto-generated method stub
+					cc.send("Hello, World");
+					String namn= JOptionPane.showInputDialog("Enter Username", "gojb");
+					cc.send("Namn " + namn);
+					cc.send("STARTA");
+				}
+				
+			};
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		cc.connect();
+
 	}
 
 	public SänkaSkepp() {
@@ -361,9 +406,11 @@ public class SänkaSkepp {
 			annanLabels[i].addMouseMotionListener(new MouseAdapter() {
 				public void mouseMoved(MouseEvent e) {
 					int clicked = Integer.parseInt(((JLabel) e.getSource()).getText());
+					if(bol5==false&&bol4==false&&bol3==false&&bol2==false&&bol1==false){
 					annanLabels[last2].setBackground(new Color(145, 176, 223));
 					annanLabels[clicked].setBackground(Color.black);
 					last2 = clicked;
+					}
 
 				}
 
@@ -497,41 +544,8 @@ public class SänkaSkepp {
 
 	}
 	public void Klar() {
-		System.out.println("sadjsadads");
-		WebSocketImpl.DEBUG=true;
-		try {
-			cc = new WebSocketClient(new URI("ws://wildfly-gojb.rhcloud.com:8000/skepp")){
-
-				@Override
-				public void onClose(int arg0, String arg1, boolean arg2) {
-					// FIXME Auto-generated method stub
-					
-				}
-
-				@Override
-				public void onError(Exception arg0) {
-					// FIXME Auto-generated method stub
-					arg0.printStackTrace();
-				}
-
-				@Override
-				public void onMessage(String arg0) {
-					// FIXME Auto-generated method stub
-					System.out.println(arg0);
-					System.err.println("qwdassd");
-				}
-
-				@Override
-				public void onOpen(ServerHandshake arg0) {
-					// FIXME Auto-generated method stub
-					cc.send("Hello, World");
-				}
-				
-			};
+		System.out.println("KLAR!!");
+		// WebSocketImpl.DEBUG=true;
 		
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}
 }
