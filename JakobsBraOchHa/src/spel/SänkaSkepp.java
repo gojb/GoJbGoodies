@@ -120,7 +120,7 @@ public class SänkaSkepp {
 							connectButtons[i].addActionListener(e->{
 								String clicked =((JButton) e.getSource()).getName();
 								System.out.println(clicked);
-								send("Annan "+clicked);
+								cc.send("Annan "+clicked);
 								});
 						}
 					}
