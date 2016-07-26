@@ -6,11 +6,6 @@ import static java.awt.Toolkit.getDefaultToolkit;
 import static javax.swing.JOptionPane.showInputDialog;
 import static spel.Snake.Spelläge.*;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.net.*;
-import java.util.*;
-import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -27,24 +22,19 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.image.ColorModel;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Scanner;
 
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
-import javax.json.stream.JsonLocation;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 import gojb.GoJbGoodies;
@@ -164,9 +154,9 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 			cc = new WebSocketClient( new URI("ws://wildfly-gojb.rhcloud.com:8000/snake")) {
 				@Override
 				public void onMessage( String message ) {
-					JsonObject obj;
+					JsonObject obj = new Json;
 					try {
-//						obj = Json.createParser(message);
+						obj = Json.createParser(message);
 					} 
 					catch (Exception e) {
 						if (message.equals("START")||message=="OPEN") {
@@ -178,7 +168,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 						return;
 					}
 					JsonArray datas= obj.getJsonArray("data");
-					for (int i = 0; i < datas.length; i++) {
+					for (int i = 0; i < datas.size(); i++) {
 						JsonObject data = datas.getJsonObject(i);
 						String type=data.getString("type");
 						if(type=="plupp"){
@@ -221,14 +211,13 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 //							}
 						}
 						else if(type=="gameover"){
-							console.log(data);
-							System.out.println();
-							vem=data.namn;
+							System.out.println(data);
+							vem=data.getString("namn");
 							gameover = true;
 
 						}
 						else if(type=="delay"){
-							console.log(data.delay);
+							System.out.println(data.getString("delay"));
 						}
 						else if(type=="cleangameover"){
 							gameover=false;
@@ -240,120 +229,120 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 							paused=true;
 						}
 					System.err.println(message);
-					Scanner scanner = new Scanner(message);
-					String type = scanner.next();
-
-					if (type.equals("A")) {
-						gameover=false;
-						paused=false;
-
-						String string = scanner.next();
-						if (string.equals("PAUSE")) {
-							paused=true;
-						}
-						else if (string.equals("GAMEOVER")) {
-							scanner.useDelimiter("\\z"); 
-							vem=scanner.next();
-							gameover = true;
-						}
-						frame.repaint();
+//					Scanner scanner = new Scanner(message);
+//					String type = scanner.next();
+//
+//					if (type.equals("A")) {
+//						gameover=false;
+//						paused=false;
+//
+//						String string = scanner.next();
+//						if (string.equals("PAUSE")) {
+//							paused=true;
+//						}
+//						else if (string.equals("GAMEOVER")) {
+//							scanner.useDelimiter("\\z"); 
+//							vem=scanner.next();
+//							gameover = true;
+//						}
+//						frame.repaint();
+//					}
+//					else if (type.equals("P")) {
+//						pluppX=scanner.nextInt();
+//						pluppY=scanner.nextInt();
+//					}
+//					else if (type.equals("B")) {
+//						pixels.clear();
+//						scanner.useDelimiter("\\z"); 
+//						String string=scanner.next();
+//						String[] strings = string.split(";");
+//						for (int i = 0; i < strings.length; i++) {
+//							Scanner scanner2 = new Scanner(strings[i]);
+//							Color color = Color.decode("#"+scanner2.next());
+//							while (scanner2.hasNext()) {
+//								pixels.add(new Pixel(scanner2.nextInt(), scanner2.nextInt(), color));
+//							}
+//							scanner2.close();
+//						}
+//						repaint();
+//					}
+//					else if (type.equals("H")) {
+//						highscores.clear();
+//						
+//						scanner.useDelimiter("\\z"); 
+//						String string=scanner.next();
+//						String[] strings = string.split(";");
+//						for (int i = 0; i < strings.length; i++) {
+//							Scanner scanner2 = new Scanner(strings[i]);
+//							highscores.add(new Highscore(scanner2,strings[++i]));
+//							scanner2.close();
+//						}
+//						JPanel panel = new JPanel();
+//
+//						Font font = new Font("", 0, 20);
+//
+//						panel.setBackground(Color.gray);
+//						panel.setOpaque(true);
+//						JLabel labe = new JLabel("Spelare",SwingConstants.CENTER);
+//						labe.setBackground(Color.white);
+//						labe.setOpaque(true);
+//						labe.setFont(font);
+//						panel.add(labe);
+//
+//						JLabel labe2 = new JLabel("Poäng",SwingConstants.CENTER);
+//						labe2.setBackground(Color.white);
+//						labe2.setOpaque(true);
+//						labe2.setFont(font);
+//						panel.add(labe2);
+//
+//						JLabel labe3 = new JLabel("High score",SwingConstants.CENTER);
+//						labe3.setBackground(Color.white);
+//						labe3.setOpaque(true);
+//						labe3.setFont(font);
+//						panel.add(labe3);
+//
+//						panel.setLayout(new GridLayout(0, 3, 1, 1));
+//
+//						highscores.sort(new Comparator<Highscore>() {
+//							public int compare(Highscore o1, Highscore o2) {
+//								return o2.highscore-o1.highscore;
+//							};
+//
+//						});
+//						for (Highscore highscore : highscores) {
+//
+//							JLabel label = new JLabel(highscore.namn,SwingConstants.CENTER);
+//							label.setBackground(Color.white);
+//							label.setForeground(highscore.color);
+//							label.setOpaque(true);
+//							label.setFont(font);
+//							panel.add(label);
+//
+//							JLabel label2 = new JLabel(Integer.toString(highscore.p),SwingConstants.CENTER);
+//							label2.setBackground(Color.white);
+//							label2.setForeground(highscore.color);
+//							label2.setOpaque(true);
+//							label2.setFont(font);
+//							panel.add(label2);
+//
+//							JLabel label3 = new JLabel(Integer.toString(highscore.highscore),SwingConstants.CENTER);
+//							label3.setBackground(Color.white);
+//							label3.setForeground(highscore.color);
+//							label3.setOpaque(true);
+//							label3.setFont(font);
+//							panel.add(label3);
+//						}
+//						//							while (panel.getComponents().length<20) {
+//						//								panel.add(Box.createGlue());
+//						//							}
+//						highPanel.removeAll();
+//						highPanel.add(panel);
+//						highPanel.revalidate();
+//						frame.pack();
+//
+//
 					}
-					else if (type.equals("P")) {
-						pluppX=scanner.nextInt();
-						pluppY=scanner.nextInt();
-					}
-					else if (type.equals("B")) {
-						pixels.clear();
-						scanner.useDelimiter("\\z"); 
-						String string=scanner.next();
-						String[] strings = string.split(";");
-						for (int i = 0; i < strings.length; i++) {
-							Scanner scanner2 = new Scanner(strings[i]);
-							Color color = Color.decode("#"+scanner2.next());
-							while (scanner2.hasNext()) {
-								pixels.add(new Pixel(scanner2.nextInt(), scanner2.nextInt(), color));
-							}
-							scanner2.close();
-						}
-						repaint();
-					}
-					else if (type.equals("H")) {
-						highscores.clear();
-						
-						scanner.useDelimiter("\\z"); 
-						String string=scanner.next();
-						String[] strings = string.split(";");
-						for (int i = 0; i < strings.length; i++) {
-							Scanner scanner2 = new Scanner(strings[i]);
-							highscores.add(new Highscore(scanner2,strings[++i]));
-							scanner2.close();
-						}
-						JPanel panel = new JPanel();
-
-						Font font = new Font("", 0, 20);
-
-						panel.setBackground(Color.gray);
-						panel.setOpaque(true);
-						JLabel labe = new JLabel("Spelare",SwingConstants.CENTER);
-						labe.setBackground(Color.white);
-						labe.setOpaque(true);
-						labe.setFont(font);
-						panel.add(labe);
-
-						JLabel labe2 = new JLabel("Poäng",SwingConstants.CENTER);
-						labe2.setBackground(Color.white);
-						labe2.setOpaque(true);
-						labe2.setFont(font);
-						panel.add(labe2);
-
-						JLabel labe3 = new JLabel("High score",SwingConstants.CENTER);
-						labe3.setBackground(Color.white);
-						labe3.setOpaque(true);
-						labe3.setFont(font);
-						panel.add(labe3);
-
-						panel.setLayout(new GridLayout(0, 3, 1, 1));
-
-						highscores.sort(new Comparator<Highscore>() {
-							public int compare(Highscore o1, Highscore o2) {
-								return o2.highscore-o1.highscore;
-							};
-
-						});
-						for (Highscore highscore : highscores) {
-
-							JLabel label = new JLabel(highscore.namn,SwingConstants.CENTER);
-							label.setBackground(Color.white);
-							label.setForeground(highscore.color);
-							label.setOpaque(true);
-							label.setFont(font);
-							panel.add(label);
-
-							JLabel label2 = new JLabel(Integer.toString(highscore.p),SwingConstants.CENTER);
-							label2.setBackground(Color.white);
-							label2.setForeground(highscore.color);
-							label2.setOpaque(true);
-							label2.setFont(font);
-							panel.add(label2);
-
-							JLabel label3 = new JLabel(Integer.toString(highscore.highscore),SwingConstants.CENTER);
-							label3.setBackground(Color.white);
-							label3.setForeground(highscore.color);
-							label3.setOpaque(true);
-							label3.setFont(font);
-							panel.add(label3);
-						}
-						//							while (panel.getComponents().length<20) {
-						//								panel.add(Box.createGlue());
-						//							}
-						highPanel.removeAll();
-						highPanel.add(panel);
-						highPanel.revalidate();
-						frame.pack();
-
-
-					}
-					scanner.close();
+//					scanner.close();
 				}
 
 				@Override
