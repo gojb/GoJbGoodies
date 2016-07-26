@@ -24,7 +24,12 @@ public class SänkaSkepp {
 	JLabel egenLabel = new JLabel(), annanLabel = new JLabel(), egenText = new JLabel("Din ruta"),
 			annanText = new JLabel("Motståndares ruta"), spelruta = new JLabel(), textruta = new JLabel(),
 			inställningar = new JLabel() {
-				private static final long serialVersionUID = -8594618170153840433L;
+				
+
+		/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
 
 		protected void paintComponent(java.awt.Graphics g) {
 			super.paintComponent(g);
@@ -138,6 +143,9 @@ public class SänkaSkepp {
 					else if (string.equals("ingen")) {
 						JOptionPane.showMessageDialog(null, "Det är ingen annan online");
 						new SänkaSkepp();
+					}
+					else if (string.equals("ihopkopplad")) {
+						JOptionPane.showMessageDialog(null, "Ihopkopplad med " + scanner.next()+"!");
 					}
 					System.out.println(message + " <-- Message");
 				}
