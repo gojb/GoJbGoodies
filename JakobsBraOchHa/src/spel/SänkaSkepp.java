@@ -109,8 +109,10 @@ public class SänkaSkepp {
 							allaOnline+=message.split("lla online =")[1].split(";")[0].split(",")[i]+", ";
 						}
 						JOptionPane.showMessageDialog(null, "De här är online : "+allaOnline.substring(0, allaOnline.length()-2));
+						new SänkaSkepp();
 						connectFrame.setVisible(true);
-						connectFrame.setLayout(new GridLayout(allaOnline.split(", ").length, 1));
+						connectFrame.setLayout(new GridLayout(0, 1));
+//						allaOnline.split(", ").length
 						connectButtons = new JButton[allaOnline.split(", ").length];
 						for(int i =0;i<allaOnline.split(", ").length;i++){
 							connectButtons[i]=new JButton();
@@ -126,6 +128,7 @@ public class SänkaSkepp {
 					}
 					else if (string.equals("ingen")) {
 						JOptionPane.showMessageDialog(null, "Det är ingen annan online");
+						new SänkaSkepp();
 					}
 					System.out.println(message + " <-- Message");
 				}
