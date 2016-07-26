@@ -12,5 +12,7 @@
 	<classpathentry kind="lib" path="lwjgl_util.jar"/>
 	<classpathentry kind="lib" path="commons-net-3.3.jar"/>
 	<classpathentry kind="lib" path="TooTallNate-Java-WebSocket.jar"/>
+	<classpathentry kind="lib" path="javax.json-api-1.0.jar"/>
+	<classpathentry kind="lib" path="javax.json-1.0.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
