@@ -1,7 +1,4 @@
 package spel;
-//Gröna försvinner inte när man rör på den. Göra så att man kan vrida på skeppen. Kan bara lägga skäpp på planen, och där det
-//inte redan är skepp. Fixa server och lista med spelande
-
 
 import java.awt.*;
 import java.awt.event.*;
@@ -19,10 +16,10 @@ public class SänkaSkepp {
 	enum Riktning {hori,vert}
 
 	static WebSocketClient cc;
-	
+
 	Riktning riktning;
 
-	GoJbFrame frame = new GoJbFrame(false);
+	static GoJbFrame frame = new GoJbFrame(false), connectFrame = new GoJbFrame("Connect to...",false,2);
 	JLabel[] egnaLabels, annanLabels;
 	JLabel egenLabel = new JLabel(), annanLabel = new JLabel(), egenText = new JLabel("Din ruta"),
 			annanText = new JLabel("Motståndares ruta"), spelruta = new JLabel(), textruta = new JLabel(),
@@ -60,6 +57,10 @@ public class SänkaSkepp {
 
 	Robot rb;
 
+	JButton refresh = new JButton("Uppdatera antal online");
+
+	static JButton[] connectButtons;
+
 	boolean bol5 = true, bol4 = true, bol3 = true, bol2 = true, bol1 = true, stayInside, error;
 
 	int last1, last2, antalRutor, y, y1, kollaRutor, antalPlacerade;
@@ -69,7 +70,9 @@ public class SänkaSkepp {
 	int[] båtar;
 
 	static Scanner scanner;
-	
+
+	static String namn=null;
+
 	public static void main(String[] args) {
 		try {
 			cc = new WebSocketClient(new URI("ws://wildfly-gojb.rhcloud.com:8000/skepp")){
@@ -77,7 +80,7 @@ public class SänkaSkepp {
 				@Override
 				public void onClose(int arg0, String arg1, boolean arg2) {
 					// FIXME Auto-generated method stub
-					
+
 				}
 
 				@Override
@@ -89,28 +92,52 @@ public class SänkaSkepp {
 				@Override
 				public void onMessage(String message) {
 					// FIXME Auto-generated method stub
-					
+
 					message=message.toLowerCase();
-					
+
 					scanner = new Scanner(message);
 					String string=scanner.next();
-					
-					if(message.equals("starta")){
+
+					if(string.equals("starta")){
 						new SänkaSkepp();
+					}
+					else if(string.equals("alla")){
+						String allaOnline ="";
+						for(int i=0;i<message.split("lla online =")[1].split(";")[0].split(",").length;i++){
+							allaOnline+=message.split("lla online =")[1].split(";")[0].split(",")[i]+", ";
+						}
+						JOptionPane.showMessageDialog(null, "De här är online : "+allaOnline.substring(0, allaOnline.length()-2));
+						connectFrame.setVisible(true);
+						connectFrame.setLayout(new GridLayout(allaOnline.split(", ").length, 1));
+						connectButtons = new JButton[allaOnline.split(", ").length];
+						for(int i =0;i<allaOnline.split(", ").length;i++){
+							connectButtons[i]=new JButton();
+							connectFrame.add(connectButtons[i]);
+							connectButtons[i].setText(allaOnline.split(", ")[i]);
+							connectButtons[i].setName(message.split(";")[1].split(",")[i]);
+							connectButtons[i].addActionListener(e->{
+								String clicked =((JButton) e.getSource()).getName();
+								System.out.println(clicked);
+								});
+						}
+					}
+					else if (string.equals("ingen")) {
+						JOptionPane.showMessageDialog(null, "Det är ingen annan online");
 					}
 					System.out.println(message + " <-- Message");
 				}
 				@Override
 				public void onOpen(ServerHandshake arg0) {
 					// FIXME Auto-generated method stub
-					cc.send("Hello, World");
-					String namn= JOptionPane.showInputDialog("Enter Username", "gojb");
-					cc.send("Namn " + namn);
-					cc.send("STARTA");
+					while(namn==null||namn==""){
+						namn= JOptionPane.showInputDialog("Enter Username", "Gojb");
+						cc.send("Namn " + namn);
+//						cc.send("STARTA");
+					}
 				}
-				
+
 			};
-		
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -218,7 +245,7 @@ public class SänkaSkepp {
 							}
 						}
 						else if(riktning==Riktning.vert){
-	
+
 							if(!error){
 								for(int i=0;i<antalRutor;i++){
 									if(båtar[clicked+(i*10)]<50){
@@ -233,13 +260,13 @@ public class SänkaSkepp {
 									antalPlacerade++;
 									antalRutor=0;
 									stayInside=false;
-								
+
 								}
 								kollaRutor=0;
 							}
-							
-							
-							
+
+
+
 						}
 						if(antalPlacerade==5){
 							Klar();
@@ -407,9 +434,9 @@ public class SänkaSkepp {
 				public void mouseMoved(MouseEvent e) {
 					int clicked = Integer.parseInt(((JLabel) e.getSource()).getText());
 					if(bol5==false&&bol4==false&&bol3==false&&bol2==false&&bol1==false){
-					annanLabels[last2].setBackground(new Color(145, 176, 223));
-					annanLabels[clicked].setBackground(Color.black);
-					last2 = clicked;
+						annanLabels[last2].setBackground(new Color(145, 176, 223));
+						annanLabels[clicked].setBackground(Color.black);
+						last2 = clicked;
 					}
 
 				}
@@ -453,6 +480,13 @@ public class SänkaSkepp {
 		frame.revalidate();
 		inställningar.repaint();
 		frame.repaint();
+
+		inställningar.setLayout(null);
+		inställningar.add(refresh);
+		refresh.setSize(200,40);
+		refresh.setLocation(inställningar.getWidth()-refresh.getWidth(),inställningar.getHeight()-refresh.getHeight());
+		refresh.addActionListener(e->{cc.send("Namn "+namn);});
+
 		inställningar.addMouseListener(new MouseListener() {
 
 			@Override
@@ -546,6 +580,6 @@ public class SänkaSkepp {
 	public void Klar() {
 		System.out.println("KLAR!!");
 		// WebSocketImpl.DEBUG=true;
-		
+
 	}
 }
