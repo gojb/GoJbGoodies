@@ -14,7 +14,6 @@ public class Röj implements ActionListener {
 
 	GoJbFrame frame = new GoJbFrame("Röj", false), customFrame = new GoJbFrame(false);
 	JButton[] button;
-	JMenu menu = new JMenu("Hey");
 	JMenuBar mBar = new JMenuBar();
 	JMenuItem res = new JMenuItem("Restart"), validate = new JMenuItem("Validate field"),
 			customItem = new JMenuItem("Board set-up");

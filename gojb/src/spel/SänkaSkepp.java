@@ -64,7 +64,9 @@ public class SänkaSkepp {
 
 	Robot rb;
 
-	JButton refresh = new JButton("Uppdatera antal online");
+	static JMenuBar bar = new JMenuBar();
+	
+	static JMenuItem refresh = new JMenuItem("Uppdatera");
 
 	static JButton[] connectButtons;
 
@@ -102,6 +104,14 @@ public class SänkaSkepp {
 
 					message=message.toLowerCase();
 
+					connectFrame.setLayout(new GridLayout(0, 1));
+					connectFrame.setTitle("Anslut till motståndare");
+					connectFrame.setJMenuBar(bar);
+					
+					bar.add(refresh);
+					
+					refresh.addActionListener(e->{cc.send("Namn ettnammsomaldrigskrivs");});
+					
 					scanner = new Scanner(message);
 					String string=scanner.next();
 
@@ -113,10 +123,9 @@ public class SänkaSkepp {
 						for(int i=0;i<message.split("lla online =")[1].split(";")[0].split(",").length;i++){
 							allaOnline+=message.split("lla online =")[1].split(";")[0].split(",")[i]+", ";
 						}
-						JOptionPane.showMessageDialog(null, "De här är online : "+allaOnline.substring(0, allaOnline.length()-2));
-						new SänkaSkepp();
-						connectFrame.setVisible(true);
-						connectFrame.setLayout(new GridLayout(0, 1));
+						if(!message.split("lla online =")[1].split(";")[1].equals("ettnammsomaldrigskrivs")){
+						JOptionPane.showMessageDialog(null, "Det är "+ allaOnline.split(",").length +" till online : "+allaOnline.substring(0, allaOnline.length()-2));
+						}
 						try {
 							for (int i = 0; i < connectButtons.length; i++) {
 								connectButtons[i] = new JButton("");
@@ -127,6 +136,7 @@ public class SänkaSkepp {
 							System.out.println(e);
 						}
 //						allaOnline.split(", ").length
+						connectFrame.setVisible(true);
 						connectButtons = new JButton[allaOnline.split(", ").length];
 						for(int i =0;i<allaOnline.split(", ").length;i++){
 							connectButtons[i]=new JButton();
@@ -142,10 +152,13 @@ public class SänkaSkepp {
 					}
 					else if (string.equals("ingen")) {
 						JOptionPane.showMessageDialog(null, "Det är ingen annan online");
-						new SänkaSkepp();
+						connectFrame.setVisible(true);
 					}
 					else if (string.equals("ihopkopplad")) {
-						JOptionPane.showMessageDialog(null, "Ihopkopplad med " + scanner.next()+"!");
+						JOptionPane.showMessageDialog(null, "Ansluten med " + scanner.next()+"!");
+						connectFrame.dispose();
+						new SänkaSkepp();
+						
 					}
 					System.out.println(message + " <-- Message");
 				}
@@ -503,12 +516,6 @@ public class SänkaSkepp {
 		frame.revalidate();
 		inställningar.repaint();
 		frame.repaint();
-
-		inställningar.setLayout(null);
-		inställningar.add(refresh);
-		refresh.setSize(200,40);
-		refresh.setLocation(inställningar.getWidth()-refresh.getWidth(),inställningar.getHeight()-refresh.getHeight());
-		refresh.addActionListener(e->{cc.send("Namn "+namn);});
 
 		inställningar.addMouseListener(new MouseListener() {
 
