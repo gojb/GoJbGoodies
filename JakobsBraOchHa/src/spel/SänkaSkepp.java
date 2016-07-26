@@ -118,7 +118,7 @@ public class SänkaSkepp {
 							connectButtons[i].setText(allaOnline.split(", ")[i]);
 							connectButtons[i].setName(message.split(";")[1].split(",")[i]);
 							connectButtons[i].addActionListener(e->{
-								String clicked =((JButton) e.getSource()).getName();
+								String clicked =((JButton) e.getSource()).getText();
 								System.out.println(clicked);
 								cc.send("Annan "+clicked);
 								});
