@@ -35,6 +35,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.image.ColorModel;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -42,6 +43,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Scanner;
 
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.stream.JsonLocation;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -167,6 +172,81 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 			cc = new WebSocketClient( new URI("ws://wildfly-gojb.rhcloud.com:8000/snake")) {
 				@Override
 				public void onMessage( String message ) {
+					JsonObject obj;
+					try {
+//						obj = Json.createParser(message);
+					} 
+					catch (Exception e) {
+						if (message.equals("START")||message=="OPEN") {
+							System.out.println(message);
+						}
+						else{
+							System.err.println(message);
+						}
+						return;
+					}
+					JsonArray datas= obj.getJsonArray("data");
+					for (int i = 0; i < datas.length; i++) {
+						JsonObject data = datas.getJsonObject(i);
+						String type=data.getString("type");
+						if(type=="plupp"){
+							pluppX=data.getInt("X");
+							pluppY=data.getInt("Y");
+						}
+						else if (type=="players") {
+							pixels.clear();
+							JsonArray players=data.getJsonArray("players");
+							for (int int2 = 0; int2 < players.size(); int2++) {
+								JsonObject player= players.getJsonObject(int2);
+								JsonArray pixlar= player.getJsonArray("pixels");
+								Color färg = Color.decode("#"+player.getInt("färg"));
+								for (int int3 = 0; int3 < pixlar.size(); int3++) {
+									JsonObject pixel=pixlar.getJsonObject(int3);
+									pixels.add(new Pixel(pixel.getInt("X"), pixel.getInt("Y"), färg));
+								}
+							}
+						}
+						else if(type=="highscore"){
+//							$('.highscore').empty();
+//							$('.highscore').append(
+//									'<tr>'+
+//									'<th>Spelare</th>'+
+//									'<th>Poäng</th>'+
+//									'<th>Highscore</th>'+
+//									'</tr>'
+//							);
+//							var highscores=data.highscore;
+//							for (var int3 = 0; int3 < highscores.length; int3++) {
+//								var highscore=highscores[int3];
+////								var highscore=new Highscore(scanner);
+//								$('.highscore').append(
+//										'<tr style="color:#'+highscore.färg+';">'+
+//										'<td><script type="text/plain">'+highscore.namn+'</script></td>'+
+//										'<td>'+highscore.poäng+'</td>'+
+//										'<td>'+highscore.highscore+'</td>'+
+//										'</div>'
+//								);
+//							}
+						}
+						else if(type=="gameover"){
+							console.log(data);
+							System.out.println();
+							vem=data.namn;
+							gameover = true;
+
+						}
+						else if(type=="delay"){
+							console.log(data.delay);
+						}
+						else if(type=="cleangameover"){
+							gameover=false;
+						}
+						else if(type=="pause"){
+							paused=true;
+						}
+						else if(type=="unpause"){
+							paused=true;
+						}
 					System.err.println(message);
 					Scanner scanner = new Scanner(message);
 					String type = scanner.next();
