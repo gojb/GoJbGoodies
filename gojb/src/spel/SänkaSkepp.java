@@ -21,10 +21,12 @@ public class SänkaSkepp {
 
 	static GoJbFrame frame = new GoJbFrame(false), connectFrame = new GoJbFrame("Connect to...",false,2);
 	JLabel[] egnaLabels, annanLabels;
-	@SuppressWarnings("serial")
 	JLabel egenLabel = new JLabel(), annanLabel = new JLabel(), egenText = new JLabel("Din ruta"),
-			annanText = new JLabel("Motståndares ruta"), spelruta = new JLabel(), textruta = new JLabel(),
-			inställningar = new JLabel() {
+			annanText = new JLabel("Motståndares ruta"), spelruta = new JLabel(), textruta = new JLabel();
+
+
+	@SuppressWarnings("serial")
+	static JLabel connectLabel = new JLabel(),inställningar = new JLabel() {
 
 		protected void paintComponent(java.awt.Graphics g) {
 			super.paintComponent(g);
@@ -53,21 +55,23 @@ public class SänkaSkepp {
 					g.fillRect(5 + i, 210, 20, 20);
 				}
 			}
+			g.setFont(new Font("", Font.BOLD, 32));
+			g.setColor(Color.black);
+			g.drawString(instruktioner1, inställningar.getWidth()/2, (inställningar.getHeight()/8)*4);
+			g.drawString(instruktioner2, inställningar.getWidth()/2, (inställningar.getHeight()/8)*5);
 
 		};
 	};
 
-	static JLabel connectLabel = new JLabel();
-	
 	Robot rb;
 
 	static JMenuBar bar = new JMenuBar();
-	
+
 	static JMenuItem refresh = new JMenuItem("Uppdatera");
 
 	static JButton[] connectButtons;
 
-	boolean bol5 = true, bol4 = true, bol3 = true, bol2 = true, bol1 = true, stayInside, error;
+	static boolean bol5 = true, bol4 = true, bol3 = true, bol2 = true, bol1 = true, stayInside, error, minTur;
 
 	int last1, last2, antalRutor, y, y1, kollaRutor, antalPlacerade;
 
@@ -77,7 +81,7 @@ public class SänkaSkepp {
 
 	static Scanner scanner;
 
-	static String namn=null;
+	static String namn=null, instruktioner2="", instruktioner1="Placera dina skepp";
 
 	public static void main(String[] args) {
 		try {
@@ -100,16 +104,16 @@ public class SänkaSkepp {
 					// FIXME Auto-generated method stub
 
 					message=message.toLowerCase();
-					
+
 					connectFrame.setTitle("Anslut till motståndare");
 					connectFrame.setJMenuBar(bar);
 					connectFrame.add(connectLabel);
 					connectLabel.setLayout(new GridLayout(0, 1));
-					
+
 					bar.add(refresh);
-					
+
 					refresh.addActionListener(e->{cc.send("Refresh");});
-					
+
 					scanner = new Scanner(message);
 					String string=scanner.next();
 
@@ -122,17 +126,17 @@ public class SänkaSkepp {
 							allaOnline+=message.split("lla online =")[1].split(";")[0].split(",")[i]+", ";
 						}
 						JOptionPane.showMessageDialog(null, "Det är "+ allaOnline.substring(0,allaOnline.length()-2).split(",").length +" till online : "+allaOnline.substring(0, allaOnline.length()-2));
-//						try {
-//							System.out.println(connectFrame.getComponents());
-//							for (int i = 0; i < connectButtons.length; i++) {
-//								connectButtons[i] = new JButton("");
-//								connectFrame.remove(connectButtons[i]);
-//							}
-//
-//						} catch (Exception e) {
-//							System.err.println("sadassd");
-//						e.printStackTrace();
-//						}
+						//						try {
+						//							System.out.println(connectFrame.getComponents());
+						//							for (int i = 0; i < connectButtons.length; i++) {
+						//								connectButtons[i] = new JButton("");
+						//								connectFrame.remove(connectButtons[i]);
+						//							}
+						//
+						//						} catch (Exception e) {
+						//							System.err.println("sadassd");
+						//						e.printStackTrace();
+						//						}
 						connectFrame.setVisible(true);
 						connectButtons = new JButton[allaOnline.split(", ").length];
 						connectLabel.removeAll();
@@ -145,7 +149,7 @@ public class SänkaSkepp {
 								String clicked =((JButton) e.getSource()).getName();
 								System.out.println(clicked);
 								cc.send("Annan "+clicked);
-								});
+							});
 						}
 					}
 					else if (string.equals("refresh")) {
@@ -165,7 +169,7 @@ public class SänkaSkepp {
 								String clicked =((JButton) e.getSource()).getName();
 								System.out.println(clicked);
 								cc.send("Annan "+clicked);
-								});
+							});
 						}
 					}
 					else if (string.equals("ingen")) {
@@ -176,7 +180,13 @@ public class SänkaSkepp {
 						JOptionPane.showMessageDialog(null, "Ansluten med " + scanner.next()+"!");
 						connectFrame.dispose();
 						new SänkaSkepp();
-						
+
+					}
+					else if(string.equals("klar")){
+						instruktioner2="Motståndaren är klar och väntar";
+						instruktioner1="Placera dina skepp";
+						inställningar.repaint();
+
 					}
 					System.out.println(message + " <-- Message");
 				}
@@ -186,7 +196,7 @@ public class SänkaSkepp {
 					while(namn==null||namn==""){
 						namn= JOptionPane.showInputDialog("Enter Username", "Gojb");
 						cc.send("Namn " + namn);
-//						cc.send("STARTA");
+						//						cc.send("STARTA");
 					}
 				}
 
@@ -195,7 +205,8 @@ public class SänkaSkepp {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		cc.connect();
+		//		cc.connect();
+		new SänkaSkepp();
 
 	}
 
@@ -486,13 +497,14 @@ public class SänkaSkepp {
 			});
 			annanLabels[i].addMouseMotionListener(new MouseAdapter() {
 				public void mouseMoved(MouseEvent e) {
-					int clicked = Integer.parseInt(((JLabel) e.getSource()).getText());
-					if(bol5==false&&bol4==false&&bol3==false&&bol2==false&&bol1==false){
-						annanLabels[last2].setBackground(new Color(145, 176, 223));
-						annanLabels[clicked].setBackground(Color.black);
-						last2 = clicked;
+					if(minTur){
+						int clicked = Integer.parseInt(((JLabel) e.getSource()).getText());
+						if(bol5==false&&bol4==false&&bol3==false&&bol2==false&&bol1==false){
+							annanLabels[last2].setBackground(new Color(145, 176, 223));
+							annanLabels[clicked].setBackground(Color.black);
+							last2 = clicked;
+						}
 					}
-
 				}
 
 				@Override
@@ -628,6 +640,8 @@ public class SänkaSkepp {
 	public void Klar() {
 		System.out.println("KLAR!!");
 		// WebSocketImpl.DEBUG=true;
-
+		//		cc.send("klar");
+		instruktioner1="Väntar på motståndare...";
+		inställningar.repaint();
 	}
 }
