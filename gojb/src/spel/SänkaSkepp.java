@@ -81,7 +81,7 @@ public class SänkaSkepp {
 
 	static Scanner scanner;
 
-	static String namn=null, instruktioner2="", instruktioner1="Placera dina skepp";
+	static String namn=null, instruktioner2="", instruktioner1="Placera dina skepp.";
 
 	public static void main(String[] args) {
 		try {
@@ -183,8 +183,19 @@ public class SänkaSkepp {
 
 					}
 					else if(string.equals("klar")){
-						instruktioner2="Motståndaren är klar och väntar";
-						instruktioner1="Placera dina skepp";
+						instruktioner2="Motståndaren är klar och väntar.";
+						instruktioner1="Placera dina skepp.";
+						inställningar.repaint();
+
+					}
+					else if(string.equals("bådaklar")){
+						instruktioner1="Dags att börja spela.";
+						if(scanner.next().toLowerCase().equals("start")){
+						instruktioner2="Du börjar skjuta";
+						}
+						else {
+						instruktioner2="Din motståndare börjar.";
+						}
 						inställningar.repaint();
 
 					}
@@ -640,7 +651,7 @@ public class SänkaSkepp {
 	public void Klar() {
 		System.out.println("KLAR!!");
 		// WebSocketImpl.DEBUG=true;
-				cc.send("klar");
+		cc.send("klar");
 		instruktioner1="Väntar på motståndare...";
 		inställningar.repaint();
 	}
