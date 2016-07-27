@@ -126,17 +126,6 @@ public class SänkaSkepp {
 							allaOnline+=message.split("lla online =")[1].split(";")[0].split(",")[i]+", ";
 						}
 						JOptionPane.showMessageDialog(null, "Det är "+ allaOnline.substring(0,allaOnline.length()-2).split(",").length +" till online : "+allaOnline.substring(0, allaOnline.length()-2));
-						//						try {
-						//							System.out.println(connectFrame.getComponents());
-						//							for (int i = 0; i < connectButtons.length; i++) {
-						//								connectButtons[i] = new JButton("");
-						//								connectFrame.remove(connectButtons[i]);
-						//							}
-						//
-						//						} catch (Exception e) {
-						//							System.err.println("sadassd");
-						//						e.printStackTrace();
-						//						}
 						connectFrame.setVisible(true);
 						connectButtons = new JButton[allaOnline.split(", ").length];
 						connectLabel.removeAll();
@@ -186,15 +175,16 @@ public class SänkaSkepp {
 						instruktioner2="Motståndaren är klar och väntar.";
 						instruktioner1="Placera dina skepp.";
 						inställningar.repaint();
-
 					}
 					else if(string.equals("bådaklar")){
 						instruktioner1="Dags att börja spela.";
 						if(scanner.next().toLowerCase().equals("start")){
 						instruktioner2="Du börjar skjuta";
+						minTur=true;
 						}
 						else {
 						instruktioner2="Din motståndare börjar.";
+						minTur=false;
 						}
 						inställningar.repaint();
 
