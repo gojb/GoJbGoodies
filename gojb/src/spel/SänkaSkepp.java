@@ -205,8 +205,8 @@ public class SänkaSkepp {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//		cc.connect();
-		new SänkaSkepp();
+				cc.connect();
+//		new SänkaSkepp();
 
 	}
 
@@ -640,7 +640,7 @@ public class SänkaSkepp {
 	public void Klar() {
 		System.out.println("KLAR!!");
 		// WebSocketImpl.DEBUG=true;
-		//		cc.send("klar");
+				cc.send("klar");
 		instruktioner1="Väntar på motståndare...";
 		inställningar.repaint();
 	}
