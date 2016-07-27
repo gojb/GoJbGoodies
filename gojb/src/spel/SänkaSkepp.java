@@ -473,6 +473,11 @@ public class SänkaSkepp {
 				}
 
 				public void mousePressed(MouseEvent e) {
+					if(minTur){
+						int clicked = Integer.parseInt(((JLabel) e.getSource()).getText());
+						cc.send("skjut "+clicked);
+						minTur=false;
+					}
 				}
 
 				public void mouseExited(MouseEvent e) {
