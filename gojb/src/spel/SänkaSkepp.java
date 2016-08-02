@@ -1,3 +1,8 @@
+//Saker att lägga till;
+//Avsluta när alla skepp är träffade
+//Lägga till Båtarnas avskärning, så att man ser, och sänker olika båtar
+//Chatt kanske?
+
 package spel;
 
 import java.awt.*;
