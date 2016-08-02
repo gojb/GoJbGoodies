@@ -19,8 +19,10 @@ public class SänkaSkepp {
 
 	Riktning riktning;
 
+	static Color träffFärg = Color.red, missFärg = Color.blue, instruktioner1Färg = Color.black, instruktioner2Färg = Color.black;
+
 	static GoJbFrame frame = new GoJbFrame(false), connectFrame = new GoJbFrame("Connect to...",false,2);
-	JLabel[] egnaLabels, annanLabels;
+	static JLabel[] egnaLabels, annanLabels;
 	JLabel egenLabel = new JLabel(), annanLabel = new JLabel(), egenText = new JLabel("Din ruta"),
 			annanText = new JLabel("Motståndares ruta"), spelruta = new JLabel(), textruta = new JLabel();
 
@@ -56,8 +58,9 @@ public class SänkaSkepp {
 				}
 			}
 			g.setFont(new Font("", Font.BOLD, 32));
-			g.setColor(Color.black);
+			g.setColor(instruktioner1Färg);
 			g.drawString(instruktioner1, inställningar.getWidth()/2, (inställningar.getHeight()/8)*4);
+			g.setColor(instruktioner2Färg);
 			g.drawString(instruktioner2, inställningar.getWidth()/2, (inställningar.getHeight()/8)*5);
 
 		};
@@ -75,9 +78,11 @@ public class SänkaSkepp {
 
 	int last1, last2, antalRutor, y, y1, kollaRutor, antalPlacerade;
 
+	static int skjutPå;
+
 	double b, x, b1, x1;
 
-	int[] båtar;
+	static int[] båtar;
 
 	static Scanner scanner;
 
@@ -105,15 +110,6 @@ public class SänkaSkepp {
 
 					message=message.toLowerCase();
 
-					connectFrame.setTitle("Anslut till motståndare");
-					connectFrame.setJMenuBar(bar);
-					connectFrame.add(connectLabel);
-					connectLabel.setLayout(new GridLayout(0, 1));
-
-					bar.add(refresh);
-
-					refresh.addActionListener(e->{cc.send("Refresh");});
-
 					scanner = new Scanner(message);
 					String string=scanner.next();
 
@@ -126,6 +122,15 @@ public class SänkaSkepp {
 							allaOnline+=message.split("lla online =")[1].split(";")[0].split(",")[i]+", ";
 						}
 						JOptionPane.showMessageDialog(null, "Det är "+ allaOnline.substring(0,allaOnline.length()-2).split(",").length +" till online : "+allaOnline.substring(0, allaOnline.length()-2));
+						connectFrame.setTitle("Anslut till motståndare");
+						connectFrame.setJMenuBar(bar);
+						connectFrame.add(connectLabel);
+						connectLabel.setLayout(new GridLayout(0, 1));
+
+						bar.add(refresh);
+
+						refresh.addActionListener(e->{cc.send("Refresh");});
+
 						connectFrame.setVisible(true);
 						connectButtons = new JButton[allaOnline.split(", ").length];
 						connectLabel.removeAll();
@@ -163,6 +168,15 @@ public class SänkaSkepp {
 					}
 					else if (string.equals("ingen")) {
 						JOptionPane.showMessageDialog(null, "Det är ingen annan online");
+
+						connectFrame.setTitle("Anslut till motståndare");
+						connectFrame.setJMenuBar(bar);
+						connectFrame.add(connectLabel);
+						connectLabel.setLayout(new GridLayout(0, 1));
+
+						bar.add(refresh);
+
+						refresh.addActionListener(e->{cc.send("Refresh");});
 						connectFrame.setVisible(true);
 					}
 					else if (string.equals("ihopkopplad")) {
@@ -179,15 +193,50 @@ public class SänkaSkepp {
 					else if(string.equals("bådaklar")){
 						instruktioner1="Dags att börja spela.";
 						if(scanner.next().toLowerCase().equals("start")){
-						instruktioner2="Du börjar skjuta";
-						minTur=true;
+							instruktioner2="Du börjar skjuta";
+							minTur=true;
 						}
 						else {
-						instruktioner2="Din motståndare börjar.";
-						minTur=false;
+							instruktioner2="Din motståndare börjar.";
+							minTur=false;
 						}
 						inställningar.repaint();
 
+					}
+					else if(string.equals("skjut")){
+						int skottRuta = scanner.nextInt();
+						if(båtar[skottRuta]<50){
+							send("skott miss");
+							minTur=true;
+							egnaLabels[skottRuta].setBackground(missFärg);
+							instruktioner1Färg=missFärg;
+							instruktioner1="Din motståndare bommade!";				
+						}
+						else {
+							send("skott träff");
+							minTur=true;
+							egnaLabels[skottRuta].setBackground(träffFärg);
+							instruktioner1Färg=träffFärg;
+							instruktioner1="Din motståndare träffade!";
+						}
+						instruktioner2="Din tur";
+						inställningar.repaint();
+						instruktioner1Färg=Color.black;
+					}
+					else if(string.equals("skott")){
+						if(scanner.next().equals("träff")){
+							annanLabels[skjutPå].setBackground(träffFärg);
+							instruktioner1Färg=träffFärg;
+							instruktioner1="Träff!";	
+						}
+						else {
+							annanLabels[skjutPå].setBackground(missFärg);
+							instruktioner1Färg=missFärg;
+							instruktioner1="Bom!";	
+						}
+						instruktioner2="Din motståndare siktar...";	
+						inställningar.repaint();
+						instruktioner1Färg=Color.black;
 					}
 					System.out.println(message + " <-- Message");
 				}
@@ -206,8 +255,8 @@ public class SänkaSkepp {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-				cc.connect();
-//		new SänkaSkepp();
+		cc.connect();
+		//		new SänkaSkepp();
 
 	}
 
@@ -474,22 +523,26 @@ public class SänkaSkepp {
 
 				public void mousePressed(MouseEvent e) {
 					if(minTur){
-						int clicked = Integer.parseInt(((JLabel) e.getSource()).getText());
-						cc.send("skjut "+clicked);
+						skjutPå = Integer.parseInt(((JLabel) e.getSource()).getText());
+						if(annanLabels[skjutPå].getBackground()!=träffFärg&&annanLabels[skjutPå].getBackground()!=missFärg){
+						cc.send("skjut "+skjutPå);
 						minTur=false;
+						}
 					}
 				}
 
 				public void mouseExited(MouseEvent e) {
 					// FIXME Auto-generated method stub
-					annanLabels[last2].setBackground(new Color(145, 176, 223));
+					if(annanLabels[last2].getBackground()!=missFärg&&annanLabels[last2].getBackground()!=träffFärg){
+						annanLabels[last2].setBackground(new Color(145, 176, 223));
+					}
 				}
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					// FIXME Auto-generated method stub
 					for(int i = 0;i<egnaLabels.length;i++){
-						if(båtar[i]<100){
+						if(båtar[i]<100&&egnaLabels[i].getBackground()!=träffFärg&&egnaLabels[i].getBackground()!=missFärg){
 							egnaLabels[i].setBackground((new Color(207, 217, 220)));
 						}
 					}
@@ -506,8 +559,12 @@ public class SänkaSkepp {
 					if(minTur){
 						int clicked = Integer.parseInt(((JLabel) e.getSource()).getText());
 						if(bol5==false&&bol4==false&&bol3==false&&bol2==false&&bol1==false){
-							annanLabels[last2].setBackground(new Color(145, 176, 223));
-							annanLabels[clicked].setBackground(Color.black);
+							if(annanLabels[last2].getBackground()!=träffFärg&&annanLabels[last2].getBackground()!=missFärg){
+								annanLabels[last2].setBackground(new Color(145, 176, 223));
+							}
+							if(annanLabels[clicked].getBackground()!=träffFärg&&annanLabels[clicked].getBackground()!=missFärg){
+								annanLabels[clicked].setBackground(Color.black);
+							}			
 							last2 = clicked;
 						}
 					}
@@ -646,7 +703,7 @@ public class SänkaSkepp {
 	public void Klar() {
 		System.out.println("KLAR!!");
 		// WebSocketImpl.DEBUG=true;
-		cc.send("klar");
+		cc.send("klar".toLowerCase());
 		instruktioner1="Väntar på motståndare...";
 		inställningar.repaint();
 	}
