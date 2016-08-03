@@ -14,6 +14,7 @@ import javax.swing.*;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import GoJbFrame.GoJbFrame;
+import gojb.GoJbGoodies;
 
 public class SänkaSkepp {
 
@@ -226,6 +227,7 @@ public class SänkaSkepp {
 						}
 						instruktioner2="Din tur";
 						inställningar.repaint();
+						GoJbGoodies.vänta(1000);
 						instruktioner1Färg=Color.black;
 					}
 					else if(string.equals("skott")){
@@ -241,6 +243,7 @@ public class SänkaSkepp {
 						}
 						instruktioner2="Din motståndare siktar...";	
 						inställningar.repaint();
+						GoJbGoodies.vänta(1000);
 						instruktioner1Färg=Color.black;
 					}
 					System.out.println(message + " <-- Message");
@@ -262,7 +265,7 @@ public class SänkaSkepp {
 		}
 		cc.connect();
 		//		new SänkaSkepp();
-
+		
 	}
 
 	public SänkaSkepp() {
@@ -355,7 +358,8 @@ public class SänkaSkepp {
 								if(kollaRutor==antalRutor){
 									for(int i=0;i<antalRutor;i++){
 										båtar[clicked+(i*1)]=100;
-										egnaLabels[clicked+(i*1)].setBackground(new Color(70+(antalPlacerade*10),70+(antalPlacerade*10),70+(antalPlacerade*10)));
+										System.out.println(Math.round(Math.pow(antalPlacerade,0.3)) + " --- "+(Math.pow(antalPlacerade,0.3)));
+										egnaLabels[clicked+(i*1)].setBackground(new Color(setColor(antalPlacerade),setColor(antalPlacerade),setColor(antalPlacerade)));
 									}
 									antalPlacerade++;
 									antalRutor=0;
@@ -375,7 +379,7 @@ public class SänkaSkepp {
 								if(kollaRutor==antalRutor){
 									for(int i=0;i<antalRutor;i++){
 										båtar[clicked+(i*10)]=100;
-										egnaLabels[clicked+(i*10)].setBackground(new Color(70+(antalPlacerade*10),70+(antalPlacerade*10),70+(antalPlacerade*10)));
+										egnaLabels[clicked+(i*10)].setBackground(new Color(setColor(antalPlacerade),setColor(antalPlacerade),setColor(antalPlacerade)));
 									}
 									antalPlacerade++;
 									antalRutor=0;
@@ -711,5 +715,14 @@ public class SänkaSkepp {
 		cc.send("klar".toLowerCase());
 		instruktioner1="Väntar på motståndare...";
 		inställningar.repaint();
+	}
+	public static int setColor(int x){
+	
+		x+=1;
+		int o,k;
+		o = (((int)-0.5)*((int)((Math.pow(x, 2))))+(7*x))*7;
+		k=o-(((int)-0.5)*((int)((Math.pow(1, 2))))+(7*1))*7;
+		return k;
+		
 	}
 }
