@@ -263,9 +263,9 @@ public class SänkaSkepp {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		cc.connect();
-		//		new SänkaSkepp();
-		
+		//		cc.connect();
+		new SänkaSkepp();
+
 	}
 
 	public SänkaSkepp() {
@@ -357,9 +357,10 @@ public class SänkaSkepp {
 								}
 								if(kollaRutor==antalRutor){
 									for(int i=0;i<antalRutor;i++){
-										båtar[clicked+(i*1)]=100;
-										System.out.println(Math.round(Math.pow(antalPlacerade,0.3)) + " --- "+(Math.pow(antalPlacerade,0.3)));
-										egnaLabels[clicked+(i*1)].setBackground(new Color(setColor(antalPlacerade),setColor(antalPlacerade),setColor(antalPlacerade)));
+										båtar[clicked+(i*1)]=100+antalRutor;
+										System.out.println(Math.round((antalPlacerade*40)));
+										int rgbFärg=(int) Math.round((antalPlacerade*40));
+										egnaLabels[clicked+(i*1)].setBackground(new Color(rgbFärg,rgbFärg,rgbFärg));
 									}
 									antalPlacerade++;
 									antalRutor=0;
@@ -378,8 +379,10 @@ public class SänkaSkepp {
 								}
 								if(kollaRutor==antalRutor){
 									for(int i=0;i<antalRutor;i++){
-										båtar[clicked+(i*10)]=100;
-										egnaLabels[clicked+(i*10)].setBackground(new Color(setColor(antalPlacerade),setColor(antalPlacerade),setColor(antalPlacerade)));
+										båtar[clicked+(i*10)]=100+antalRutor;
+										System.out.println(Math.round((antalPlacerade*40)));
+										int rgbFärg=(int) Math.round((antalPlacerade*40));
+										egnaLabels[clicked+(i*10)].setBackground(new Color(rgbFärg,rgbFärg,rgbFärg));
 									}
 									antalPlacerade++;
 									antalRutor=0;
@@ -534,8 +537,8 @@ public class SänkaSkepp {
 					if(minTur){
 						skjutPå = Integer.parseInt(((JLabel) e.getSource()).getText());
 						if(annanLabels[skjutPå].getBackground()!=träffFärg&&annanLabels[skjutPå].getBackground()!=missFärg){
-						cc.send("skjut "+skjutPå);
-						minTur=false;
+							cc.send("skjut "+skjutPå);
+							minTur=false;
 						}
 					}
 				}
@@ -717,12 +720,12 @@ public class SänkaSkepp {
 		inställningar.repaint();
 	}
 	public static int setColor(int x){
-	
+
 		x+=1;
 		int o,k;
 		o = (((int)-0.5)*((int)((Math.pow(x, 2))))+(7*x))*7;
 		k=o-(((int)-0.5)*((int)((Math.pow(1, 2))))+(7*1))*7;
 		return k;
-		
+
 	}
 }
