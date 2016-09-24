@@ -1,6 +1,4 @@
 //Saker att lägga till;
-//Avsluta när alla skepp är träffade
-//Lägga till Båtarnas avskärning, så att man ser, och sänker olika båtar
 //Chatt kanske?
 
 package spel;
@@ -25,7 +23,7 @@ public class SänkaSkepp {
 
 	båttyp båtsort;
 
-	ArrayList<Integer> båtar5 = new ArrayList<>(),båtar4 = new ArrayList<>(),båtar3_1 = new ArrayList<>(),båtar3_2 = new ArrayList<>(),båtar2 = new ArrayList<>();
+	static ArrayList<Integer> båtar5 = new ArrayList<>(),båtar4 = new ArrayList<>(),båtar3_1 = new ArrayList<>(),båtar3_2 = new ArrayList<>(),båtar2 = new ArrayList<>();
 	
 	static WebSocketClient cc;
 
@@ -226,12 +224,70 @@ public class SänkaSkepp {
 							antalMissade++;
 						}
 						else {
-							send("skott träff");
 							minTur=true;
 							egnaLabels[skottRuta].setBackground(träffFärg);
+							instruktioner1="Din motståndare träffade!";
+							if(båtar5.indexOf(skottRuta)==-1){
+								if(båtar4.indexOf(skottRuta)==-1){
+									if(båtar3_1.indexOf(skottRuta)==-1){
+										if(båtar3_2.indexOf(skottRuta)==-1){
+										//båtar2
+											båtar2.remove(båtar2.indexOf(skottRuta));
+											if(båtar2.size()==0){
+												instruktioner1="Din jagare har sjunkit!";
+												send("skott sänk;2");
+											}
+											else{
+												send("skott träff");
+											}
+										}
+										else{
+											båtar3_2.remove(båtar3_2.indexOf(skottRuta));
+											System.out.println(båtar3_2.size() + " === Size");
+											if(båtar3_2.size()==0){
+												instruktioner1="En av dina u-båtar har sjunkit!";
+												send("skott sänk;3");
+											}
+											else{
+												send("skott träff");
+											}
+										}
+									}	
+									else{
+										båtar3_1.remove(båtar3_1.indexOf(skottRuta));
+										System.out.println(båtar3_2.size() + " === Size");
+										if(båtar3_1.size()==0){
+											instruktioner1="En av dina u-båtar har sjunkit!";
+											send("skott sänk;3");
+										}
+										else{
+											send("skott träff");
+										}
+									}								
+								}
+								else{
+									båtar4.remove(båtar4.indexOf(skottRuta));
+									if(båtar4.size()==0){
+										instruktioner1="Ditt slagskepp har sjunkit!";
+										send("skott sänk;4");
+									}
+									else{
+										send("skott träff");
+									}
+								}
+							}
+							else{
+								båtar5.remove(båtar5.indexOf(skottRuta));
+								if(båtar5.size()==0){
+									instruktioner1="Ditt hangarfartyg har sjunkit!";
+									send("skott sänk;5");
+								}
+								else{
+									send("skott träff");
+								}
+							}
 							antalTräffade++;
 							instruktioner1Färg=träffFärg;
-							instruktioner1="Din motståndare träffade!";
 						}
 						instruktioner2="Din tur";
 						if(antalTräffade==17){
@@ -250,15 +306,35 @@ public class SänkaSkepp {
 						instruktioner1Färg=Color.black;
 					}
 					else if(string.equals("skott")){
-						if(scanner.next().equals("träff")){
+						String träffat = scanner.next();
+						if(träffat.equals("träff")){
 							annanLabels[skjutPå].setBackground(träffFärg);
 							instruktioner1Färg=träffFärg;
 							instruktioner1="Träff!";	
 						}
-						else {
+						else if(träffat.equals("miss")){ 
 							annanLabels[skjutPå].setBackground(missFärg);
 							instruktioner1Färg=missFärg;
-							instruktioner1="Bom!";	
+							instruktioner1="Bom!";					
+						}
+						else {
+							//Sänk
+							String båtsort = message.split(";")[1];
+							if(båtsort.equals("5")){
+								instruktioner1="Du sänkte hangarfartyget!";	
+							}
+							else if (båtsort.equals("4")) {
+								instruktioner1="Du sänkte slagskeppet!";	
+							}
+							else if (båtsort.equals("3")) {
+								instruktioner1="Du sänkte en u-båt!";	
+							}
+							else if (båtsort.equals("2")) {
+								instruktioner1="Du sänkte jägaren!";	
+							}
+							annanLabels[skjutPå].setBackground(träffFärg);
+							instruktioner1Färg=träffFärg;
+							
 						}
 						instruktioner2="Din motståndare siktar...";	
 						inställningar.repaint();
@@ -743,7 +819,7 @@ public class SänkaSkepp {
 	public void placeraSkepp(båttyp båt) {
 		stayInside=true;
 		riktning=Riktning.hori;
-		båt = båtsort;
+		båtsort=båt;
 		if(båt==båttyp.fem){
 			antalRutor=5;
 		}
