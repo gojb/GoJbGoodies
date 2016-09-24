@@ -1,4 +1,5 @@
 //Saker att lägga till;
+//Acceptera inbjudan till spel, inte bara kastas in utan val!
 //Chatt kanske?
 
 package spel;
@@ -7,6 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import javax.swing.*;
@@ -171,7 +173,10 @@ public class SänkaSkepp {
 							connectButtons[i].setName(message.split(";")[1].split(",")[i]);
 							connectButtons[i].addActionListener(e->{
 								String clicked =((JButton) e.getSource()).getName();
+								int klickad = Arrays.asList(connectButtons).indexOf((JButton) e.getSource());
 								System.out.println(clicked);
+								connectButtons[klickad].setBackground(Color.GRAY);
+								connectButtons[klickad].setEnabled(false);
 								cc.send("Annan "+clicked);
 							});
 						}
@@ -194,6 +199,25 @@ public class SänkaSkepp {
 						connectFrame.dispose();
 						new SänkaSkepp();
 
+					}
+					else if(string.equals("fråga")){
+						Object[] options = {"Ja","Nej"};
+						String namn = scanner.next();
+						int choice=JOptionPane.showOptionDialog(null, "Du har fått en inbjudan till ett spel av " + namn+". \nAccepterar du?",
+								"Inbjudan från " + namn	, JOptionPane.YES_NO_CANCEL_OPTION, 
+								JOptionPane.DEFAULT_OPTION,
+								null,options, options[0]);
+						if(choice==0){
+							send("svar ja");
+						}
+						else{
+							send("svar nej");
+						}
+					}
+					else if (string.equals("svar")) {
+						if(scanner.next().equals("nej")){
+							JOptionPane.showMessageDialog(null, scanner.next() + " tackade nej");
+						}
 					}
 					else if(string.equals("klar")){
 						instruktioner2="Motståndaren är klar och väntar.";
