@@ -8,11 +8,13 @@ package spel;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.*;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
+
 import GoJbFrame.GoJbFrame;
 import gojb.GoJbGoodies;
 
@@ -21,6 +23,10 @@ public class SänkaSkepp {
 	enum båttyp {fem,fyra,treEtt,treTvå,två};
 	enum Riktning {hori,vert}
 
+	båttyp båtsort;
+
+	ArrayList<Integer> båtar5 = new ArrayList<>(),båtar4 = new ArrayList<>(),båtar3_1 = new ArrayList<>(),båtar3_2 = new ArrayList<>(),båtar2 = new ArrayList<>();
+	
 	static WebSocketClient cc;
 
 	Riktning riktning;
@@ -65,9 +71,9 @@ public class SänkaSkepp {
 			}
 			g.setFont(new Font("", Font.BOLD, 32));
 			g.setColor(instruktioner1Färg);
-			g.drawString(instruktioner1, inställningar.getWidth()/2, (inställningar.getHeight()/8)*4);
+			g.drawString(instruktioner1, inställningar.getWidth()/4, (inställningar.getHeight()/8)*4);
 			g.setColor(instruktioner2Färg);
-			g.drawString(instruktioner2, inställningar.getWidth()/2, (inställningar.getHeight()/8)*5);
+			g.drawString(instruktioner2, inställningar.getWidth()/4, (inställningar.getHeight()/8)*5);
 
 		};
 	};
@@ -84,7 +90,7 @@ public class SänkaSkepp {
 
 	int last1, last2, antalRutor, y, y1, kollaRutor, antalPlacerade;
 
-	static int skjutPå;
+	static int skjutPå, antalMissade, antalTräffade, antalSkott;
 
 	double b, x, b1, x1;
 
@@ -216,16 +222,29 @@ public class SänkaSkepp {
 							minTur=true;
 							egnaLabels[skottRuta].setBackground(missFärg);
 							instruktioner1Färg=missFärg;
-							instruktioner1="Din motståndare bommade!";				
+							instruktioner1="Din motståndare bommade!";
+							antalMissade++;
 						}
 						else {
 							send("skott träff");
 							minTur=true;
 							egnaLabels[skottRuta].setBackground(träffFärg);
+							antalTräffade++;
 							instruktioner1Färg=träffFärg;
 							instruktioner1="Din motståndare träffade!";
 						}
 						instruktioner2="Din tur";
+						if(antalTräffade==17){
+
+							instruktioner1Färg=new Color(239,35,42);
+							instruktioner2Färg=new Color(239,35,42);
+
+							instruktioner1="Du förlorade";
+							instruktioner2="Din motståndare van på " + (antalMissade+antalTräffade)+" skott";
+							minTur=false;
+							send("gameover");
+
+						}
 						inställningar.repaint();
 						GoJbGoodies.vänta(1000);
 						instruktioner1Färg=Color.black;
@@ -246,6 +265,17 @@ public class SänkaSkepp {
 						GoJbGoodies.vänta(1000);
 						instruktioner1Färg=Color.black;
 					}
+					else if(string.equals("gameover")){
+						minTur=false;
+
+						instruktioner1Färg=new Color(235,213,34);
+						instruktioner2Färg=new Color(235,213,34);
+
+						instruktioner1="Du van!";
+						instruktioner2="Det tog " + (antalSkott)+" skott att vinna";
+
+						inställningar.repaint();
+					}
 					System.out.println(message + " <-- Message");
 				}
 				@Override
@@ -263,8 +293,8 @@ public class SänkaSkepp {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//		cc.connect();
-		new SänkaSkepp();
+		cc.connect();
+		//		new SänkaSkepp();
 
 	}
 
@@ -332,9 +362,7 @@ public class SänkaSkepp {
 
 			// Mouselisteners
 			egnaLabels[i].addMouseListener(new MouseListener() {
-				public void mouseReleased(MouseEvent e) {
-				}
-
+				public void mouseReleased(MouseEvent e) {}
 				public void mousePressed(MouseEvent e) {
 
 					int clicked = Integer.parseInt(((JLabel) e.getSource()).getText());
@@ -357,7 +385,22 @@ public class SänkaSkepp {
 								}
 								if(kollaRutor==antalRutor){
 									for(int i=0;i<antalRutor;i++){
-										båtar[clicked+(i*1)]=100+antalRutor;
+										båtar[clicked+(i*1)]=100+antalRutor;										
+										if(båtsort==båttyp.fem){
+											båtar5.add(clicked+i);
+										}
+										else if(båtsort==båttyp.fyra){
+											båtar4.add(clicked+i);
+										}
+										else if(båtsort==båttyp.treEtt){
+											båtar3_1.add(clicked+i);
+										}
+										else if(båtsort==båttyp.treTvå){
+											båtar3_2.add(clicked+i);
+										}
+										else if(båtsort==båttyp.två){
+											båtar2.add(clicked+i);
+										}
 										System.out.println(Math.round((antalPlacerade*40)));
 										int rgbFärg=(int) Math.round((antalPlacerade*40));
 										egnaLabels[clicked+(i*1)].setBackground(new Color(rgbFärg,rgbFärg,rgbFärg));
@@ -380,6 +423,21 @@ public class SänkaSkepp {
 								if(kollaRutor==antalRutor){
 									for(int i=0;i<antalRutor;i++){
 										båtar[clicked+(i*10)]=100+antalRutor;
+										if(båtsort==båttyp.fem){
+											båtar5.add(clicked+(i*10));
+										}
+										else if(båtsort==båttyp.fyra){
+											båtar4.add(clicked+(i*10));
+										}
+										else if(båtsort==båttyp.treEtt){
+											båtar3_1.add(clicked+(i*10));
+										}
+										else if(båtsort==båttyp.treTvå){
+											båtar3_2.add(clicked+(i*10));
+										}
+										else if(båtsort==båttyp.två){
+											båtar2.add(clicked+(i*10));
+										}
 										System.out.println(Math.round((antalPlacerade*40)));
 										int rgbFärg=(int) Math.round((antalPlacerade*40));
 										egnaLabels[clicked+(i*10)].setBackground(new Color(rgbFärg,rgbFärg,rgbFärg));
@@ -405,18 +463,8 @@ public class SänkaSkepp {
 					// FIXME Auto-generated method stub
 					//					egnaLabels[last1].setBackground(new Color(207, 217, 220));
 				}
-
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					// FIXME Auto-generated method stub
-
-				}
-
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// FIXME Auto-generated method stub
-
-				}
+				public void mouseEntered(MouseEvent e) {}
+				public void mouseClicked(MouseEvent e) {}
 			});
 			egnaLabels[i].addMouseMotionListener(new MouseAdapter() {
 				public void mouseMoved(MouseEvent e) {
@@ -538,6 +586,7 @@ public class SänkaSkepp {
 						skjutPå = Integer.parseInt(((JLabel) e.getSource()).getText());
 						if(annanLabels[skjutPå].getBackground()!=träffFärg&&annanLabels[skjutPå].getBackground()!=missFärg){
 							cc.send("skjut "+skjutPå);
+							antalSkott++;
 							minTur=false;
 						}
 					}
@@ -694,6 +743,7 @@ public class SänkaSkepp {
 	public void placeraSkepp(båttyp båt) {
 		stayInside=true;
 		riktning=Riktning.hori;
+		båt = båtsort;
 		if(båt==båttyp.fem){
 			antalRutor=5;
 		}
