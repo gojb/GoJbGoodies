@@ -1,20 +1,20 @@
 //Saker att lägga till;
-//Revanchchans - Allt rensas inte vid revanch! Kolla om reset funktionen funkar
-//Om 5 läggs uppe till vänster, blir den högraste svart men resten byter färg 
-//Chatt kanske?
 
 package spel;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Scanner;
 
 import javax.swing.*;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
+
 import GoJbFrame.GoJbFrame;
 import gojb.GoJbGoodies;
 
@@ -31,9 +31,15 @@ public class SänkaSkepp {
 
 	Riktning riktning;
 
+	static JButton chatButton = new JButton("Chat");
+
+	static JTextArea chatArea = new JTextArea(20,50);
+
+	static JTextField chatField = new JTextField();
+
 	static Color träffFärg = Color.red, missFärg = Color.blue, instruktioner1Färg = Color.black, instruktioner2Färg = Color.black;
 
-	static GoJbFrame frame = new GoJbFrame(false), connectFrame = new GoJbFrame("Connect to...",false,2);
+	static GoJbFrame frame = new GoJbFrame(false), connectFrame = new GoJbFrame("Connect to...",false,2), chatFrame = new GoJbFrame("Chat",false,1);
 	static JLabel[] egnaLabels, annanLabels;
 
 	static JLabel egenLabel = new JLabel(), annanLabel = new JLabel(),egenText = new JLabel("Din ruta"), annanText = new JLabel("Motståndares ruta"), spelruta = new JLabel(),textruta = new JLabel();;
@@ -46,7 +52,7 @@ public class SänkaSkepp {
 
 	static JButton[] connectButtons;
 
-	static boolean bol5 = true, bol4 = true, bol3 = true, bol2 = true, bol1 = true, stayInside, error, minTur, revanch;
+	static boolean bol5 = true, bol4 = true, bol3 = true, bol2 = true, bol1 = true, stayInside, error, minTur, revanch, flash, bol = false;
 
 	static int last1, last2, antalRutor, y, y1, kollaRutor, antalPlacerade;
 
@@ -58,8 +64,8 @@ public class SänkaSkepp {
 
 	static Scanner scanner;
 
-	static String namn=null, instruktioner2="", instruktioner1="Placera dina skepp.";
-	
+	static String namn=null, instruktioner2="", instruktioner1="Placera dina skepp.", annanNamn;
+
 	@SuppressWarnings("serial")
 	static JLabel connectLabel = new JLabel(),inställningar = new JLabel() {
 
@@ -198,15 +204,15 @@ public class SänkaSkepp {
 						connectFrame.setVisible(true);
 					}
 					else if (string.toLowerCase().equals("ihopkopplad")) {
+						annanNamn=message.substring(12);
 						JOptionPane.showMessageDialog(connectFrame, "Ansluten med " + message.substring(12)+"!");
 						new SänkaSkepp();
 
 					}
 					else if(string.toLowerCase().equals("fråga")){
 						Object[] options = {"Ja","Nej"};
-						String namn = message.substring(6);
-						int choice=JOptionPane.showOptionDialog(connectFrame, "Du har fått en inbjudan till ett spel av \n" + namn+". Accepterar du?",
-								"Inbjudan från " + namn	, JOptionPane.YES_NO_CANCEL_OPTION, 
+						int choice=JOptionPane.showOptionDialog(connectFrame, "Du har fått en inbjudan till ett spel av \n" + annanNamn+". Accepterar du?",
+								"Inbjudan från " + annanNamn	, JOptionPane.YES_NO_CANCEL_OPTION, 
 								JOptionPane.DEFAULT_OPTION,
 								null,options, options[0]);
 						if(choice==0){
@@ -251,7 +257,7 @@ public class SänkaSkepp {
 							antalMissade++;
 						}
 						else {
-//							minTur=true;
+							//							minTur=true;
 							egnaLabels[skottRuta].setBackground(träffFärg);
 							instruktioner1="Din motståndare träffade!";
 							if(båtar5.indexOf(skottRuta)==-1){
@@ -317,7 +323,7 @@ public class SänkaSkepp {
 							instruktioner1Färg=träffFärg;
 							instruktioner2="Din motståndare fortsätter";
 						}
-						
+
 						if(antalTräffade==17){
 
 							instruktioner1Färg=new Color(239,35,42);
@@ -326,24 +332,10 @@ public class SänkaSkepp {
 							instruktioner1="Du förlorade";
 							instruktioner2="Din motståndare van på " + (antalMissade+antalTräffade)+" skott";
 							minTur=false;
-							
+
 							inställningar.repaint();
-							
+
 							send("gameover");
-							
-							Object[] options = {"Avsluta","Fråga om returmatch"};
-							int choice=JOptionPane.showOptionDialog(spelruta, "Spelet med " + namn+" är slut. Vill du avsluta eller\nfråga om returmatch?",
-									"Avsluta eller returmatch?", JOptionPane.YES_NO_CANCEL_OPTION, 
-									JOptionPane.DEFAULT_OPTION,
-									null,options, options[0]);
-							if(choice==1){
-								send("revanch");
-								revanch=true;
-							}
-							else{
-								send("exit");
-								System.exit(3);
-							}
 
 						}
 						inställningar.repaint();
@@ -386,7 +378,7 @@ public class SänkaSkepp {
 							instruktioner2="Din tur igen";
 
 						}
-						
+
 						inställningar.repaint();
 						GoJbGoodies.vänta(1000);
 						instruktioner1Färg=Color.black;
@@ -402,43 +394,17 @@ public class SänkaSkepp {
 
 						inställningar.repaint();
 
-						Object[] options = {"Avsluta","Be om revanch"};
-						int choice=JOptionPane.showOptionDialog(spelruta, "Spelet med " + namn+" är slut. Vill du avsluta eller\nbe om revanch?",
-								"Avsluta eller revanch?", JOptionPane.YES_NO_CANCEL_OPTION, 
-								JOptionPane.DEFAULT_OPTION,
-								null,options, options[0]);
-						if(choice==1){
-							send("revanch");
-							revanch=true;
-						}
-						else{
-							send("exit");
-							System.exit(3);
-						}
-
 					}
-					else if(string.toLowerCase().equals("revanch")){
-						if(revanch==true){
-							reset();
-							return;
-						}
-						Object[] options = {"Ja","Nej, avsluta"};
-						int choice=JOptionPane.showOptionDialog(spelruta, namn+" Har bett om returmatch. Vill du spela?",
-								"Returmatch eller avsluta?", JOptionPane.YES_NO_CANCEL_OPTION, 
-								JOptionPane.DEFAULT_OPTION,
-								null,options, options[0]);
-						if(choice==0){
-							send("svar ja");
-							revanch=true;
-						}
-						else{
-							send("svar nej");
-							System.exit(3);
-							revanch=false;
+					else if(string.toLowerCase().equals("chat")){
+						chatArea.setText(chatArea.getText()+"\n"+new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime())+
+								" "+annanNamn+" : "+message.substring(5));
+						if(!chatFrame.isVisible()){
+							flash=true;
+							flashingButton();
 						}
 					}
 					else if(string.toLowerCase().equals("exit")){
-						JOptionPane.showMessageDialog(spelruta, namn + " har lämnat spelet");
+						JOptionPane.showMessageDialog(spelruta, annanNamn + " har lämnat spelet");
 						System.exit(3);
 					}
 					System.out.println(message + " <-- Message");
@@ -457,33 +423,34 @@ public class SänkaSkepp {
 			e.printStackTrace();
 		}
 		boolean namnFunkar=false;
-//		while(namnFunkar==false){
-//			namn= JOptionPane.showInputDialog("Enter Username", "Gojb");
-//			if(namn.equals("")||namn.equals(null)){
-//				Object[] options = {"Prova igen","Avsluta"};
-//				int choice=JOptionPane.showOptionDialog(null, "Namnet accepterades ej. Prova igen eller avsluta?",
-//						"ERROR: USERNAME EQUALS null", JOptionPane.DEFAULT_OPTION, 
-//						JOptionPane.DEFAULT_OPTION,
-//						null,options, options[1]);
-//				if(choice==1){
-//					System.exit(3);
-//				}
-//			}
-//			else{
-//				namnFunkar=true;
-//				cc.connect();
-//			}
-//		}
-				new SänkaSkepp();
+		while(namnFunkar==false){
+			namn= JOptionPane.showInputDialog("Enter Username", "Gojb");
+			if(namn.equals("")||namn.equals(null)){
+				Object[] options = {"Prova igen","Avsluta"};
+				int choice=JOptionPane.showOptionDialog(null, "Namnet accepterades ej. Prova igen eller avsluta?",
+						"ERROR: USERNAME EQUALS null", JOptionPane.DEFAULT_OPTION, 
+						JOptionPane.DEFAULT_OPTION,
+						null,options, options[1]);
+				if(choice==1){
+					System.exit(3);
+				}
+			}
+			else{
+				namnFunkar=true;
+				cc.connect();
+			}
+		}
+
+		//		new SänkaSkepp();
 	}
 
 
 	public SänkaSkepp() {
 		frame.setSize(1000, 780);
 		frame.setLocationRelativeTo(connectFrame);
-		
+
 		connectFrame.dispose();
-		
+
 		// frame.setResizable(false);
 		// ---------------------------------------------------------------------------
 		frame.setVisible(true);
@@ -516,6 +483,57 @@ public class SänkaSkepp {
 		inställningar.setOpaque(true);
 
 		inställningar.setPreferredSize(new Dimension(1000, 250));
+
+		chatFrame.setLocationRelativeTo(null);
+		chatFrame.setLayout(new BorderLayout());
+
+
+		JScrollPane chatScroll = new JScrollPane(chatArea);
+		chatScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		chatScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		chatFrame.add(chatScroll, BorderLayout.NORTH);
+		chatFrame.setLocationRelativeTo(frame);
+
+		chatArea.setLineWrap(true);
+		chatArea.setWrapStyleWord(true);
+		chatArea.setColumns(20);
+		chatArea.setOpaque(true);
+		chatArea.setMargin(new Insets(3,7,5,5));
+		chatScroll.setPreferredSize(new Dimension(chatFrame.getWidth(), 17*chatFrame.getHeight()/20));
+		chatArea.setEditable(false);
+		chatArea.setBackground(null);
+
+		chatFrame.add(chatField, BorderLayout.SOUTH);
+		chatField.setPreferredSize(new Dimension(chatFrame.getWidth(), chatFrame.getHeight()/20));
+		chatField.setOpaque(true);
+		chatField.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent e) {}
+			public void keyReleased(KeyEvent e) {}
+			public void keyPressed(KeyEvent e) {
+				//Enter keycode = 10
+				if(e.getKeyCode()==10&&!chatField.getText().equals("")){
+					chatArea.setText(chatArea.getText()+"\n"+new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime())+
+							" "+namn+" : "+chatField.getText());
+					cc.send("chat "+chatField.getText());
+					chatField.setText("");
+				}
+			}
+		});
+
+		inställningar.add(chatButton);
+		chatButton.setSize(200, 40);
+		chatButton.setLocation(390,30);
+		chatButton.setBackground(new Color(200, 200, 200));
+		chatButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				chatFrame.setVisible(true);
+				chatField.requestFocus();
+				flash=false;
+				chatButton.setBackground(new Color(200, 200, 200));
+			}
+		});
 
 		textruta.setPreferredSize(new Dimension(1000, 50));
 		textruta.setLayout(new GridLayout(1, 2));
@@ -567,107 +585,107 @@ public class SänkaSkepp {
 				public void mousePressed(MouseEvent e) {
 
 					if(båtsort!=null){
-					
-					int clicked = Integer.parseInt(((JLabel) e.getSource()).getText());
 
-					if (SwingUtilities.isRightMouseButton(e)) {
-						if(riktning==Riktning.hori){
-							riktning=Riktning.vert;
+						int clicked = Integer.parseInt(((JLabel) e.getSource()).getText());
+
+						if (SwingUtilities.isRightMouseButton(e)) {
+							if(riktning==Riktning.hori){
+								riktning=Riktning.vert;
+							}
+							else{
+								riktning=Riktning.hori;
+							}
 						}
 						else{
-							riktning=Riktning.hori;
-						}
-					}
-					else{
-						if(riktning==Riktning.hori){
-							if(!error){
-								for(int i=0;i<antalRutor;i++){
-									if(båtar[clicked+(i*1)]<50){
-										kollaRutor++;
-									}
-								}
-								if(kollaRutor==antalRutor){
+							if(riktning==Riktning.hori){
+								if(!error){
 									for(int i=0;i<antalRutor;i++){
-										if(båtsort==båttyp.fem){
-											båtar5.add(clicked+i);
+										if(båtar[clicked+(i*1)]<50){
+											kollaRutor++;
 										}
-										else if(båtsort==båttyp.fyra){
-											båtar4.add(clicked+i);
-										}
-										else if(båtsort==båttyp.treEtt){
-											båtar3_1.add(clicked+i);
-										}
-										else if(båtsort==båttyp.treTvå){
-											båtar3_2.add(clicked+i);
-										}
-										else if(båtsort==båttyp.två){
-											båtar2.add(clicked+i);
-										}
-										else {
-											return;
-										}
-										båtar[clicked+(i*1)]=100+antalRutor;		
-										System.out.println(Math.round((antalPlacerade*40)));
-										int rgbFärg=(int) Math.round((antalPlacerade*40));
-										egnaLabels[clicked+(i*1)].setBackground(new Color(rgbFärg,rgbFärg,rgbFärg));
 									}
-									båtsort=null;
-									antalPlacerade++;
-									antalRutor=0;
-									stayInside=false;
+									if(kollaRutor==antalRutor){
+										for(int i=0;i<antalRutor;i++){
+											if(båtsort==båttyp.fem){
+												båtar5.add(clicked+i);
+											}
+											else if(båtsort==båttyp.fyra){
+												båtar4.add(clicked+i);
+											}
+											else if(båtsort==båttyp.treEtt){
+												båtar3_1.add(clicked+i);
+											}
+											else if(båtsort==båttyp.treTvå){
+												båtar3_2.add(clicked+i);
+											}
+											else if(båtsort==båttyp.två){
+												båtar2.add(clicked+i);
+											}
+											else {
+												return;
+											}
+											båtar[clicked+(i*1)]=100+antalRutor;		
+											System.out.println(Math.round((antalPlacerade*40)));
+											int rgbFärg=(int) Math.round((antalPlacerade*40));
+											egnaLabels[clicked+(i*1)].setBackground(new Color(rgbFärg,rgbFärg,rgbFärg));
+										}
+										båtsort=null;
+										antalPlacerade++;
+										antalRutor=0;
+										stayInside=false;
+									}
+									kollaRutor=0;
 								}
-								kollaRutor=0;
+							}
+							else if(riktning==Riktning.vert){
+
+								if(!error){
+									for(int i=0;i<antalRutor;i++){
+										if(båtar[clicked+(i*10)]<50){
+											kollaRutor++;
+										}
+									}
+									if(kollaRutor==antalRutor){
+										for(int i=0;i<antalRutor;i++){		
+											if(båtsort==båttyp.fem){
+												båtar5.add(clicked+(i*10));
+											}
+											else if(båtsort==båttyp.fyra){
+												båtar4.add(clicked+(i*10));
+											}
+											else if(båtsort==båttyp.treEtt){
+												båtar3_1.add(clicked+(i*10));
+											}
+											else if(båtsort==båttyp.treTvå){
+												båtar3_2.add(clicked+(i*10));
+											}
+											else if(båtsort==båttyp.två){
+												båtar2.add(clicked+(i*10));
+											}
+											else{
+												return;
+											}
+											båtar[clicked+(i*10)]=100+antalRutor;
+											System.out.println(Math.round((antalPlacerade*40)));
+											int rgbFärg=(int) Math.round((antalPlacerade*40));
+											egnaLabels[clicked+(i*10)].setBackground(new Color(rgbFärg,rgbFärg,rgbFärg));
+										}
+										båtsort=null;
+										antalPlacerade++;
+										antalRutor=0;
+										stayInside=false;
+
+									}
+									kollaRutor=0;
+								}
+
+
+
+							}
+							if(antalPlacerade==5){
+								Klar();
 							}
 						}
-						else if(riktning==Riktning.vert){
-
-							if(!error){
-								for(int i=0;i<antalRutor;i++){
-									if(båtar[clicked+(i*10)]<50){
-										kollaRutor++;
-									}
-								}
-								if(kollaRutor==antalRutor){
-									for(int i=0;i<antalRutor;i++){		
-										if(båtsort==båttyp.fem){
-											båtar5.add(clicked+(i*10));
-										}
-										else if(båtsort==båttyp.fyra){
-											båtar4.add(clicked+(i*10));
-										}
-										else if(båtsort==båttyp.treEtt){
-											båtar3_1.add(clicked+(i*10));
-										}
-										else if(båtsort==båttyp.treTvå){
-											båtar3_2.add(clicked+(i*10));
-										}
-										else if(båtsort==båttyp.två){
-											båtar2.add(clicked+(i*10));
-										}
-										else{
-											return;
-										}
-										båtar[clicked+(i*10)]=100+antalRutor;
-										System.out.println(Math.round((antalPlacerade*40)));
-										int rgbFärg=(int) Math.round((antalPlacerade*40));
-										egnaLabels[clicked+(i*10)].setBackground(new Color(rgbFärg,rgbFärg,rgbFärg));
-									}
-									båtsort=null;
-									antalPlacerade++;
-									antalRutor=0;
-									stayInside=false;
-
-								}
-								kollaRutor=0;
-							}
-
-
-
-						}
-						if(antalPlacerade==5){
-							Klar();
-						}
-					}
 					}
 				}
 
@@ -772,11 +790,6 @@ public class SänkaSkepp {
 								egnaLabels[clicked].setBackground(Color.black);
 							}
 							last1 = clicked;
-						}
-					}
-					for(int i = 0;i<antalRutor;i++){
-						if(båtar[i]>50){
-							egnaLabels[i].setBackground(new Color(70, 70, 70));
 						}
 					}
 				}
@@ -961,79 +974,37 @@ public class SänkaSkepp {
 
 	}
 
+	public static void flashingButton(){
 
-	public static void reset() {
 
-		 båtar5.clear();
-		 båtar4.clear();
-		 båtar3_1.clear();
-		 båtar3_2.clear();
-		 båtar2.clear();
+		if(flash){
+			System.err.println("adsdds");
+			Timer timer = new Timer(900, e->{});
+			timer.start();
+			timer.addActionListener(e->{
+				System.err.println("saddssd");
+				if(bol){
 
-		träffFärg= Color.red; 
-		missFärg = Color.blue; 
-		instruktioner1Färg = Color.black; 
-		instruktioner2Färg = Color.black;
+					chatButton.setBackground(new Color(150,150,150));
+					frame.revalidate();
+					frame.repaint();
+					if(!flash){
+						timer.stop();
+					}
+					bol=false;
+				}
+				else{
+					chatButton.setBackground(new Color(200,200,200));
+					frame.revalidate();
+					frame.repaint();
+					if(!flash){
+						timer.stop();
+					}
+					bol=true;
+				}
 
-		JLabel textruta = new JLabel();
+			});
 
-		bol5 = true; 
-		bol4 = true; 
-		bol3 = true; 
-		bol2 = true; 
-		bol1 = true; 
-		stayInside=false; 
-		minTur=false;
-
-		last1=0; 
-		last2=0; 
-		antalPlacerade=0;;
-
-		last1=0; 
-		last2=0; 
-		antalRutor=0; 
-		y=0; 
-		y1=0; 
-		kollaRutor=0; 
-		antalPlacerade=0;
-		
-		antalMissade=0; 
-		antalTräffade=0;
-		antalSkott=0;
-
-		b=0; 
-		x=0; 
-		b1=0; 
-		x1=0;
-
-		instruktioner2=""; 
-		instruktioner1="Placera dina skepp.";
-
-		frame.remove(textruta);
-		frame.remove(spelruta);
-		frame.remove(inställningar);
-
-		textruta.remove(egenText);
-		textruta.remove(annanText);
-
-		spelruta.remove(egenLabel);
-		spelruta.remove(annanLabel);
-
-		egnaLabels = new JLabel[1];
-
-		annanLabels = new JLabel[1];
-
-		båtar=new int[0];
-
-		for (int i = 0; i < egnaLabels.length; i++) {
-
-			egnaLabels[i] = new JLabel();
-			annanLabels[i] = new JLabel();
-
-			egenLabel.remove(egnaLabels[i]);
-			annanLabel.remove(annanLabels[i]);
 		}
-		new SänkaSkepp();
-		
 	}
 }
