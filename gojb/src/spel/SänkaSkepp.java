@@ -1,5 +1,6 @@
 //Saker att lägga till;
 //Revanchchans - Allt rensas inte vid revanch! Kolla om reset funktionen funkar
+//Om 5 läggs uppe till vänster, blir den högraste svart men resten byter färg 
 //Chatt kanske?
 
 package spel;
@@ -418,7 +419,7 @@ public class SänkaSkepp {
 					}
 					else if(string.toLowerCase().equals("revanch")){
 						if(revanch==true){
-							reset();gg
+							reset();
 							return;
 						}
 						Object[] options = {"Ja","Nej, avsluta"};
@@ -456,24 +457,24 @@ public class SänkaSkepp {
 			e.printStackTrace();
 		}
 		boolean namnFunkar=false;
-		while(namnFunkar==false){
-			namn= JOptionPane.showInputDialog("Enter Username", "Gojb");
-			if(namn.equals("")||namn.equals(null)){
-				Object[] options = {"Prova igen","Avsluta"};
-				int choice=JOptionPane.showOptionDialog(null, "Namnet accepterades ej. Prova igen eller avsluta?",
-						"ERROR: USERNAME EQUALS null", JOptionPane.DEFAULT_OPTION, 
-						JOptionPane.DEFAULT_OPTION,
-						null,options, options[1]);
-				if(choice==1){
-					System.exit(3);
-				}
-			}
-			else{
-				namnFunkar=true;
-				cc.connect();
-			}
-		}
-		//		new SänkaSkepp();
+//		while(namnFunkar==false){
+//			namn= JOptionPane.showInputDialog("Enter Username", "Gojb");
+//			if(namn.equals("")||namn.equals(null)){
+//				Object[] options = {"Prova igen","Avsluta"};
+//				int choice=JOptionPane.showOptionDialog(null, "Namnet accepterades ej. Prova igen eller avsluta?",
+//						"ERROR: USERNAME EQUALS null", JOptionPane.DEFAULT_OPTION, 
+//						JOptionPane.DEFAULT_OPTION,
+//						null,options, options[1]);
+//				if(choice==1){
+//					System.exit(3);
+//				}
+//			}
+//			else{
+//				namnFunkar=true;
+//				cc.connect();
+//			}
+//		}
+				new SänkaSkepp();
 	}
 
 
@@ -565,6 +566,8 @@ public class SänkaSkepp {
 				public void mouseReleased(MouseEvent e) {}
 				public void mousePressed(MouseEvent e) {
 
+					if(båtsort!=null){
+					
 					int clicked = Integer.parseInt(((JLabel) e.getSource()).getText());
 
 					if (SwingUtilities.isRightMouseButton(e)) {
@@ -585,7 +588,6 @@ public class SänkaSkepp {
 								}
 								if(kollaRutor==antalRutor){
 									for(int i=0;i<antalRutor;i++){
-										båtar[clicked+(i*1)]=100+antalRutor;										
 										if(båtsort==båttyp.fem){
 											båtar5.add(clicked+i);
 										}
@@ -601,10 +603,15 @@ public class SänkaSkepp {
 										else if(båtsort==båttyp.två){
 											båtar2.add(clicked+i);
 										}
+										else {
+											return;
+										}
+										båtar[clicked+(i*1)]=100+antalRutor;		
 										System.out.println(Math.round((antalPlacerade*40)));
 										int rgbFärg=(int) Math.round((antalPlacerade*40));
 										egnaLabels[clicked+(i*1)].setBackground(new Color(rgbFärg,rgbFärg,rgbFärg));
 									}
+									båtsort=null;
 									antalPlacerade++;
 									antalRutor=0;
 									stayInside=false;
@@ -621,8 +628,7 @@ public class SänkaSkepp {
 									}
 								}
 								if(kollaRutor==antalRutor){
-									for(int i=0;i<antalRutor;i++){
-										båtar[clicked+(i*10)]=100+antalRutor;
+									for(int i=0;i<antalRutor;i++){		
 										if(båtsort==båttyp.fem){
 											båtar5.add(clicked+(i*10));
 										}
@@ -638,10 +644,15 @@ public class SänkaSkepp {
 										else if(båtsort==båttyp.två){
 											båtar2.add(clicked+(i*10));
 										}
+										else{
+											return;
+										}
+										båtar[clicked+(i*10)]=100+antalRutor;
 										System.out.println(Math.round((antalPlacerade*40)));
 										int rgbFärg=(int) Math.round((antalPlacerade*40));
 										egnaLabels[clicked+(i*10)].setBackground(new Color(rgbFärg,rgbFärg,rgbFärg));
 									}
+									båtsort=null;
 									antalPlacerade++;
 									antalRutor=0;
 									stayInside=false;
@@ -657,12 +668,10 @@ public class SänkaSkepp {
 							Klar();
 						}
 					}
+					}
 				}
 
-				public void mouseExited(MouseEvent e) {
-					// FIXME Auto-generated method stub
-					//					egnaLabels[last1].setBackground(new Color(207, 217, 220));
-				}
+				public void mouseExited(MouseEvent e) {}
 				public void mouseEntered(MouseEvent e) {}
 				public void mouseClicked(MouseEvent e) {}
 			});
@@ -810,10 +819,7 @@ public class SänkaSkepp {
 				}
 
 				@Override
-				public void mouseClicked(MouseEvent e) {
-					// FIXME Auto-generated method stub
-
-				}
+				public void mouseClicked(MouseEvent e) {}
 			});
 			annanLabels[i].addMouseMotionListener(new MouseAdapter() {
 				public void mouseMoved(MouseEvent e) {
@@ -832,38 +838,14 @@ public class SänkaSkepp {
 				}
 
 				@Override
-				public void mouseDragged(MouseEvent e) {
-				}
+				public void mouseDragged(MouseEvent e) {}
 			});
 			spelruta.addMouseListener(new MouseListener() {
-
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// FIXME Auto-generated method stub
-
-				}
-
-				@Override
-				public void mousePressed(MouseEvent e) {
-					// FIXME Auto-generated method stub
-
-				}
-
-				@Override
-				public void mouseExited(MouseEvent e) {
-				}
-
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					// FIXME Auto-generated method stub
-
-				}
-
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// FIXME Auto-generated method stub
-
-				}
+				public void mouseReleased(MouseEvent e) {}
+				public void mousePressed(MouseEvent e) {}
+				public void mouseExited(MouseEvent e) {}
+				public void mouseEntered(MouseEvent e) {}
+				public void mouseClicked(MouseEvent e) {}
 			});
 
 		}
@@ -995,8 +977,6 @@ public class SänkaSkepp {
 
 		JLabel textruta = new JLabel();
 
-		Robot rb;
-
 		bol5 = true; 
 		bol4 = true; 
 		bol3 = true; 
@@ -1053,6 +1033,7 @@ public class SänkaSkepp {
 			egenLabel.remove(egnaLabels[i]);
 			annanLabel.remove(annanLabels[i]);
 		}
+		new SänkaSkepp();
 		
 	}
 }
