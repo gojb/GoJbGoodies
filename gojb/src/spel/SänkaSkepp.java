@@ -1,4 +1,5 @@
 //Saker att lägga till;
+//Kanske göra så att knappen blinkar bättre om man startat från GoJbGoodies, och får ett chattmeddelande
 
 package spel;
 
