@@ -454,8 +454,7 @@ public class SänkaSkepp {
 
 		connectFrame.dispose();
 
-		// frame.setResizable(false);
-		// ---------------------------------------------------------------------------
+		 frame.setResizable(false);
 		frame.setVisible(true);
 		frame.setLayout(new BorderLayout());
 		frame.setBackground(Color.blue);
