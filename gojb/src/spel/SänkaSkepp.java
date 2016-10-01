@@ -106,6 +106,11 @@ public class SänkaSkepp {
 	};
 
 	public static void main(String[] args) {
+	new SänkaSkepp();
+	}
+
+	public SänkaSkepp(){
+
 		try {
 			cc = new WebSocketClient(new URI("ws://wildfly-gojb.rhcloud.com:8000/skepp")){
 
@@ -129,7 +134,7 @@ public class SänkaSkepp {
 					String string=scanner.next();
 
 					if(string.toLowerCase().equals("starta")){
-						new SänkaSkepp();
+						SänkaSkeppStart();
 					}
 					else if(string.toLowerCase().equals("alla")){
 						String allaOnline ="";
@@ -206,7 +211,7 @@ public class SänkaSkepp {
 					else if (string.toLowerCase().equals("ihopkopplad")) {
 						annanNamn=message.substring(12);
 						JOptionPane.showMessageDialog(connectFrame, "Ansluten med " + message.substring(12)+"!");
-						new SänkaSkepp();
+						SänkaSkeppStart();
 
 					}
 					else if(string.toLowerCase().equals("fråga")){
@@ -441,11 +446,9 @@ public class SänkaSkepp {
 			}
 		}
 
-		//		new SänkaSkepp();
+		//		new SänkaSkeppStart();
 	}
-
-
-	public SänkaSkepp() {
+	public void SänkaSkeppStart() {
 		frame.setSize(1000, 780);
 		frame.setLocationRelativeTo(connectFrame);
 
