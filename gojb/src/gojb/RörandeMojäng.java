@@ -851,8 +851,17 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 	String string = new String();
 	int x,y,r,g,b,textbredd=100,texthöjd=50;
 	String a;
+	Robot robot;
+
 	public Impossible(String textString){
 
+		try {
+			 robot = new Robot();
+		} catch (AWTException e) {
+			// FIXME Auto-generated catch block
+			System.err.println("ROBOT FUNKAR EJ");
+		}
+		
 		Image image = Bild("/images/Nope.png").getImage();
 
 		Cursor c = getDefaultToolkit().createCustomCursor(
@@ -888,7 +897,7 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 	public void mouseMoved(MouseEvent e) {
 
 
-		robot.mouseMove(frame.getWidth()/2, frame.getHeight()/2);
+//		robot.mouseMove(frame.getWidth()/2, frame.getHeight()/2);
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
