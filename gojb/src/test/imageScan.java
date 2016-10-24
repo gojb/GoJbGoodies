@@ -19,11 +19,14 @@ public class imageScan {
 	ArrayList<String> nr = new ArrayList<>();
 	boolean bol = false;
 	int sparI;
+	long millis;
+
 	public static void main(String[] args) {
 		// FIXME Auto-generated method stub
 		new imageScan();
 	}
 	public  imageScan() {
+		millis=System.currentTimeMillis();
 		BufferedImage img = null;
 		try {
 			img = ImageIO.read(GoJbGoodies.class.getResource("/images/swe.jpg"));
@@ -35,15 +38,16 @@ public class imageScan {
 			for(int i1=0;i1<img.getWidth();i1++){
 				String rgb = new String(new Color(img.getRGB(i1, i)).getRed()+"*"+new Color(img.getRGB(i1, i)).getGreen()+"*"+new Color(img.getRGB(i1, i)).getBlue());	
 				bol=false;
-				for(int i2=0;i2<nr.size();i2++){
+//				for(int i2=0;i2<nr.size();i2++){
 					//				System.out.println(rgb);
-					if(nr.get(i2).contains(rgb)){
+					if(nr.indexOf(rgb)!=-1){
+						int i2=nr.indexOf(rgb);
 						sparI=i2;
 						bol=true;
 						break;
 					}
 					
-				}
+//				}
 				if(bol){
 					nr.set(sparI, nr.get(sparI)+"_"+i1+";"+i);
 				}
@@ -101,6 +105,7 @@ public class imageScan {
 			}
 //			g.drawString("Klar", 50, 50);
 			System.out.println("---------------KLARR!!------------------------");
+			System.out.println("Det tog "+(int)((System.currentTimeMillis()-millis)/1000) +" sekunder och " + ((System.currentTimeMillis()-millis)%1000)+" millisekunder");
 		}};
 //		label.setBackground(Color.green);
 		frame.add(label);

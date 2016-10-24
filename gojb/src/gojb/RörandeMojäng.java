@@ -23,6 +23,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.MouseInputListener;
 
 import GoJbFrame.GoJbFrame;
+import spel.Minne;
 import spel.Röj;
 import spel.Snake;
 import spel.SänkaSkepp;
@@ -71,7 +72,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListe
 			memo = new JMenuItem("Memory"),
 			personnr = new JMenuItem("Personnummer"),
 			röJ = new JMenuItem("Röj"),
-			sänkaSkepp = new JMenuItem("Sänka skepp");
+			sänkaSkepp = new JMenuItem("Sänka skepp"),
+			minne = new JMenuItem("Simon");
 	JMenuBar bar = new JMenuBar();
 
 	Clip clip;
@@ -126,6 +128,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListe
 		ÖppnaProgram.add(personnr);
 		ÖppnaProgram.add(röJ);
 		ÖppnaProgram.add(sänkaSkepp);
+		ÖppnaProgram.add(minne);
 
 
 		Mouse.addActionListener(this);
@@ -154,6 +157,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListe
 		personnr.addActionListener(e -> {frame.dispose();new Personnr();});
 		röJ.addActionListener(e->{frame.dispose();new Röj();});
 		sänkaSkepp.addActionListener(e->{frame.dispose();new SänkaSkepp();}); //Funkar ej, hoppar main klassen av någon anledning
+		minne.addActionListener(e ->{frame.dispose();new Minne();});
 
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 		frame.setBackground(gray);
