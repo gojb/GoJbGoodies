@@ -5,18 +5,9 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import javax.swing.text.DefaultCaret;
-import org.lwjgl.LWJGLException;
-import org.lwjgl.Sys;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-
 import GoJbFrame.GoJbFrame;
 import spel.KurvSnake;
 import spel.Snake;
@@ -27,8 +18,6 @@ import static javax.swing.SwingConstants.*;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import static java.awt.Color.*;
 import static javax.swing.JFrame.*;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.util.glu.GLU.gluPerspective;
 
 
 public class Jakobs implements ActionListener,MouseInputListener,KeyListener,WindowListener{
@@ -163,7 +152,7 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 		menu(arkivMeny, "Simulator till riksdagsmandat", e -> new Mandat());
 		menu(arkivMeny, "Träna på glosor", e -> new Glosor());
 		menu(arkivMeny, "Spela FlappyGojb",  e -> new spel.FlappyGoJb());
-		menu(arkivMeny, "3d", e -> new OpenGLTest());
+		menu(arkivMeny, "3d", e -> new test.OpenGLTest());
 		menu(arkivMeny, "Kurve", e -> new spel.Kurve());
 		menu(arkivMeny, "GoJbs Fondkoll", e -> new FondKoll());
 		menu(arkivMeny, "Tetris", e -> new Tetris());
@@ -975,271 +964,7 @@ class Ping{
 
 
 
-class OpenGLTest {
-	private double xx,zz,rx,ry,rz;
-	private int fps;
-	long lastFPS;
 
-	public OpenGLTest() {
-		System.out.println("Starting");
-		thread.start();
-	}
-	private Thread thread = new Thread(){
-		public void run() {
-			System.out.println("Running");
-			try {
-				unZip();
-
-				try {
-					if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")){
-						System.setProperty("org.lwjgl.librarypath", new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\windows_dll").getAbsolutePath());
-					}
-					Display.setDisplayMode(new DisplayMode(800, 600));
-					Display.setTitle("GoJbGame");
-					Display.create();
-				} catch (LWJGLException e) {
-					e.printStackTrace();
-				}
-				lastFPS= getTime();
-				gameLoop();
-				Display.destroy();
-			} catch (Exception e) {
-				e.printStackTrace();
-				try {
-					thread.wait();
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-
-				}
-			}
-		};
-	};
-	private void unZip(){
-		try {
-			System.err.println(getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
-			ZipInputStream zipIn = new ZipInputStream(getClass().getProtectionDomain().getCodeSource().getLocation().openStream());
-			ZipEntry entry = zipIn.getNextEntry();
-			while (entry != null) {
-				if (entry.toString().startsWith("windows_dll/")) {
-					String filePath =  System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa"+File.separator + entry.getName();
-					System.err.println(entry);
-					if (!entry.isDirectory()) {
-						ByteArrayOutputStream out = new ByteArrayOutputStream();
-						byte[] bytesIn = new byte[4096];
-						int read = 0;
-						while ((read = zipIn.read(bytesIn)) != -1) {
-							out.write(bytesIn, 0, read);
-						}
-						FileOutputStream fos = new FileOutputStream(filePath);
-						fos.write(out.toByteArray());
-						fos.close();
-					}
-					else {
-						File dir = new File(filePath);
-						dir.mkdir();
-					}
-				}
-				zipIn.closeEntry();
-				entry = zipIn.getNextEntry();
-			}
-			zipIn.close();
-		} catch (Exception e2) {
-			e2.printStackTrace();
-		}
-	}
-	public void updateFPS() {
-		if (getTime() - lastFPS > 1000) {
-			Display.setTitle("FPS: " + fps);
-			fps = 0;
-			lastFPS += 1000;
-		}
-		fps++;
-	}
-	public long getTime() {
-		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
-	}
-	private void gameLoop(){
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(70,(float)Display.getWidth()/Display.getHeight(),0.3f,1000);
-		glMatrixMode(GL_MODELVIEW);
-		glEnable(GL_DEPTH_TEST);
-		double x=0,y=0,z=0;
-		final double SPEED = 0.1;
-		while(!Display.isCloseRequested()){
-			if (Keyboard.isKeyDown(Keyboard.KEY_F))
-				setDisplayMode(800, 600, !Display.isFullscreen());
-			if (Keyboard.isKeyDown(Keyboard.KEY_W))
-				move(0.01,1);
-			if (Keyboard.isKeyDown(Keyboard.KEY_S))
-				move(-0.01,1);
-			if (Keyboard.isKeyDown(Keyboard.KEY_A))
-				move(0.01,0);
-			if (Keyboard.isKeyDown(Keyboard.KEY_D))
-				move(-0.01,0);
-			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
-				ry -= SPEED;
-			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
-				ry += SPEED;
-			if (Keyboard.isKeyDown(Keyboard.KEY_UP))
-				rx -= SPEED;
-			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
-				rx += SPEED;
-			if (Keyboard.isKeyDown(Keyboard.KEY_Z)) 
-				x+=0.5;
-			if (Keyboard.isKeyDown(Keyboard.KEY_X)) 
-				y+=0.5;
-			if (Keyboard.isKeyDown(Keyboard.KEY_C)) 
-				z+=0.5;
-			if (Keyboard.isKeyDown(Keyboard.KEY_V)) 
-				x-=0.5;
-			if (Keyboard.isKeyDown(Keyboard.KEY_B))
-				y-=0.5;
-			if (Keyboard.isKeyDown(Keyboard.KEY_N))
-				z-=0.5;
-
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-			glLoadIdentity();
-
-			glRotated(rx,1,0,0);
-			glRotated(ry,0,1,0);
-			glRotated(rz,0,0,1);
-			glTranslated(xx,0,zz);
-
-			//			glPushMatrix();
-
-			draw3d(x,y,z,2,2,2);
-
-			//			draw3d(x,y,z,2,2,2);
-
-			//			glPopMatrix();
-			Display.update();
-			updateFPS();
-			Display.sync(200);
-
-
-		}
-	}
-	private void draw3d(double rotX,double rotY,double rotZ,int längd,int höjd,int bredd){
-
-		längd/=2;
-		höjd/=2;
-		bredd/=2;
-
-		glTranslated(0,0,-10);
-
-		glRotated(rotX,1,0,0);
-		glRotated(rotY,0,1,0);
-		glRotated(rotZ,0,0,1);
-
-		glBegin(GL_QUADS);
-
-		//Fram
-		glColor3d(1,0.5,0);
-
-		glVertex3d(-bredd,-höjd,längd);
-		glVertex3d(-bredd,höjd,längd);
-		glVertex3d(bredd,höjd,längd);
-		glVertex3d(bredd,-höjd,längd);
-
-		//Bak
-		glColor3d(0,1,0);
-		glVertex3d(-bredd,-höjd,-längd);
-		glVertex3d(-bredd,höjd,-längd);
-		glVertex3d(bredd,höjd,-längd);
-		glVertex3d(bredd,-höjd,-längd);
-
-		//Under
-		glColor3d(0,0,1);
-		glVertex3d(-bredd,-höjd,längd);
-		glVertex3d(-bredd,-höjd,-längd);
-		glVertex3d(bredd,-höjd,-längd);
-		glVertex3d(bredd,-höjd,längd);
-
-		//Över
-		glColor3d(1,1,0);
-		glVertex3d(-bredd,höjd,-längd);
-		glVertex3d(-bredd,höjd,längd);
-		glVertex3d(bredd,höjd,längd);
-		glVertex3d(bredd,höjd,-längd);
-
-		//LeftFace
-		glColor3d(0,1,1);
-		glVertex3d(-bredd,-höjd,längd);
-		glVertex3d(-bredd,-höjd,-längd);
-		glVertex3d(-bredd,höjd,-längd);
-		glVertex3d(-bredd,höjd,längd);
-
-		//		//Right Face
-		glColor3d(1,0,1);
-		glVertex3d(bredd,-höjd,längd);
-		glVertex3d(bredd,höjd,längd);
-		glVertex3d(bredd,höjd,-längd);
-		glVertex3d(bredd,-höjd,-längd);
-
-		glEnd();
-	}
-
-	/**
-	 * Set the display mode to be used 
-	 * 
-	 * @param width The width of the display required
-	 * @param height The height of the display required
-	 * @param fullscreen True if we want fullscreen mode
-	 */
-
-	private void setDisplayMode(int width, int height, boolean fullscreen) {
-
-		try {
-			DisplayMode targetDisplayMode = null;
-
-			if (fullscreen) {
-				DisplayMode[] modes = Display.getAvailableDisplayModes();
-				int freq = 0;
-
-				for (int i=0;i<modes.length;i++) {
-					DisplayMode current = modes[i];
-
-					if ((current.getWidth() == width) && (current.getHeight() == height)) {
-						if ((targetDisplayMode == null) || (current.getFrequency() >= freq)) {
-							if ((targetDisplayMode == null) || (current.getBitsPerPixel() > targetDisplayMode.getBitsPerPixel())) {
-								targetDisplayMode = current;
-								freq = targetDisplayMode.getFrequency();
-							}
-						}
-
-						// if we've found a match for bpp and frequence against the 
-						// original display mode then it's probably best to go for this one
-						// since it's most likely compatible with the monitor
-						if ((current.getBitsPerPixel() == Display.getDesktopDisplayMode().getBitsPerPixel()) &&
-								(current.getFrequency() == Display.getDesktopDisplayMode().getFrequency())) {
-							targetDisplayMode = current;
-							break;
-						}
-					}
-				}
-			} else {
-				targetDisplayMode = new DisplayMode(width,height);
-			}
-
-			if (targetDisplayMode == null) {
-				System.out.println("Failed to find value mode: "+width+"x"+height+" fs="+fullscreen);
-				return;
-			}
-
-			Display.setDisplayMode(targetDisplayMode);
-			Display.setFullscreen(fullscreen);
-
-		} catch (LWJGLException e) {
-			System.out.println("Eror "+width+"x"+height+" fullscreen="+fullscreen + e);
-		}
-	}
-	private void move(double amt, double dir){
-		zz += amt * Math.sin(Math.toRadians(ry + 90 * dir));
-		xx += amt * Math.cos(Math.toRadians(ry + 90 * dir));
-	}
-}
 @SuppressWarnings("serial")
 class Studsa extends JPanel implements ActionListener{
 	JFrame frame = new JFrame("Studsa");
