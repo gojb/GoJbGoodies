@@ -3,7 +3,6 @@ package test;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -14,9 +13,9 @@ public class negativeImage {
 	GoJbFrame frame = new GoJbFrame("Negativ bild",false);
 
 	static BufferedImage img;
-	
+
 	JFrame frame1=new JFrame();
-	
+
 	File filePath;
 
 	public static void main(String[] args) {
@@ -25,26 +24,26 @@ public class negativeImage {
 	}
 	public negativeImage() {
 		try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-        }
-		
-         JFileChooser chooser = new JFileChooser(System.getProperty("user.home") + "/Pictures");
-         
-         if (chooser.showOpenDialog(frame1) == JFileChooser.APPROVE_OPTION) {
-             // do something
-        	 System.out.println(chooser.getSelectedFile());
-        	 filePath=chooser.getSelectedFile();
-        	 
-         }
-		
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+		}
+
+		JFileChooser chooser = new JFileChooser(System.getProperty("user.home") + "/Pictures");
+
+			if (chooser.showOpenDialog(frame1) == JFileChooser.APPROVE_OPTION) {
+				// do something
+				System.out.println(chooser.getSelectedFile());
+				filePath=chooser.getSelectedFile();
+			}
+
 		try {
 			img = ImageIO.read(filePath);
-		} catch (IOException e) {
+			//			img = ImageIO.read(GoJbGoodies.class.getResource("/images/swe.jpg"));
+		} catch (Exception e) {
 			// FIXME Auto-generated catch block
-			e.printStackTrace();
+			System.exit(3);
 		}
-		
+
 		frame.setSize(img.getWidth(),img.getHeight());
 		frame.setUndecorated(true);
 
@@ -57,7 +56,7 @@ public class negativeImage {
 				g.setColor(Color.blue);
 				for(int i=0;i<img.getWidth()-1;i++){
 					for(int i1=0;i1<img.getHeight()-1;i1++){
-						g.setColor(new Color(255-new Color(img.getRGB(i, i1)).getRed(), 255-new Color(img.getRGB(i, i1)).getGreen(), 
+						g.setColor(new Color(new Color(255-img.getRGB(i, i1)).getRed(), 255-new Color(img.getRGB(i, i1)).getGreen(), 
 								255-new Color(img.getRGB(i, i1)).getBlue()));
 						g.drawRect(i, i1, 1, 1);
 					}
