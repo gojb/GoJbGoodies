@@ -336,7 +336,7 @@ public class SänkaSkepp {
 							instruktioner2Färg=new Color(239,35,42);
 
 							instruktioner1="Du förlorade";
-							instruktioner2="Din motståndare van på " + (antalMissade+antalTräffade)+" skott";
+							instruktioner2="Din motståndare vann på " + (antalMissade+antalTräffade)+" skott";
 							minTur=false;
 
 							inställningar.repaint();
@@ -395,7 +395,7 @@ public class SänkaSkepp {
 						instruktioner1Färg=new Color(235,213,34);
 						instruktioner2Färg=new Color(235,213,34);
 
-						instruktioner1="Du van!";
+						instruktioner1="Du vann!";
 						instruktioner2="Det tog " + (antalSkott)+" skott att vinna";
 
 						inställningar.repaint();
@@ -450,12 +450,12 @@ public class SänkaSkepp {
 		//		new SänkaSkeppStart();
 	}
 	public void SänkaSkeppStart() {
-		frame.setSize(1000, 780);
+		frame.setSize((int)Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2, 3*(int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()/4);
 		frame.setLocationRelativeTo(connectFrame);
 
 		connectFrame.dispose();
 
-		 frame.setResizable(false);
+		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.setLayout(new BorderLayout());
 		frame.setBackground(Color.blue);
