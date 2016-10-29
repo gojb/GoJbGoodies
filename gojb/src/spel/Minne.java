@@ -7,13 +7,15 @@ import javax.swing.Timer;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
-
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import GoJbFrame.GoJbFrame;
+import gojb.GoJbGoodies;
 
 public class Minne implements MouseListener {
 
@@ -35,6 +37,8 @@ public class Minne implements MouseListener {
 	String färger[] ={"r","g","b","y"};
 
 	ArrayList<String> färgerSkaBlinka = new ArrayList<>();
+	
+	Clip greenClip, redClip, yellowClip, blueClip;
 
 	boolean varranan,clickable = false, mouseDown;
 
@@ -80,6 +84,34 @@ public class Minne implements MouseListener {
 
 		frame.revalidate();
 
+		//		clip = AudioSystem.getClip();
+		//		clip.open(AudioSystem.getAudioInputStream(getClass().getResource("\\images\\greenSound.waw")));
+		//		
+		
+		try {
+			greenClip = AudioSystem.getClip();
+			greenClip.open(AudioSystem.getAudioInputStream(GoJbGoodies.class.getResource("/images/greenSound.wav")));	
+		} catch (Exception e1) {
+			System.err.println("ERROR");
+		}
+		try {
+			redClip = AudioSystem.getClip();
+			redClip.open(AudioSystem.getAudioInputStream(GoJbGoodies.class.getResource("/images/redSound.wav")));	
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		try {
+			blueClip = AudioSystem.getClip();
+			blueClip.open(AudioSystem.getAudioInputStream(GoJbGoodies.class.getResource("/images/blueSound.wav")));	
+		} catch (Exception e1) {
+			System.err.println("ERROR");
+		}
+		try {
+			yellowClip = AudioSystem.getClip();
+			yellowClip.open(AudioSystem.getAudioInputStream(GoJbGoodies.class.getResource("/images/yellowSound.wav")));	
+		} catch (Exception e1) {
+			System.err.println("ERROR");
+		}
 	}
 
 	public void start(){
@@ -107,15 +139,23 @@ public class Minne implements MouseListener {
 						String färg= färgerSkaBlinka.get(index);
 						if(färg.equals("r")){
 							redLabel.setBackground(lightRed);
+							redClip.start();
+							redClip.setMicrosecondPosition(0);
 						}
 						else if(färg.equals("g")){
 							greenLabel.setBackground(lightGreen);
+							greenClip.start();
+							greenClip.setMicrosecondPosition(0);
 						}
 						else if(färg.equals("b")){
 							blueLabel.setBackground(lightBlue);
+							blueClip.start();
+							blueClip.setMicrosecondPosition(0);
 						}
 						else if(färg.equals("y")){
 							yellowLabel.setBackground(lightYellow);
+							yellowClip.start();
+							yellowClip.setMicrosecondPosition(0);
 						}
 
 						index++;
@@ -150,6 +190,8 @@ public class Minne implements MouseListener {
 				if(färgerSkaBlinka.get(index).equals("r")){
 					index++;
 					redLabel.setBackground(lightRed);
+					redClip.start();
+					redClip.setMicrosecondPosition(0);
 				}
 				else{
 					gameOver();
@@ -161,6 +203,8 @@ public class Minne implements MouseListener {
 				if(färgerSkaBlinka.get(index).equals("g")){
 					index++;
 					greenLabel.setBackground(lightGreen);
+					greenClip.start();
+					greenClip.setMicrosecondPosition(0);
 				}
 				else{
 					gameOver();
@@ -172,6 +216,8 @@ public class Minne implements MouseListener {
 				if(färgerSkaBlinka.get(index).equals("b")){
 					index++;
 					blueLabel.setBackground(lightBlue);
+					blueClip.start();
+					blueClip.setMicrosecondPosition(0);
 				}
 				else{
 					gameOver();
@@ -183,6 +229,8 @@ public class Minne implements MouseListener {
 				if(färgerSkaBlinka.get(index).equals("y")){
 					index++;
 					yellowLabel.setBackground(lightYellow);
+					yellowClip.start();
+					yellowClip.setMicrosecondPosition(0);
 				}
 				else{
 					gameOver();
