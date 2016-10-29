@@ -450,12 +450,12 @@ public class SänkaSkepp {
 		//		new SänkaSkeppStart();
 	}
 	public void SänkaSkeppStart() {
-		frame.setSize(1000, 780);
+		frame.setSize((int)Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2, 3*(int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()/4);
 		frame.setLocationRelativeTo(connectFrame);
 
 		connectFrame.dispose();
 
-		 frame.setResizable(false);
+		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.setLayout(new BorderLayout());
 		frame.setBackground(Color.blue);
