@@ -23,8 +23,10 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.MouseInputListener;
 
 import GoJbFrame.GoJbFrame;
+import spel.Minne;
 import spel.Röj;
 import spel.Snake;
+import spel.SänkaSkepp;
 
 @SuppressWarnings("serial")
 class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListener, KeyListener, ActionListener{
@@ -69,7 +71,9 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListe
 			Pac = new JMenuItem("Pac"),
 			memo = new JMenuItem("Memory"),
 			personnr = new JMenuItem("Personnummer"),
-			röJ = new JMenuItem("Röj");
+			röJ = new JMenuItem("Röj"),
+			sänkaSkepp = new JMenuItem("Sänka skepp"),
+			minne = new JMenuItem("Simon");
 	JMenuBar bar = new JMenuBar();
 
 	Clip clip;
@@ -123,6 +127,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListe
 		ÖppnaProgram.add(memo);
 		ÖppnaProgram.add(personnr);
 		ÖppnaProgram.add(röJ);
+		ÖppnaProgram.add(sänkaSkepp);
+		ÖppnaProgram.add(minne);
 
 
 		Mouse.addActionListener(this);
@@ -150,6 +156,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListe
 		memo.addActionListener(e -> {new spel.Memory();frame.dispose();});
 		personnr.addActionListener(e -> {frame.dispose();new Personnr();});
 		röJ.addActionListener(e->{frame.dispose();new Röj();});
+		sänkaSkepp.addActionListener(e->{frame.dispose();new SänkaSkepp();}); //Funkar ej, hoppar main klassen av någon anledning
+		minne.addActionListener(e ->{frame.dispose();new Minne();});
 
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 		frame.setBackground(gray);
@@ -847,8 +855,17 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 	String string = new String();
 	int x,y,r,g,b,textbredd=100,texthöjd=50;
 	String a;
+	Robot robot;
+
 	public Impossible(String textString){
 
+		try {
+			 robot = new Robot();
+		} catch (AWTException e) {
+			// FIXME Auto-generated catch block
+			System.err.println("ROBOT FUNKAR EJ");
+		}
+		
 		Image image = Bild("/images/Nope.png").getImage();
 
 		Cursor c = getDefaultToolkit().createCustomCursor(
@@ -884,7 +901,7 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 	public void mouseMoved(MouseEvent e) {
 
 
-		robot.mouseMove(frame.getWidth()/2, frame.getHeight()/2);
+//		robot.mouseMove(frame.getWidth()/2, frame.getHeight()/2);
 	}
 
 	public void actionPerformed(ActionEvent arg0) {

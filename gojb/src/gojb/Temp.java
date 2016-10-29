@@ -11,8 +11,11 @@ class Temp{
 //				new Snake();
 
 //				new Ping("malla-hp");
-String string="rtfdjkltrdf";
-System.out.println(string.replace(";", "."));
+//String string="rtfdjkltrdf";
+//System.out.println(string.replace(";", "."));
+		
+		new Impossible("Test");
+		
 //		new Randoms();
 		
 //				new Ping("192.168.115.100");

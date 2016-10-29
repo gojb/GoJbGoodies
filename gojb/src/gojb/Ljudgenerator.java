@@ -26,6 +26,7 @@ public class Ljudgenerator {
 	    byte[] buf = new byte[1];
 	    while(true) {
 	        buf[0] = (byte)(Math.sin(i++/a*slider.getValue()*100*Math.PI)*100);
+	        System.out.println(i);
 	        sdl.write(buf, 0, 1 );
 //	        if (i>100000) {
 //				break;
