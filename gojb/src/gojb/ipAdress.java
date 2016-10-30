@@ -19,7 +19,7 @@ public class ipAdress {
 		// FIXME Auto-generated constructor stub
 		
 		try {
-			System.err.println(InetAddress.getLocalHost());
+			System.err.println("Söker adresser för: " + InetAddress.getLocalHost());
 		} catch (UnknownHostException e) {
 			// FIXME Auto-generated catch block
 			e.printStackTrace();
@@ -27,8 +27,10 @@ public class ipAdress {
 		try {
 			Document doc = Jsoup.parse(new URL("http://findipinfo.com"),10000);
 			Element element = doc.select("h1").get(0);
-			System.out.println(element.ownText().substring(20));
-			System.out.println(InetAddress.getLocalHost().toString().substring(13));
+			System.out.println();
+			System.out.println("Extern ip: "+element.ownText().substring(20));
+			String[] strings=InetAddress.getLocalHost().toString().split("/");
+			System.out.println("Intern ip: "+strings[strings.length-1]);
 			
 			
 //			for(int i =element.ownText().length();element.ownText().charAt(i)==" ".charAt(0);i--){

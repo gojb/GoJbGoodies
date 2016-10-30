@@ -18,6 +18,7 @@ import static org.lwjgl.opengl.GL11.glTranslated;
 import static org.lwjgl.opengl.GL11.glVertex3d;
 import static org.lwjgl.util.glu.GLU.gluPerspective;
 
+import java.awt.Toolkit;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -52,7 +53,7 @@ public class OpenGLTest {
 //					if (getClass().getResource("/" + getClass().getName().replace('.','/') + ".class").toString().startsWith("jar:")){
 						System.setProperty("org.lwjgl.librarypath", new File(System.getProperty("user.home") + "\\AppData\\Roaming\\GoJb\\GoJbsBraOchHa\\windows_dll").getAbsolutePath());
 //					}
-					Display.setDisplayMode(new DisplayMode(800, 600));
+					Display.setDisplayMode(new DisplayMode((int)(Toolkit.getDefaultToolkit().getScreenSize().width*0.9), (int)(Toolkit.getDefaultToolkit().getScreenSize().height*0.9)));
 					Display.setTitle("GoJbGame");
 					Display.create();
 				} catch (LWJGLException e) {
@@ -126,7 +127,7 @@ public class OpenGLTest {
 		final double SPEED = 0.1;
 		while(!Display.isCloseRequested()){
 			if (Keyboard.isKeyDown(Keyboard.KEY_F))
-				setDisplayMode(800, 600, !Display.isFullscreen());
+				setDisplayMode(1366,768, !Display.isFullscreen());
 			if (Keyboard.isKeyDown(Keyboard.KEY_W))
 				move(0.11,1);
 			if (Keyboard.isKeyDown(Keyboard.KEY_S))
