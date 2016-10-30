@@ -128,13 +128,13 @@ public class OpenGLTest {
 			if (Keyboard.isKeyDown(Keyboard.KEY_F))
 				setDisplayMode(800, 600, !Display.isFullscreen());
 			if (Keyboard.isKeyDown(Keyboard.KEY_W))
-				move(0.01,1);
+				move(0.11,1);
 			if (Keyboard.isKeyDown(Keyboard.KEY_S))
-				move(-0.01,1);
+				move(-0.11,1);
 			if (Keyboard.isKeyDown(Keyboard.KEY_A))
-				move(0.01,0);
+				move(0.11,0);
 			if (Keyboard.isKeyDown(Keyboard.KEY_D))
-				move(-0.01,0);
+				move(-0.11,0);
 			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
 				ry -= SPEED;
 			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
@@ -162,7 +162,7 @@ public class OpenGLTest {
 
 			glRotated(rx,1,0,0);
 			glRotated(ry,0,1,0);
-			glRotated(rz,0,0,1);
+			glRotated(-rz,0,0,1);
 			glTranslated(xx,0,zz);
 
 			//			glPushMatrix();
@@ -190,14 +190,15 @@ public class OpenGLTest {
 		glRotated(rotX,1,0,0);
 		glRotated(rotY,0,1,0);
 		glRotated(rotZ,0,0,1);
+		glClear(21);
 
 		glBegin(GL_QUADS);
 
 		//Fram
-		glColor3d(1,0.5,0);
+		glColor3d(-1,-0.5,0);
 
 		glVertex3d(-bredd,-höjd,längd);
-		glVertex3d(-bredd,höjd,längd);
+		glVertex3d(bredd,-höjd,längd);
 		glVertex3d(bredd,höjd,längd);
 		glVertex3d(bredd,-höjd,längd);
 
@@ -210,10 +211,11 @@ public class OpenGLTest {
 
 		//Under
 		glColor3d(0,0,1);
-		glVertex3d(-bredd,-höjd,längd);
+		glVertex3d(-bredd,höjd,-längd);
 		glVertex3d(-bredd,-höjd,-längd);
 		glVertex3d(bredd,-höjd,-längd);
 		glVertex3d(bredd,-höjd,längd);
+		glClear(5);
 
 		//Över
 		glColor3d(1,1,0);
