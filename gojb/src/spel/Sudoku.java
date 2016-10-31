@@ -18,9 +18,11 @@ public class Sudoku {
 	public Sudoku(){
 		int f=0;
 		for (int i = 0; i < 9; i=i+0) {
-			if (f++==1000000) {
+			if (f++==500000) {
 				f=0;
-				i--;
+				i-=2;
+//				i=0;
+//				print(false);
 			}
 			ber:{
 				int[] ny = {1,2,3,4,5,6,7,8,9};
@@ -31,21 +33,35 @@ public class Sudoku {
 					ny[j] = a;
 				}
 				for (int j = 0; j < 3; j++) {
+					//Blockrad
 					for (int j2 = 0; j2 < 3; j2++) {
-						for (int k = 0; k < 3; k++) {
-							for (int k2 = i%3; k2 > 0; k2--) {
+						//siffra i raden
+						int siffra = ny[j+(j2*3)];
+						// 1 2 3
+						// 4 5 6
+						// 7 8 9
+
+						for (int k2 = i%3; k2 > 0; k2--) {
+							//tidigare block i raden
+							for (int k = 0; k < 3; k++) {
 								ber++;
 								if (ny[j2+(j*3)]==integerss[i-k2][k+(j*3)]) {
+//									System.err.println("56789");
+//									print(false);
 									break ber;
 								}
 							}
-							for (int k2 = i+0; k2 > 2; k2-=3) {
-								int siffra = ny[j+(j2*3)];
-								//Siffra 1-3 inom tidigare ruta
-								if (siffra==integerss[i-k2][(3*k)+j]) {
+						}
+						for (int k2 = i/3; k2 > 0; k2--) {
+							//tidigare block i kolumnen
+							//Siffra 1-3 inom tidigare ruta
+							for (int k = 0; k < 3; k++) {
+								if (siffra==integerss[i-(k2*3)][(3*k)+j]) {
+//									System.err.println("ryhkmldf");
 									break ber;
 								}
 							}
+
 						}
 					}
 				}
