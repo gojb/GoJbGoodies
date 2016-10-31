@@ -15,7 +15,7 @@ public class Studs implements KeyListener{
 
 	int xBlock=150, yBoll=50;
 
-	boolean flyttar;
+	boolean höger,vänster;
 
 	Timer timer, faller;
 
@@ -50,23 +50,28 @@ public class Studs implements KeyListener{
 			frame.revalidate();
 		});
 		faller.start();
-
-
-		frame.repaint();
-		frame.revalidate();
-	}
-
-	public void flyttaMark(Integer i) {
-		//i är antingen -1 (högerpil), eller 1 (vänsterpil)
 		timer = new Timer(10, e->{
+			int i=0;
+			if (höger) {
+				i+=1;
+			}
+			if (vänster) {
+				i-=1;
+			}
 			if(xBlock+(3*i)>=0&&(xBlock+(3*i)+210)<=500){
 				xBlock=xBlock+(3*i);
 				frame.revalidate();
 				frame.repaint();
+
 			}
+
+
 		});
 		timer.start();
+		frame.repaint();
+		frame.revalidate();
 	}
+
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -77,23 +82,20 @@ public class Studs implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 		// FIXME Auto-generated method stub
 		if(e.getKeyCode() == KeyEvent.VK_LEFT){
-			if(!flyttar){		
-				flyttaMark(-1);
-				flyttar=true;
-			}
+			vänster=true;
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-			if(!flyttar){
-				flyttaMark(1);
-				flyttar=true;
-			}
+			höger=true;
 		}
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// FIXME Auto-generated method stub
-		if(timer.isRunning()) timer.stop();
-		flyttar=false;
+		if(e.getKeyCode() == KeyEvent.VK_LEFT){
+			vänster=false;
+		}
+		else if(e.getKeyCode() == KeyEvent.VK_RIGHT){
+			höger=false;
+		}
 
 	}
 }
