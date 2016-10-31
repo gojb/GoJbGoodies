@@ -575,7 +575,7 @@ class Mandat{
 		for (int i = 1; i < mandat.length; i++) {
 			try {
 				s = s + Long.parseLong(värden[i].getText());
-			} catch (NumberFormatException e) {}
+			} catch (NumberFormatException e) {	}
 		}
 		for (int i = 1; i < mandat.length; i++) {
 			try {
@@ -594,7 +594,7 @@ class Mandat{
 			uddatal[i] = 1.4;
 		}
 		if (s!=0) {
-			for (int i1 = 1; i1 < 350; i1++) {
+			for (int i1 = 1; i1 <= 349; i1++) {
 				ArrayList<Double> list = new ArrayList<Double>(i);
 
 				for (int i = 1; i < mandat.length; i++) {
@@ -615,7 +615,7 @@ class Mandat{
 				for (int i = 1; i < mandat.length; i++) {
 					if (Collections.max(list) == tal[i]) {
 						antalmandat[i]++;
-						if (uddatal[i] == 1.4) {
+						if (uddatal[i] == 1.2) {
 							uddatal[i] = 3;
 						} else {
 							uddatal[i] = uddatal[i] + 2;
@@ -896,26 +896,26 @@ class Ping{
 					System.err.println("asads-ads-ds-asd--d-ads-sd");
 					new Thread(){
 						public void run() {
-						BufferedReader inputStream = null;
-						try {
-							inputStream = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("taskkill /f /im ping.exe").getInputStream()));
+							BufferedReader inputStream = null;
+							try {
+								inputStream = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("taskkill /f /im ping.exe").getInputStream()));
 
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-						String s;
-						try {
-							while ((s = inputStream.readLine()) != null) {
-								System.out.println(s);
+							} catch (IOException e1) {
+								e1.printStackTrace();
 							}
-						} catch (IOException e1) {
-							e1.printStackTrace();
+							String s;
+							try {
+								while ((s = inputStream.readLine()) != null) {
+									System.out.println(s);
+								}
+							} catch (IOException e1) {
+								e1.printStackTrace();
 
-						}
+							}
 
 
-						//					Runtime.getRuntime().exec("taskkill /f /im ping.exe");
-						//			
+							//					Runtime.getRuntime().exec("taskkill /f /im ping.exe");
+							//			
 						}
 					}.start();
 				}
