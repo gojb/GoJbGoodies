@@ -65,8 +65,7 @@ public class Sudoku {
 		else{
 			printStream=System.err;
 		}
-		int b=0,
-				c=0;
+		int b=0,c=0;
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 3; j++) {
 				for (int j2 = 0; j2 < 3; j2++) {
