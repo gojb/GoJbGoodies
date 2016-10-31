@@ -14,9 +14,9 @@ public class platform implements KeyListener {
 
 	JLabel label = new JLabel(), ground = new JLabel("");
 
-	Timer timer, timerHoppa;
+	Timer timer, timerHoppa, timerFaller;
 
-	boolean flyttar, hoppar, hopparUpp;
+	boolean flyttar, hoppar, hopparUpp, faller;
 
 	public static void main(String[] args) {
 		// FIXME Auto-generated method stub
@@ -50,10 +50,10 @@ public class platform implements KeyListener {
 		timer = new Timer(10, e->{
 			ground.setLocation((int)ground.getLocation().getX()+(3*i), 275);
 			if(ground.getX()>(label.getX()+(label.getWidth()/2-5))){
-				System.err.println("ERROR");
+				faller();
 			}
 			else if(ground.getX()+ground.getWidth()<(label.getX()+(label.getWidth()/2+5))){
-				System.err.println("ERROR");
+				faller();
 			}
 		});
 		timer.start();
@@ -76,6 +76,16 @@ public class platform implements KeyListener {
 		});
 		timerHoppa.start();
 	}
+	public void faller(){
+		if(!faller){
+			timerFaller = new Timer(10, e->{	
+				label.setLocation(225,(int)label.getLocation().getY()+(2));
+			});
+			timerFaller.start();
+			flyttar=true;
+			faller=true;
+		}
+	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -87,13 +97,13 @@ public class platform implements KeyListener {
 		// FIXME Auto-generated method stub
 
 		if(e.getKeyCode() == KeyEvent.VK_LEFT){
-			if(!flyttar){		
+			if(!flyttar&&!faller){		
 				flyttaMark(1);
 				flyttar=true;
 			}
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-			if(!flyttar){
+			if(!flyttar&&!faller){
 				flyttaMark(-1);
 				flyttar=true;
 			}
@@ -110,8 +120,8 @@ public class platform implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		// FIXME Auto-generated method stub
 		if(e.getKeyCode() == KeyEvent.VK_LEFT||e.getKeyCode() == KeyEvent.VK_RIGHT){
-		timer.stop();
-		flyttar=false;
+			timer.stop();
+			flyttar=false;
 		}
 	}
 
