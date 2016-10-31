@@ -53,7 +53,6 @@ public class Sudoku {
 				i++;
 				f=0;
 			}
-
 		}
 		print(true);
 		System.err.println(ber);
