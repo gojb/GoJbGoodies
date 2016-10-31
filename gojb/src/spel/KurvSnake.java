@@ -39,8 +39,8 @@ public class KurvSnake {
 			one = new JButton("Single Player");
 	private Timer timer = new Timer(10, e -> update());
 	private ArrayList<Pixel> pixels = new ArrayList<>();
-	private double riktning,x,y;
-	int längd=0;
+	private double x,y;
+	int riktning,längd=0;
 	boolean höger,vänster;
 	Pixel plupp;
 	Random random = new Random();
@@ -154,13 +154,13 @@ public class KurvSnake {
 	};
 
 	private void update(){
-		if (höger) riktning +=Math.PI/75;
-		if (vänster) riktning -=Math.PI/75;
-		x += Math.cos(riktning)	;
-		y += Math.sin(riktning);
+		if (höger) riktning +=1;
+		if (vänster) riktning -=1;
+		x += Math.cos(Math.PI*riktning/80);
+		y += Math.sin(Math.PI*riktning/80);
 		pixels.add(new Pixel(x,y));
 		frame.repaint();
-		highFrame.repaint();
+//		highFrame.repaint();
 		while (pixels.size()-längd*80-300>=0) {
 			pixels.remove(0);
 		}
@@ -209,6 +209,7 @@ public class KurvSnake {
 				plupp();
 			}
 		}
+		highFrame.repaint();
 	}
 	private void sort() {
 		Collections.sort(highscore,new Comparator<String>() {
@@ -227,7 +228,7 @@ public class KurvSnake {
 		y=0;
 		pixels.clear();
 		längd=0;
-		riktning=Math.PI/8;
+		riktning=20;
 		plupp();
 		timer.start();
 
@@ -275,7 +276,6 @@ public class KurvSnake {
 			g.fillOval((int)Math.round(x)-diameter/2, (int)Math.round(y)-diameter/2, diameter,diameter);
 		}
 		boolean nuddar(Pixel pixel){
-
 			return Math.sqrt(Math.pow(x-pixel.x,2)+Math.pow(y-pixel.y,2))<=diameter/2+pixel.diameter/2;
 		}
 	}
