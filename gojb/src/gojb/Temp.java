@@ -14,8 +14,9 @@ class Temp{
 //String string="rtfdjkltrdf";
 //System.out.println(string.replace(";", "."));
 		
-		new Impossible("Test");
-		
+//		new Impossible("Test");
+		int i = 4/3;
+		System.out.println(i);
 //		new Randoms();
 		
 //				new Ping("192.168.115.100");
