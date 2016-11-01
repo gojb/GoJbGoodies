@@ -20,6 +20,7 @@ public class Txt implements ActionListener {
 	String string = "";
 	
 	Timer timer = new Timer(1,this);
+	int a, b;
 	
 	public static void main(String[] args) {
 		
@@ -39,7 +40,8 @@ public class Txt implements ActionListener {
 		text.setVerticalTextPosition(SwingConstants.CENTER);
 		text.setHorizontalAlignment(SwingConstants.CENTER);
 		timer.start();		
-		
+		System.out.println("sdaads");
+		System.out.println(a > b ? -1 : a == b ? 0 : 1);
 //		
 //		@SuppressWarnings("resource")
 //		Scanner scanner = new Scanner(System.in);

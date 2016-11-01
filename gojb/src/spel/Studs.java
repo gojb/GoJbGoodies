@@ -48,20 +48,39 @@ public class Studs implements KeyListener{
 					System.out.println("TRÄFF "+(150-xBlock));
 					int xVar=150-xBlock;
 					double koficient=1;
-					if(xVar!=0){ koficient = (Math.sqrt((100*100)-(xVar*xVar)))/xVar;}
+					if(xVar!=0){ koficient = .001*xVar;}
 					System.err.println(koficient + " : "+xBoll + " : " + yBoll + " : "+ xVar);
-					yBoll=(int)(xVar*koficient);
+					
 					
 					if(koficient<0){
-						xBoll=150;
+						xBoll=xBoll-1;
+						yBoll=yBoll+(int)((xBoll)*koficient);
 					}
 					else if(koficient>0){
-						xBoll=350;
+						xBoll=xBoll+1;
+						yBoll=yBoll+(int)((xBoll)*(-1)*koficient);
+						
 					}
-				
+//					yBoll=yBoll+(int)((xBoll)*koficient);
 					
-					System.err.println(koficient + " : "+xBoll + " : " + yBoll);
+					System.err.println(koficient + " : "+xBoll + " : " + yBoll);			
 					
+					for(int i = 0;i<10;i++){
+						if(koficient<0){
+							xBoll=xBoll-1;
+							yBoll=yBoll+(int)((xBoll)*koficient);
+						}
+						else if(koficient>0){
+							xBoll=xBoll+1;
+							yBoll=yBoll+(int)((xBoll)*(-1)*koficient);
+							
+						}
+						frame.revalidate();
+						frame.repaint();
+						System.out.println("asadssad");
+						
+					}
+//					new Studs();
 				}
 				else{
 					System.err.println("MISS");
@@ -104,9 +123,11 @@ public class Studs implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 		// FIXME Auto-generated method stub
 		if(e.getKeyCode() == KeyEvent.VK_LEFT){
+			if(höger)höger=false;
 			vänster=true;
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_RIGHT){
+			if(vänster)vänster=false;
 			höger=true;
 		}
 	}
