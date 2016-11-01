@@ -103,10 +103,7 @@ public class Studs implements KeyListener{
 				xBlock=xBlock+(3*i);
 				frame.revalidate();
 				frame.repaint();
-
 			}
-
-
 		});
 		timer.start();
 		frame.repaint();
