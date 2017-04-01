@@ -46,8 +46,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListe
 			menu2 = new JMenu("Hjälp"),
 			ÖppnaProgram = new JMenu("Öppna Program");
 	JMenuItem item = new JMenuItem("Om"),
-			item1 = new JMenuItem("Source kod"),
-			item2 = new JMenuItem("Hjälp"),
+			source = new JMenuItem("Source kod"),
+			hjälp = new JMenuItem("Hjälp"),
 			Minirknare = new JMenuItem("Miniräknare"),
 			Betyg = new JMenuItem("Betyg"),
 			OrginalFönster = new JMenuItem("RörandeMojäng"),
@@ -101,8 +101,8 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListe
 		bar.add(menu1);
 		menu1.add(Återställ);
 		menu2.add(item);
-		menu2.add(item1);
-		menu2.add(item2);
+		menu2.add(source);
+		menu2.add(hjälp);
 
 		ÖppnaProgram.add(Mouse);
 		ÖppnaProgram.add(Minirknare);
@@ -134,7 +134,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListe
 		Mouse.addActionListener(this);
 		Pong.addActionListener(this);
 		Återställ.addActionListener(this);
-		item1.addActionListener(this);
+		source.addActionListener(this);
 		Minirknare.addActionListener(this);
 		Betyg.addActionListener(this);
 		OrginalFönster.addActionListener(this);
@@ -425,9 +425,9 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListe
 			new RörandeMojäng();
 		}
 
-		else if (arg0.getSource() == item1){
+		else if (arg0.getSource() == source){
 		try {
-			Desktop.getDesktop().browse(new URI("https://github.com/gojb/GoJbGoodies/tree/master/JakobsBraOchHa/src"));
+			Desktop.getDesktop().browse(new URI("https://github.com/gojb/GoJbGoodies"));
 		} catch (Exception e) {}
 		}
 
