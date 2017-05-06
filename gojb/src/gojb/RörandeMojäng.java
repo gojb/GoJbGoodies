@@ -24,15 +24,15 @@ import javax.swing.event.MouseInputListener;
 
 import GoJbFrame.GoJbFrame;
 import spel.Minne;
-import spel.RÃ¶j;
+import spel.Röj;
 import spel.Snake;
-import spel.SÃ¤nkaSkepp;
+import spel.SänkaSkepp;
 
 @SuppressWarnings("serial")
-class RÃ¶randeMojÃ¤ng extends JPanel implements MouseMotionListener, WindowListener, KeyListener, ActionListener{
+class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListener, KeyListener, ActionListener{
 
 
-	JFrame frame = new JFrame("Det hÃ¤r Ã¤r fÃ¶rsÃ¶k  " + qq),
+	JFrame frame = new JFrame("Det här är försök  " + qq),
 			Vinst = new JFrame("Grattis!");
 
 	JLabel textlabel = new JLabel();
@@ -43,36 +43,36 @@ class RÃ¶randeMojÃ¤ng extends JPanel implements MouseMotionListener, WindowListe
 
 	JMenu menu = new JMenu("Arkiv"),
 			menu1 = new JMenu("Redigera"),
-			menu2 = new JMenu("HjÃ¤lp"),
-			Ã–ppnaProgram = new JMenu("Ã–ppna Program");
+			menu2 = new JMenu("Hjälp"),
+			ÖppnaProgram = new JMenu("Öppna Program");
 	JMenuItem item = new JMenuItem("Om"),
 			source = new JMenuItem("Source kod"),
-			hjÃ¤lp = new JMenuItem("HjÃ¤lp"),
-			Minirknare = new JMenuItem("MinirÃ¤knare"),
+			hjälp = new JMenuItem("Hjälp"),
+			Minirknare = new JMenuItem("Miniräknare"),
 			Betyg = new JMenuItem("Betyg"),
-			OrginalFÃ¶nster = new JMenuItem("RÃ¶randeMojÃ¤ng"),
-			Ã…terstÃ¤ll = new JMenuItem("Ã…terstÃ¤ll kvadrat"),
+			OrginalFönster = new JMenuItem("RörandeMojäng"),
+			Återställ = new JMenuItem("Återställ kvadrat"),
 			Pong = new JMenuItem("Pong"),
 			Maze = new JMenuItem("Maze"),
 			Snake = new JMenuItem("Snake"),
 			Mouse = new JMenuItem("Mouse"),
 			impossible = new JMenuItem("Impossible"),
 			ticTacToe = new JMenuItem("Tic Tac Toe"),
-			lÃ¶senord = new JMenuItem("LÃ¶senord"),
-			fÃ¤rg = new JMenuItem("Skapa fÃ¤rg"),
+			lösenord = new JMenuItem("Lösenord"),
+			färg = new JMenuItem("Skapa färg"),
 			avsluta = new JMenuItem("Avsluta"),
 			morse = new JMenuItem("Morse"),
 			Random = new JMenuItem("Random"),
 			klocka = new JMenuItem("Klocka"),
-			binÃ¤ra = new JMenuItem("BinÃ¤r omvandlare"),
-			draOchSlÃ¤pp = new JMenuItem("Dra & SlÃ¤pp"),
-			sÃ¶k = new JMenuItem("SÃ¶k"),
-			reggplÃ¥tar = new JMenuItem("ReggplÃ¥tar"),
+			binära = new JMenuItem("Binär omvandlare"),
+			draOchSläpp = new JMenuItem("Dra & Släpp"),
+			sök = new JMenuItem("Sök"),
+			reggplåtar = new JMenuItem("Reggplåtar"),
 			Pac = new JMenuItem("Pac"),
 			memo = new JMenuItem("Memory"),
 			personnr = new JMenuItem("Personnummer"),
-			rÃ¶J = new JMenuItem("RÃ¶j"),
-			sÃ¤nkaSkepp = new JMenuItem("SÃ¤nka skepp"),
+			röJ = new JMenuItem("Röj"),
+			sänkaSkepp = new JMenuItem("Sänka skepp"),
 			minne = new JMenuItem("Simon");
 	JMenuBar bar = new JMenuBar();
 
@@ -83,94 +83,94 @@ class RÃ¶randeMojÃ¤ng extends JPanel implements MouseMotionListener, WindowListe
 	static int y = 300;
 	static int ii = 0;
 
-	public RÃ¶randeMojÃ¤ng(){
-		Jakobs.antalFÃ¶nster++;
+	public RörandeMojäng(){
+		Jakobs.antalFönster++;
 
 		Vinst.setLocationRelativeTo(null);
 		Vinst.setSize(190, 100);
 		Vinst.add(textruta);
 
 		textruta.setFont(new Font("",Font.BOLD, 20));
-		textruta.setText("Grattis! Du vann \nefter " + qq + " fÃ¶rsÃ¶k! :D");
+		textruta.setText("Grattis! Du vann \nefter " + qq + " försök! :D");
 		textruta.setEditable(false);
 		textlabel.setOpaque(false);
 
-		bar.add(Ã–ppnaProgram);
+		bar.add(ÖppnaProgram);
 		bar.add(menu);
 		bar.add(menu2);
 		bar.add(menu1);
-		menu1.add(Ã…terstÃ¤ll);
+		menu1.add(Återställ);
 		menu2.add(item);
 		menu2.add(source);
-		menu2.add(hjÃ¤lp);
+		menu2.add(hjälp);
 
-		Ã–ppnaProgram.add(Mouse);
-		Ã–ppnaProgram.add(Minirknare);
-		Ã–ppnaProgram.add(Betyg);
-		Ã–ppnaProgram.add(OrginalFÃ¶nster);
-		Ã–ppnaProgram.add(Pong);
-		Ã–ppnaProgram.add(Maze);
-		Ã–ppnaProgram.add(impossible);
-		Ã–ppnaProgram.add(ticTacToe);
-		Ã–ppnaProgram.add(lÃ¶senord);
-		Ã–ppnaProgram.add(fÃ¤rg);
-		Ã–ppnaProgram.add(avsluta);
-		Ã–ppnaProgram.add(morse);
-		Ã–ppnaProgram.add(Random);
-		Ã–ppnaProgram.add(klocka);
-		Ã–ppnaProgram.add(binÃ¤ra);
-		Ã–ppnaProgram.add(draOchSlÃ¤pp);
-		Ã–ppnaProgram.add(sÃ¶k);
-		Ã–ppnaProgram.add(reggplÃ¥tar);
-		Ã–ppnaProgram.add(Snake);
-		Ã–ppnaProgram.add(Pac);
-		Ã–ppnaProgram.add(memo);
-		Ã–ppnaProgram.add(personnr);
-		Ã–ppnaProgram.add(rÃ¶J);
-		Ã–ppnaProgram.add(sÃ¤nkaSkepp);
-		Ã–ppnaProgram.add(minne);
+		ÖppnaProgram.add(Mouse);
+		ÖppnaProgram.add(Minirknare);
+		ÖppnaProgram.add(Betyg);
+		ÖppnaProgram.add(OrginalFönster);
+		ÖppnaProgram.add(Pong);
+		ÖppnaProgram.add(Maze);
+		ÖppnaProgram.add(impossible);
+		ÖppnaProgram.add(ticTacToe);
+		ÖppnaProgram.add(lösenord);
+		ÖppnaProgram.add(färg);
+		ÖppnaProgram.add(avsluta);
+		ÖppnaProgram.add(morse);
+		ÖppnaProgram.add(Random);
+		ÖppnaProgram.add(klocka);
+		ÖppnaProgram.add(binära);
+		ÖppnaProgram.add(draOchSläpp);
+		ÖppnaProgram.add(sök);
+		ÖppnaProgram.add(reggplåtar);
+		ÖppnaProgram.add(Snake);
+		ÖppnaProgram.add(Pac);
+		ÖppnaProgram.add(memo);
+		ÖppnaProgram.add(personnr);
+		ÖppnaProgram.add(röJ);
+		ÖppnaProgram.add(sänkaSkepp);
+		ÖppnaProgram.add(minne);
 
 
 		Mouse.addActionListener(this);
 		Pong.addActionListener(this);
-		Ã…terstÃ¤ll.addActionListener(this);
+		Återställ.addActionListener(this);
 		source.addActionListener(this);
 		Minirknare.addActionListener(this);
 		Betyg.addActionListener(this);
-		OrginalFÃ¶nster.addActionListener(this);
+		OrginalFönster.addActionListener(this);
 		Maze.addActionListener(this);
 		impossible.addActionListener(this);
 		ticTacToe.addActionListener(this);
-		lÃ¶senord.addActionListener(this);
-		fÃ¤rg.addActionListener(this);
+		lösenord.addActionListener(this);
+		färg.addActionListener(this);
 		avsluta.addActionListener(this);
 		morse.addActionListener(this);
 		Random.addActionListener(this);
 		klocka.addActionListener(this);
 		Snake.addActionListener(e -> {new spel.Snake();frame.dispose();});
-		binÃ¤ra.addActionListener(e -> {new ToBinary();frame.setVisible(false);});
-		draOchSlÃ¤pp.addActionListener(e -> {new DraOchSlÃ¤pp();frame.dispose();});		
-		sÃ¶k.addActionListener(e -> {new SÃ¶k();frame.dispose();});
-		reggplÃ¥tar.addActionListener(e -> {new ReggPlÃ¥tar();frame.dispose();});
+		binära.addActionListener(e -> {new ToBinary();frame.setVisible(false);});
+		draOchSläpp.addActionListener(e -> {new DraOchSläpp();frame.dispose();});		
+		sök.addActionListener(e -> {new Sök();frame.dispose();});
+		reggplåtar.addActionListener(e -> {new ReggPlåtar();frame.dispose();});
 		Pac.addActionListener(e -> {new Pac();frame.dispose();});
 		memo.addActionListener(e -> {new spel.Memory();frame.dispose();});
 		personnr.addActionListener(e -> {frame.dispose();new Personnr();});
-		rÃ¶J.addActionListener(e->{frame.dispose();new RÃ¶j();});
-		sÃ¤nkaSkepp.addActionListener(e->{frame.dispose();new SÃ¤nkaSkepp();}); //Funkar ej, hoppar main klassen av nÃ¥gon anledning
+		röJ.addActionListener(e->{frame.dispose();new Röj();});
+		sänkaSkepp.addActionListener(e->{frame.dispose();new SänkaSkepp();});
 		minne.addActionListener(e ->{frame.dispose();new Minne();});
 
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 		frame.setBackground(gray);
 		frame.setForeground(pink);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		frame.setIconImage(fÃ¶nsterIcon);
+		frame.setIconImage(fönsterIcon);
 		frame.setSize(1845, 800);
 		frame.addMouseMotionListener(this);
 		frame.addKeyListener(this);
 		frame.setResizable(false);
 		frame.setJMenuBar(bar);
 		frame.addWindowListener(this);
-		frame.getContentPane().add(new RÃ¶randeMojÃ¤ng3());
+		frame.getContentPane().add(new RörandeMojäng3());
 		frame.setVisible(true);
 
 		robot.mouseMove(200, 100);
@@ -217,7 +217,7 @@ class RÃ¶randeMojÃ¤ng extends JPanel implements MouseMotionListener, WindowListe
 			new GameOver();
 			frame.dispose();
 		}
-		System.out.println("Musen rÃ¶r sig pÃ¥: " + e.getX()  + ", " + e.getY());
+		System.out.println("Musen rör sig på: " + e.getX()  + ", " + e.getY());
 		if ( x == 50) {
 			if (y == 50){
 
@@ -231,13 +231,13 @@ class RÃ¶randeMojÃ¤ng extends JPanel implements MouseMotionListener, WindowListe
 	public void keyPressed(KeyEvent e) { 
 
 
-		if (KeyEvent.getKeyText(e.getKeyCode()) == "VÃ¤nsterpil") {
+		if (KeyEvent.getKeyText(e.getKeyCode()) == "Vänsterpil") {
 			x = x - 1;
-			System.out.println("1 pixel till vÃ¤nster");
+			System.out.println("1 pixel till vänster");
 			frame.repaint();}
-		if (KeyEvent.getKeyText(e.getKeyCode()) == "HÃ¶gerpil") {
+		if (KeyEvent.getKeyText(e.getKeyCode()) == "Högerpil") {
 			x = x + 1;
-			System.out.println("1 pixel till hÃ¶ger");
+			System.out.println("1 pixel till höger");
 			frame.repaint();}
 		if (KeyEvent.getKeyText(e.getKeyCode()) == "Upp") {
 			y = y - 1;
@@ -272,7 +272,7 @@ class RÃ¶randeMojÃ¤ng extends JPanel implements MouseMotionListener, WindowListe
 	}
 
 	public void windowClosed(WindowEvent arg0) {
-		Jakobs.antalFÃ¶nster--;
+		Jakobs.antalFönster--;
 
 	}
 
@@ -301,7 +301,7 @@ class RÃ¶randeMojÃ¤ng extends JPanel implements MouseMotionListener, WindowListe
 		x = arg0.getX() -18;
 		y = arg0.getY() -72;
 
-		System.out.println("Musen drar pÃ¥:" + x + " , " + y);
+		System.out.println("Musen drar på:" + x + " , " + y);
 
 		frame.repaint();
 
@@ -350,19 +350,19 @@ class RÃ¶randeMojÃ¤ng extends JPanel implements MouseMotionListener, WindowListe
 			new Jakobs();
 		}
 
-		else if (arg0.getSource() == Ã…terstÃ¤ll){
+		else if (arg0.getSource() == Återställ){
 			x = 300;
 			y = 800;
 			frame.revalidate();
 			frame.repaint();
 			Container contentPane = frame.getContentPane();
-			contentPane.add(new RÃ¶randeMojÃ¤ng3());
+			contentPane.add(new RörandeMojäng3());
 
 		}
 
 
-		else if (arg0.getSource() == fÃ¤rg){
-			new SkapaFÃ¤rg();
+		else if (arg0.getSource() == färg){
+			new SkapaFärg();
 			frame.dispose();
 		}
 
@@ -404,7 +404,7 @@ class RÃ¶randeMojÃ¤ng extends JPanel implements MouseMotionListener, WindowListe
 		}
 
 		else if (arg0.getSource() == Minirknare){
-			new MinirÃ¤knare();
+			new Miniräknare();
 		}
 
 		else if (arg0.getSource() == ticTacToe){
@@ -412,7 +412,7 @@ class RÃ¶randeMojÃ¤ng extends JPanel implements MouseMotionListener, WindowListe
 			frame.dispose();
 		}
 
-		else if (arg0.getSource() == lÃ¶senord){
+		else if (arg0.getSource() == lösenord){
 			new Login();
 			frame.dispose();
 		}
@@ -421,8 +421,8 @@ class RÃ¶randeMojÃ¤ng extends JPanel implements MouseMotionListener, WindowListe
 			new Merit();
 		}
 
-		else if (arg0.getSource() == OrginalFÃ¶nster){
-			new RÃ¶randeMojÃ¤ng();
+		else if (arg0.getSource() == OrginalFönster){
+			new RörandeMojäng();
 		}
 
 		else if (arg0.getSource() == source){
@@ -434,8 +434,8 @@ class RÃ¶randeMojÃ¤ng extends JPanel implements MouseMotionListener, WindowListe
 	}
 
 
-	class RÃ¶randeMojÃ¤ng3 extends JPanel{
-		int[] rÃ¶d=new int[91],grÃ¶n=new int[91],blÃ¥=new int[91];
+	class RörandeMojäng3 extends JPanel{
+		int[] röd=new int[91],grön=new int[91],blå=new int[91];
 		public void paintComponent (Graphics gr) {
 			Graphics2D g2 = (Graphics2D) gr;
 
@@ -459,26 +459,26 @@ class RÃ¶randeMojÃ¤ng extends JPanel implements MouseMotionListener, WindowListe
 
 			g2.setColor(BLACK);
 			g2.setFont(new Font("", Font.ROMAN_BASELINE,20));
-			g2.drawString("Dra genom labyrinten till den \nfÃ¤rgglada kvadraten fÃ¶r att vinna.\n Lycka till! :D", 300, 150);
+			g2.drawString("Dra genom labyrinten till den \nfärgglada kvadraten för att vinna.\n Lycka till! :D", 300, 150);
 
-			rÃ¶d[rÃ¶d.length-1] = random.nextInt(255);
-			grÃ¶n[rÃ¶d.length-1] = random.nextInt(255);
-			blÃ¥[rÃ¶d.length-1] = random.nextInt(255);
+			röd[röd.length-1] = random.nextInt(255);
+			grön[röd.length-1] = random.nextInt(255);
+			blå[röd.length-1] = random.nextInt(255);
 
-			for (int i = 1; i <= rÃ¶d.length-2; i++) {
-				rÃ¶d[i] = rÃ¶d[i+1];
-				grÃ¶n[i] = grÃ¶n[i+1];
-				blÃ¥[i] = blÃ¥[i+1];
+			for (int i = 1; i <= röd.length-2; i++) {
+				röd[i] = röd[i+1];
+				grön[i] = grön[i+1];
+				blå[i] = blå[i+1];
 
 			}
 			boolean h = true;
 			int e=700,s=650;
-			for (int i = rÃ¶d.length-2; i >= 1; i--) {
+			for (int i = röd.length-2; i >= 1; i--) {
 
 				if (h) {
 					h=false;
 
-					g2.setColor(new Color(rÃ¶d[i],grÃ¶n[i],blÃ¥[i]));
+					g2.setColor(new Color(röd[i],grön[i],blå[i]));
 					g2.drawRect(e, s, i, i);
 					e++;
 					s++;
@@ -497,14 +497,14 @@ class RÃ¶randeMojÃ¤ng extends JPanel implements MouseMotionListener, WindowListe
 		JFrame ram = new JFrame("GAME OVER");
 		public GameOver(){
 
-			ram.setIconImage(fÃ¶nsterIcon);
+			ram.setIconImage(fönsterIcon);
 			ram.add(b1);
 			ram.add(b2);
 			ram.setVisible(true);
 			ram.setSize(500, 500);
 			ram.setLayout(new GridLayout(2, 1));
 
-			RÃ¶randeMojÃ¤ng.ii = 1;
+			RörandeMojäng.ii = 1;
 
 			b1.addActionListener(this);
 			b2.addActionListener(this);
@@ -514,12 +514,12 @@ class RÃ¶randeMojÃ¤ng extends JPanel implements MouseMotionListener, WindowListe
 		public void actionPerformed(ActionEvent arg0) {
 
 			if (arg0.getSource() == b1){
-				RÃ¶randeMojÃ¤ng.qq = RÃ¶randeMojÃ¤ng.qq + 1;
-				RÃ¶randeMojÃ¤ng.ii = 0;
-				new RÃ¶randeMojÃ¤ng();
+				RörandeMojäng.qq = RörandeMojäng.qq + 1;
+				RörandeMojäng.ii = 0;
+				new RörandeMojäng();
 				ram.dispose();
-				RÃ¶randeMojÃ¤ng.x = 800;
-				RÃ¶randeMojÃ¤ng.y = 300;
+				RörandeMojäng.x = 800;
+				RörandeMojäng.y = 300;
 
 			}
 			if (arg0.getSource() == b2) {
@@ -530,7 +530,7 @@ class RÃ¶randeMojÃ¤ng extends JPanel implements MouseMotionListener, WindowListe
 }
 
 
-class MinirÃ¤knare implements ActionListener, KeyListener{
+class Miniräknare implements ActionListener, KeyListener{
 
 	JButton b1 = new JButton("1"),
 			b2 = new JButton("2"),
@@ -550,11 +550,11 @@ class MinirÃ¤knare implements ActionListener, KeyListener{
 
 	JTextArea textruta = new JTextArea();
 
-	JLabel rÃ¤knesÃ¤tt = new JLabel(),
+	JLabel räknesätt = new JLabel(),
 			summa = new JLabel();
 
 
-	public MinirÃ¤knare(){
+	public Miniräknare(){
 
 		JFrame frame = new JFrame();
 
@@ -562,7 +562,7 @@ class MinirÃ¤knare implements ActionListener, KeyListener{
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 
-		JPanel fÃ¶nster = new JPanel();
+		JPanel fönster = new JPanel();
 
 		frame.add(textruta,BorderLayout.NORTH);
 		b0.addActionListener(this);
@@ -581,32 +581,32 @@ class MinirÃ¤knare implements ActionListener, KeyListener{
 		b13.addActionListener(this);
 		b14.addActionListener(this);
 
-		fÃ¶nster.setLayout(new GridLayout(5,3,5,5));
+		fönster.setLayout(new GridLayout(5,3,5,5));
 		frame.addKeyListener(this);
-		fÃ¶nster.add(b1);
-		fÃ¶nster.add(b2);
-		fÃ¶nster.add(b3);
-		fÃ¶nster.add(b4);
-		fÃ¶nster.add(b5);
-		fÃ¶nster.add(b6);
-		fÃ¶nster.add(b7);
-		fÃ¶nster.add(b8);
-		fÃ¶nster.add(b9);
-		fÃ¶nster.add(b10);
-		fÃ¶nster.add(b0);
-		fÃ¶nster.add(b11);
-		fÃ¶nster.add(b12);
-		fÃ¶nster.add(b13);
-		fÃ¶nster.add(b14);
+		fönster.add(b1);
+		fönster.add(b2);
+		fönster.add(b3);
+		fönster.add(b4);
+		fönster.add(b5);
+		fönster.add(b6);
+		fönster.add(b7);
+		fönster.add(b8);
+		fönster.add(b9);
+		fönster.add(b10);
+		fönster.add(b0);
+		fönster.add(b11);
+		fönster.add(b12);
+		fönster.add(b13);
+		fönster.add(b14);
 
 		textruta.setEditable(true);
 
 
-		frame.add(fÃ¶nster,BorderLayout.CENTER);
+		frame.add(fönster,BorderLayout.CENTER);
 		frame.pack();
 
 		frame.add(summa);
-		frame.add(rÃ¤knesÃ¤tt);
+		frame.add(räknesätt);
 
 
 	}
@@ -624,8 +624,8 @@ class MinirÃ¤knare implements ActionListener, KeyListener{
 		if (e.getSource()==b8){textruta.append("8");}
 		if (e.getSource()==b9){textruta.append("9");}
 		if (e.getSource()==b10){
-			RÃ¤knaUt();
-			rÃ¤knesÃ¤tt.setText("+");
+			RäknaUt();
+			räknesätt.setText("+");
 		}
 		if (e.getSource()==b11){textruta.append("-");}
 		if (e.getSource()==b12){textruta.append("*");}
@@ -641,7 +641,7 @@ class MinirÃ¤knare implements ActionListener, KeyListener{
 
 	}
 
-	private void RÃ¤knaUt() {
+	private void RäknaUt() {
 		int a,b;
 		try {
 			a = Integer.parseInt(summa.getText());
@@ -656,17 +656,17 @@ class MinirÃ¤knare implements ActionListener, KeyListener{
 			b = 0;
 		}
 
-		if (rÃ¤knesÃ¤tt.getText() == "+"){
+		if (räknesätt.getText() == "+"){
 			summa.setText(Integer.toString(a+b));
 		}
-		else if (rÃ¤knesÃ¤tt.getText() == "-") {
+		else if (räknesätt.getText() == "-") {
 			summa.setText(Integer.toString(a-b));
 		}
 
-		else if (rÃ¤knesÃ¤tt.getText() == "*") {
+		else if (räknesätt.getText() == "*") {
 			summa.setText(Integer.toString(a*b));
 		}
-		else if (rÃ¤knesÃ¤tt.getText() == "/") {
+		else if (räknesätt.getText() == "/") {
 			summa.setText(Double.toString(a/b));
 		}
 		else {
@@ -734,9 +734,9 @@ class MinirÃ¤knare implements ActionListener, KeyListener{
 
 class Merit implements  ActionListener{
 
-	String [] Ã¤mnen ={"Biologi", "Fysik", "Kemi", "Teknik","Matte", 
-			"Historia", "Geografi", "SammhÃ¤llskunskap", "Religon", 
-			"SlÃ¶jd", "ModernaSprÃ¥k", "Idrott", "HemOchKonsumentkunskap",
+	String [] ämnen ={"Biologi", "Fysik", "Kemi", "Teknik","Matte", 
+			"Historia", "Geografi", "Sammhällskunskap", "Religon", 
+			"Slöjd", "ModernaSpråk", "Idrott", "HemOchKonsumentkunskap",
 			"Musik", "Bild","Svenska","Engelska"};
 
 	JFrame frame = new JFrame(),Resultat = new JFrame("Resultat"),betygFrame  = new JFrame();
@@ -744,7 +744,7 @@ class Merit implements  ActionListener{
 	JLabel resultatlabel = new JLabel("",CENTER);
 
 	JButton tillbaka = new JButton("Tillbaka"),
-			BÃ¶rja = new JButton("BÃ¶rja"),
+			Börja = new JButton("Börja"),
 			Avsluta = new JButton("Avsluta"),
 			A = new JButton("A"),
 			B = new JButton("B"),
@@ -763,7 +763,7 @@ class Merit implements  ActionListener{
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 		frame.setSize(200,200);
-		frame.setIconImage(fÃ¶nsterIcon);
+		frame.setIconImage(fönsterIcon);
 
 		A.setSize(30, 30);
 		B.setSize(30, 30);
@@ -772,7 +772,7 @@ class Merit implements  ActionListener{
 		E.setSize(30,30);
 		F.setSize(30,30);
 
-		BÃ¶rja.setPreferredSize(new Dimension(30, 30));
+		Börja.setPreferredSize(new Dimension(30, 30));
 
 		A.addActionListener(this);
 		B.addActionListener(this);
@@ -781,9 +781,9 @@ class Merit implements  ActionListener{
 		E.addActionListener(this);
 		F.addActionListener(this);
 
-		frame.add(BÃ¶rja);
+		frame.add(Börja);
 
-		BÃ¶rja.addActionListener(e -> {betygFrame.setVisible(true);frame.dispose();});
+		Börja.addActionListener(e -> {betygFrame.setVisible(true);frame.dispose();});
 
 		betygFrame.add(A);
 		betygFrame.add(B);
@@ -794,9 +794,9 @@ class Merit implements  ActionListener{
 		betygFrame.setLayout(new GridLayout(3,2));
 		betygFrame.setSize(300, 250);
 		betygFrame.setLocationRelativeTo(null);
-		betygFrame.setIconImage(fÃ¶nsterIcon);
+		betygFrame.setIconImage(fönsterIcon);
 
-		betygFrame.setTitle(Ã¤mnen[i++]);
+		betygFrame.setTitle(ämnen[i++]);
 	}
 	public void actionPerformed(ActionEvent e) { 
 		if (e.getSource() == A){
@@ -821,7 +821,7 @@ class Merit implements  ActionListener{
 			x = x + 0;
 		}
 		try {
-			betygFrame.setTitle(Ã¤mnen[i++]);
+			betygFrame.setTitle(ämnen[i++]);
 		} catch (ArrayIndexOutOfBoundsException e2) {
 			betygFrame.dispose();
 			Resultat.setVisible(true);
@@ -829,7 +829,7 @@ class Merit implements  ActionListener{
 			Resultat.add(resultatlabel,BorderLayout.CENTER);
 			Resultat.setSize(betygFrame.getSize());
 			Resultat.setLocationRelativeTo(null);
-			Resultat.setIconImage(fÃ¶nsterIcon);
+			Resultat.setIconImage(fönsterIcon);
 
 			resultatlabel.setFont(new Font("fsgadh",Font.BOLD,45));
 			resultatlabel.setHorizontalTextPosition(RIGHT);
@@ -853,7 +853,7 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 	Timer timer = new Timer(1, this),
 			timer200 = new Timer(200, this);
 	String string = new String();
-	int x,y,r,g,b,textbredd=100,texthÃ¶jd=50;
+	int x,y,r,g,b,textbredd=100,texthöjd=50;
 	String a;
 	Robot robot;
 
@@ -872,7 +872,7 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 				image , new Point(frame.getX(),frame.getY()), "img");
 		a=textString;
 
-		frame.setIconImage(fÃ¶nsterIcon);
+		frame.setIconImage(fönsterIcon);
 		frame.setCursor(c);
 		frame.setSize(getDefaultToolkit().getScreenSize());
 		frame.add(this);
@@ -918,7 +918,7 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 		if (arg0.getSource() == timer200){
 
 			x = random.nextInt(frame.getWidth()-textbredd);
-			y = random.nextInt(frame.getHeight()-texthÃ¶jd);
+			y = random.nextInt(frame.getHeight()-texthöjd);
 			r = random.nextInt(255);
 			g = random.nextInt(255);
 			b = random.nextInt(255);
@@ -939,13 +939,13 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 		frame.toFront();
 		if (nr==0) {
 
-			if(arg0.getKeyChar() == 'Ã…'){
+			if(arg0.getKeyChar() == 'Å'){
 				nr++;
 
 			}
 		}
 		else if (nr==1) {
-			if(arg0.getKeyChar() == 'Ã¤'){
+			if(arg0.getKeyChar() == 'ä'){
 				nr++;
 
 			}
@@ -955,7 +955,7 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 
 		}
 		else if (nr==2) {
-			if(arg0.getKeyChar() == 'Ã–'){
+			if(arg0.getKeyChar() == 'Ö'){
 				System.exit(3);
 
 			}
@@ -991,7 +991,7 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.drawString(a, x, y);
 		textbredd = g2.getFontMetrics().stringWidth(a);
-		texthÃ¶jd = g2.getFontMetrics().getHeight();
+		texthöjd = g2.getFontMetrics().getHeight();
 
 	}
 
@@ -1002,9 +1002,9 @@ class Impossible extends JPanel implements ActionListener,KeyListener, MouseInpu
 }
 
 @SuppressWarnings("serial")
-class SkapaFÃ¤rg extends JPanel implements ActionListener{
+class SkapaFärg extends JPanel implements ActionListener{
 
-	JFrame frame = new JFrame("Skapa en egen fÃ¤rg");
+	JFrame frame = new JFrame("Skapa en egen färg");
 
 	int xb,xg,xr;
 
@@ -1020,7 +1020,7 @@ class SkapaFÃ¤rg extends JPanel implements ActionListener{
 
 	Color y;
 
-	public  SkapaFÃ¤rg() {
+	public  SkapaFärg() {
 
 		xr = random.nextInt(255);
 		xg = random.nextInt(255);
@@ -1118,7 +1118,7 @@ class SkapaFÃ¤rg extends JPanel implements ActionListener{
 		frame.add(panel);
 		frame.add(Panel);
 		frame.pack();
-		frame.setIconImage(fÃ¶nsterIcon);
+		frame.setIconImage(fönsterIcon);
 		frame.setDefaultCloseOperation(3);
 		frame.repaint();
 		frame.setLocationRelativeTo(null);
@@ -1138,23 +1138,23 @@ class Avsluta implements ActionListener, WindowListener, MouseInputListener{
 
 	JMenuBar tid = new JMenuBar();
 
-	JMenuItem setTime = new JMenuItem("TidsbestÃ¤md");
+	JMenuItem setTime = new JMenuItem("Tidsbestämd");
 
 	JTextField hours = new JTextField(),
 			minutes = new JTextField(),
 			thours = new JTextField("Hours"),
 			tminutes = new JTextField("Minutes");
 
-	JPanel Ã¶vre = new JPanel(),
+	JPanel övre = new JPanel(),
 			mellan = new JPanel(),
 			nedre = new JPanel();
 
-	GoJbFrame frame = new GoJbFrame("TidsbestÃ¤mning", false, 0);
+	GoJbFrame frame = new GoJbFrame("Tidsbestämning", false, 0);
 
-	JButton b1 = new JButton("StÃ¤ng av", Bild("/images/icon.png"));
+	JButton b1 = new JButton("Stäng av", Bild("/images/icon.png"));
 	JButton b2 = new JButton("Logga ut", Bild("/images/icon2.png"));
 	JButton b3 = new JButton("Starta om", Bild("/images/icon3.png"));
-	JButton b4 = new JButton("VilolÃ¤ge", Bild("/images/icon4.png"));
+	JButton b4 = new JButton("Viloläge", Bild("/images/icon4.png"));
 	JSlider s1 = new JSlider(JSlider.HORIZONTAL, 0, 100, 10);
 
 	JFrame f1 = new JFrame("GoJbs Shutdown");
@@ -1201,7 +1201,7 @@ class Avsluta implements ActionListener, WindowListener, MouseInputListener{
 		b3.setFont(new Font("Hej", Font.BOLD, 40));
 		b4.setFont(new Font("Hej", Font.BOLD, 40));
 
-		b1.setToolTipText("StÃ¤nger av datorn");
+		b1.setToolTipText("Stänger av datorn");
 
 		f1.add(tid);
 		tid.add(setTime);
@@ -1211,7 +1211,7 @@ class Avsluta implements ActionListener, WindowListener, MouseInputListener{
 		f1.setResizable(true);
 		f1.setDefaultCloseOperation(3);
 		f1.getContentPane().setLayout(new BoxLayout(f1.getContentPane(),BoxLayout.Y_AXIS));
-		f1.setIconImage(fÃ¶nsterIcon);
+		f1.setIconImage(fönsterIcon);
 		f1.pack();
 		f1.setLocationRelativeTo(null);
 		f1.setVisible(true);
@@ -1408,7 +1408,7 @@ class Avsluta implements ActionListener, WindowListener, MouseInputListener{
 
 		if (e.getSource() == b1){ 
 			try {
-				Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -s -t " + s1.getValue() + " -c \"HejdÃ¥\"");
+				Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -s -t " + s1.getValue() + " -c \"Hejdå\"");
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -1427,7 +1427,7 @@ class Avsluta implements ActionListener, WindowListener, MouseInputListener{
 		}
 		else if (e.getSource() == b3){
 			try {
-				Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -r -t " + s1.getValue() + " -c \"HejdÃ¥\"");
+				Runtime.getRuntime().exec("C:\\windows\\system32\\shutdown.exe -r -t " + s1.getValue() + " -c \"Hejdå\"");
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -1520,7 +1520,7 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 		button.setForeground(white);
 		button.setOpaque(true);
 		button.setHorizontalAlignment(CENTER);
-		frame.setIconImage(fÃ¶nsterIcon);
+		frame.setIconImage(fönsterIcon);
 		frame.addKeyListener(this);
 		frame.add(button);
 		frame.pack();
@@ -1559,7 +1559,7 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 		x = 0;
 
 		timer.stop();
-		vÃ¤nta(100);
+		vänta(100);
 
 		clip.close();
 		try {
@@ -1613,7 +1613,7 @@ class Morse implements KeyListener,ActionListener, MouseListener {
 		x = 0;
 
 		timer.stop();
-		vÃ¤nta(100);
+		vänta(100);
 
 		clip.close();
 		try {
@@ -1872,7 +1872,7 @@ class ToBinary implements ActionListener{
 	}
 }
 
-class DraOchSlÃ¤pp extends JPanel implements MouseInputListener{
+class DraOchSläpp extends JPanel implements MouseInputListener{
 
 	/**
 	 * 
@@ -1887,7 +1887,7 @@ class DraOchSlÃ¤pp extends JPanel implements MouseInputListener{
 
 	int x,a;
 
-	public DraOchSlÃ¤pp(){
+	public DraOchSläpp(){
 		frame.setLayeredPane(layeredPane);
 
 		frame.setBackground(white);
@@ -2012,13 +2012,13 @@ class DraOchSlÃ¤pp extends JPanel implements MouseInputListener{
 }
 
 
-class SÃ¶k implements ActionListener{
+class Sök implements ActionListener{
 
-	GoJbFrame frame2 = new GoJbFrame("SÃ¶kruta",false,3),
-			frame = new GoJbFrame("SÃ¶kresultat");
+	GoJbFrame frame2 = new GoJbFrame("Sökruta",false,3),
+			frame = new GoJbFrame("Sökresultat");
 
 	JLabel label1 = new JLabel("Hej"),
-			label2 = new JLabel("HallÃ¥"),
+			label2 = new JLabel("Hallå"),
 			label3 = new JLabel("Tjenare");
 
 	Timer timer = new Timer(10, this);
@@ -2027,7 +2027,7 @@ class SÃ¶k implements ActionListener{
 
 	JTextField text = new JTextField(5);
 
-	public SÃ¶k(){
+	public Sök(){
 
 		frame2.setSize(300, 20);
 		frame2.setUndecorated(true);
@@ -2086,24 +2086,24 @@ class Mailkorg implements ActionListener{
 	private GoJbFrame frame = new GoJbFrame();
 
 	static JTextField Mottagare = new JTextField("gojb@gojb.bl.ee"),
-			Ã„mne = new JTextField();
+			Ämne = new JTextField();
 
-	static JTextArea InnehÃ¥ll = new JTextArea();
+	static JTextArea Innehåll = new JTextArea();
 
 	static JLabel label1 = new JLabel("Till"),
-			label2 = new JLabel("Ã„mne"),
-			label3 = new JLabel("InnehÃ¥ll");
+			label2 = new JLabel("Ämne"),
+			label3 = new JLabel("Innehåll");
 
 	static JButton SkickaKnapp = new JButton("Skicka");
 
-	JButton HÃ¤mtaKnapp = new JButton("HÃ¤mta");
+	JButton HämtaKnapp = new JButton("Hämta");
 
 	JButton button3 = new JButton("Skicka");
 
 	public Mailkorg(){
 
 		frame.setLayout(new GridLayout(3,0));
-		frame.add(HÃ¤mtaKnapp);
+		frame.add(HämtaKnapp);
 		frame.add(button3);
 
 		label1.setMinimumSize(new Dimension(30000,50));
@@ -2111,38 +2111,38 @@ class Mailkorg implements ActionListener{
 		label3.setMinimumSize(new Dimension(30000,50));
 
 		Mottagare.setMaximumSize(new Dimension(300000, 500));
-		Ã„mne.setMaximumSize(new Dimension(30000,500));
-		InnehÃ¥ll.setPreferredSize(new Dimension(300, 500));
-		InnehÃ¥ll.setLineWrap(true);
-		InnehÃ¥ll.setWrapStyleWord(true);
+		Ämne.setMaximumSize(new Dimension(30000,500));
+		Innehåll.setPreferredSize(new Dimension(300, 500));
+		Innehåll.setLineWrap(true);
+		Innehåll.setWrapStyleWord(true);
 		SkickaKnapp.addActionListener(this);
-		HÃ¤mtaKnapp.addActionListener(e -> {GoJbMail.Starta("HÃ¤mta");});
-		button3.addActionListener(e -> {SkickaFÃ¶nster("gojb@gojb.bl.ee","",false);});
+		HämtaKnapp.addActionListener(e -> {GoJbMail.Starta("Hämta");});
+		button3.addActionListener(e -> {SkickaFönster("gojb@gojb.bl.ee","",false);});
 
 
 		frame.revalidate();
 
 	}
-	public static void SkickaFÃ¶nster(String from, String toWhom, Boolean focus){
+	public static void SkickaFönster(String from, String toWhom, Boolean focus){
 
 		GoJbFrame skapa = new GoJbFrame("",true,1);
 
 		Mailkorg.Mottagare.setText(from);
-		Mailkorg.Ã„mne.setText(toWhom);
-		Mailkorg.InnehÃ¥ll.setText("");
+		Mailkorg.Ämne.setText(toWhom);
+		Mailkorg.Innehåll.setText("");
 
 		skapa.setLayout(new BoxLayout(skapa.getContentPane(), BoxLayout.Y_AXIS));
 		skapa.add(label1);
 		skapa.add(Mottagare);
 		skapa.add(label2);
-		skapa.add(Ã„mne);
+		skapa.add(Ämne);
 		skapa.add(label3);
-		skapa.add(InnehÃ¥ll);
+		skapa.add(Innehåll);
 		skapa.add(SkickaKnapp);
 
 		skapa.revalidate();
 		if(focus==true){
-			InnehÃ¥ll.requestFocusInWindow();
+			Innehåll.requestFocusInWindow();
 		}
 	}
 	@Override
@@ -2160,7 +2160,7 @@ class Mailkorg implements ActionListener{
 	}
 }
 
-class ReggPlÃ¥tar implements ActionListener{
+class ReggPlåtar implements ActionListener{
 
 
 	Random random1 = new Random(),
@@ -2168,7 +2168,7 @@ class ReggPlÃ¥tar implements ActionListener{
 
 	Timer timer = new Timer(1,this);
 
-	Boolean TimerKÃ¶r = false;
+	Boolean TimerKör = false;
 
 	JButton button = new JButton("Start");
 
@@ -2180,7 +2180,7 @@ class ReggPlÃ¥tar implements ActionListener{
 
 	char string;	
 
-	public ReggPlÃ¥tar(){
+	public ReggPlåtar(){
 
 		frame.add(button);
 
@@ -2189,7 +2189,7 @@ class ReggPlÃ¥tar implements ActionListener{
 		System.err.println("");
 	}
 
-	public void KÃ¶r(){
+	public void Kör(){
 
 		int ran = random1.nextInt((High-Low)-Low);
 
@@ -2236,7 +2236,7 @@ class ReggPlÃ¥tar implements ActionListener{
 		}
 
 		if (e.getSource()==timer){
-			KÃ¶r();
+			Kör();
 		}
 	}
 }
