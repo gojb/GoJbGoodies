@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="gojb">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/gojb/lib/commons-net-3.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/gojb/lib/javax.json-1.0.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/gojb/lib/javax.json-api-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/gojb/lib/javax.mail.jar!/" />
+      <root url="jar://$PROJECT_DIR$/gojb/lib/jboss-websocket-api_1.0_spec-1.0.0.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/gojb/lib/jsoup-1.8.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/gojb/lib/lwjgl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/gojb/lib/lwjgl_util.jar!/" />
+      <root url="jar://$PROJECT_DIR$/gojb/lib/selenium-server-standalone-2.48.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/gojb/lib/TooTallNate-Java-WebSocket.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
