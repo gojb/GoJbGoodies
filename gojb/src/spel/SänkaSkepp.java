@@ -27,7 +27,7 @@ public class SänkaSkepp {
 	båttyp båtsort;
 
 	static ArrayList<Integer> båtar5 = new ArrayList<>(),båtar4 = new ArrayList<>(),båtar3_1 = new ArrayList<>(),båtar3_2 = new ArrayList<>(),båtar2 = new ArrayList<>();
-
+	
 	static WebSocketClient cc;
 
 	Riktning riktning;

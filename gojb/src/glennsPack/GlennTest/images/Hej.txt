@@ -1,0 +1,4 @@
+#Inställningar för Txt.java
+Hiscore1=Jakob
+Hiscore2=Glenn
+Hiscore3:Ingen

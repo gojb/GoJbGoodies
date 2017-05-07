@@ -183,9 +183,24 @@ public class Minne implements MouseListener {
 		timer.start();
 	}
 
+	private void stoppaAlltLjud() {
+		// FIXME Auto-generated method stub
+
+		redClip.stop();
+		redClip.setMicrosecondPosition(0);
+		blueClip.stop();
+		blueClip.setMicrosecondPosition(0);
+		greenClip.stop();
+		greenClip.setMicrosecondPosition(0);
+		yellowClip.stop();
+		yellowClip.setMicrosecondPosition(0);
+		
+	}
+	
 	public void mousePressed(MouseEvent e) {
 		mouseDown=true;
 		if(clickable){
+			stoppaAlltLjud();
 			if(e.getSource()==redLabel){
 				if(färgerSkaBlinka.get(index).equals("r")){
 					index++;
