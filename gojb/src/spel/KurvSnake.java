@@ -156,8 +156,8 @@ public class KurvSnake {
 	private void update(){
 		if (höger) riktning +=1;
 		if (vänster) riktning -=1;
-		x += Math.cos(Math.PI*riktning/80);
-		y += Math.sin(Math.PI*riktning/80);
+		x += Math.cos(Math.PI*riktning/200);
+		y += Math.sin(Math.PI*riktning/200);
 		pixels.add(new Pixel(x,y));
 		frame.repaint();
 //		highFrame.repaint();

@@ -33,7 +33,7 @@ public class Kurvtest {
 			for (Kloss kloss : klossar) {
 				kloss.draw(g2);
 			}
-			
+
 		};
 	};
 	public Kurvtest() {
@@ -46,28 +46,28 @@ public class Kurvtest {
 		frame.setVisible(true);
 		restart();
 		label.addMouseMotionListener(new MouseInputListener() {
-			
+
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				ax=e.getX()-50;
 				ay=e.getY()-5;
 			}
-			
+
 			@Override
 			public void mouseDragged(MouseEvent e) {}
-			
+
 			@Override
 			public void mouseReleased(MouseEvent e) {}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {}
 		});
@@ -180,7 +180,7 @@ public class Kurvtest {
 	};
 	public class Boll{
 		private double x,y;
-		private int radie,riktning=20,speed=4;
+		private int radie,riktning=20,speed=7;
 		public Boll(double x,double y) {
 			this(x,y,15);
 		}
@@ -227,13 +227,22 @@ public class Kurvtest {
 			else{
 				wait=0;
 			}
+			ArrayList<Kloss>remlist=new ArrayList<>();
 			for (Kloss kloss : klossar) {
 				if (nuddarKloss(kloss)) {
-					klossar.remove(kloss);
+					remlist.add(kloss);
 					System.err.println(12345678);
-					riktning=-riktning;
-					break;
+					
 				}
+			}
+
+
+			if (remlist.isEmpty()==false) {
+				riktning=-riktning;
+				for (Kloss kloss : remlist) {
+					klossar.remove(kloss);
+				}
+				remlist.clear();
 			}
 		}
 	}
@@ -252,7 +261,7 @@ public class Kurvtest {
 			g2.drawRect(x*bredd, y*höjd, bredd, höjd);
 			g2.setColor(färg);
 			g2.fillRect(x*bredd+1, y*höjd+1, bredd-1, höjd-1);
-			
+
 		}
 	}
 }

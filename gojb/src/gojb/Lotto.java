@@ -24,9 +24,9 @@ public class Lotto {
 			field.setText(slider.getValue()+"");
 		});
 		slider.setMinimum(0);
-		slider.setMaximum(500);
-		slider.setMinorTickSpacing(10);
-		slider.setMajorTickSpacing(100);
+		slider.setMaximum(50000);
+		slider.setMinorTickSpacing(1000);
+		slider.setMajorTickSpacing(10000);
 		slider.setPaintLabels(true);
 		slider.setPaintTicks(true);
 		JPanel panel = new JPanel();
