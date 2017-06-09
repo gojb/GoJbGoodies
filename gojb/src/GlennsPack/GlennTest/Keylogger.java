@@ -26,12 +26,12 @@
 
 package GlennsPack.GlennTest;
 
+import GoJbFrame.GoJbFrame;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
-import javax.swing.JTextArea;
-
-import GoJbFrame.GoJbFrame;
 
 public class Keylogger implements KeyListener{
 
@@ -58,8 +58,13 @@ public class Keylogger implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// FIXME Auto-generated method stub
-		System.out.println(e.getModifiersEx());
-		frame.setTitle(e.getKeyText(e.getKeyCode()));
+		try{
+			Robot robot = new Robot();
+			robot.keyRelease(e.getKeyCode());
+		}
+		catch (Exception e1){
+			e1.printStackTrace();
+		}
 	}
 
 	@Override

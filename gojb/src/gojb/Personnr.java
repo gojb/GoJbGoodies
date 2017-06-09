@@ -25,13 +25,12 @@
  */
 
 package gojb;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.Random;
-
-import javax.swing.JOptionPane;
 
 public class Personnr {
 
