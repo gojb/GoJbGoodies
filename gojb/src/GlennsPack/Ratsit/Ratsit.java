@@ -75,7 +75,26 @@ public class Ratsit{
 	
 	public static void main(String[] args) {
 		try{
-			System.out.println(new BuildSök("Glenn", "Stockholm").build().get(0).Efternamn);
+			for (int i = 0; i < 9; i++) {
+				BuildSök sök = new BuildSök("Siv T*rnqvist 19"+i+"*","");
+				if(sök.AntalTräffar>14){
+					System.err.println("FUUUCK");
+					System.exit(3);
+				}
+				ArrayList<Ratsit> personer = sök.build();
+				
+				for (int j = 0; j < personer.size(); j++) {
+					ArrayList<Ratsit> personerPåAdress = personer.get(j).getPersonerPåAdressen();
+					System.out.println(personerPåAdress.size());
+					for (int k = 0; k < personerPåAdress.size(); k++) {
+						System.out.println(personerPåAdress.get(k).Förnamn);
+						if(personerPåAdress.get(k).Förnamn.contains("stefan")){
+							System.out.println(personer.get(j).Postort);
+						}
+					}
+				}
+				
+			}
 		}
 		catch (Exception e){
 			e.printStackTrace();
@@ -130,8 +149,8 @@ public class Ratsit{
 		this.Postnummer=this.Postadress.replace(" "+this.Postort,"");
 		
 		this.Länk=personUrl;
-		this.Identifier=this.Länk.substring(this.Länk.indexOf(this.Postort+"/")+this.Postort.length()+1);
 		
+		this.Identifier=Länk.substring(Länk.lastIndexOf("/")+1);
 		//For loop med alla personer
 //		this.PersonerPåAdressen = ratsitList("",new Ratsit(this.länk).Gatuadress);
 		

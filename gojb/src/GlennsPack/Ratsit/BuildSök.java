@@ -31,6 +31,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -109,7 +111,12 @@ public class BuildSök {
 			Document document = Jsoup.connect(klassiskPersonsök).userAgent("Chrome").get();
 			String resultsString = document.select("#tab01 > div.tab-traff > div.sok-antaltraffar-div.träffar > table > tbody > tr > td").text();
 			int results;
-			results = Integer.parseInt(resultsString);
+			try{
+				results = Integer.parseInt(resultsString);
+			}
+			catch (Exception e){
+				results=0;
+			}
 			this.AntalTräffar=results;
 			
 			//Removing adds
@@ -136,37 +143,68 @@ public class BuildSök {
 		return resultat;
 	}
 	
-	public void setNamn(String namn){
+	public BuildSök setNamn(String namn){
 		vem=namn.replace(" ","+");
+		return this;
 	}
-	public void setPlats(String plats){
-		var=plats.replaceAll(" ","+");;
-	}
-	public void setSökaMän(Boolean sökaMän){
+	public BuildSök setPlats(String plats){
+		var=plats.replaceAll(" ","+");
+		return this;}
+	public BuildSök setSökaMän(Boolean sökaMän){
 		m=sökaMän?"1":"0";
+		return this;
 	}
-	public void setSökaKvinnor(Boolean sökaKvinnor){
+	public BuildSök setSökaKvinnor(Boolean sökaKvinnor){
 		k=sökaKvinnor?"1":"0";
+		return this;
 	}
-	public void setSökaGifta(Boolean sökaGifta){
+	public BuildSök setSökaGifta(Boolean sökaGifta){
 		r=sökaGifta?"1":"0";
+		return this;
 	}
-	public void setSökaOgifta(Boolean sökaOgifta){
+	public BuildSök setSökaOgifta(Boolean sökaOgifta){
 		er=sökaOgifta?"1":"0";
+		return this;
 	}
-	public void setSökaEngagemang(Boolean sökaEngagemang){
+	public BuildSök setSökaEngagemang(Boolean sökaEngagemang){
 		b=sökaEngagemang?"1":"0";
+		return this;
 	}
-	public void setSökaEjEngagemang(Boolean sökaEjEngagemang){
+	public BuildSök setSökaEjEngagemang(Boolean sökaEjEngagemang){
 		eb=sökaEjEngagemang?"1":"0";
+		return this;
 	}
-	public void setLägstaÅlder(int lägstaÅlder){
+	public BuildSök setLägstaÅlder(int lägstaÅlder){
 		amin=Integer.toString(lägstaÅlder);
+		return this;
 	}
-	public void setHögstaÅlder(int högstaÅlder){
+	public BuildSök setHögstaÅlder(int högstaÅlder){
 		amax=Integer.toString(högstaÅlder);
+		return this;
 	}
-	public void setExaktStavning(Boolean exaktStavning){
+	public BuildSök setExaktStavning(Boolean exaktStavning){
 		fon=exaktStavning?"0":"1";
+		return this;
 	}
+	
+	private static String convertUrl(String urlToConvert){
+		try {
+			//If this works, then the first provided url works
+			Jsoup.connect(urlToConvert).userAgent("Chrome").get();
+			return urlToConvert;
+		} catch (Exception e) {
+			//If provided url does not work
+			try {
+				URL url = new URL(urlToConvert);
+				URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+				
+				return uri.toASCIIString();
+			} catch (Exception e2) {
+				System.err.println("Error in convertUrl, Error with URL -> URI  -> URI.toASCIIString");
+			}
+			
+		}
+		return null;
+	}
+	
 }
