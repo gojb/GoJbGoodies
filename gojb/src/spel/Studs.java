@@ -46,6 +46,11 @@ public class Studs implements KeyListener{
 	Timer timer, faller;
 
 	JLabel label = new JLabel(){
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		protected void paintComponent(java.awt.Graphics g) {
 			super.paintComponent(g);
 			g.setColor(Color.blue);
