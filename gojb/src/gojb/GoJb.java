@@ -64,6 +64,7 @@ public class GoJb {
 			catch (Exception e) {
 				e.printStackTrace();
 			}
+			reader.close();
 		}
 		catch (Exception e){
 			e.printStackTrace();
@@ -92,7 +93,8 @@ public class GoJb {
 			
 			FileWriter writer = new FileWriter(new File("gojb\\src\\images\\pi.txt"));
 			writer.write(pi+"\n"+Integer.toString(currentIndex));
-			
+			reader.close();
+			writer.close();
 		}
 		catch (Exception e){
 			e.printStackTrace();
