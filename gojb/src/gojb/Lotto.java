@@ -41,14 +41,15 @@ public class Lotto {
 		JOptionPane optionPane = new JOptionPane();
 		JSlider slider = new JSlider();
 		try {
-			   field = new JFormattedTextField(new MaskFormatter("###"));
-			   field.setColumns(3);
-			} catch (Exception e) {
-			   e.printStackTrace();
-			}
+			field = new JFormattedTextField(new MaskFormatter("###"));
+			field.setColumns(3);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		slider.addChangeListener(e -> {
 			field.setText(slider.getValue()+"");
 		});
+
 		slider.setMinimum(0);
 		slider.setMaximum(50000);
 		slider.setMinorTickSpacing(1000);
