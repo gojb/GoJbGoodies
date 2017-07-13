@@ -65,9 +65,10 @@ public class KurvSnake {
 			one = new JButton("Single Player");
 	private Timer timer = new Timer(10, e -> update());
 	private ArrayList<Pixel> pixels = new ArrayList<>();
-	private double x,y;
-	int riktning,längd=0;
-	boolean höger,vänster;
+	private ArrayList<Pixel> pixels2 = new ArrayList<>();
+	private double x,y,x2,y2;
+	int riktning,riktning2,längd=0,längd2=0;
+	boolean höger,vänster,höger2,vänster2;
 	Pixel plupp;
 	Random random = new Random();
 	private ArrayList<String> highscore=new ArrayList<>();
@@ -84,6 +85,10 @@ public class KurvSnake {
 			g2.setColor(Color.black);
 			for (Pixel pixel : pixels) {
 				pixel.draw(g2);
+			}
+			for (Pixel pixel : pixels2) {
+				pixel.draw(g2);
+				System.out.println("erhiogdslkf");
 			}
 		};
 	};
@@ -185,11 +190,22 @@ public class KurvSnake {
 		x += Math.cos(Math.PI*riktning/200);
 		y += Math.sin(Math.PI*riktning/200);
 		pixels.add(new Pixel(x,y));
+		
+		if (höger2) riktning2 +=1;
+		if (vänster2) riktning2 -=1;
+		x2 += Math.cos(Math.PI*riktning2/200);
+		y2 += Math.sin(Math.PI*riktning2/200);
+		pixels2.add(new Pixel(x2,y2));
 		frame.repaint();
+		
 //		highFrame.repaint();
 		while (pixels.size()-längd*80-300>=0) {
 			pixels.remove(0);
 		}
+		while (pixels2.size()-längd2*80-300>=0) {
+			pixels2.remove(0);
+		}
+		
 		for (int i = 0; i < pixels.size()-10; i++) {
 			if (pixels.get(pixels.size()-1).nuddar(pixels.get(i))) {
 				System.err.println("Game Over");
@@ -199,6 +215,27 @@ public class KurvSnake {
 				scanner.close();
 				if (längd > hs) {
 					highscore.set(4, längd + " " + JOptionPane.showInputDialog("Skriv ditt namn"));
+
+
+					sort();
+					for (int j = 0; j < highscore.size(); j++) {
+						prop.setProperty("KurvSnake"+(j+1), highscore.get(j));
+					}
+					sparaProp("Highscore i KurvSnake");
+				}
+				highFrame.repaint();
+				break;
+			}
+		}
+		for (int i = 0; i < pixels2.size()-10; i++) {
+			if (pixels2.get(pixels2.size()-1).nuddar(pixels2.get(i))) {
+				System.err.println("Game Over");
+				timer.stop();
+				Scanner scanner = new Scanner(highscore.get(4));
+				int hs = scanner.nextInt();
+				scanner.close();
+				if (längd2 > hs) {
+					highscore.set(4, längd2 + " " + JOptionPane.showInputDialog("Skriv ditt namn"));
 
 
 					sort();
@@ -227,10 +264,33 @@ public class KurvSnake {
 		if (y>frame.getHeight()) {
 			y=0-pixels.get(0).diameter/2;
 		}
+
+
+		if (pixels2.get(pixels2.size()-1).nuddar(plupp)) {
+			längd2++;
+			plupp();
+		}
+		if (x2<0-pixels2.get(0).diameter/2) {
+			x2=frame.getWidth()-pixels2.get(0).diameter/2;
+		}
+		if (x2>frame.getWidth()) {
+			x2=0-pixels2.get(0).diameter/2;
+		}
+		if (y<0-pixels.get(0).diameter/2) {
+			y2=frame.getHeight()-pixels2.get(0).diameter/2;
+		}
+		if (y2>frame.getHeight()) {
+			y2=0-pixels2.get(0).diameter/2;
+		}
 	}
 	void plupp(){
 		plupp=new Pixel(random.nextInt((frame.getWidth()-5*20)+40), random.nextInt((frame.getHeight()-5*20)+40), 20);
 		for (Pixel pixel : pixels) {
+			if (plupp.nuddar(pixel)) {
+				plupp();
+			}
+		}
+		for (Pixel pixel : pixels2) {
 			if (plupp.nuddar(pixel)) {
 				plupp();
 			}
@@ -252,9 +312,14 @@ public class KurvSnake {
 	private void restart() {
 		x=0;
 		y=0;
+		x2=10;
+		y2=10;
 		pixels.clear();
+		pixels2.clear();
 		längd=0;
+		längd2=0;
 		riktning=20;
+		riktning2=20;
 		plupp();
 		timer.start();
 
@@ -271,6 +336,12 @@ public class KurvSnake {
 			}
 			else if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
 				höger=false;
+			}
+			if (e.getKeyCode()==KeyEvent.VK_W) {
+				vänster2=false;
+			}
+			else if (e.getKeyCode()==KeyEvent.VK_S) {
+				höger2=false;
 			}
 		}
 
