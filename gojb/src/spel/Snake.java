@@ -78,7 +78,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 			online = new JButton("Play online"),
 			one = new JButton("Single Player");
 	private String[] highscore = new String[6];
-	private JPanel highPanel = new JPanel();
+	//private JPanel highPanel = new JPanel();
 	ArrayList<Pixel> pixels= new ArrayList<>();
 	ArrayList<Highscore> highscores = new ArrayList<>();
 	WebSocketClient cc;
@@ -162,6 +162,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 
 		frame.revalidate();
 		frame.repaint();
+
 
 	}
 //	void online(){
@@ -740,6 +741,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 
 			for (int i = 1; i < highscore.length; i++) {
 				pos=pos+25;
+				g2.drawString(highscore[i],10, pos);
 
 			}
 		}
