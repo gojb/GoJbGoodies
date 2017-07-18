@@ -38,13 +38,13 @@ import java.util.Properties;
  */
 public class pingPi {
 	Mottagare[] mottagare = {new Mottagare("84.217.30.33","jakob_b99@live.se")};
-	static long väntaMinuter = 1;
+	static long vantaMinuter = 1;
 	
 	public static void main(String[] args) {
 		boolean shallRun = true;
 		while (shallRun){
 			try{
-				Thread.sleep(väntaMinuter*60*1000);
+				Thread.sleep(vantaMinuter*60*1000);
 				new pingPi();
 			}
 			catch (Exception e){
@@ -73,12 +73,12 @@ public class pingPi {
 			}
 			proc.waitFor();
 			
-			mottagare.setInnehållISvar(lineOfContent);
+			mottagare.setInnehallISvar(lineOfContent);
 			
-			if(mottagare.ärNere()) {
-				ärNere(mottagare);
+			if(mottagare.arNere()) {
+				arNere(mottagare);
 			} else {
-				ärUppe(mottagare);
+				arUppe(mottagare);
 			}
 		}
 		catch(Exception e){
@@ -87,8 +87,8 @@ public class pingPi {
 		}
 	}
 	
-	public void ärNere(Mottagare mottagare){
-		String lineOfContent = mottagare.getInnehållISvar();
+	public void arNere(Mottagare mottagare){
+		String lineOfContent = mottagare.getInnehallISvar();
 		
 		if(lineOfContent.equals("")){
 			//WHY THOUGH?!
@@ -101,8 +101,8 @@ public class pingPi {
 		}
 	}
 	
-	public void ärUppe(Mottagare mottagare){
-		String lineOfContent = mottagare.getInnehållISvar();
+	public void arUppe(Mottagare mottagare){
+		String lineOfContent = mottagare.getInnehallISvar();
 		
 		if(lineOfContent.equals("")){
 			//WHY THOUGH?!
@@ -121,7 +121,7 @@ public class pingPi {
 			String mottagaresMail = mottagare.getMailAdress();
 			String ip = mottagare.getIpAdress();
 			
-			System.err.println("Påbörjar att skicka mail. Ligger nere? "+mottagare.liggerNere);
+			System.err.println("Paborjar att skicka mail. Ligger nere? "+mottagare.liggerNere);
 			
 			Properties props = new Properties();
 			props.put("mail.smtp.host", "smtp.gmail.com");
@@ -145,11 +145,11 @@ public class pingPi {
 			
 			if(mottagare.liggerNere) {
 				msg.setSubject("Din server med ip adressen " + ip + " ligger just nu nere.");
-				msg.setText("Du kommer att meddelas när den är uppkopplad igen");
+				msg.setText("Du kommer att meddelas nar den ar uppkopplad igen");
 			}
 			else{
-				msg.setSubject("Din server med ip adressen " + ip + " är åter uppe nu");
-				msg.setText("Den låg nere i "+mottagare.getTidNere() + " minuter");
+				msg.setSubject("Din server med ip adressen " + ip + " ar ater uppe nu");
+				msg.setText("Den lag nere i "+mottagare.getTidNere() + " minuter");
 			}
 			
 			Transport.send(msg);
@@ -167,7 +167,7 @@ public class pingPi {
 class Mottagare{
 	String ipAdress;
 	String mailAdress;
-	String innehållISvar;
+	String innehallISvar;
 	boolean liggerNere;
 	long millisekunder;
 	
@@ -176,13 +176,13 @@ class Mottagare{
 	
 	}
 	
-	public boolean ärNere(){
+	public boolean arNere(){
 		return this.liggerNere;
 	}
 	
-	public void setNere(boolean ärNere){
-		this.liggerNere=ärNere;
-		if(ärNere)
+	public void setNere(boolean arNere){
+		this.liggerNere=arNere;
+		if(arNere)
 			millisekunder=System.currentTimeMillis();
 	}
 	
@@ -194,12 +194,12 @@ class Mottagare{
 		return this.mailAdress;
 	}
 	
-	public void setInnehållISvar(String innehåll){
-		this.innehållISvar=innehåll;
+	public void setInnehallISvar(String innehall){
+		this.innehallISvar=innehall;
 	}
 	
-	public String getInnehållISvar(){
-		return this.innehållISvar;
+	public String getInnehallISvar(){
+		return this.innehallISvar;
 	}
 	
 	public String getTidNere(){
