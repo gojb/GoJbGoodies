@@ -1,11 +1,13 @@
 package test;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.*;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import GoJbFrame.GoJbFrame;
 public class SQLTest {
@@ -28,14 +30,15 @@ public class SQLTest {
 			goJbFrame.add(label[i]);
 			label[i].setBackground(Color.white);
 			label[i].setOpaque(true);
-			final int nr=i;
+			label[i].setFont(new Font("Arial", 0, 30));;
+			final int nr=i/2+1;
 			label[i].addMouseListener(new MouseListener() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					// TODO Auto-generated method stub
 					try {
 						System.out.println("test"+nr);
-						statement.executeQuery("select * from styrning.Data WHERE Data='Temp"+nr+"R'");
+						statement.execute("UPDATE `styrning`.`Data` SET `Value` = '"+JOptionPane.showInputDialog("Nytt värde")+"' WHERE `Data`.`Data` = 'Temp"+nr+"R';");
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -54,23 +57,43 @@ public class SQLTest {
 		}
 
 		while(true){
-			for (int i = 1; i <= 1; i++) {
-				resultSet = statement.executeQuery("select * from styrning.Data WHERE Data='Temp"+i+"U'");
-				double X = 0,R = 0;
-				while (resultSet.next()) {
-					X=resultSet.getInt("Value");
+			for (int i = 1; i <= 6; i++) {
+				try {
+					resultSet = statement.executeQuery("select * from styrning.Data WHERE Data='Temp"+i+"U'");
+					double X = 0,R = 0;
+					while (resultSet.next()) {
+						X=resultSet.getInt("Value");
+					}
+					resultSet = statement.executeQuery("select * from styrning.Data WHERE Data='Temp"+i+"R'");
+					while (resultSet.next()) {
+						R=resultSet.getInt("Value");
+						resultSet.toString();
+					}
+					double temp;
+					temp=1d/((Math.log((R*(X/1023d)/(1d-(X/1023d))/10000d)))/3950d+(1d/(273.15+25)))-273.15;
+					System.out.println(temp+" "+R+" "+X);
+					label[i*2-1].setText(Math.round(temp*10d)/10d+"");
+
+					//					double average = 1023d / X - 1;
+					//					average = R / average;
+					//					double  THERMISTORNOMINAL =10000;
+					//					double TEMPERATURENOMINAL =25;
+					//					double BCOEFFICIENT =3950;
+					//					double steinhart;
+					//
+					//					steinhart = average / THERMISTORNOMINAL;     // (R/Ro)
+					//					steinhart = Math.log(steinhart);                  // ln(R/Ro)
+					//					steinhart /= BCOEFFICIENT;                   // 1/B * ln(R/Ro)
+					//					steinhart += 1.0 / (TEMPERATURENOMINAL + 273.15); // + (1/To)
+					//					steinhart = 1.0 / steinhart;                 // Invert
+					//					steinhart -= 273.15;                         // convert to C
+					//					System.out.println(steinhart);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				resultSet = statement.executeQuery("select * from styrning.Data WHERE Data='Temp"+i+"R'");
-				while (resultSet.next()) {
-					R=resultSet.getInt("Value");
-					resultSet.toString();
-				}
-				double temp;
-				temp=1d/((Math.log((R*(X/1024d)/(1d-(X/1024d))/10000d)))/3930d+(1d/(25.0+273.15)))-273.15;
-				System.out.println(temp+" "+R+" "+X);
-				label[i*2-1].setText(temp+"");
 			}
-			Thread.sleep(1000);
+			Thread.sleep(500);
 		}
 
 	}

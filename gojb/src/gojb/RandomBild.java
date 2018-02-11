@@ -35,9 +35,9 @@ import javax.swing.event.MouseInputListener;
 public class RandomBild implements MouseInputListener{
 
 	JFrame frame = new JFrame();
-	
+
 	Random r = new Random();
-	
+
 	JLabel label = new JLabel(){
 		private static final long serialVersionUID = 1L;
 
@@ -45,9 +45,9 @@ public class RandomBild implements MouseInputListener{
 			long intiger = System.currentTimeMillis();
 			for(int y = 0; y<1080;y++){
 				for(int i = 0; i < 1920;i++){
-				g.setColor(new Color(r.nextInt(255),r.nextInt(255),r.nextInt(255)));
-					g.drawRect(i, y, i, i);
-			}
+					g.setColor(new Color(r.nextInt(255),r.nextInt(255),r.nextInt(255)));
+					g.drawRect(i, y, 1, 1);
+				}
 			}
 			System.out.println((System.currentTimeMillis()-intiger)/1000d);
 
@@ -68,50 +68,50 @@ public class RandomBild implements MouseInputListener{
 		frame.add(label);
 		frame.addMouseListener(this);
 		label.repaint();
-		
+
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// FIXME Auto-generated method stub
 		label.repaint();
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// FIXME Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// FIXME Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// FIXME Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// FIXME Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// FIXME Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// FIXME Auto-generated method stub
-		
+
 	}
 
 }

@@ -48,14 +48,14 @@ import static javax.swing.JFrame.*;
 
 public class Jakobs implements ActionListener,MouseInputListener,KeyListener,WindowListener{
 
-	private JFrame huvudfönster = new JFrame("Jakob Hej Hej :D"), 
+	private JFrame huvudfönster = new JFrame("Jakob Hej Hej :D"),
 			händelsefönster = new JFrame("Händelser"),
 			hastighetsfönster =  new JFrame("Ändra hastighet"),
 			om = new JFrame("Om"),
 			laddfönster = new JFrame("Startar..."),
 			avslutningsfönster = new JFrame("Avslutar...");
 
-	JMenuItem avslutaItem = new JMenuItem("Avsluta"), 
+	JMenuItem avslutaItem = new JMenuItem("Avsluta"),
 			omItem = new JMenuItem("Om"),
 			visaItem = new JMenuItem("Visa"),
 			döljItem = new JMenuItem("Dölj"),
@@ -74,14 +74,14 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 				Graphics2D g2 = (Graphics2D)g;
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				g2.setFont(new Font("Serif", Font.ROMAN_BASELINE, 35));
-				g2.drawString(texten,posX, posY); 
+				g2.drawString(texten,posX, posY);
 				textbredd = g2.getFontMetrics().stringWidth(texten);
 			}
 	};
 
 	private JMenuBar menyBar = new JMenuBar();
 
-	private JMenu arkivMeny = new JMenu("Arkiv"), 
+	private JMenu arkivMeny = new JMenu("Arkiv"),
 			hjälpMeny = new JMenu("Hjälp"),
 			redigeraMeny = new JMenu("Redigera"),
 			färgbyteMeny = new JMenu("Byt bakgrundsfärg"),
@@ -123,7 +123,7 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 		laddtext.setFont(typsnitt);
 		laddtext.setHorizontalAlignment(CENTER);
 		laddfönster.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		laddfönster.setLayout(new BorderLayout(10,10));	
+		laddfönster.setLayout(new BorderLayout(10,10));
 		laddfönster.add(laddstapelStart,BorderLayout.CENTER);
 		laddfönster.add(laddtext,BorderLayout.NORTH);
 		laddfönster.add(Box.createRigidArea(new Dimension(5,5)),BorderLayout.EAST);
@@ -136,7 +136,7 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 		laddfönster.setIconImage(fönsterIcon);
 		laddfönster.getContentPane().setBackground(yellow);
 		laddfönster.setUndecorated(true);
-		laddfönster.setVisible(true);		
+		laddfönster.setVisible(true);
 
 		autoscrollknapp.addActionListener(this);
 		ok.addActionListener(this);
@@ -271,7 +271,7 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 		huvudfönster.add(Box.createRigidArea(new Dimension(20,20)),BorderLayout.SOUTH);
 		huvudfönster.add(mittPanel,BorderLayout.CENTER);
 		huvudfönster.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		huvudfönster.setLocationRelativeTo(null);		
+		huvudfönster.setLocationRelativeTo(null);
 		huvudfönster.revalidate();
 		huvudfönster.repaint();
 
@@ -333,10 +333,10 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 			if (laddstapelAvslut.getValue()==laddstapelAvslut.getMinimum()){
 				System.exit(0);
 			}
-			else 
+			else
 				laddstapelAvslut.setValue(laddstapelAvslut.getValue()-2);
 		}
-		else if (knapp.getSource() == avslutaItem){	
+		else if (knapp.getSource() == avslutaItem){
 
 		}
 		else if(knapp.getSource() == knapp1){
@@ -362,7 +362,7 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 			knapp2.setEnabled(true);
 			knapp3.setEnabled(false);
 			knapp4.setEnabled(true);
-		}	
+		}
 		else if(knapp.getSource() == knapp4){
 			färg = yellow;
 			mittPanel.setBackground(färg);
@@ -396,7 +396,7 @@ public class Jakobs implements ActionListener,MouseInputListener,KeyListener,Win
 				autoscroll = true;
 				autoscrollknapp.setText("Stäng av autoscroll");
 				skrivHändelsetext("Autoscroll påslaget");
-			}			
+			}
 		}
 		else if (knapp.getSource()==visaItem) {
 			huvudfönster.add(knappPanel,BorderLayout.SOUTH);
@@ -671,7 +671,7 @@ class Mandat{
 		JPanel panel = new JPanel();
 		@SuppressWarnings("serial")
 		class Diagram extends JPanel{
-			public void paintComponent(Graphics g1) { 
+			public void paintComponent(Graphics g1) {
 				Graphics2D g = (Graphics2D) g1;
 				setBackground(white);
 				Insets i = getInsets();
@@ -679,7 +679,7 @@ class Mandat{
 				int w = getWidth()-i.left-i.right,
 						h = getHeight()-i.top-i.bottom,
 						diam = Math.min(h,w),
-						x = i.left + (w-diam)/2,  
+						x = i.left + (w-diam)/2,
 						y = i.top  + (h-diam)/2,  a = 90,alla = 0,allaandra = 0;
 				boolean ja = false;
 				for (int j = 1; j < antalmandat.length; j++) {
@@ -687,7 +687,7 @@ class Mandat{
 						ja=true;
 						if (checkBoxes[j].isSelected()) {
 							g.setColor(färger[j]);
-							int partFilled  = (int) Math.round(antalmandat[j]*1.0315186246418338108882521489971);    
+							int partFilled  = (int) Math.round(antalmandat[j]*1.0315186246418338108882521489971);
 							g.fillArc(x, y, diam, diam, a, partFilled);
 							g.drawArc(x, y, diam, diam, a, partFilled);
 							a=a+partFilled;
@@ -781,7 +781,7 @@ class Räknare implements ActionListener{
 				RäknarKnappar.add(MiniränkarknappGånger);
 				RäknarKnappar.add(Punkt);
 				RäknarKnappar.add(sifferButtons[0]);
-				RäknarKnappar.add(MiniränkarknappLikamed);	
+				RäknarKnappar.add(MiniränkarknappLikamed);
 				RäknarKnappar.add(MiniränkarknappDelat);
 				RäknarKnappar.add(C);
 				RäknarKnappar.setBackground(white);
@@ -818,7 +818,7 @@ class Räknare implements ActionListener{
 		frame.setVisible(true);
 	}
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == MiniränkarknappDelat){ 
+		if (e.getSource() == MiniränkarknappDelat){
 			if (Räknesätt.getText()==("")) {
 				Räknesätt.setText("del");
 			}
@@ -826,17 +826,17 @@ class Räknare implements ActionListener{
 			Räknesätt.setText("/");
 			nyräkning = false;
 		}
-		else if (e.getSource() == MiniränkarknappGånger){ 
+		else if (e.getSource() == MiniränkarknappGånger){
 			RäknaUt();
 			Räknesätt.setText("*");
 			nyräkning = false;
 		}
-		else if (e.getSource() == MiniränkarknappMinus){ 
+		else if (e.getSource() == MiniränkarknappMinus){
 			RäknaUt();
 			Räknesätt.setText("-");
 			nyräkning = false;
 		}
-		else if (e.getSource() == MiniränkarknappPlus){ 
+		else if (e.getSource() == MiniränkarknappPlus){
 			RäknaUt();
 			Räknesätt.setText("+");
 			nyräkning = false;
@@ -900,7 +900,7 @@ class Räknare implements ActionListener{
 			Summa.setText(Double.toString(a+b));
 		}
 		Räknartext.setText(null);
-	}	
+	}
 }
 class Ping{
 
@@ -941,7 +941,7 @@ class Ping{
 
 
 							//					Runtime.getRuntime().exec("taskkill /f /im ping.exe");
-							//			
+							//
 						}
 					}.start();
 				}
