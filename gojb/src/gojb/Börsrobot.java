@@ -3,7 +3,7 @@ package gojb;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.swing.JOptionPane;
+
 
 /*
  * Copyright 2017 GoJb Development
@@ -35,7 +35,6 @@ import javax.swing.JOptionPane;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
-
 import static gojb.Börsrobot.Signal.*;
 public class Börsrobot  {
 	private String lösen;
@@ -55,8 +54,8 @@ public class Börsrobot  {
 	public enum Signal {SÄLJ,KÖP,NEUTRAL};
 	public Börsrobot() throws InterruptedException {
 
-		lösen=JOptionPane.showInputDialog("Skriv lösenord");
-		System.setProperty("webdriver.chrome.driver", "C:/Users/zjakbjo/Downloads/chromedriver_win32/chromedriver.exe");
+		//		lösen=JOptionPane.showInputDialog("Skriv lösenord");
+		System.setProperty("webdriver.chrome.driver", "C:/Users/jakob/Downloads/chromedriver.exe");
 		driver = new ChromeDriver();
 		loggaIn();
 		openOMXS30();
@@ -134,12 +133,20 @@ public class Börsrobot  {
 
 	public void loggaIn() throws InterruptedException {
 		driver.get("https://avanza.se/start/forsta-oinloggad.html");
-		driver.findElement(By.ByLinkText.linkText("Användarnamn & lösenord")).click();
-		driver.findElements(By.name("j_username")).get(1).sendKeys("jakobbjorns");
-		WebElement element = driver.findElements(By.name("j_password")).get(1);
-		element.sendKeys(lösen);
-		element.submit();
-		Thread.sleep(500);
+		//		driver.findElement(By.ByLinkText.linkText("Mobilt BankID")).click();
+		WebElement element=driver.findElements(By.name("pid")).get(1);
+
+		element.sendKeys("9901225095");
+		WebElement element2=driver.findElements(By.className("mobileIdLogin")).get(1);
+		element2.click();
+		//		element.submit();
+		//		while (!driver.getCurrentUrl().equals("https://www.avanza.se/start/forsta-oinloggad.html")){
+		System.err.println("Väntar på mobilt bankid");
+
+		while (driver.findElements(By.className("loggedIn")).size()==0) {
+			System.out.println(	driver.findElements(By.className("loggedIn")).size());
+			Thread.sleep(1000);
+		}
 	}
 	public void openOMXS30() {
 		driver.get("https://avanza.se/index/om-indexet.html/19002/omx-stockholm-30");
