@@ -39,7 +39,7 @@ import GoJbFrame.GoJbFrame;
 import gojb.GoJbGoodies;
 
 public class Tetris {
-	private GoJbFrame frame = new GoJbFrame("Tetris",false,JFrame.DISPOSE_ON_CLOSE), 
+	private GoJbFrame frame = new GoJbFrame("Tetris",false,JFrame.DISPOSE_ON_CLOSE),
 			highFrame=new GoJbFrame("Tetris Highscore",false,JFrame.EXIT_ON_CLOSE);
 	private int size=40,fönsterbredd=12,fönsterhöjd=15,poäng;
 	private Timer timer = new Timer(500, e-> uppdatera());
@@ -77,9 +77,9 @@ public class Tetris {
 				}
 				else {
 					g.setColor(block.c);
-				g.fillRect(block.x*size-140,block.y*size+400, size, size);
+					g.fillRect(block.x*size-140,block.y*size+400, size, size);
 				}
-				
+
 				g.setColor(Color.black);
 				g.drawRect(block.x*size-140, block.y*size+400, size, size);
 			}
@@ -205,7 +205,7 @@ public class Tetris {
 		boolean b = false;
 		for (Block aktuell : aktuella) {
 			for (Block fast : fasta) {
-				if (aktuell.y+1==fast.y&&aktuell.x==fast.x) {	
+				if (aktuell.y+1==fast.y&&aktuell.x==fast.x) {
 					b=true;
 				}
 			}
@@ -226,7 +226,7 @@ public class Tetris {
 			blockskap();
 			for (Block aktuell : aktuella) {
 				for (Block fast : fasta) {
-					if (aktuell.y+1==fast.y&&aktuell.x==fast.x) {	
+					if (aktuell.y+1==fast.y&&aktuell.x==fast.x) {
 						gameover();
 						frame.repaint();
 						return;
@@ -250,6 +250,9 @@ public class Tetris {
 					}
 				}
 				poäng++;
+				if (poäng%3==0) {
+					timer.setDelay(timer.getDelay()/10*7);
+				}
 				scorepanel.repaint();
 			}
 
@@ -380,14 +383,14 @@ public class Tetris {
 			nästa.add(new Block(-2, 0, Color.red,s));
 			nästa.add(new Block(-1, 0, Color.red,s));
 			nästa.add(new Block(1, 0, Color.red,s));
-		}                          
-		else if (i==1) {           
+		}
+		else if (i==1) {
 			nästa.add(new Block(0, 0, Color.green,m));
 			nästa.add(new Block(0, -1, Color.green,m));
 			nästa.add(new Block(0, 1, Color.green,m));
-			nästa.add(new Block(1, 1, Color.green,m));    
-		}                         
-		else if (i==2) {          
+			nästa.add(new Block(1, 1, Color.green,m));
+		}
+		else if (i==2) {
 			nästa.add(new Block(0, 1, Color.magenta,fp));
 			nästa.add(new Block(0, 0, Color.magenta,fp));
 			nästa.add(new Block(0, 2, Color.magenta,fp));
@@ -398,14 +401,14 @@ public class Tetris {
 			nästa.add(new Block(0, 1, Color.BLUE,v));
 			nästa.add(new Block(1, 0, Color.BLUE,v));
 			nästa.add(new Block(1, 1, Color.BLUE,v));
-		}                          
-		else if (i==4) {           
+		}
+		else if (i==4) {
 			nästa.add(new Block(0, 1, Color.CYAN,c));
 			nästa.add(new Block(0, 0, Color.CYAN,c));
 			nästa.add(new Block(1, 1, Color.CYAN,c));
 			nästa.add(new Block(1, 2, Color.cyan,c));
-		}                         
-		else if (i==5) {           
+		}
+		else if (i==5) {
 			nästa.add(new Block(0, 0, Color.orange,mp));
 			nästa.add(new Block(0, 1, Color.orange,mp));
 			nästa.add(new Block(1, 0, Color.orange,mp));
@@ -459,9 +462,9 @@ public class Tetris {
 				g.setColor(c);
 				g.fillRect(this.x*size, this.y*size, size, size);
 			}
-			
 
-			
+
+
 			g.setColor(Color.black);
 			g.drawRect(this.x*size, this.y*size, size, size);
 

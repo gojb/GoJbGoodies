@@ -83,7 +83,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		addMouseMotionListener(this);
 		setForeground(red);
 		setPreferredSize(new Dimension(700, 500));
-		setOpaque(true);	
+		setOpaque(true);
 		setBackground(black.brighter());
 
 		frame.addMouseMotionListener(this);
@@ -129,6 +129,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		frame.repaint();
 	}
 	public void keyPressed(KeyEvent e) {
+		System.err.println(KeyEvent.getKeyText(e.getKeyCode()));
 		if(KeyEvent.getKeyText(e.getKeyCode()) == "Upp"){
 			hupp = true;
 		}
@@ -141,7 +142,9 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 		else if (e.getKeyCode() == 83) {
 			vner = true;
 		}
-		else if (KeyEvent.getKeyText(e.getKeyCode()) == "Mellanslag") {
+		else if (KeyEvent.getKeyText(e.getKeyCode()) == "Blanksteg"
+				+ ""
+				+ "") {
 			GameOver = false;
 			frame.repaint();
 			StartaOm();
@@ -264,4 +267,7 @@ class Pongspel extends JPanel implements ActionListener,KeyListener,WindowListen
 	public void windowActivated(WindowEvent e) {}
 	public void windowDeactivated(WindowEvent e) {}
 	public void mouseMoved(MouseEvent e) {}
+	public static void main(String[] args) {
+		new Pongspel();
+	}
 }

@@ -3,8 +3,6 @@ package gojb;
 import java.util.Calendar;
 import java.util.List;
 
-
-
 /*
  * Copyright 2017 GoJb Development
  *
@@ -37,24 +35,21 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import static gojb.Börsrobot.Signal.*;
 public class Börsrobot  {
-	private String lösen;
 	private WebDriver driver;
-	double kurs,SMA10,SMA20,RSI,saldobull,saldobear;
-	int antalaffärer;
-	String senaste;
-	Signal innehav=NEUTRAL;
+
+	private int antalaffärer;
+	private Signal innehav=NEUTRAL;
+	private double saldobull=0,saldobear=0;
+	private double kurs=0,SMA10=0,SMA20=0,RSI=0;
 	public static void main(String[] args) {
 		try {
 			new Börsrobot();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-
 		}
 	}
 	public enum Signal {SÄLJ,KÖP,NEUTRAL};
 	public Börsrobot() throws InterruptedException {
-
-		//		lösen=JOptionPane.showInputDialog("Skriv lösenord");
 		System.setProperty("webdriver.chrome.driver", "C:/Users/jakob/Downloads/chromedriver.exe");
 		driver = new ChromeDriver();
 		loggaIn();
@@ -77,7 +72,7 @@ public class Börsrobot  {
 				if (senaste==NEUTRAL)
 					System.out.println("avvaktar");
 				if(senaste!=innehav){
-					realsiera(senaste);
+					realsiera(senaste,kurs);
 				}
 			}
 			else{
@@ -86,7 +81,7 @@ public class Börsrobot  {
 			Calendar c = Calendar.getInstance();
 			if (c.get(Calendar.HOUR_OF_DAY)==17) {
 				if (c.get(Calendar.MINUTE)==23) {
-					sälj_produkt(innehav);
+					sälj_produkt(innehav,kurs);
 					antalaffärer++;
 					System.out.println("dagens vinst:"+(saldobear+saldobull));
 					driver.close();
@@ -97,20 +92,20 @@ public class Börsrobot  {
 		}
 		//		driver.quit();
 	}
-	private void sälj_produkt(Signal riktning) {
+	private void sälj_produkt(Signal riktning,double kurs) {
 		setSaldo(riktning,getSaldo(riktning)+kurs);
 		innehav=NEUTRAL;
 	}
-	private void köp_produkt(Signal riktning) {
+	private void köp_produkt(Signal riktning,double kurs) {
 		setSaldo(riktning,getSaldo(riktning)-kurs);
 		innehav=riktning;
 	}
-	private void realsiera(Signal signal){
+	private void realsiera(Signal signal,double kurs){
 		antalaffärer++;
 		if (innehav!=NEUTRAL) {
-			sälj_produkt(innehav);
+			sälj_produkt(innehav,kurs);
 		}
-		köp_produkt(signal);
+		köp_produkt(signal,kurs);
 	}
 	private double getSaldo(Signal riktning){
 		if (riktning==KÖP) {
@@ -166,7 +161,7 @@ public class Börsrobot  {
 			//			List<WebElement> spans =span.findElements(By.tagName("span"));
 			System.out.println(span.getText());
 		}
-		senaste=pointlist.get(0).getText();
+		pointlist.get(0).getText();
 		kurs=hämtaKurs(pointlist, 1);
 		SMA10=hämtaKurs(pointlist, 2);
 		SMA20=hämtaKurs(pointlist, 3);
@@ -174,7 +169,7 @@ public class Börsrobot  {
 		System.out.println(kurs+" "+SMA10+" "+SMA20+" "+RSI);
 	}
 	public void reload() throws InterruptedException{
-		WebElement element = driver.findElement(By.className("default"));
+		WebElement element = driver.findElement(By.linkText("1 d."));
 		element.click();
 		Thread.sleep(1000);
 	}
@@ -184,5 +179,4 @@ public class Börsrobot  {
 				.replaceAll(" ", "");
 		return Double.parseDouble(string);
 	}
-
 }

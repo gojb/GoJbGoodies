@@ -41,20 +41,24 @@ class Temp{
 		//System.out.println(string.replace(";", "."));
 
 		//		new Impossible("Test");
-		long max=10000000000l;
-		int a=0;
-		long start= System.currentTimeMillis();
-		long l = 0;
-		while(++l<max){
-			a = 43243123>>1;
-		}
-		System.out.println("1:"+a+"   "+ (System.currentTimeMillis()-start));
-		start= System.currentTimeMillis();
-		l = 0;
-		while(++l<max){
-			a = 43243123/2;
-		}
-		System.out.println("2:"+a+"   "+ (System.currentTimeMillis()-start));
+		//		System.out.println("1234	123456");
+		//		System.out.println("123456	12345");
+		//		System.out.println("2345	1234");
+		//		System.out.println("13	123123");
+		//		long max=10000000000l;
+		//		int a=0;
+		//		long start= System.currentTimeMillis();
+		//		long l = 0;
+		//		while(++l<max){
+		//			a = 43243123>>1;
+		//		}
+		//		System.out.println("1:"+a+"   "+ (System.currentTimeMillis()-start));
+		//		start= System.currentTimeMillis();
+		//		l = 0;
+		//		while(++l<max){
+		//			a = 43243123/2;
+		//		}
+		//		System.out.println("2:"+a+"   "+ (System.currentTimeMillis()-start));
 		//		try {
 		//			JOptionPane.showMessageDialog(null, "Du skrev siffran "+Integer.parseInt(JOptionPane.showInputDialog("Skriv din siffra")));
 		//
