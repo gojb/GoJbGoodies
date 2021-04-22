@@ -41,7 +41,7 @@ public class Bot2048 {
 		
 	}
 	public Bot2048(){
-		System.setProperty("webdriver.chrome.driver", "C:/Users/Glenn/Downloads/chromedriver/chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "/Users/glenn/Downloads/chromedriver_latest");
 		WebDriver driver = new ChromeDriver();
 
 		driver.manage().window().setSize(new Dimension(2000, 800));
@@ -61,7 +61,7 @@ public class Bot2048 {
 		actions.moveToElement(element);
 		actions.click();
 		CharSequence[] array = {Keys.ARROW_DOWN,Keys.ARROW_LEFT,Keys.ARROW_RIGHT};
-		for(int i = 0;i<1000000;i++){
+		for(;;){
 		Random random = new Random();
 		actions.sendKeys(array[random.nextInt(3)]);;
 		actions.sendKeys(Keys.ARROW_DOWN);

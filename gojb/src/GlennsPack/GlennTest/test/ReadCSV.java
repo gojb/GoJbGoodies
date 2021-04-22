@@ -98,7 +98,7 @@ public class ReadCSV {
 			
 			Object[] linesArray = br.lines().toArray();
 			
-			//-1 för att sista är ett tomt
+			//-1 f?r att sista ?r ett tomt
 			if(actualLineNumber>=linesArray.length-1){
 				isExceedNights=true;
 				return;

@@ -52,7 +52,7 @@ import GoJbFrame.GoJbFrame;
 import spel.Minne;
 import spel.Röj;
 import spel.Snake;
-import spel.SänkaSkepp;
+//import spel.SankaSkepp;
 
 @SuppressWarnings("serial")
 class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListener, KeyListener, ActionListener{
@@ -182,7 +182,7 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		memo.addActionListener(e -> {new spel.Memory();frame.dispose();});
 		personnr.addActionListener(e -> {frame.dispose();new Personnr();});
 		röJ.addActionListener(e->{frame.dispose();new Röj();});
-		sänkaSkepp.addActionListener(e->{frame.dispose();new SänkaSkepp();});
+		//sänkaSkepp.addActionListener(e->{frame.dispose();new SankaSkepp();});
 		minne.addActionListener(e ->{frame.dispose();new Minne();});
 
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
@@ -192,7 +192,10 @@ class RörandeMojäng extends JPanel implements MouseMotionListener, WindowListene
 		frame.setIconImage(fönsterIcon);
 		frame.setSize(1845, 800);
 		frame.addMouseMotionListener(this);
+
 		frame.addKeyListener(this);
+		frame.add(textruta);
+
 		frame.setResizable(false);
 		frame.setJMenuBar(bar);
 		frame.addWindowListener(this);

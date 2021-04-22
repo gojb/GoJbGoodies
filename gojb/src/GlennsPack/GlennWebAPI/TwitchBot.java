@@ -85,10 +85,10 @@ public class TwitchBot {
 		new TwitchBot(stringsToLookFor);
 	}
 	public TwitchBot(ArrayList<String> lookFor) {
-		System.setProperty("webdriver.chrome.driver", "C:/Users/Glenn/Downloads/chromedriver/chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "/Users/glenn/Downloads/chromedriver_latest");
 		WebDriver driver = new ChromeDriver();
 
-		driver.manage().window().setSize(new Dimension(2000, 800));
+		driver.manage().window().setSize(new Dimension(200, 800));
 
 		driver.manage().deleteAllCookies();
 

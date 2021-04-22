@@ -24,44 +24,35 @@
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package GlennsPack.GlennTest;
+package GlennsPack.GlennTest.Socket;
 
 import java.io.*;
 import java.net.*;
 public class echo3 {
-	public static void main(String args[]) {
-// declaration section:
-// declare a server socket and a client socket for the server
-// declare an input and an output stream
-		ServerSocket echoServer = null;
-		String line;
-		DataInputStream is;
-		PrintStream os;
-		Socket clientSocket = null;
-// Try to open a server socket on port 9999
-// Note that we can't choose a port less than 1023 if we are not
-// privileged users (root)
-		try {
-			echoServer = new ServerSocket(9999);
-		}
-		catch (IOException e) {
-			System.out.println(e);
-		}
-// Create a socket object from the ServerSocket to listen and accept
-// connections.
-// Open input and output streams
-		try {
-			clientSocket = echoServer.accept();
-			is = new DataInputStream(clientSocket.getInputStream());
-			os = new PrintStream(clientSocket.getOutputStream());
-// As long as we receive data, echo that data back to the client.
-			while (true) {
-				line = is.readLine();
-				os.println(line);
+	public static void main(String args[]) throws IOException {
+		final int portNumber = 9999;
+		System.out.println("Creating server socket on port " + portNumber);
+		ServerSocket serverSocket = new ServerSocket(portNumber);
+		while (true) {
+			Socket socket = serverSocket.accept();
+			OutputStream os = socket.getOutputStream();
+			PrintWriter pw = new PrintWriter(os, true);
+			pw.println("What's you name?");
+			
+			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			
+			String str = br.readLine();
+			
+			while (str!=null) {
+				
+				pw.println("Hello, " + str);
+				
+				System.out.println("Just said hello to:" + str);
+				
+				str = br.readLine();
 			}
-		}
-		catch (IOException e) {
-			System.out.println(e);
+			System.out.println("--");
+			socket.close();
 		}
 	}
 }

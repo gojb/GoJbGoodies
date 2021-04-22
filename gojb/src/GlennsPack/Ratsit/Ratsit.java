@@ -75,8 +75,7 @@ public class Ratsit{
 	
 	public static void main(String[] args) {
 		try{
-			for (int i = 0; i < 9; i++) {
-				BuildSˆk sˆk = new BuildSˆk("Siv T*rnqvist 19"+i+"*","");
+				BuildSˆk sˆk = new BuildSˆk("Glenn Olsson","");
 				if(sˆk.AntalTr‰ffar>14){
 					System.err.println("FUUUCK");
 					System.exit(3);
@@ -88,13 +87,11 @@ public class Ratsit{
 					System.out.println(personerPÂAdress.size());
 					for (int k = 0; k < personerPÂAdress.size(); k++) {
 						System.out.println(personerPÂAdress.get(k).Fˆrnamn);
-						if(personerPÂAdress.get(k).Fˆrnamn.contains("stefan")){
+						if(personerPÂAdress.get(k).Fˆrnamn.contains("stefan")) {
 							System.out.println(personer.get(j).Postort);
 						}
 					}
 				}
-				
-			}
 		}
 		catch (Exception e){
 			e.printStackTrace();

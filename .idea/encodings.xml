@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" defaultCharsetForPropertiesFiles="ISO-8859-1">
-    <file url="file://$PROJECT_DIR$/gojb/src/GlennsPack/GlennTest/pingPi.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gojb/src/GlennsPack/GlennTest/PingPi.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/gojb/src/GlennsPack/GlennTest/XMLcheck.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/gojb/src/GlennsPack/GlennTest/footballCalc.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/gojb/src/GlennsPack/GlennTest/test/ReadCSV.java" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/gojb/src/GlennsPack/GlennWebAPI/TwitchBot.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/gojb/src/GlennsPack/Ratsit/BuildSök.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/gojb/src/GlennsPack/Ratsit/Ratsit.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/gojb/src/gojb/FondKoll.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/gojb/src/gojb/Glosor.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/gojb/src/gojb/GoJbGoodies.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/gojb/src/gojb/Jakobs.java" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/gojb/src/gojb/Personnr.java" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/gojb/src/gojb/RörandeMojäng.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/gojb/src/gojb/ipAdress.java" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/gojb/src/spel/FlappyGoJb.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/gojb/src/spel/Kurve.java" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/gojb/src/spel/Pacman.java" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/gojb/src/spel/Röj.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/gojb/src/spel/SankaSkepp.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/gojb/src/spel/Snake.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/gojb/src/spel/Studs.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/gojb/src/test/Arraylist.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/gojb/src/test/realBlackAndWhite.java" charset="ISO-8859-1" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

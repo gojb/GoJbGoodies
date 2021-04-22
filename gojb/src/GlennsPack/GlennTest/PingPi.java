@@ -26,26 +26,28 @@
 
 package GlennsPack.GlennTest;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.Properties;
 
 /**
  * Created by glenn on 2017-07-18.
  */
-public class pingPi {
-	Mottagare[] mottagare = {new Mottagare("84.217.30.33","jakob_b99@live.se")};
+public class PingPi {
+	Mottagare[] mottagare = {new Mottagare("84.217.30.33","jakob_b99@live.se"), new Mottagare("84.55.99.94","glennholsson@gmail.com")};
 	static long vantaMinuter = 1;
 	
 	public static void main(String[] args) {
 		boolean shallRun = true;
 		while (shallRun){
 			try{
-				Thread.sleep(vantaMinuter*60*1000);
-				new pingPi();
+				System.out.println("Running in 10 sec");
+				Thread.sleep(10000);
+				new PingPi();
 			}
 			catch (Exception e){
 				shallRun=false;
@@ -54,7 +56,7 @@ public class pingPi {
 		}
 	}
 	
-	public pingPi(){
+	public PingPi(){
 		for(int i = 0; i < mottagare.length; i++){
 			pingSpecifikIp(mottagare[i]);
 		}
@@ -63,17 +65,24 @@ public class pingPi {
 	public void pingSpecifikIp(Mottagare mottagare) {
 		try {
 			Process proc = Runtime.getRuntime().exec("ping -c 1 -W 1 " + mottagare.getIpAdress());
+			proc.waitFor();
+			
 			BufferedReader reader =
 					new BufferedReader(new InputStreamReader(proc.getInputStream()));
 			String line = "", lineOfContent = "";
 			while ((line = reader.readLine()) != null) {
+				System.out.println("-"+line+"-");
 				if(line.contains("1 packets transmitted")) {
+					System.out.println(line);
 					lineOfContent = line;
 				}
 			}
-			proc.waitFor();
+			
+			
 			
 			mottagare.setInnehallISvar(lineOfContent);
+			
+			System.out.println(lineOfContent);
 			
 			if(mottagare.arNere()) {
 				arNere(mottagare);
@@ -96,6 +105,7 @@ public class pingPi {
 		
 		if(lineOfContent.contains("1 recevied")){
 			//Fick tillbaka ping = uppe
+			System.out.println("Uppe igen!");
 			skickaMail(mottagare);
 			mottagare.setNere(false);
 		}
@@ -103,6 +113,8 @@ public class pingPi {
 	
 	public void arUppe(Mottagare mottagare){
 		String lineOfContent = mottagare.getInnehallISvar();
+		
+		System.out.println("UPPE fortfarande");
 		
 		if(lineOfContent.equals("")){
 			//WHY THOUGH?!
@@ -216,13 +228,3 @@ class Mottagare{
 		return tidNere;
 	}
 }
-
-
-
-
-
-
-
-
-
-

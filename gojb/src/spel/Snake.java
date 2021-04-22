@@ -598,7 +598,7 @@ public class Snake extends JPanel implements KeyListener, ActionListener, Compon
 	public void actionPerformed(ActionEvent e) {
 		if (x[1]==pluppX&&y[1]==pluppY) {
 			PlaceraPlupp();
-			((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
+			//((Runnable) getDefaultToolkit().getDesktopProperty("win.sound.asterisk")).run();
 			System.err.println(++snakelängdx);
 		}
 		if (spelläge!=ONE) {
