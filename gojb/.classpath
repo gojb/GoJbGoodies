@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="lib/selenium-server-standalone-2.48.2.jar"/>
 	<classpathentry kind="lib" path="lib/TooTallNate-Java-WebSocket.jar"/>
 	<classpathentry kind="lib" path="lib/commons-net-3.3.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.44-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

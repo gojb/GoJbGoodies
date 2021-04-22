@@ -86,10 +86,10 @@ public class KurvSnake {
 			for (Pixel pixel : pixels) {
 				pixel.draw(g2);
 			}
-			for (Pixel pixel : pixels2) {
-				pixel.draw(g2);
-				System.out.println("erhiogdslkf");
-			}
+			//			for (Pixel pixel : pixels2) {
+			//				pixel.draw(g2);
+			//				System.out.println("erhiogdslkf");
+			//			}
 		};
 	};
 	public KurvSnake() {
@@ -187,25 +187,25 @@ public class KurvSnake {
 	private void update(){
 		if (höger) riktning +=1;
 		if (vänster) riktning -=1;
-		x += Math.cos(Math.PI*riktning/200);
-		y += Math.sin(Math.PI*riktning/200);
+		x += Math.cos(Math.PI*riktning/100);
+		y += Math.sin(Math.PI*riktning/100);
 		pixels.add(new Pixel(x,y));
-		
+
 		if (höger2) riktning2 +=1;
 		if (vänster2) riktning2 -=1;
-		x2 += Math.cos(Math.PI*riktning2/200);
-		y2 += Math.sin(Math.PI*riktning2/200);
+		x2 += Math.cos(Math.PI*riktning2/100);
+		y2 += Math.sin(Math.PI*riktning2/100);
 		pixels2.add(new Pixel(x2,y2));
 		frame.repaint();
-		
-//		highFrame.repaint();
+
+		//		highFrame.repaint();
 		while (pixels.size()-längd*80-300>=0) {
 			pixels.remove(0);
 		}
 		while (pixels2.size()-längd2*80-300>=0) {
 			pixels2.remove(0);
 		}
-		
+
 		for (int i = 0; i < pixels.size()-10; i++) {
 			if (pixels.get(pixels.size()-1).nuddar(pixels.get(i))) {
 				System.err.println("Game Over");
@@ -330,7 +330,7 @@ public class KurvSnake {
 		public void keyTyped(KeyEvent e) {}
 
 		@Override
-		public void keyReleased(KeyEvent e) {	
+		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode()==KeyEvent.VK_LEFT) {
 				vänster=false;
 			}
